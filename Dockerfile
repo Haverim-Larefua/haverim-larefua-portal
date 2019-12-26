@@ -3,7 +3,7 @@ FROM node AS node_package
 RUN ls -ltr
 RUN mkdir -p /opt/app/hl
 WORKDIR /opt/app/hl
-COPY  package* ./
+#COPY  package* ./
 RUN npm install
 
 # Stage #2 - Copy data and run
