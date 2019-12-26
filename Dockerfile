@@ -12,8 +12,8 @@ ENV APP_PATH=/opt/app/hl
 RUN apk add bash
 RUN mkdir -p /opt/app/hl/
 WORKDIR /opt/app/hl
-COPY . .
+#COPY . .
 COPY --from=0 /opt/app/hl/node_modules ./node_modules
 RUN ls -ltr .
 EXPOSE 3000
-ENTRYPOINT ${APP_PATH}/scripts/startService.sh
+#ENTRYPOINT ${APP_PATH}/scripts/startService.sh
