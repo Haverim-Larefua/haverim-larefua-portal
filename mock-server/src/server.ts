@@ -6,11 +6,7 @@ import { AddressInfo } from 'net';
 const PORT = 4202;
 
 const allowedOrigins = [
-    'http://fuse.local.att.com:4200',
-    'http://fuse.local.att.com:3000',
-    `http://${os.hostname().toLocaleLowerCase()}.intl.att.com:3000`,
-    `http://${os.hostname().toLocaleLowerCase()}:3000`,
-    `http://${os.hostname().toLocaleLowerCase()}.emea.att.com:3000`
+    'http://localhost:3000'
 ];
 const app = express();
 app.use(cors({

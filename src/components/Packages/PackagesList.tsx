@@ -20,7 +20,7 @@ function PackagesList(props: packageListProps): JSX.Element {
                 }}
                 key={`product_${tmppackage.id}`}>
                 <th scope="row">{tmppackage.id}</th>
-                <td>{tmppackage.firstname} + ' ' {tmppackage.lastname}</td>
+                <td>{tmppackage.firstname} {tmppackage.lastname}</td>
                 <td>{tmppackage.address}</td>
                 <td>{tmppackage.city}</td>
                 <td>{tmppackage.phone}</td>
