@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hl-be-service
+  name: hl-fe-service
   namespace: default
   labels:
-    app: hl-be
+    app: hl-fe
 spec:
   type: NodePort
   ports:
@@ -13,5 +13,5 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: hl-be
+    app: hl-fe
     
