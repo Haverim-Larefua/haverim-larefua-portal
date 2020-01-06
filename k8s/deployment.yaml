@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hl-be-deployment
+  labels:
+    app: hl-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hl-be
+  template:
+    metadata:
+      labels:
+        app: hl-be
+    spec:
+      containers:
+      - name: hl-be
+        image: dockercentral.azurecr.io/hl-be
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+      - name: pullsecret
