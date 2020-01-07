@@ -2,7 +2,7 @@
 FROM node AS node_package
 RUN mkdir -p /opt/app/hl_fe
 WORKDIR /opt/app/hl_fe
-#COPY  package* ./
+COPY  package* ./
 RUN npm install
 RUN npm install yarn
 RUN yarn build
