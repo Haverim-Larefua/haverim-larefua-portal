@@ -14,4 +14,4 @@ spec:
       - backend:
           serviceName: hl-fe-service
           servicePort: 3000
-        path: /(.*)
+        path: /
