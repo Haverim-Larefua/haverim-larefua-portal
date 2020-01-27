@@ -12,7 +12,6 @@ class PushNotificationService {
   
 
   constructor() {
-    debugger;
     this.initPush();
   }
 

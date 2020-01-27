@@ -1,40 +1,64 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
+import Package from "../components/Packages/Package.model";
+import Configuration from "../configuration/Configuration";
 
 class HttpService {
-    http: AxiosInstance;
+  private http: AxiosInstance;
+  private config: Configuration;
 
-    // private pushServerUrl = `https://push-notification-demo-server.herokuapp.com/subscription`;
+  private PACKAGES_URL: string;
 
-    private subscribeServerUrl = 'subscribe';
-    private notifyServerUrl = 'notify';
+  constructor(axiosConfig?: AxiosRequestConfig) {
+    this.http = axios.create(axiosConfig);
+    this.config = new Configuration();
+    this.PACKAGES_URL = `${this.config.BACKEND_URL + this.config.PACKAGES_POSTFIX}`;
+  }
 
-    constructor(config?: AxiosRequestConfig) {
-        this.http = axios.create(config);
-    }
+  async sendPushNotification(subscription: PushSubscription, fingerprint: number
+  ) {
+    const response = await this.http.post(
+      `${this.config.BACKEND_URL + this.config.PUSH_NOTIFY_POSTFIX}`,
+      { subscription, fingerprint, id: 2 }
+    );
+    return response.data;
+  }
 
-    async sendPushNotification(subscription: PushSubscription, fingerprint: number) {
-        const response = await this.http.post(this.notifyServerUrl, { subscription, fingerprint, id: 2});
+  async sendPushSubscription(subscription: PushSubscription, fingerprint: number
+  ) {
+    const response = await this.http.post(
+      `${this.config.BACKEND_URL + this.config.PUSH_SUBSCRIBE_POSTFIX}`,
+      { subscription, fingerprint, id: 2 }
+    );
+    return response.data;
+  }
+
+  async getPackages() {
+      try {
+        const response = await this.http.get(this.PACKAGES_URL);
         return response.data;
-    }
+      } catch (error){
+        console.error('could not retrieve packages' , error);
+      } 
+  }
 
-    async sendPushSubscription(subscription: PushSubscription, fingerprint: number) {
-        const response = await this.http.post(this.subscribeServerUrl, { subscription, fingerprint, id: 2});
-        return response.data;
-    }
-    
+  async createPackage(aPackage: Package) {
+    const response = await this.http.post(
+      `${this.config.BACKEND_URL + this.config.PACKAGES_POSTFIX}`,
+      aPackage
+    );
+    return response.data;
+  }
 }
 
 const httpService = new HttpService({
-    baseURL: `${BACKEND_URL}/push`,
-    headers: {
-        'Access-Control-Allow-Origin': '*',
-         Accept: 'application/json',
-        'Content-Type': 'application/json',
-    },
-    withCredentials: false,
-    // method: 'HEAD'
+//   baseURL: `${this.config.BACKEND_URL}/`,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  },
+  withCredentials: false
+  // method: 'HEAD'
 });
 
 export default httpService;

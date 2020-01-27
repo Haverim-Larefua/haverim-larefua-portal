@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import XLSX from 'xlsx';
 import PackagesList from './PackagesList';
+import Package from './Package.model';
+import httpService from '../../services/http';
 
 interface state {
     file: Blob;
@@ -22,13 +24,14 @@ class Packages extends Component<any, state> {
       }
       this.handleFile = this.handleFile.bind(this);
       this.handleChange = this.handleChange.bind(this);
+      this.jsonDataToPackage = this.jsonDataToPackage.bind(this);
     }
     
     handleChange(e: any) {
       const files = e.target.files;
-      if (files && files[0]) this.setState({ file: files[0] });
-
-      this.handleFile();
+      if (files){
+         this.setState({ file: files[0] }, () => {this.handleFile()});
+      }
     };
    
     make_cols(refstr: any) {
@@ -36,6 +39,24 @@ class Packages extends Component<any, state> {
         for(var i = 0; i < C; ++i) o[i] = {name:XLSX.utils.encode_col(i), key:i}
         return o;
     };
+
+    async jsonDataToPackage() {
+      const packages = await httpService.getPackages();
+      console.log(packages);
+      this.state.data.forEach(async data => {
+        const name = data['שם כרטיס'] ? data['שם כרטיס'] : '';
+        const address = data['כתובת'] ? data['כתובת'] : '';
+        const city = data['עיר'] ? data['עיר'] : '';
+        const phones = data['טלפון'] ? data['טלפון'].split(',') : [];
+        const comments = data['הערות'] ? data['הערות'] : '';
+        const signature = data['חתימה'] ? data['חתימה'] : '';
+        const aPackage = new Package(name, address, city, phones, comments, signature);
+        console.log(aPackage);
+        const response = await httpService.createPackage(aPackage);
+        console.log(response);
+      })
+
+    }
 
     handleFile() {
       /* Boilerplate to set up FileReader */
@@ -53,6 +74,7 @@ class Packages extends Component<any, state> {
         const data = XLSX.utils.sheet_to_json(ws);
         /* Update state */
         this.setState({ data: data, cols: this.make_cols(ws['!ref']) }, () => {
+          this.jsonDataToPackage();
           console.log(JSON.stringify(this.state.data, null, 2));
         });
       };

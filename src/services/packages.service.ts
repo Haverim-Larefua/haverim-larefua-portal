@@ -8,7 +8,7 @@ class PackageService {
         this.config = new Configuration();
     }
     async retrievePackages() {
-        return fetch(`${this.config.API_URL+this.API_PREFIX}`)
+        return fetch(`${this.config.BACKEND_URL+this.API_PREFIX}`)
             .then(response => {
                 if (!response.ok) {
                     this.handleResponseError(response);

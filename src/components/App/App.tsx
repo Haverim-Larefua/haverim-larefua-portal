@@ -9,6 +9,7 @@ import Admin from "../Admin/Admin";
 import "./App.css";
 import "../../styles/sb-admin-2.css";
 import pushNotificationService from "../../services/pushNotification.service";
+import Packages from "../Packages/Packages";
 
 class App extends Component<any, any> {
 
@@ -21,10 +22,11 @@ class App extends Component<any, any> {
       <div className="App" id="wrapper">
 
             <button 
-                className="btn btn-primary toggle-button" 
+                className="btn btn-primary" 
                 onClick={() => this.triggerPushNotification()}>
                 Trigger Push Notification
             </button>
+            <Packages />
 
         <Router>
           <Switch>
