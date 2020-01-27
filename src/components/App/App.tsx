@@ -7,11 +7,10 @@ import Login from '../Login/Login';
 import Admin from '../Admin/Admin';
 
 import './App.css';
-import "../../styles/sb-admin-2.css";
 
 const App: React.FC = () => {
   return (
-    <div className="App" id="wrapper">
+    <div className="App">
       <Router>
         <Switch>
           <PrivateRoute path="/">
