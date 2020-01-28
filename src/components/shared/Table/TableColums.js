@@ -1,17 +1,17 @@
 const tableColumns  = [
     {
       name: 'שם משפחה',
-      selector: 'lname',
+      selector: 'lastName',
       sortable: true,
     },
     {
       name: 'שם פרטי',
-      selector: 'fname',
+      selector: 'firstName',
       sortable: true,
     },
     {
       name: 'עיר חלוקה',
-      selector: 'city',
+      selector: 'deliveryArea',
       sortable: true,
     },
     {

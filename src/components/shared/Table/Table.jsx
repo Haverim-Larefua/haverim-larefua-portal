@@ -7,6 +7,7 @@ import Toolbar from '../Toolbar/Toolbar';
 
 const Table = () => {
   const [selectedRows, setSelectedRows] = useState([]);
+  const [users, setUsers] = useState({});
 
   useEffect(() => {
     console.log('state', selectedRows);
@@ -20,6 +21,20 @@ const Table = () => {
   const handleChange = useCallback(state => {
     setSelectedRows(state.selectedRows);
   }, []);
+
+  const url = 'http://localhost:3001/users/';
+
+  const getUsers = () => {
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        setUsers(data);
+        })
+  }
+
+  getUsers();
+
+  console.log(users);
 
   const columns = useMemo(() => [
   ...tableColumns,
@@ -35,7 +50,7 @@ const Table = () => {
 
   return (
     <DataTable
-      data={tableDataItems}
+      data={users}
       columns={columns}
       onSelectedRowsChange={handleChange}
       selectableRows
