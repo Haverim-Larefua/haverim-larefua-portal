@@ -8,8 +8,8 @@ const Dashboard: React.FC = () => {
             <p className="mb-4">Summary and overview of our admin stuff here</p>
 
             <div className="row">
-                <TopCard title="TOTAL PACKAGES FOR TODAY" text="33" icon="box-open" class="success" />
-                <TopCard title="PACKAGES THAT WERE SENT TODAY" text="22" icon="calendar-day" class="success" />
+                <TopCard title="TOTAL parcelS FOR TODAY" text="33" icon="box-open" class="success" />
+                <TopCard title="parcelS THAT WERE SENT TODAY" text="22" icon="calendar-day" class="success" />
                 <TopCard title="ACTIVE MESSENGERS" text="44" icon="signal" class="success" />
             </div>
 
