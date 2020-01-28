@@ -31,6 +31,24 @@ const Table = () => {
     },
   ], []);
 
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: '60px', // override the row height
+      }
+    },
+    headCells: {
+      style: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+    },
+    cells: {
+      style: {
+        fontSize: 16,
+      },
+    },
+  };
 
   return (
     <DataTable
@@ -39,6 +57,7 @@ const Table = () => {
       onSelectedRowsChange={handleChange}
       selectableRows
       highlightOnHover
+      customStyles={customStyles}
       noHeader
       subHeader
       subHeaderComponent={

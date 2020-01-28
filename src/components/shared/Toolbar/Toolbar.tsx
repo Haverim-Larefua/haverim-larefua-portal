@@ -4,6 +4,10 @@ import './Toolbar.scss';
 
 
 const Toolbar: React.FC = () => {
+
+  const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
+  const days = ['א','ב','ג','ד','ה','ו','ש','כל השבוע'];
+
   return (
     <div className="fhh-toolbar">
       <div className="fhh-toolbar__title">
@@ -14,9 +18,9 @@ const Toolbar: React.FC = () => {
       </div>
       <div className="fhh-toolbar__filters">
         <label className="fhh-toolbar__label">ימי חלוקה</label>
-        <Dropdown></Dropdown>
+        <Dropdown options={days} name="days"></Dropdown>
         <label className="fhh-toolbar__label">עיר חלוקה</label>
-        <Dropdown></Dropdown>
+        <Dropdown options={cities} name="cities"></Dropdown>
       </div>
       <button className="fhh-toolbar__action">
         הוספת שליח
