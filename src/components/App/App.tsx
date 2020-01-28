@@ -9,7 +9,9 @@ import Admin from "../Admin/Admin";
 import "./App.css";
 import "../../styles/sb-admin-2.css";
 import pushNotificationService from "../../services/pushNotification.service";
-import Packages from "../Packages/Packages";
+import Parcels from "../Parcels/Parcels";
+import ParcelContextProvider from "../../contexts/parcelContext";
+
 
 class App extends Component<any, any> {
 
@@ -20,13 +22,13 @@ class App extends Component<any, any> {
   render() {
     return (
       <div className="App" id="wrapper">
-
+        <ParcelContextProvider>
             <button 
                 className="btn btn-primary" 
                 onClick={() => this.triggerPushNotification()}>
                 Trigger Push Notification
             </button>
-            <Packages />
+            <Parcels />
 
         <Router>
           <Switch>
@@ -38,6 +40,8 @@ class App extends Component<any, any> {
             </AccountRoute>
           </Switch>
         </Router>
+
+        </ParcelContextProvider>
       </div>
     );
   }

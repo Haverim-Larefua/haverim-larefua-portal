@@ -40,9 +40,9 @@ const LeftMenu: React.FC = () => {
                 <div className="sidebar-heading">Shipments</div>
 
                 <li className="nav-item">
-                    <Link className="nav-link" to={`/packages`}>
+                    <Link className="nav-link" to={`/parcels`}>
                         <i className="fas fa-fw fa-truck"></i>
-                        <span>Manage Packages</span>
+                        <span>Manage parcels</span>
                     </Link>
                 </li>
 

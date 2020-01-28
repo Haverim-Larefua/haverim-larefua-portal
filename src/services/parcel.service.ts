@@ -1,13 +1,13 @@
 import Configuration from "../configuration/Configuration";
 
-class PackageService {
-    private API_PREFIX: string = '/packages';
+class parcelService {
+    private API_PREFIX: string = '/parcels';
     config: Configuration;
 
     constructor() {
         this.config = new Configuration();
     }
-    async retrievePackages() {
+    async retrieveParcels() {
         return fetch(`${this.config.BACKEND_URL+this.API_PREFIX}`)
             .then(response => {
                 if (!response.ok) {
@@ -31,4 +31,4 @@ class PackageService {
     }
 }
 
-export default PackageService;
+export default parcelService;

@@ -1,17 +1,17 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import Package from "../components/Packages/Package.model";
+import parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 
 class HttpService {
   private http: AxiosInstance;
   private config: Configuration;
 
-  private PACKAGES_URL: string;
+  private parcelS_URL: string;
 
   constructor(axiosConfig?: AxiosRequestConfig) {
     this.http = axios.create(axiosConfig);
     this.config = new Configuration();
-    this.PACKAGES_URL = `${this.config.BACKEND_URL + this.config.PACKAGES_POSTFIX}`;
+    this.parcelS_URL = `${this.config.BACKEND_URL + this.config.PARCELS_POSTFIX}`;
   }
 
   async sendPushNotification(subscription: PushSubscription, fingerprint: number
@@ -32,19 +32,19 @@ class HttpService {
     return response.data;
   }
 
-  async getPackages() {
+  async getparcels() {
       try {
-        const response = await this.http.get(this.PACKAGES_URL);
+        const response = await this.http.get(this.parcelS_URL);
         return response.data;
       } catch (error){
-        console.error('could not retrieve packages' , error);
+        console.error('could not retrieve parcels' , error);
       } 
   }
 
-  async createPackage(aPackage: Package) {
+  async createparcel(aparcel: parcel) {
     const response = await this.http.post(
-      `${this.config.BACKEND_URL + this.config.PACKAGES_POSTFIX}`,
-      aPackage
+      `${this.config.BACKEND_URL + this.config.PARCELS_POSTFIX}`,
+      aparcel
     );
     return response.data;
   }

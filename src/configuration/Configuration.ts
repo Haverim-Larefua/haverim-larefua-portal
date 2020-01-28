@@ -6,7 +6,7 @@ class Configuration {
     PUSH_SUBSCRIBE_POSTFIX = '/push/subscribe';
     PUSH_NOTIFY_POSTFIX = '/push/notify';
 
-    PACKAGES_POSTFIX = '/parcels';
+    PARCELS_POSTFIX = '/parcels';
 
 }
 

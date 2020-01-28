@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import LeftMenu from "../shared/LeftMenu/LeftMenu";
 import TopMenu from "../shared/TopMenu/TopMenu";
 import Dashboard from "../Dashboard/Dashboard";
-import Packages from "../Packages/Packages";
+import Parcels from "../Parcels/Parcels";
 
 const Admin: React.FC = () => {
     return (
@@ -15,7 +15,7 @@ const Admin: React.FC = () => {
               <TopMenu />
               <div className="container-fluid">
                 <Switch>
-                  <Route path={`/packages`}><Packages /></Route>
+                  <Route path={`/parcels`}><Parcels /></Route>
                   {/* <Route path={`/products`}><Products /></Route>
                   <Route path={`/orders`}><Orders /></Route> */}
                   <Route path="/"><Dashboard /></Route>
