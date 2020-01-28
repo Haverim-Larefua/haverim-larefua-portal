@@ -1,23 +1,31 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import parcel from "../contexts/interfaces/parcels.interface";
+import axios, { AxiosInstance } from "axios";
+import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
+import User from "../contexts/interfaces/users.interface";
 
 class HttpService {
   private http: AxiosInstance;
   private config: Configuration;
 
-  private parcelS_URL: string;
 
-  constructor(axiosConfig?: AxiosRequestConfig) {
-    this.http = axios.create(axiosConfig);
+  constructor() {
     this.config = new Configuration();
-    this.parcelS_URL = `${this.config.BACKEND_URL + this.config.PARCELS_POSTFIX}`;
+    this.http = axios.create({
+          baseURL: `${this.config.BACKEND_URL}/`,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          withCredentials: false
+          // method: 'HEAD'
+        });
   }
 
+  //////////////////////////////////// Push ////////////////////////////////////
   async sendPushNotification(subscription: PushSubscription, fingerprint: number
   ) {
-    const response = await this.http.post(
-      `${this.config.BACKEND_URL + this.config.PUSH_NOTIFY_POSTFIX}`,
+    const response = await this.http.post(`${this.config.PUSH_NOTIFY_POSTFIX}`,
       { subscription, fingerprint, id: 2 }
     );
     return response.data;
@@ -25,40 +33,53 @@ class HttpService {
 
   async sendPushSubscription(subscription: PushSubscription, fingerprint: number
   ) {
-    const response = await this.http.post(
-      `${this.config.BACKEND_URL + this.config.PUSH_SUBSCRIBE_POSTFIX}`,
+    const response = await this.http.post(`${this.config.PUSH_SUBSCRIBE_POSTFIX}`,
       { subscription, fingerprint, id: 2 }
     );
     return response.data;
   }
 
-  async getparcels() {
+  //////////////////////////////////// Parcels ////////////////////////////////////
+  async getParcels() {
       try {
-        const response = await this.http.get(this.parcelS_URL);
+        const response = await this.http.get(`${this.config.PARCELS_POSTFIX}`);
         return response.data;
       } catch (error){
-        console.error('could not retrieve parcels' , error);
+        console.error('[HttpService] getParcels: could not retrieve parcels' , error);
       } 
   }
 
-  async createparcel(aparcel: parcel) {
-    const response = await this.http.post(
-      `${this.config.BACKEND_URL + this.config.PARCELS_POSTFIX}`,
-      aparcel
-    );
+  async createParcel(aParcel: Parcel) {
+    const response = await this.http.post(`${this.config.PARCELS_POSTFIX}`, aParcel);
     return response.data;
   }
+
+  async addParcels(parcels: {parcels: Parcel[]}) {
+      if (parcels && parcels.parcels && parcels.parcels.length > 0) {
+      parcels.parcels.forEach(async parcel => {
+          await this.http.post(`${this.config.PARCELS_POSTFIX}`, parcel);
+        });
+    }
+  }
+
+  //////////////////////////////////// Users ////////////////////////////////////
+
+  async getUsers() {
+      try {
+        const response = await this.http.get(`${this.config.USERS_POSTFIX}`);
+        return response.data;
+      } catch (error) {
+          console.error('[HttpService] getUsers: could not retreive users ', error);
+      }
+  }
+
+  async createUser(aUser: User) {
+    const response = await this.http.post(`${this.config.USERS_POSTFIX}`, aUser);
+    return response.data;
+  }
+
 }
 
-const httpService = new HttpService({
-//   baseURL: `${this.config.BACKEND_URL}/`,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  },
-  withCredentials: false
-  // method: 'HEAD'
-});
+const httpService = new HttpService();
 
 export default httpService;

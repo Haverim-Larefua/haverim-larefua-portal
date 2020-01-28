@@ -4,6 +4,7 @@ import tableStyles from './tableStyles';
 import tableColumns from './TableColums';
 import DataTable from 'react-data-table-component';
 import Toolbar from '../Toolbar/Toolbar';
+import httpService from '../../../services/http';
 
 const Table = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -22,17 +23,7 @@ const Table = () => {
     setSelectedRows(state.selectedRows);
   }, []);
 
-  const url = 'http://localhost:3001/users/';
-
-  const getUsers = () => {
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        setUsers(data);
-        })
-  }
-
-  getUsers();
+  httpService.getUsers().then(data => { setUsers(data)});
 
   console.log(users);
 

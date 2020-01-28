@@ -28,7 +28,7 @@ export const parcelReducer = (state: parcel[] = [], action: IActionBase) => {
       }
     }
     case REMOVE_PARCEL: {
-      return state.filter(pkg => pkg.id !== action.id);
+      return state.filter(pkg => pkg.id !== action.parcelId);
     }
     default:
       return state;

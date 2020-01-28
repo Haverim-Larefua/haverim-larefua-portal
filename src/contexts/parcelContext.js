@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { parcelReducer } from '../reducers/parcelReducer';
 import httpService from '../services/http';
-import { loadparcels } from './actions/parcels.action';
+import { loadParcels } from './actions/parcels.action';
 
 
 export const parcelContext = createContext();
@@ -10,19 +10,18 @@ const ParcelContextProvider = (props) => {
   const [parcels, dispatch] = useReducer(parcelReducer, []);
 
   const getAllparcelsfromDB = async () => {
-    const response = await httpService.getparcels();
-    dispatch(loadparcels(response));
+    const response = await httpService.getParcels();
+    dispatch(loadParcels(response));
   }
 
-  //const updateAllparcelsInDB = async () => {
-   // parcels.forEach(async pkg => {
-   //   await httpService.createparcel(pkg);
-   // })
-  //}
+  const updateAllparcelsInDB = () => {
+    console.log('[ParcelContextProvider] updateAllparcelsInDB ', parcels);
+    httpService.addParcels(parcels);
+  }
 
   useEffect(() => { getAllparcelsfromDB()}, []);
 
-  //useEffect(() => { updateAllparcelsInDB() }, [parcels]);
+  useEffect(() => { updateAllparcelsInDB() }, [parcels]);
   
   return (
     <parcelContext.Provider value={{ parcels, dispatch }}>

@@ -11,7 +11,7 @@ export const EDIT_PARCEL: string = "EDIT_PARCEL";
 export const REMOVE_PARCEL: string = "REMOVE_PARCEL";
 export const LOAD_PARCELS: string = "LOAD_PARCELS";
 
-export function loadparcels(parcels: parcel[]): ILoadparcelsActionType {
+export function loadParcels(parcels: parcel[]): ILoadparcelsActionType {
     return {type: LOAD_PARCELS, parcels };
 }
 

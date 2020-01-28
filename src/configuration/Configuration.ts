@@ -8,6 +8,8 @@ class Configuration {
 
     PARCELS_POSTFIX = '/parcels';
 
+    USERS_POSTFIX = '/users';
+
 }
 
 export default Configuration;

@@ -12,7 +12,7 @@ export interface IparcelsState {
 }
 */
 
-export default class parcel {
+export default class Parcel {
   id: number | undefined;
   name: string;
   address: string;
@@ -33,7 +33,7 @@ export default class parcel {
 }
 
 //DB definition
-export class Parcel {
+export class Parcel_db {
   id: number | undefined; // @PrimaryGeneratedColumn()
   no: string | undefined; // @Column()
   destination: string | undefined; // @Column()

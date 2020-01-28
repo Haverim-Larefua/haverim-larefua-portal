@@ -10,6 +10,7 @@ import "./App.css";
 import pushNotificationService from "../../services/pushNotification.service";
 import Parcels from "../Parcels/Parcels";
 import ParcelContextProvider from "../../contexts/parcelContext";
+import UserContextProvider from "../../contexts/userContext";
 
 
 class App extends Component<any, any> {
@@ -22,6 +23,7 @@ class App extends Component<any, any> {
     return (
       <div className="App" id="wrapper">
         <ParcelContextProvider>
+        <UserContextProvider>
             <button 
                 className="btn btn-primary" 
                 onClick={() => this.triggerPushNotification()}>
@@ -40,6 +42,7 @@ class App extends Component<any, any> {
           </Switch>
         </Router>
 
+        </UserContextProvider>
         </ParcelContextProvider>
       </div>
     );

@@ -29,7 +29,7 @@ export default class ParcelsImporterService {
             const comments = data['הערות'] ? data['הערות'] : '';
             const signature = data['חתימה'] ? data['חתימה'] : '';
             const aparcel = new parcel(name, address, city, phones, comments, signature);
-            console.log(aparcel);
+            console.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
             parcels.push(aparcel);
         });
         return parcels;
