@@ -30,7 +30,6 @@ const DropDownItems = props.options.map((option)=>
 
 
   return (
-
     <div className="fhh-dropdown" >
       {displayMenu ? (<div className="fhh-dropdown__screen" onClick={togleDropDown}></div>) : ''}
       <div className="fhh-dropdown__button" onClick={showDropdownMenu}>{chosenOption ? chosenOption : 'בחר'}</div>

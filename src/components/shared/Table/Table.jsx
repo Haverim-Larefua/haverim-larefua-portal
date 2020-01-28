@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import tableDataItems from './datatemp';
+import tableStyles from './tableStyles';
 import tableColumns from './TableColums';
 import DataTable from 'react-data-table-component';
 import Toolbar from '../Toolbar/Toolbar';
@@ -31,24 +32,6 @@ const Table = () => {
     },
   ], []);
 
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: '60px', // override the row height
-      }
-    },
-    headCells: {
-      style: {
-        fontSize: 16,
-        fontWeight: 'bold',
-      },
-    },
-    cells: {
-      style: {
-        fontSize: 16,
-      },
-    },
-  };
 
   return (
     <DataTable
@@ -57,7 +40,7 @@ const Table = () => {
       onSelectedRowsChange={handleChange}
       selectableRows
       highlightOnHover
-      customStyles={customStyles}
+      customStyles={tableStyles}
       noHeader
       subHeader
       subHeaderComponent={
