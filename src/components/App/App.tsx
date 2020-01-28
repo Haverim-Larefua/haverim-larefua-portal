@@ -7,7 +7,6 @@ import Login from "../Login/Login";
 import Admin from "../Admin/Admin";
 
 import "./App.css";
-import "../../styles/sb-admin-2.css";
 import pushNotificationService from "../../services/pushNotification.service";
 import Parcels from "../Parcels/Parcels";
 import ParcelContextProvider from "../../contexts/parcelContext";

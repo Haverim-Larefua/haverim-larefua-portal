@@ -1,0 +1,62 @@
+
+// Toolbar
+
+.fhh-toolbar {
+    align-items: center;
+    display: flex;
+    height: 120px;
+    padding: 0 5px;
+    width: 100%;
+}
+
+.fhh-toolbar__title {
+    font-size: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 255px;
+}
+
+.fhh-toolbar__search {
+    background-color: #f0f1fb;
+    border-radius: 4px;
+    height: 40px;
+    margin-left: 6%;
+    width: 25%;
+}
+
+.fhh-toolbar__search-input {
+    padding: 0 43px 0 0;
+    font-size: 16px;
+    border: 0;
+    height: 100%;
+    background-color: transparent;
+}
+
+.fhh-toolbar__filters {
+    align-items: center;
+    display: flex;
+}
+
+.fhh-toolbar__label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.fhh-dropdown {
+    width: 160px;
+    margin-left: 25px;
+}
+
+.fhh-toolbar__action {
+    border: 0;
+    width: 8%;
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px 0 rgba(165, 165, 165, 0.5);
+    background-color: #0d25be;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+    margin-right: auto;
+}
