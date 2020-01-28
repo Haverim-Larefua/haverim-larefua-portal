@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import "./admin.scss";
 import Header from "../shared/Header/Header";
 import Toolbar from "../shared/Toolbar/Toolbar";
-import Parcels from "../Parcels/Parcels";
+import Table from "../shared/Table/Table";
 
 const Admin: React.FC = () => {
   return (

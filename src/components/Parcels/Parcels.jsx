@@ -1,5 +1,5 @@
 import React, { Fragment, useReducer } from 'react'
-import ParcelsImporterService from '../../services/parcelsImporter.service'
+import ParcelsImporterService from '../../services/ParcelsImporter.service'
 import { addParcels } from '../../contexts/actions/parcels.action';
 import { parcelReducer } from '../../reducers/parcelReducer';
 import ParcelsList from './ParcelsList';
@@ -38,7 +38,7 @@ const Parcels = () => {
                     <div className="col-xl-12 col-lg-12">
                         <div className="card shadow mb-4">
                             <div className="card-header py-3">
-                                <h6 className="m-0 font-weight-bold text-green">Product List</h6>
+                                <h6 className="m-0 font-weight-bold text-green">רשימת חבילות</h6>
                                 
                             </div>
                             <div className="card-body">
