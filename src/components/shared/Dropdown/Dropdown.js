@@ -3,12 +3,12 @@ import './Dropdown.scss';
 
 
 class Dropdown extends React.Component {
-constructor(){
- super();
+constructor(props){
+ super(props);
 
  this.state = {
        displayMenu: false,
-       city: ''
+       name: '',
      };
 
   this.showDropdownMenu = this.showDropdownMenu.bind(this);
@@ -41,49 +41,22 @@ showDropdownMenu(event) {
     return (
         <div  className="fhh-dropdown" >
             { this.state.displayMenu ? (<div  className="fhh-dropdown__screen" onClick={this.togleDropDown}></div>) : ''}
-         <div className="fhh-dropdown__button" onClick={this.showDropdownMenu}>{this.state.city ? this.state.city: 'בחר'}</div>
+         <div className="fhh-dropdown__button" onClick={this.showDropdownMenu}>{this.state[this.props.name] ? this.state[this.props.name]: 'בחר'}</div>
           { this.state.displayMenu ? (
           <div className="fhh-dropdown__items-container">
-            <label className="fhh-dropdown__item">
-                    <input
-                        type="radio"
-                        name="city"
-                        value="באר שבע"
-                        checked={this.state.city === 'באר שבע'}
-                        onChange={this.handleChange}
-                    />
-                    <div className="fhh-dropdown__item-title">באר שבע</div>
-            </label>
-            <label className="fhh-dropdown__item">
-                    <input
-                        type="radio"
-                        name="city"
-                        value="הרצלייה"
-                        checked={this.state.city === 'הרצלייה'}
-                        onChange={this.handleChange}
-                    />
-                    <div className="fhh-dropdown__item-title">הרצלייה</div>
-            </label>
-            <label className="fhh-dropdown__item">
-                    <input
-                        type="radio"
-                        name="city"
-                        value="עכו"
-                        checked={this.state.city === 'עכו'}
-                        onChange={this.handleChange}
-                    />
-                    <div className="fhh-dropdown__item-title">עכו</div>
-            </label>
-            <label className="fhh-dropdown__item">
-                    <input
-                        type="radio"
-                        name="city"
-                        value="חיפה"
-                        checked={this.state.city === 'חיפה'}
-                        onChange={this.handleChange}
-                    />
-                    <div className="fhh-dropdown__item-title">חיפה</div>
-            </label>
+            {this.props.options.map(item => {
+              return (
+              <label className="fhh-dropdown__item" key={item}>
+                 <input
+                  type="radio"
+                  name={this.props.name}
+                  value={item}
+                  checked={this.state[this.props.name] === item}
+                  onChange={this.handleChange}
+                 />
+              <div className="fhh-dropdown__item-title">{item}</div>
+             </label>)
+            })}
           </div>
         ) : ''
         }

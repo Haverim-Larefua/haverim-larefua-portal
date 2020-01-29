@@ -14,6 +14,14 @@ const Parcels = () => {
   const [parcels, dispatch] = useContext(parcelContext);
   const [show, setShow] = useState(false);
 
+  const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
+  const statuses = ['הכל','מוכנה לחלוקה','בחלוקה','בחריגה','נמסרה'];
+
+  // ToolbarOptions
+  const options = [
+    {title: 'סטטוס' , name: 'status', values: statuses},
+    {title: 'עיר', name: 'cities', values: cities},
+  ];
   const showModal = () => {
     setShow(true);
   };
@@ -21,6 +29,11 @@ const Parcels = () => {
   const hideModal = () => {
     setShow(false);
   };
+
+  const search = (searchTerm) => {
+      //TODO: search parcels here
+      console.log('[Parcels] search ', searchTerm);
+  }
 
   //dispatch(removeParcel(pkg.id))}
 
@@ -46,7 +59,13 @@ const Parcels = () => {
       <Table
         data={parcels}
         tableColumns={tableColumns}
-        subHeaderComponent={ <Toolbar title="חבילות" actionTitle= "+ הוספה מקובץ" action={showModal} /> }
+        subHeaderComponent={ 
+            <Toolbar 
+            title="חבילות" 
+            actionTitle= "+ הוספה מקובץ" 
+            action={showModal} 
+            options={options}
+            search={search}/> }
       />
     </div>
   );
