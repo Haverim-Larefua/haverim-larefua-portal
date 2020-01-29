@@ -54,9 +54,9 @@ class HttpService {
     return response.data;
   }
 
-  async addParcels(parcels: {parcels: Parcel[]}) {
-      if (parcels && parcels.parcels && parcels.parcels.length > 0) {
-      parcels.parcels.forEach(async parcel => {
+  async addParcels(parcels: Parcel[]) {
+      if (parcels && parcels.length > 0) {
+        parcels.forEach(async parcel => {
           await this.http.post(`${this.config.PARCELS_POSTFIX}`, parcel);
         });
     }
