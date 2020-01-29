@@ -20,8 +20,10 @@ const UserContextProvider = (props) => {
     //  await httpService.createUsers(users);
   }
 
+  //first time call
   useEffect(() => { getAllUsersfromDB()}, []);
 
+  //on every change to users
   useEffect(() => { updateAllUsersInDB() }, [users]);
   
   return (

@@ -28,7 +28,7 @@ export default class ParcelsImporterService {
             const phones = data['טלפון'] ? data['טלפון'].split(',') : [];
             const comments = data['הערות'] ? data['הערות'] : '';
             const signature = data['חתימה'] ? data['חתימה'] : '';
-            const aparcel = new parcel(name, address, city, phones, comments, signature);
+            const aparcel = new parcel(name, address, city, phones, comments, 'new_status', new Date(), signature);
             console.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
             parcels.push(aparcel);
         });

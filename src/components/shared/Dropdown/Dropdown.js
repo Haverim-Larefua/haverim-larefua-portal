@@ -13,8 +13,8 @@ constructor(props){
 
   this.showDropdownMenu = this.showDropdownMenu.bind(this);
   this.togleDropDown = this.togleDropDown.bind(this);
+  this.handleClick = this.handleClick.bind(this);
   this.handleChange = this.handleChange.bind(this);
-
 };
 
 togleDropDown() {
@@ -27,15 +27,24 @@ showDropdownMenu(event) {
     event.preventDefault();
     this.setState({ displayMenu: true });
   }
-
-
+  
   handleChange(event) {
+
+  }
+
+  handleClick(event) {
     const {name, value} = event.target
-    this.setState({
-        [name]: value
-    });
+    if (this.state[this.props.name] === value) {
+      // clicking selected item - deselect it
+      this.setState({[name]: ''});
+      this.props.filter('');
+    } else {
+      // selecting different item
+      this.setState({[name]: value});
+      this.props.filter(value);
+    }
     this.togleDropDown();
-}
+  }
 
   render() {
     return (
@@ -53,6 +62,7 @@ showDropdownMenu(event) {
                   value={item}
                   checked={this.state[this.props.name] === item}
                   onChange={this.handleChange}
+                  onClick={this.handleClick}
                  />
               <div className="fhh-dropdown__item-title">{item}</div>
              </label>)

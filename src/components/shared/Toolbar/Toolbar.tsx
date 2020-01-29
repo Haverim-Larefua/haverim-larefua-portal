@@ -6,6 +6,7 @@ export interface ToolbarOption {
   title: string;
   name: string;
   values: string[];
+  filter: (val: string) => {};
 }
 export interface Props {
   title: string;
@@ -52,7 +53,7 @@ class  Toolbar extends Component<Props, State> {
             return(
               <Fragment key={opt.title}>
                 <label className="fhh-toolbar__label">{opt.title}</label>
-                <Dropdown options={[...opt.values]} name={opt.name}></Dropdown>
+                <Dropdown options={[...opt.values]} name={opt.name} filter={opt.filter}> </Dropdown>
               </Fragment>)
           })
        }

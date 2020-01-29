@@ -1,14 +1,8 @@
 /*
-export enum parcelModificationStatus {
+export enum parcelStatus {
   None = 0,
   Create = 1,
   Edit = 2
-}
-
-export interface IparcelsState {
-    parcels: parcel[];
-    selectedparcel: parcel | null;
-    modificationState: parcelModificationStatus;
 }
 */
 
@@ -19,15 +13,20 @@ export default class Parcel {
   city: string;
   phones: [];
   comments: string;
+  status: string; // should be enum
   signature: string; // base64
+  updateDate: Date;
 
   constructor(name: string, address: string, city: string, 
-              phones: [], comments: string, signature: string) {
+              phones: [], comments: string, status: string, 
+              updateDate: Date, signature: string) {
     this.name = name;
     this.address = address;
     this.city = city;
     this.comments = comments;
+    this.status = status;
     this.signature = signature;
+    this.updateDate = updateDate;
     this.phones = Object.assign([], phones);
   }
 }
