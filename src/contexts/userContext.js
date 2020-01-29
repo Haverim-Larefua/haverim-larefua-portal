@@ -3,13 +3,15 @@ import httpService from '../services/http';
 import { userReducer } from '../reducers/userReducer';
 import { loadUsers } from './actions/users.action';
 
-export const userContext = createContext();
+export const userContext = createContext([[], function(){}]);
 
 const UserContextProvider = (props) => {
   const [users, dispatch] = useReducer(userReducer, []);
 
   const getAllUsersfromDB = async () => {
+    console.log('[UserContextProvider] getAllUsersfromDB ');
     const response = await httpService.getUsers();
+    console.log('[UserContextProvider] getAllUsersfromDB dispatching loadUsers  ', response);
     dispatch(loadUsers(response));
   }
 
@@ -23,7 +25,7 @@ const UserContextProvider = (props) => {
   useEffect(() => { updateAllUsersInDB() }, [users]);
   
   return (
-    <userContext.Provider value={{ users, dispatch }}>
+    <userContext.Provider value={[ users, dispatch ]}>
       {props.children}
     </userContext.Provider>
   );

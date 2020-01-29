@@ -1,21 +1,16 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import tableDataItems from './datatemp';
 import tableStyles from './tableStyles';
-import tableColumns from './TableColums';
 import DataTable from 'react-data-table-component';
-import Toolbar from '../Toolbar/Toolbar';
-import httpService from '../../../services/http';
 
-const Table = () => {
+const Table = (props) => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [users, setUsers] = useState({});
+  
 
   useEffect(() => {
-    console.log('state', selectedRows);
+    console.log('[Table ] useEffect selectedRows: ', selectedRows);
   }, [selectedRows]);
 
   const handleButtonClick = () => {
-
    alert('clicked');
   };
 
@@ -23,12 +18,9 @@ const Table = () => {
     setSelectedRows(state.selectedRows);
   }, []);
 
-  httpService.getUsers().then(data => { setUsers(data)});
-
-  console.log(users);
-
+  
   const columns = useMemo(() => [
-  ...tableColumns,
+  ...props.tableColumns,
     {
       cell: () => <button onClick={handleButtonClick}>Action</button>,
       ignoreRowClick: true,
@@ -36,12 +28,12 @@ const Table = () => {
       button: true,
       right: true,
     },
-  ], []);
+  ], [props.tableColumns]);
 
 
   return (
     <DataTable
-      data={users}
+      data={props.data}
       columns={columns}
       onSelectedRowsChange={handleChange}
       selectableRows
@@ -49,12 +41,7 @@ const Table = () => {
       customStyles={tableStyles}
       noHeader
       subHeader
-      subHeaderComponent={
-        (
-            <Toolbar>
-            </Toolbar>
-        )
-      }
+      subHeaderComponent={(props.subHeaderComponent)}
     />
   );
 };
