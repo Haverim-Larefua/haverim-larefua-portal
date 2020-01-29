@@ -12,7 +12,8 @@ class PushNotificationService {
   
 
   constructor() {
-    this.initPush();
+    // TBD later on
+    // this.initPush();
   }
 
   async requestNotificationPermission() {
@@ -76,6 +77,7 @@ class PushNotificationService {
   async postSubscription(subscription: PushSubscription): Promise<PushSubscription> {
     const body = JSON.stringify(subscription);
     console.log('[postSubscription] posting subscription to serever...', body);
+    
     try {
       const fingerprint = this.createClientFingerprint();
       return await httpService.sendPushSubscription(subscription, fingerprint);
@@ -83,6 +85,7 @@ class PushNotificationService {
       console.error('[postSubscription]] No response received ', JSON.stringify(ex));
       return ex.response ? ex.response.data.message : '[postSubscription]] No response received ';
     }
+    
   }
 
   // returns the subscription if present or nothing
@@ -140,7 +143,7 @@ class PushNotificationService {
     });
   }
 
-  //TODO: Need to decise when to request Notification Permission from the user
+  //TODO: Need to decide when to request Notification Permission from the user
   public async initPush() {
     console.log('[initPush] started ');
     const permission = await this.requestNotificationPermission();

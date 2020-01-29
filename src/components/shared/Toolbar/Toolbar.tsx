@@ -1,31 +1,38 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import './Toolbar.scss';
 
+export interface Props {
+  title: string;
+  actionTitle: string;
+  action: () => {};
+}
+export interface State { 
+}
+ 
+class  Toolbar extends Component<Props, State> {
+  
+  cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
+  days = ['א','ב','ג','ד','ה','ו','ש','כל השבוע'];
 
-const Toolbar: React.FC = () => {
-
-  const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
-  const days = ['א','ב','ג','ד','ה','ו','ש','כל השבוע'];
-
+  render() { 
   return (
     <div className="fhh-toolbar">
       <div className="fhh-toolbar__title">
-        שליחים
-</div>
+      {this.props.title}
+      </div>
       <div className="fhh-toolbar__search">
         <input className="fhh-toolbar__search-input" type="text" placeholder="חיפוש" />
       </div>
       <div className="fhh-toolbar__filters">
         <label className="fhh-toolbar__label">ימי חלוקה</label>
-        <Dropdown options={days} name="days"></Dropdown>
+        <Dropdown options={this.days} name="days"></Dropdown>
         <label className="fhh-toolbar__label">עיר חלוקה</label>
-        <Dropdown options={cities} name="cities"></Dropdown>
+        <Dropdown options={this.cities} name="cities"></Dropdown>
       </div>
-      <button className="fhh-toolbar__action">
-        הוספת שליח
-</button>
+      <button className="fhh-toolbar__action" onClick={this.props.action}> {this.props.actionTitle} </button>
     </div>);
+  }
 }
 
 export default Toolbar;

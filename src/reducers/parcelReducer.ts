@@ -6,23 +6,23 @@ export const parcelReducer = (state: parcel[] = [], action: IActionBase) => {
   
   switch (action.type) {
     case LOAD_PARCELS: {
-      return { ...state, parcels: action.parcels };
+      return action.parcels ;
     }
     case ADD_PARCEL: {
-      let tempparcels = state;
+      let tempparcels = [...state];
       tempparcels.push(action.parcel);
-      return {...state, parcels: tempparcels};
+      return tempparcels;
     }
     case ADD_PARCELS: {
       //TODO: maybe we need to merge state with action.parcels
-      return {parcels: action.parcels};
+      return action.parcels;
     }
     case EDIT_PARCEL: {
       const foundIndex = state.findIndex(pack => pack.id === action.parcel.id);
       if (foundIndex !== -1) {
-        let tempparcels = state;
+        let tempparcels = [...state];
         tempparcels[foundIndex] = action.parcel;
-        return { ...state, parcels: tempparcels};
+        return tempparcels;
       } else {
         return state;
       }

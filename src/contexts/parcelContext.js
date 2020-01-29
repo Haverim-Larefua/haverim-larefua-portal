@@ -1,16 +1,18 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import { parcelReducer } from '../reducers/parcelReducer';
 import httpService from '../services/http';
+import { parcelReducer } from '../reducers/parcelReducer';
 import { loadParcels } from './actions/parcels.action';
 
 
-export const parcelContext = createContext();
+export const parcelContext = createContext([[], function(){}]);
 
 const ParcelContextProvider = (props) => {
   const [parcels, dispatch] = useReducer(parcelReducer, []);
 
   const getAllparcelsfromDB = async () => {
+    console.log('[ParcelContextProvider] getAllparcelsfromDB ');
     const response = await httpService.getParcels();
+    console.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', response);
     dispatch(loadParcels(response));
   }
 
@@ -24,7 +26,7 @@ const ParcelContextProvider = (props) => {
   useEffect(() => { updateAllparcelsInDB() }, [parcels]);
   
   return (
-    <parcelContext.Provider value={{ parcels, dispatch }}>
+    <parcelContext.Provider value={[parcels, dispatch]}>
       {props.children}
     </parcelContext.Provider>
   );

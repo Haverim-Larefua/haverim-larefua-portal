@@ -6,23 +6,23 @@ export const userReducer = (state: User[] = [], action: IActionBase) => {
   
   switch (action.type) {
     case LOAD_USERS: {
-      return { ...state, users: action.users };
+      return action.users ;
     }
     case ADD_USER: {
-      let tempusers = state;
+      let tempusers = [...state];
       tempusers.push(action.user);
-      return {...state, users: tempusers};
+      return  tempusers;
     }
     case ADD_USERS: {
       //TODO: maybe we need to merge state with action.users
-      return {users: action.users};
+      return action.users;
     }
     case EDIT_USER: {
       const foundIndex = state.findIndex(usr => usr.id === action.user.id);
       if (foundIndex !== -1) {
-        let tempusers = state;
+        let tempusers = [...state];
         tempusers[foundIndex] = action.user;
-        return { ...state, users: tempusers};
+        return tempusers;
       } else {
         return state;
       }
