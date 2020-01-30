@@ -1,41 +1,53 @@
-import parcel from "../interfaces/parcels.interface";
+import Parcel from "../interfaces/parcels.interface";
 
 export interface IActionBase {
   type: string;
   [prop: string]: any;
 }
 
-export const ADD_PARCEL: string = "ADD_PARCEL";
-export const ADD_PARCELS: string = "ADD_PARCELS";
-export const EDIT_PARCEL: string = "EDIT_PARCEL";
-export const REMOVE_PARCEL: string = "REMOVE_PARCEL";
-export const LOAD_PARCELS: string = "LOAD_PARCELS";
+export const ADD_PARCEL: string = "ADD_PARCEL"; // add also to DB
+export const ADD_PARCELS: string = "ADD_PARCELS"; // add also to DB
+export const EDIT_PARCEL: string = "EDIT_PARCEL"; // edit also in DB
+export const REMOVE_PARCEL: string = "REMOVE_PARCEL"; // remove also from DB
+export const LOAD_PARCELS: string = "LOAD_PARCELS"; //
+export const SET_PARCELS: string = "SET_PARCELS"; // no change to DB (in-memory filter/search)
+export const NO_CHANGE_PARCEL: string = "NO_CHANGE"; //nothing changes
 
-export function loadParcels(parcels: parcel[]): ILoadparcelsActionType {
+export function loadParcels(parcels: Parcel[]): ILoadparcelsActionType {
     return {type: LOAD_PARCELS, parcels };
 }
 
-export function addParcel(tmpparcel: parcel): IAddparcelActionType {
-    return { type: ADD_PARCEL, parcel: tmpparcel }; 
+export function setParcels(parcels: Parcel[]): ISetparcelsActionType {
+  return {type: SET_PARCELS, parcels };
 }
 
-export function addParcels(tmpparcels: parcel[]): IAddparcelsActionType {
-  return { type: ADD_PARCELS, parcels: tmpparcels }; 
+export function addParcel(parcel: Parcel): IAddparcelActionType {
+    return { type: ADD_PARCEL, parcel }; 
 }
 
-export function editParcel(tmpparcel: parcel): IEditparcelActionType {
-    return { type: EDIT_PARCEL, parcel: tmpparcel };
+export function addParcels(parcels: Parcel[]): IAddparcelsActionType {
+  return { type: ADD_PARCELS, parcels }; 
+}
+
+export function editParcel(parcel: Parcel): IEditparcelActionType {
+    return { type: EDIT_PARCEL, parcel };
 }
 
 export function removeParcel(parcelId: number): IRemoveparcelActionType {
-    return { type: REMOVE_PARCEL, parcelId: parcelId };
+    return { type: REMOVE_PARCEL, parcelId };
 }
 
-interface ILoadparcelsActionType { type: string , parcels: parcel[]};
-interface IAddparcelActionType { type: string, parcel: parcel };
-interface IAddparcelsActionType { type: string, parcels: parcel[] };
-interface IEditparcelActionType { type: string, parcel: parcel };
+export function noChangeToParcel(dummy: string): INoChangeActionType {
+  return { type: NO_CHANGE_PARCEL, dummy };
+}
+
+interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
+interface ISetparcelsActionType { type: string , parcels: Parcel[]};
+interface IAddparcelActionType { type: string, parcel: Parcel };
+interface IAddparcelsActionType { type: string, parcels: Parcel[] };
+interface IEditparcelActionType { type: string, parcel: Parcel };
 interface IRemoveparcelActionType { type: string, parcelId: number };
+interface INoChangeActionType { type: string, dummy: string };
 
 export type parcelActions = ILoadparcelsActionType;
 

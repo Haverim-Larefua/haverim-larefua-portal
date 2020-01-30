@@ -55,11 +55,21 @@ class HttpService {
   }
 
   async addParcels(parcels: Parcel[]) {
-      if (parcels && parcels.length > 0) {
-        parcels.forEach(async parcel => {
-          await this.http.post(`${this.config.PARCELS_POSTFIX}`, parcel);
-        });
+    if (parcels && parcels.length > 0) {
+      parcels.forEach(async parcel => {
+        await this.http.post(`${this.config.PARCELS_POSTFIX}`, parcel);
+      });
     }
+  }
+
+  async updateParcel(aParcel: Parcel) {
+    const response = await this.http.put(`${this.config.PARCELS_POSTFIX}/${aParcel.id}]`, aParcel);
+    return response.data;
+  }
+
+  async deleteParcel(aParcel: Parcel) {
+    const response = await this.http.delete(`${this.config.PARCELS_POSTFIX}/${aParcel.id}]`);
+    return response.data;
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
