@@ -1,10 +1,7 @@
-import React, { Fragment } from "react";
-import { Switch, Route } from "react-router-dom";
+import React from "react";
 import "./admin.scss";
 import pushNotificationService from "../../services/pushNotification.service";
 
-import Toolbar from "../shared/Toolbar/Toolbar";
-import Table from "../shared/Table/Table";
 
 const Admin: React.FC = () => {
 

@@ -1,3 +1,5 @@
+import { IActionBase, noChangeToParcel } from "../actions/parcels.action";
+
 /*
 export enum parcelStatus {
   None = 0,
@@ -5,6 +7,21 @@ export enum parcelStatus {
   Edit = 2
 }
 */
+
+export const defaultParcelExplained = {
+  parcels: [], 
+  action: noChangeToParcel('')
+}
+
+export class ParcelExplained {
+  parcels: Parcel[]; // current in-memory parcels 
+  action: IActionBase; // last action performed on in-memory parcels that needs to be performed on DB as well
+
+  constructor(parcels: Parcel[], action: IActionBase) {
+    this.parcels = [...parcels];
+    this.action = action;
+  }
+}
 
 export default class Parcel {
   id: number | undefined;
