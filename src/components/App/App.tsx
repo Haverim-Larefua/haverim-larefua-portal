@@ -19,7 +19,6 @@ class App extends Component<any, any> {
           <ParcelContextProvider>
             <ErrorBoundary>
               <Router>
-                <div>
                   <Header />
                   <Switch>
                     <Route exact path="/"><Admin /></Route>
@@ -27,7 +26,6 @@ class App extends Component<any, any> {
                     <Route path="/users"><Users /></Route>
                     <Route path="/parcels"><Parcels /></Route>
                   </Switch>
-                </div>
               </Router>
             </ErrorBoundary>
           </ParcelContextProvider>
