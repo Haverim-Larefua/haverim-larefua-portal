@@ -2,10 +2,22 @@
 
 html {
   box-sizing: border-box;
+  height: 100%;
 }
 
 *, *::before, *::after {
   box-sizing: inherit;
+}
+
+html,
+body,
+#root,
+#wrapper {
+  height: 100%;
+}
+
+.fhh-header + div  {
+  height: calc(100% - 60px);
 }
 
 body {
@@ -16,6 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   direction: rtl;
+  height: 100%;
 }
 
 code {
