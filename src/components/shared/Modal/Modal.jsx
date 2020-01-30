@@ -1,5 +1,6 @@
 import React from 'react'
 import './Modal.scss';
+import close from '../../../assets/icons/close.svg'
 
 
 const Modal = ({ handleClose, show, children }) => {
@@ -9,10 +10,12 @@ const Modal = ({ handleClose, show, children }) => {
     <div className={showHideClassName}>
       <section className="modal-main">
         {children}
-        <button onClick={handleClose}>close</button>
+        <button className="modal-close" onClick={handleClose}>
+          X
+        </button>
       </section>
     </div>
   );
 }
- 
+
 export default Modal ;

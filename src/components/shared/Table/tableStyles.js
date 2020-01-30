@@ -1,4 +1,9 @@
 const tableStyles = {
+  table: {
+    style: {
+    },
+  },
+
   tableWrapper: {
     style: {
       height: 'auto',
