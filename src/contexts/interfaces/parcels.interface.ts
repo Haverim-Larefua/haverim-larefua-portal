@@ -47,17 +47,3 @@ export default class Parcel {
     this.phones = Object.assign([], phones);
   }
 }
-
-//DB definition
-export class Parcel_db {
-  id: number | undefined; // @PrimaryGeneratedColumn()
-  no: string | undefined; // @Column()
-  destination: string | undefined; // @Column()
-  destinationAddress: string | undefined; // @Column({ name: 'destination_address' })
-  destinationPhone: string | undefined; // @Column({ name: 'destination_phone' })
-  address: string | undefined; // @Column()
-  deliveryPerson: string | undefined; // @Column({ name: 'delivery_person' })
-  deliveryPersonPhone: string | undefined; // @Column({ name: 'delivery_person_phone' })
-  comments: string | undefined; // @Column()
-  updateDate: Date | undefined; // @Column({ name: 'update_date' })
-}

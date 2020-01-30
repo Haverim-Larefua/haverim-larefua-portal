@@ -5,8 +5,6 @@ import { NO_CHANGE_PARCEL, ADD_PARCEL, ADD_PARCELS,
          EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, loadParcels} from '../contexts/actions/parcels.action';
 import { defaultParcelExplained } from './interfaces/parcels.interface';
 
-
-
 export const parcelContext = createContext();
 
 const ParcelContextProvider = (props) => {
@@ -58,6 +56,7 @@ const ParcelContextProvider = (props) => {
   //first time call that loads parcels from db
   useEffect(() => { getAllparcelsfromDB()}, []);
 
+  //on every change to parcels
   useEffect(() => { updateParcelsInDB() }, [parcelExplained]);
   
   return (

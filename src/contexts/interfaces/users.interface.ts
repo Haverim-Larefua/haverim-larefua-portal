@@ -1,3 +1,21 @@
+import { IActionBase, noChangeToUser } from "../actions/users.action";
+
+
+export const defaultUserExplained = {
+  users: [], 
+  action: noChangeToUser('')
+}
+
+export class UserExplained {
+  users: User[]; // current in-memory users 
+  action: IActionBase; // last action performed on in-memory users that needs to be performed on DB as well
+
+  constructor(users: User[], action: IActionBase) {
+    this.users = [...users];
+    this.action = action;
+  }
+}
+
 export default class User {
   id: number | undefined;
   firstName: string;

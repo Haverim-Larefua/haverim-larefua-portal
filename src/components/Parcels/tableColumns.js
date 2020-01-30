@@ -1,5 +1,15 @@
 
 const tableColumns  = [
+   {
+    name: 'מזהה',
+    selector: 'id',
+    sortable: true,
+    },
+    {
+    name: 'סטטוס',
+    selector: 'status',
+    sortable: true,
+    },
     {
       name: 'שם',
       selector: 'name',
@@ -21,13 +31,7 @@ const tableColumns  = [
       sortable: true,
     },
     {
-      name: 'הערות',
-      selector: 'comments',
-      sortable: true,
-
-    },
-    {
-      name: 'חתימה',
+      name: 'שליח',
       selector: 'signature',
       sortable: false,
     },

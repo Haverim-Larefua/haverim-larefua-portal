@@ -4,28 +4,30 @@ import Table from "../shared/Table/Table";
 import Toolbar from '../shared/Toolbar/Toolbar';
 import tableColumns from './tableColumns';
 import { userContext } from "../../contexts/userContext";
-import { loadUsers } from "../../contexts/actions/users.action";
+import { setUsers } from "../../contexts/actions/users.action";
 import usePrevious from "../../contexts/userPrevious";
 
 const Users = () => {
-  const [ users, dispatch ] = useContext(userContext);
-  const prevUsers = usePrevious(users);
+  const [ userExplained, dispatch ] = useContext(userContext);
+  const prevUserExplained = usePrevious(userExplained);
 
   const filterByDay = (value) => {
     console.log('[Users] filterByDay ', value);
     if (!value || value ==='') {
-        dispatch(loadUsers(prevUsers));
+       dispatch(setUsers(prevUserExplained.users));
     } else {
-       dispatch(loadUsers(users.filter(item => item.deliveryDays === value)));
+       const filteredUsers = userExplained.users.filter(item => item.deliveryDays === value);
+       dispatch(setUsers(filteredUsers));
     }
   }
 
   const filterByCity = (value) => {
-    console.log('[Users] filterByCity ', value, prevUsers);
+    console.log('[Users] filterByCity ', value);
     if (!value || value ==='') {
-        dispatch(loadUsers(prevUsers));
+       dispatch(setUsers(prevUserExplained.users));
     } else {
-       dispatch(loadUsers(users.filter(item => item.deliveryArea === value)));
+       const filteredUsers = userExplained.users.filter(item => item.deliveryArea === value);
+       dispatch(setUsers(filteredUsers));
     }
   }
   
@@ -47,7 +49,7 @@ const Users = () => {
 
   return (
     <Table 
-     data={users} 
+     data={userExplained.users} 
      tableColumns={tableColumns} 
      subHeaderComponent={<Toolbar title= 'שליחים'  actionTitle='הוספת שליח' options={options} search={search}/>} 
     />

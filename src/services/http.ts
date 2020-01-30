@@ -88,6 +88,24 @@ class HttpService {
     return response.data;
   }
 
+  async addUsers(users: User[]) {
+    if (users && users.length > 0) {
+      users.forEach(async user => {
+        await this.http.post(`${this.config.USERS_POSTFIX}`, user);
+      });
+    }
+  }
+
+  async updateUser(aUser: User) {
+    const response = await this.http.put(`${this.config.USERS_POSTFIX}/${aUser.id}]`, aUser);
+    return response.data;
+  }
+
+  async deleteUser(aUser: User) {
+    const response = await this.http.delete(`${this.config.USERS_POSTFIX}/${aUser.id}]`);
+    return response.data;
+  }
+
 }
 
 const httpService = new HttpService();
