@@ -11,6 +11,21 @@ const Users = () => {
   const [ userExplained, dispatch ] = useContext(userContext);
   const prevUserExplained = usePrevious(userExplained);
 
+
+  const searchByName = (value) => {
+    console.log('[Users] searchByName ', value);
+    if (!value || value.trim() ==='') {
+      dispatch(setUsers(prevUserExplained.users));
+    } else {
+      const val = value.toLowerCase();
+      const filteredUsers = userExplained.users.filter(item => {
+          const name = item.firstName + item.lastName;
+          return name && name.toLowerCase().indexOf(val) !== -1;
+      });
+      dispatch(setUsers(filteredUsers));
+    }
+  }
+
   const filterByDay = (value) => {
     console.log('[Users] filterByDay ', value);
     if (!value || value ==='') {
@@ -31,11 +46,6 @@ const Users = () => {
     }
   }
   
-  const search = (searchTerm) => {
-    //TODO: search users here
-    console.log('[Users] search ', searchTerm);
-  }
-
   const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
   const days = ['א','ב','ג','ד','ה','ו','ש','כל השבוע'];
 
@@ -51,7 +61,7 @@ const Users = () => {
     <Table 
      data={userExplained.users} 
      tableColumns={tableColumns} 
-     subHeaderComponent={<Toolbar title= 'שליחים'  actionTitle='הוספת שליח' options={options} search={search}/>} 
+     subHeaderComponent={<Toolbar title= 'שליחים'  actionTitle='הוספת שליח' options={options} search={searchByName}/>} 
     />
   );
 };

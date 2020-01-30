@@ -16,6 +16,17 @@ const Parcels = () => {
   const [show, setShow] = useState(false);
   const prevParcelExplained = usePrevious(parcelExplained);
   
+  const searchByName = (value) => {
+    console.log('[Parcels] searchByName ', value);
+    if (!value || value.trim() ==='') {
+        dispatch(setParcels(prevParcelExplained.parcels));
+    } else {
+        const val = value.toLowerCase();
+        const filteredParcels = parcelExplained.parcels.filter(item => 
+            item.name && item.name.toLowerCase().indexOf(val)!==-1);
+        dispatch(setParcels(filteredParcels));
+    }
+  }
 
   const filterByStatus = (value) => {
     console.log('[Parcels] filterByStatus ', value);
@@ -35,11 +46,6 @@ const Parcels = () => {
         const filteredParcels = parcelExplained.parcels.filter(item => item.city === value);
         dispatch(setParcels(filteredParcels));
     }
-  }
-
-  const search = (searchTerm) => {
-    //TODO: search parcels here
-    console.log('[Parcels] search ', searchTerm);
   }
 
   const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
@@ -88,7 +94,7 @@ const Parcels = () => {
             actionTitle= "+ הוספה מקובץ" 
             action={showModal} 
             options={options}
-            search={search}/> }
+            search={searchByName}/> }
       />
     </div>
   );
