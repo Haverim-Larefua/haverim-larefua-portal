@@ -1,6 +1,5 @@
 import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS, 
-  IActionBase, 
-  noChangeToUser, SET_USERS, addUser, addUsers, editUser } from '../contexts/actions/users.action';
+  IActionBase, addUser, addUsers, editUser, loadUsers } from '../contexts/actions/users.action';
 import { UserExplained, defaultUserExplained } from '../contexts/interfaces/users.interface';
 import { removeParcel } from '../contexts/actions/parcels.action';
 
@@ -8,11 +7,8 @@ import { removeParcel } from '../contexts/actions/parcels.action';
 export const userReducer = (state: UserExplained = defaultUserExplained, action: IActionBase) => {
   
   switch (action.type) {
-    case SET_USERS: {
-      return {users: action.users, action: noChangeToUser('')} ;
-    }
     case LOAD_USERS: {
-      return {users: action.users, action: noChangeToUser('')} ;
+      return {users: action.users, action: loadUsers([])} ;
     }
     case ADD_USER: {
       let tempusers = [...state.users];

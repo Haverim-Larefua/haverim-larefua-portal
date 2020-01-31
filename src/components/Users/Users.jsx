@@ -1,67 +1,53 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import Table from "../shared/Table/Table";
 import Toolbar from '../shared/Toolbar/Toolbar';
 import tableColumns from './tableColumns';
 import { userContext } from "../../contexts/userContext";
-import { setUsers } from "../../contexts/actions/users.action";
+import { loadUsers } from "../../contexts/actions/users.action";
 import usePrevious from "../../contexts/userPrevious";
+import userHttpService  from '../../services/userHttp.service';
+import throttle from '../../Utils/Throttle';
+import AppConstants from '../../constants/AppConstants';
 
 const Users = () => {
   const [ userExplained, dispatch ] = useContext(userContext);
   const prevUserExplained = usePrevious(userExplained);
 
+  const [dayFilterTerm, setDayFilterTerm] = useState('');
+  const [cityFilterTerm, setCityFilterTerm] = useState('');
+  const [nameSearchTerm, setNameSearchTerm] = useState('');
 
-  const searchByName = (value) => {
-    console.log('[Users] searchByName ', value);
-    if (!value || value.trim() ==='') {
-      dispatch(setUsers(prevUserExplained.users));
-    } else {
-      const val = value.toLowerCase();
-      const filteredUsers = userExplained.users.filter(item => {
-          const name = item.firstName + item.lastName;
-          return name && name.toLowerCase().indexOf(val) !== -1;
-      });
-      dispatch(setUsers(filteredUsers));
-    }
+  async function fetchData() {
+    const response = await userHttpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
+    dispatch(loadUsers(response));
   }
 
-  const filterByDay = (value) => {
-    console.log('[Users] filterByDay ', value);
-    if (!value || value ==='') {
-       dispatch(setUsers(prevUserExplained.users));
-    } else {
-       const filteredUsers = userExplained.users.filter(item => item.deliveryDays === value);
-       dispatch(setUsers(filteredUsers));
-    }
-  }
+  useEffect(() => {
+    throttle(fetchData, 300);
+  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]); 
 
-  const filterByCity = (value) => {
-    console.log('[Users] filterByCity ', value);
-    if (!value || value ==='') {
-       dispatch(setUsers(prevUserExplained.users));
-    } else {
-       const filteredUsers = userExplained.users.filter(item => item.deliveryArea === value);
-       dispatch(setUsers(filteredUsers));
-    }
-  }
   
+  //TODO: query DB for all cities distinct
   const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
   const days = ['א','ב','ג','ד','ה','ו','ש','כל השבוע'];
 
   // ToolbarOptions
   const options = [
-      {title: 'עיר', name: 'cities', values: cities, filter: filterByCity},
-      {title: 'ימי חלוקה' , name: 'days', values: days, filter: filterByDay}
+      {title: AppConstants.deliveryAreaUIName, name: 'cities', values: cities, filter: setCityFilterTerm },
+      {title: AppConstants.delivaryDaysUIName , name: 'days', values: days, filter: setDayFilterTerm }
   ];
 
-  
 
   return (
     <Table 
      data={userExplained.users} 
      tableColumns={tableColumns} 
-     subHeaderComponent={<Toolbar title= 'שליחים'  actionTitle='הוספת שליח' options={options} search={searchByName}/>} 
+     subHeaderComponent={
+        <Toolbar title= {AppConstants.usersUIName}  actionTitle={AppConstants.addUserUIName} 
+         options={options} 
+         search={setNameSearchTerm}
+        />} 
     />
   );
 };

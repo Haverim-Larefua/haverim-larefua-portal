@@ -1,31 +1,33 @@
+import AppConstants from '../../constants/AppConstants';
+
 const tableColumns  = [
     {
-      name: 'שם משפחה',
+      name: AppConstants.lastNameUIName,
       selector: 'lastName',
       sortable: true,
     },
     {
-      name: 'שם פרטי',
+      name: AppConstants.firstNameUIName,
       selector: 'firstName',
       sortable: true,
     },
     {
-      name: 'עיר חלוקה',
+      name: AppConstants.deliveryAreaUIName,
       selector: 'deliveryArea',
       sortable: true,
     },
     {
-      name: 'ימי חלוקה',
-      selector: 'days',
+      name: AppConstants.delivaryDaysUIName,
+      selector: 'deliveryDays',
       sortable: true,
     },
     {
-      name: 'טלפון',
+      name: AppConstants.phoneUIName,
       selector: 'phone',
       sortable: true,
     },
     {
-      name: 'הערות',
+      name: AppConstants.commentsUIName,
       selector: 'notes',
       sortable: true,
 

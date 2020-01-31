@@ -22,6 +22,40 @@ class HttpService {
         });
   }
 
+  async get(url: string){
+    try {
+      const response = await this.http.get(url);
+      return response.data;
+    } catch (error){
+      console.error('[HttpService] get: could not retrieve ' , url, error);
+    } 
+  }
+
+  async create(url: string, obj: Parcel | User) {
+    const response = await this.http.post(url, obj);
+    return response.data;
+  }
+
+  async add(url: string, items: Parcel[] | User[]) {
+    if (items && items.length > 0) {
+      items.forEach(async (item: Parcel | User) => {
+        await this.http.post(url, item);
+      });
+    }
+  }
+
+  async update(url: string, id: number | undefined, item: Parcel | User) {
+    if (!id) return;
+    const response = await this.http.put(`${url}/${id}]`, item);
+    return response.data;
+  }
+
+  async delete(url: string, id: number | undefined) {
+    if (!id) return;
+    const response = await this.http.delete(`${url}/${id}]`);
+    return response.data;
+  }
+
   //////////////////////////////////// Push ////////////////////////////////////
   async sendPushNotification(subscription: PushSubscription, fingerprint: number
   ) {
@@ -39,73 +73,7 @@ class HttpService {
     return response.data;
   }
 
-  //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels() {
-      try {
-        const response = await this.http.get(`${this.config.PARCELS_POSTFIX}`);
-        return response.data;
-      } catch (error){
-        console.error('[HttpService] getParcels: could not retrieve parcels' , error);
-      } 
-  }
-
-  async createParcel(aParcel: Parcel) {
-    const response = await this.http.post(`${this.config.PARCELS_POSTFIX}`, aParcel);
-    return response.data;
-  }
-
-  async addParcels(parcels: Parcel[]) {
-    if (parcels && parcels.length > 0) {
-      parcels.forEach(async parcel => {
-        await this.http.post(`${this.config.PARCELS_POSTFIX}`, parcel);
-      });
-    }
-  }
-
-  async updateParcel(aParcel: Parcel) {
-    const response = await this.http.put(`${this.config.PARCELS_POSTFIX}/${aParcel.id}]`, aParcel);
-    return response.data;
-  }
-
-  async deleteParcel(aParcel: Parcel) {
-    const response = await this.http.delete(`${this.config.PARCELS_POSTFIX}/${aParcel.id}]`);
-    return response.data;
-  }
-
-  //////////////////////////////////// Users ////////////////////////////////////
-
-  async getUsers() {
-      try {
-        const response = await this.http.get(`${this.config.USERS_POSTFIX}`);
-        return response.data;
-      } catch (error) {
-          console.error('[HttpService] getUsers: could not retreive users ', error);
-      }
-  }
-
-  async createUser(aUser: User) {
-    const response = await this.http.post(`${this.config.USERS_POSTFIX}`, aUser);
-    return response.data;
-  }
-
-  async addUsers(users: User[]) {
-    if (users && users.length > 0) {
-      users.forEach(async user => {
-        await this.http.post(`${this.config.USERS_POSTFIX}`, user);
-      });
-    }
-  }
-
-  async updateUser(aUser: User) {
-    const response = await this.http.put(`${this.config.USERS_POSTFIX}/${aUser.id}]`, aUser);
-    return response.data;
-  }
-
-  async deleteUser(aUser: User) {
-    const response = await this.http.delete(`${this.config.USERS_POSTFIX}/${aUser.id}]`);
-    return response.data;
-  }
-
+  
 }
 
 const httpService = new HttpService();
