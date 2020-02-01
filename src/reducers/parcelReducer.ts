@@ -1,5 +1,5 @@
 import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS,
-         IActionBase, loadParcels } from '../contexts/actions/parcels.action';
+         IActionBase, loadParcels, addParcels } from '../contexts/actions/parcels.action';
 import  { ParcelExplained, defaultParcelExplained } from '../contexts/interfaces/parcels.interface';
 import { ParcelUtil } from '../Utils/Parcel/ParcelUtil';
 
@@ -18,8 +18,9 @@ export const parcelReducer = (state: ParcelExplained = defaultParcelExplained, a
     }
     case ADD_PARCELS: {
       // merge state.parcels with action.parcels according to parcel.no+parcel.updateDate
-      const mergedParcels = ParcelUtil.mergeParcels(state.parcels, action.parcels);
-      return {parcels: mergedParcels, action: action};
+      // TODO merge will return also the new parcels for the action to return to update db
+      const [mergedParcels, addedparcels] = ParcelUtil.mergeParcels(state.parcels, action.parcels);
+      return {parcels: mergedParcels, action: addParcels(addedparcels)};
     }
     case EDIT_PARCEL: {
       const foundIndex = state.parcels.findIndex(pack => pack.id === action.parcel.id);

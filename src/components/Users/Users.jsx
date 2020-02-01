@@ -5,26 +5,24 @@ import Toolbar from '../shared/Toolbar/Toolbar';
 import tableColumns from './tableColumns';
 import { userContext } from "../../contexts/userContext";
 import { loadUsers } from "../../contexts/actions/users.action";
-import usePrevious from "../../contexts/userPrevious";
-import userHttpService  from '../../services/userHttp.service';
-import throttle from '../../Utils/Throttle';
+// import usePrevious from "../../contexts/userPrevious";
+import httpService  from '../../services/http';
 import AppConstants from '../../constants/AppConstants';
 
 const Users = () => {
   const [ userExplained, dispatch ] = useContext(userContext);
-  const prevUserExplained = usePrevious(userExplained);
+  // const prevUserExplained = usePrevious(userExplained);
 
   const [dayFilterTerm, setDayFilterTerm] = useState('');
   const [cityFilterTerm, setCityFilterTerm] = useState('');
   const [nameSearchTerm, setNameSearchTerm] = useState('');
-
-  async function fetchData() {
-    const response = await userHttpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
-    dispatch(loadUsers(response));
-  }
-
+  
   useEffect(() => {
-    throttle(fetchData, 300);
+    async function fetchData() {
+      const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
+      dispatch(loadUsers(response));
+    }
+    fetchData();
   }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]); 
 
   

@@ -10,7 +10,6 @@ class PushNotificationService {
   myPubKey = "BIi1dlfrHoeGTnz8dwtp7UoVKJWNZ4oaymf3ssukatxrL_Tx5h1lOmqM3W9bueFqsYj0kmIiW6Y0-5opsoRIt3k";
   myPrivKey ="RbHUlJubWXi9rEnU9NpzXyZ86vP0OcHB1OHzCEUy3lc";
   
-
   constructor() {
     // TBD later on
     // this.initPush();

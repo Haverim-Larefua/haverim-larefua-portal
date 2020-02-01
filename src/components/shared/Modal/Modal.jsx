@@ -1,7 +1,5 @@
 import React from 'react'
 import './Modal.scss';
-import close from '../../../assets/icons/close.svg'
-
 
 const Modal = ({ handleClose, show, children }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";

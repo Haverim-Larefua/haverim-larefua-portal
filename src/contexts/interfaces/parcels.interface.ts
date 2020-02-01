@@ -9,6 +9,14 @@ export enum parcelStatus {
 }
 */
 
+export class ParcelTracking {
+  updateDate: Date | undefined = undefined;
+  status: string = '';
+  userId: number | undefined = undefined; 
+  user: User | undefined = undefined;
+  signature: string = ''; // base 64 of an image
+}
+
 export const defaultParcelExplained = {
   parcels: [], 
   action: loadParcels([])
@@ -37,6 +45,7 @@ export default class Parcel {
   updateDate: Date; 
   userId: number | undefined; 
   user: User | undefined;
+  parcelTracking: ParcelTracking[] = [];
 
   constructor(no: number, customerName: string, address: string, city: string, 
               phone: string, comments: string, status: string, 
