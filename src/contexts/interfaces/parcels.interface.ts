@@ -14,6 +14,7 @@ export class ParcelTracking {
   status: string = '';
   userId: number | undefined = undefined; 
   user: User | undefined = undefined;
+  comments: string = '';
   signature: string = ''; // base 64 of an image
 }
 
