@@ -1,60 +1,51 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
-import { addParcels, setParcels } from "../../contexts/actions/parcels.action";
+import { addParcels, loadParcels } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
 import Modal from "../shared/Modal/Modal";
-import usePrevious from "../../contexts/userPrevious";
+// import usePrevious from "../../contexts/userPrevious";
+import httpService from "../../services/http";
+import AppConstants from '../../constants/AppConstants';
 
 const SheetJSFT = ["xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt"]
-  .map(function(x) { return "." + x;}).join(",");
+  .map(function(x) {
+    return "." + x;
+  })
+  .join(",");
 
 const Parcels = () => {
   const [parcelExplained, dispatch] = useContext(parcelContext);
   const [show, setShow] = useState(false);
-  const prevParcelExplained = usePrevious(parcelExplained);
+//   const prevParcelExplained = usePrevious(parcelExplained);
+
+  const [statusFilterTerm, setStatusFilterTerm] = useState("");
+  const [cityFilterTerm, setCityFilterTerm] = useState("");
+  const [nameSearchTerm, setNameSearchTerm] = useState("");
+  const [searching, setSearching] = useState(false);
+
   
-  const searchByName = (value) => {
-    console.log('[Parcels] searchByName ', value);
-    if (!value || value.trim() ==='') {
-        dispatch(setParcels(prevParcelExplained.parcels));
-    } else {
-        const val = value.toLowerCase();
-        const filteredParcels = parcelExplained.parcels.filter(item => 
-            item.name && item.name.toLowerCase().indexOf(val)!==-1);
-        dispatch(setParcels(filteredParcels));
+  useEffect(() => {
+    async function fetchData() {
+        setSearching(true);
+        const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm, nameSearchTerm );
+        dispatch(loadParcels(response));
+        setSearching(false);
     }
-  }
+    fetchData();
+    //throttle(fetchData, 300);
+  }, [statusFilterTerm && !searching, cityFilterTerm && !searching, nameSearchTerm && !searching]);
 
-  const filterByStatus = (value) => {
-    console.log('[Parcels] filterByStatus ', value);
-    if (!value || value ==='') {
-        dispatch(setParcels(prevParcelExplained.parcels));
-    } else {
-        const filteredParcels = parcelExplained.parcels.filter(item => item.status === value);
-        dispatch(setParcels(filteredParcels));
-    }
-  }
 
-  const filterByCity = (value) => {
-    console.log('[Parcels] filterByCity ', value);
-    if (!value || value ==='') {
-        dispatch(setParcels(prevParcelExplained.parcels));
-    } else {
-        const filteredParcels = parcelExplained.parcels.filter(item => item.city === value);
-        dispatch(setParcels(filteredParcels));
-    }
-  }
-
-  const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
-  const statuses = ['הכל','מוכנה לחלוקה','בחלוקה','בחריגה','נמסרה'];
+  const cities = [ "באר שבע","תל אביב",  "הרצלייה", "חיפה",  "עכו",  "ערד",  "תל שבע" ];
+  const statuses = ["הכל", "מוכנה לחלוקה", "בחלוקה", "בחריגה", "נמסרה"];
 
   // ToolbarOptions
   const options = [
-    {title: 'סטטוס' , name: 'status', values: statuses, filter: filterByStatus},
-    {title: 'עיר', name: 'cities', values: cities, filter: filterByCity}
+      {title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm },
+      {title: AppConstants.cityUIName,   name: "cities", values: cities,   filter: setCityFilterTerm }
   ];
 
   const showModal = () => {
@@ -64,7 +55,6 @@ const Parcels = () => {
   const hideModal = () => {
     setShow(false);
   };
-
 
   const handleChange = e => {
     const files = e.target.files;
@@ -82,23 +72,31 @@ const Parcels = () => {
   return (
     <div>
       <Modal show={show} handleClose={hideModal}>
-        <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={handleChange}/>
+        <input
+          type="file"
+          className="form-control"
+          id="file"
+          accept={SheetJSFT}
+          onChange={handleChange}
+        />
       </Modal>
 
       <Table
         data={parcelExplained.parcels}
         tableColumns={tableColumns}
-        subHeaderComponent={ 
-            <Toolbar 
-            title="חבילות" 
-            actionTitle= "+ הוספה מקובץ" 
-            action={showModal} 
+        subHeaderComponent={
+          <Toolbar
+            title="חבילות"
+            actionTitle="+ הוספה מקובץ"
+            action={showModal}
             options={options}
-            search={searchByName}/> }
+            search={setNameSearchTerm}
+          />
+        }
       />
+      {/* {searching && <Loader color="#d36ac2" width={6} speed={2} />} */}
     </div>
   );
-
 };
 
 export default Parcels;

@@ -1,37 +1,38 @@
+import AppConstants from "../../constants/AppConstants";
 
 const tableColumns  = [
    {
-    name: 'מזהה',
-    selector: 'id',
+    name: AppConstants.identifierUIName,
+    selector: 'no',
     sortable: true,
     },
     {
-    name: 'סטטוס',
+    name: AppConstants.statusUIName,
     selector: 'status',
     sortable: true,
     },
     {
-      name: 'שם',
-      selector: 'name',
+      name: AppConstants.nameUIName,
+      selector: 'customerName',
       sortable: true,
     },
     {
-      name: 'כתובת',
+      name: AppConstants.addressUIName,
       selector: 'address',
       sortable: true,
     },
     {
-      name: 'עיר',
+      name: AppConstants.cityUIName,
       selector: 'city',
       sortable: true,
     },
     {
-      name: 'טלפון',
-      selector: 'phones',
+      name: AppConstants.phoneUIName,
+      selector: 'phone',
       sortable: true,
     },
     {
-      name: 'שליח',
+      name: AppConstants.userUIName,
       selector: 'signature',
       sortable: false,
     },

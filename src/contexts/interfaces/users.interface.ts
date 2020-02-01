@@ -1,9 +1,10 @@
-import { IActionBase, noChangeToUser } from "../actions/users.action";
+import { IActionBase, loadUsers } from "../actions/users.action";
+import Parcel from "./parcels.interface";
 
 
 export const defaultUserExplained = {
   users: [], 
-  action: noChangeToUser('')
+  action: loadUsers([])
 }
 
 export class UserExplained {
@@ -18,25 +19,26 @@ export class UserExplained {
 
 export default class User {
   id: number | undefined;
-  firstName: string;
-  lastName: string;
+  firstName: string; 
+  lastName: string; 
   address: string;
-  deliveryArea: string;
-  deliveryDays: string;
-  phones: [];
-  comments: string;
-  role: string; // maybe a number or enum
+  deliveryArea: string; 
+  deliveryDays: string; 
+  phone: string; 
+  notes: string; 
+  role: string; // DB: role_fk maybe a number or enum
+  parcels: Parcel[] = [];
 
   constructor(firstName: string, lastName: string, address: string, deliveryArea: string,
-              deliveryDays: string, phones: [], comments: string, role: string ) {
+              deliveryDays: string, phone: string, notes: string, role: string ) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.address = address;
     this.deliveryArea = deliveryArea;
     this.deliveryDays = deliveryDays;
-    this.comments = comments;
+    this.notes = notes;
     this.role = role;
-    this.phones = Object.assign([], phones);
+    this.phone = phone;
   }
 }
 
