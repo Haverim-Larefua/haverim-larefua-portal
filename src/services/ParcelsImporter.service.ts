@@ -1,4 +1,5 @@
 import XLSX from 'xlsx';
+import logger  from '../Utils/logger';
 import Parcel from '../contexts/interfaces/parcels.interface';
 import AppConstants from '../constants/AppConstants';
 
@@ -31,7 +32,7 @@ export default class ParcelsImporterService {
             const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : '';
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : '';
             const aparcel = new Parcel(no, customerName, address, city, phone, comments, 'new_status', dt, signature);
-            console.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
+            logger.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
             parcels.push(aparcel);
         });
         return parcels;

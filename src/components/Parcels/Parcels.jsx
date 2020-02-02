@@ -28,7 +28,6 @@ const Parcels = () => {
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
 
-  
   useEffect(() => {
     async function fetchData() {
         if (searching) {

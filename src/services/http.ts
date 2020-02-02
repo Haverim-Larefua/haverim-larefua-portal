@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import logger from '../Utils/logger';
 import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
@@ -44,12 +45,12 @@ class HttpService {
 
   //////////////////////////////////// Parcels ////////////////////////////////////
   async getParcels() {
-    console.log('[httpService ] getParcels ');
+    logger.log('[httpService ] getParcels ');
     try {
       const response = await this.http.get(`${this.config.PARCELS_POSTFIX}`);
       return response.data;
     } catch (error) {
-      console.error(
+      logger.error(
         "[HttpService] getParcels: could not retrieve parcels",
         error
       );
@@ -87,7 +88,7 @@ class HttpService {
 
   // TODO: this should be a query in DB
   async searchParcels( statusFilterTerm: string, cityFilterTerm: string, nameSearchTerm: string ) {
-    console.log('[httpService ] searchParcels ');
+    logger.log('[httpService ] searchParcels ');
     let parcels = await this.getParcels();
 
     if (

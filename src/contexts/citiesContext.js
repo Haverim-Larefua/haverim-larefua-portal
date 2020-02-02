@@ -1,6 +1,7 @@
 
 import React, { createContext, useState, useEffect } from 'react';
 import httpService from '../services/http';
+import logger  from '../Utils/logger';
 
 export const citiesContext = createContext();
 
@@ -10,11 +11,11 @@ const CitiesContextProvider = (props) => {
     //first time call
     useEffect(() => {
         async function getAllCities() {
-          console.log('[CitiesContextProvider] getAllCities ');
+          logger.log('[CitiesContextProvider] getAllCities ');
           const response = await httpService.getCities();
           const citiNames = response.result.records.map(item => item['שם_ישוב'].trim());
           setCities(citiNames);
-          console.log('[CitiesContextProvider] getAllCities dispatching loadCities  ', response);
+          logger.log('[CitiesContextProvider] getAllCities dispatching loadCities  ', response);
         }
         getAllCities();
       },[]);
