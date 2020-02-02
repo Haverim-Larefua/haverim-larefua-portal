@@ -9,7 +9,11 @@
     static readonly userUIName: string = 'שליח';
     static readonly usersUIName: string = 'שליחים';
 
+    static readonly parcelsUIName: string = 'חבילות';
+
     static readonly addUserUIName: string = 'הוספת שליח';
+
+    static readonly addFromFileUIName: string = 'הוספה מקובץ';
 
     static readonly firstNameUIName: string = 'שם פרטי';
     static readonly lastNameUIName: string = 'שם משפחה';
