@@ -1,5 +1,6 @@
 import React from 'react';
 import './UploadButton.scss';
+import { ReactComponent as Icon} from '../../../assets/icons/add.svg';
 
 interface UploadButtonProps {
     title: string;
@@ -8,7 +9,8 @@ interface UploadButtonProps {
 const UploadButton: React.FC<UploadButtonProps> = (props) => {
     return(
         <label className="fhh-upload-button">
-            <span>{props.title}</span>
+            <Icon />
+            <span>{props.title} </span>
             <input className="fhh-upload-button__input" onChange={props.action} type="file"></input>
         </label>
     )

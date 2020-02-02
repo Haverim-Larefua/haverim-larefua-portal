@@ -77,7 +77,7 @@ const Parcels = () => {
         subHeaderComponent={
           <Toolbar
             title="חבילות"
-            actionTitle="+ הוספה מקובץ"
+            actionTitle="הוספה מקובץ"
             action={handleChange}
             options={options}
             search={setNameSearchTerm}
