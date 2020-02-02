@@ -89,26 +89,17 @@ const Parcels = () => {
 
   return (
     <div>
-      <Modal show={show} handleClose={hideModal}>
-        <input
-          type="file"
-          className="form-control"
-          id="file"
-          accept={SheetJSFT}
-          onChange={handleChange}
-        />
-      </Modal>
-
       <Table
         data={parcelExplained.parcels}
         tableColumns={tableColumns}
         subHeaderComponent={
           <Toolbar
             title="חבילות"
-            actionTitle="+ הוספה מקובץ"
-            action={showModal}
+            actionTitle="הוספה מקובץ"
+            action={handleChange}
             options={options}
             search={setNameSearchTerm}
+            uploadButton
           />
         }
       />
