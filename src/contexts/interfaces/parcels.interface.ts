@@ -1,17 +1,18 @@
 import { IActionBase, loadParcels } from "../actions/parcels.action";
 import User from "./users.interface";
+import AppConstants from "../../constants/AppConstants";
 
-/*
-export enum parcelStatus {
-  None = 0,
-  Create = 1,
-  Edit = 2
-}
-*/
+export const parcelStatusesValues = Object.freeze ({
+  ALL : AppConstants.allStatusName,
+  READY : AppConstants.readyStatusName,
+  DELIVERING : AppConstants.deliveringStatusName,
+  EXCEPTION : AppConstants.exceptionStatusName,
+  DELIVERED : AppConstants.deliveredStatusName,
+});
 
 export class ParcelTracking {
   updateDate: Date | undefined = undefined;
-  status: string = '';
+  status: string = ''; //parcelStatusesValues
   userId: number | undefined = undefined; 
   user: User | undefined = undefined;
   comments: string = '';
@@ -41,7 +42,7 @@ export default class Parcel {
   city: string;
   phone: string; 
   comments: string;
-  status: string; // should be enum - no status in DB - only in tracking
+  status: string; // parcelStatusesValues
   signature: string; // base64
   updateDate: Date; 
   userId: number | undefined; 

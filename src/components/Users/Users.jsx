@@ -8,10 +8,15 @@ import { loadUsers } from "../../contexts/actions/users.action";
 // import usePrevious from "../../contexts/userPrevious";
 import httpService  from '../../services/http';
 import AppConstants from '../../constants/AppConstants';
+import { delivaryDaysValues } from "../../contexts/interfaces/users.interface";
+import { citiesContext } from "../../contexts/citiesContext";
 
 const Users = () => {
   const [ userExplained, dispatch ] = useContext(userContext);
   // const prevUserExplained = usePrevious(userExplained);
+  const [cities] = useContext(citiesContext); // to be used by the add user modal
+  
+  const  [usersDeliveryAreas, setUsersDeliveryAreas] = useState([]);
 
   const [dayFilterTerm, setDayFilterTerm] = useState('');
   const [cityFilterTerm, setCityFilterTerm] = useState('');
@@ -23,16 +28,29 @@ const Users = () => {
       dispatch(loadUsers(response));
     }
     fetchData();
-  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]); 
+  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]); 
 
   
-  //TODO: query DB for all cities distinct
-  const cities = ['באר שבע', 'תל אביב', 'הרצלייה', 'חיפה', 'עכו', 'ערד', 'תל שבע'];
-  const days = ['א','ב','ג','ד','ה','ו','ש','כל השבוע'];
+  useEffect(() => {
+    function getUsersCitiesDistinct() {
+      let areas = [];
+      if (userExplained && userExplained.users && userExplained.users.length > 0) {
+        userExplained.users.forEach(item => {
+          if (!areas.includes(item.deliveryArea)) {
+            areas.push(item.deliveryArea);
+          }
+        })
+      }
+      setUsersDeliveryAreas(areas);
+    }
+    getUsersCitiesDistinct();
+  }, [userExplained]);
+
+  const days = Object.values(delivaryDaysValues);
 
   // ToolbarOptions
   const options = [
-      {title: AppConstants.deliveryAreaUIName, name: 'cities', values: cities, filter: setCityFilterTerm },
+      {title: AppConstants.deliveryAreaUIName, name: 'cities', values: usersDeliveryAreas, filter: setCityFilterTerm },
       {title: AppConstants.delivaryDaysUIName , name: 'days', values: days, filter: setDayFilterTerm }
   ];
 

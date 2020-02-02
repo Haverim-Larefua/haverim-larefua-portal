@@ -1,6 +1,17 @@
 import { IActionBase, loadUsers } from "../actions/users.action";
 import Parcel from "./parcels.interface";
+import AppConstants from "../../constants/AppConstants";
 
+
+export const delivaryDaysValues = Object.freeze({
+  ALL_WEEK: AppConstants.allWeek,
+  SUNDAY: AppConstants.sunday,
+  MONDAY: AppConstants.monday,
+  TEUSDAY: AppConstants.teusday,
+  WEDNESDAY: AppConstants.wednesday,
+  THURSDAY: AppConstants.thursday,
+  FRIDAY: AppConstants.friday,
+});
 
 export const defaultUserExplained = {
   users: [], 
@@ -23,7 +34,7 @@ export default class User {
   lastName: string; 
   address: string;
   deliveryArea: string; 
-  deliveryDays: string; 
+  deliveryDays: string;  // delivaryDaysValues
   phone: string; 
   notes: string; 
   role: string; // DB: role_fk maybe a number or enum

@@ -20,6 +20,22 @@
     static readonly signatureUIName: string = 'חתימה';
 
     static readonly cardName: string = 'שם כרטיס';
+
+    // Parcel status names
+    static readonly allStatusName: string = 'הכל';
+    static readonly readyStatusName: string = 'מוכנה לחלוקה';
+    static readonly deliveringStatusName: string = 'בחלוקה';
+    static readonly exceptionStatusName: string = 'בחריגה';
+    static readonly deliveredStatusName: string = 'נמסרה';
+
+    // Delivary days names
+    static readonly allWeek: string = 'כל השבוע';
+    static readonly sunday: string = 'א';
+    static readonly monday: string = 'ב';
+    static readonly teusday: string = 'ג';
+    static readonly wednesday: string = 'ד';
+    static readonly thursday: string = 'ה';
+    static readonly friday: string = 'ו';
 }
 
 export default AppConstants;

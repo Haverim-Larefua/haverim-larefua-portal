@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import logger from "../../../Utils/logger";
 import tableStyles from './tableStyles';
 import DataTable from 'react-data-table-component';
 
@@ -7,7 +8,7 @@ const Table = (props) => {
 
 
   useEffect(() => {
-    console.log('[Table ] useEffect selectedRows: ', selectedRows);
+    logger.log('[Table ] useEffect selectedRows: ', selectedRows);
   }, [selectedRows]);
 
   const handleButtonClick = () => {
