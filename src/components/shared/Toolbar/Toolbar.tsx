@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import './Toolbar.scss';
+import UploadButton from '../UploadButton/UploadButton';
 
 export interface ToolbarOption {
   title: string;
@@ -14,12 +15,13 @@ export interface Props {
   actionTitle: string;
   action: () => {};
   search: (searchTerm: string) => {};
+  uploadButton: boolean
 }
-export interface State { 
+export interface State {
 }
- 
+
 class  Toolbar extends Component<Props, State> {
-  
+
   state = {
     searchInputTerm: "",
   };
@@ -36,14 +38,21 @@ class  Toolbar extends Component<Props, State> {
   };
 
 
-  render() { 
+  render() {
+    let button;
+    if (this.props.uploadButton) {
+      button = <UploadButton title={this.props.actionTitle} action={this.props.action}></UploadButton>;
+    } else {
+      button = <button className="fhh-toolbar__action" onClick={this.props.action}> {this.props.actionTitle} </button>
+    }
+
   return (
     <div className="fhh-toolbar">
       <div className="fhh-toolbar__title">
       {this.props.title}
       </div>
       <div className="fhh-toolbar__search">
-        <input className="fhh-toolbar__search-input" type="text" placeholder="חיפוש" 
+        <input className="fhh-toolbar__search-input" type="text" placeholder="חיפוש"
         onKeyDown={this.handleKeyDown}
         onChange={this.handleChange}/>
       </div>
@@ -58,7 +67,8 @@ class  Toolbar extends Component<Props, State> {
           })
        }
       </div>
-      <button className="fhh-toolbar__action" onClick={this.props.action}> {this.props.actionTitle} </button>
+       {button}
+
     </div>);
   }
 }

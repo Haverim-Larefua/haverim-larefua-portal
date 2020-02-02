@@ -26,7 +26,7 @@ const Parcels = () => {
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
 
-  
+
   useEffect(() => {
     async function fetchData() {
         setSearching(true);
@@ -71,16 +71,6 @@ const Parcels = () => {
 
   return (
     <div>
-      <Modal show={show} handleClose={hideModal}>
-        <input
-          type="file"
-          className="form-control"
-          id="file"
-          accept={SheetJSFT}
-          onChange={handleChange}
-        />
-      </Modal>
-
       <Table
         data={parcelExplained.parcels}
         tableColumns={tableColumns}
@@ -88,9 +78,10 @@ const Parcels = () => {
           <Toolbar
             title="חבילות"
             actionTitle="+ הוספה מקובץ"
-            action={showModal}
+            action={handleChange}
             options={options}
             search={setNameSearchTerm}
+            uploadButton
           />
         }
       />
