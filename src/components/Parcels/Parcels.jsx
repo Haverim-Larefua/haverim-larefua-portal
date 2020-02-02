@@ -5,21 +5,13 @@ import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
-import Modal from "../shared/Modal/Modal";
 // import usePrevious from "../../contexts/userPrevious";
 import httpService from "../../services/http";
 import AppConstants from '../../constants/AppConstants';
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 
-const SheetJSFT = ["xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt"]
-  .map(function(x) {
-    return "." + x;
-  })
-  .join(",");
-
 const Parcels = () => {
   const [parcelExplained, dispatch] = useContext(parcelContext);
-  const [show, setShow] = useState(false);
 //   const prevParcelExplained = usePrevious(parcelExplained);
 
   const [parcelsCities, setParcelsCities] = useState([]);
@@ -63,21 +55,13 @@ const Parcels = () => {
   // ToolbarOptions
   const options = [
       {title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm },
-      {title: AppConstants.cityUIName,   name: "cities", values: parcelsCities,   filter: setCityFilterTerm }
+      {title: AppConstants.cityUIName,   name: "cities", values: parcelsCities, filter: setCityFilterTerm }
   ];
 
-  const showModal = () => {
-    setShow(true);
-  };
-
-  const hideModal = () => {
-    setShow(false);
-  };
 
   const handleChange = e => {
     const files = e.target.files;
     if (files) {
-      setShow(false);
       handleFile(files[0]);
     }
   };
@@ -94,8 +78,8 @@ const Parcels = () => {
         tableColumns={tableColumns}
         subHeaderComponent={
           <Toolbar
-            title="חבילות"
-            actionTitle="הוספה מקובץ"
+            title={AppConstants.parcelsUIName}
+            actionTitle={AppConstants.addFromFileUIName}
             action={handleChange}
             options={options}
             search={setNameSearchTerm}
