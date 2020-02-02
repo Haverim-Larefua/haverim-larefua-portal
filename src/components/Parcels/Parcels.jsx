@@ -9,6 +9,7 @@ import Modal from "../shared/Modal/Modal";
 // import usePrevious from "../../contexts/userPrevious";
 import httpService from "../../services/http";
 import AppConstants from '../../constants/AppConstants';
+import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 
 const SheetJSFT = ["xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt"]
   .map(function(x) {
@@ -21,6 +22,7 @@ const Parcels = () => {
   const [show, setShow] = useState(false);
 //   const prevParcelExplained = usePrevious(parcelExplained);
 
+  const [parcelsCities, setParcelsCities] = useState([]);
   const [statusFilterTerm, setStatusFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
@@ -29,6 +31,9 @@ const Parcels = () => {
   
   useEffect(() => {
     async function fetchData() {
+        if (searching) {
+            return;
+        }
         setSearching(true);
         const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm, nameSearchTerm );
         dispatch(loadParcels(response));
@@ -36,16 +41,30 @@ const Parcels = () => {
     }
     fetchData();
     //throttle(fetchData, 300);
-  }, [statusFilterTerm && !searching, cityFilterTerm && !searching, nameSearchTerm && !searching]);
+  }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
+
+  useEffect(() => {
+    function getParcelsCitiesDistinct() {
+      let areas = [];
+      if (parcelExplained && parcelExplained.parcels && parcelExplained.parcels.length > 0) {
+        parcelExplained.parcels.forEach(item => {
+            if (!areas.includes(item.city)) {
+            areas.push(item.city);
+            }
+        })
+        }
+      setParcelsCities(areas);
+    }
+    getParcelsCitiesDistinct();
+  }, [parcelExplained]);
 
 
-  const cities = [ "באר שבע","תל אביב",  "הרצלייה", "חיפה",  "עכו",  "ערד",  "תל שבע" ];
-  const statuses = ["הכל", "מוכנה לחלוקה", "בחלוקה", "בחריגה", "נמסרה"];
+  const statuses = Object.values(parcelStatusesValues); 
 
   // ToolbarOptions
   const options = [
       {title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm },
-      {title: AppConstants.cityUIName,   name: "cities", values: cities,   filter: setCityFilterTerm }
+      {title: AppConstants.cityUIName,   name: "cities", values: parcelsCities,   filter: setCityFilterTerm }
   ];
 
   const showModal = () => {

@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
+import AppConstants from "../constants/AppConstants";
 
 class HttpService {
   private http: AxiosInstance;
@@ -19,6 +20,15 @@ class HttpService {
       withCredentials: false
       // method: 'HEAD'
     });
+  }
+
+
+  ////////////////////////////////////  CITIES ////////////////////////////////////
+  // cities list from data.gov.il
+  async getCities() {
+    const CITIES_ENDPOINT = 'https://data.gov.il/api/action/datastore_search?resource_id=5f75cd96-d670-43b0-bf6d-583436c5d054&limit=1300';
+    const response = await axios.get(CITIES_ENDPOINT);
+    return response.data;
   }
 
   //////////////////////////////////// Push ////////////////////////////////////
@@ -160,11 +170,7 @@ class HttpService {
   }
 
   // TODO: this should be a query in DB
-  async searchUsers(
-    dayFilterTerm: string,
-    cityFilterTerm: string,
-    nameSearchTerm: string
-  ) {
+  async searchUsers( dayFilterTerm: string,  cityFilterTerm: string, nameSearchTerm: string ) {
     let users = await this.getUsers();
 
     if (users && users.length > 0 && nameSearchTerm && nameSearchTerm !== "") {
@@ -188,7 +194,7 @@ class HttpService {
       users = users.filter(
         (item: User) =>
           item.deliveryDays.indexOf(searchTerm) !== -1 ||
-          item.deliveryDays.indexOf("כל השבוע") !== -1
+          item.deliveryDays.indexOf(AppConstants.allWeek) !== -1
       );
     }
 

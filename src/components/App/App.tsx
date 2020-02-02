@@ -10,6 +10,7 @@ import UserContextProvider from "../../contexts/userContext";
 import Users from "../Users/Users";
 import Header from "../shared/Header/Header";
 import ErrorBoundary from "../shared/ErrorBoundary/ErrorBoundary";
+import CitiesContextProvider from "../../contexts/citiesContext";
 
 class App extends Component<any, any> {
   render() {
@@ -23,7 +24,9 @@ class App extends Component<any, any> {
                   <Switch>
                     <Route exact path="/"><Admin /></Route>
                     <Route path="/admin"><Admin /></Route>
-                    <Route path="/users"><Users /></Route>
+                    <Route path="/users">
+                        <CitiesContextProvider><Users /></CitiesContextProvider>
+                    </Route>
                     <Route path="/parcels"><Parcels /></Route>
                   </Switch>
               </Router>

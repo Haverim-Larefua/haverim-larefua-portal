@@ -1,5 +1,4 @@
 import Parcel from "../../contexts/interfaces/parcels.interface";
-import { stringify } from "querystring";
 
 export class ParcelUtil {
   //sort parcels by their no property
