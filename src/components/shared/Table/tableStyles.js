@@ -20,6 +20,9 @@ const tableStyles = {
       fontSize: 16,
       fontWeight: 'bold',
     },
+    activeSortStyle: {
+
+    }
   },
   cells: {
     style: {

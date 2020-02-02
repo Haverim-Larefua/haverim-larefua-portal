@@ -1,6 +1,8 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import tableStyles from './tableStyles';
 import DataTable from 'react-data-table-component';
+import './Table.scss';
+import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
 
 const Table = (props) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -32,8 +34,10 @@ const Table = (props) => {
 
 
   const tableHeight = 'calc(100vh - 245px)';
+  const sortIcon = <SortIcon />
 
   return (
+
     <DataTable
       data={props.data}
       columns={columns}
@@ -46,6 +50,7 @@ const Table = (props) => {
       subHeaderComponent={(props.subHeaderComponent)}
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
+      sortIcon = {sortIcon}
     />
   );
 };
