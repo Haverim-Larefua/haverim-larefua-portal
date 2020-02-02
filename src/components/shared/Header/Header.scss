@@ -1,10 +1,22 @@
+@import '../../../styles/colors';
 /*Top Bar*/
+
+// $dark-blue: #0d1e8f;
+// $blue: #0d25be;
+// $orange: #fd5b00;
+// $dark: #1d1d1f;
+// $grey: #5d5d5e;
+// $grey-mid: #dcdeea;
+// $grey-light: #f0f1fb;
+// $grey-bright: #f9faff;
+// $white: #ffffff;
+
 
 .fhh-header {
     align-items: center;
-    background-image: linear-gradient(268deg, #5413a3 0%, #0d21a3 21%, #0d25be 49%, #0e76bc 100%);
+    background-image: $header-gradient;
     box-shadow: 0 1px 1px 0 rgba(204, 204, 204, 0.5);
-    color: #fff;
+    color: $white;
     display: flex;
     height: 60px;
     padding: 0 48px;
@@ -26,7 +38,7 @@
 
 .fhh-nav__item {
     align-items: center;
-    color: #fff;
+    color: $white;
     display: flex;
     height: 100%;
     margin: 20px;
