@@ -10,6 +10,7 @@ export const ADD_PARCELS: string = "ADD_PARCELS"; // add also to DB
 export const EDIT_PARCEL: string = "EDIT_PARCEL"; // edit also in DB
 export const REMOVE_PARCEL: string = "REMOVE_PARCEL"; // remove also from DB
 export const LOAD_PARCELS: string = "LOAD_PARCELS"; //
+export const UPDATE_PARCEL_CITIES: string = "UPDATE_PARCEL_CITIES"; // first load/edit/remove/add -> recalc cities
 
 export function loadParcels(parcels: Parcel[]): ILoadparcelsActionType {
     return {type: LOAD_PARCELS, parcels };
@@ -31,12 +32,17 @@ export function removeParcel(parcelId: number): IRemoveparcelActionType {
     return { type: REMOVE_PARCEL, parcelId };
 }
 
+export function updateParcelsCities(cities: string[]) : IUpdateparcelCitiesType {
+   return {type: UPDATE_PARCEL_CITIES, cities};
+}
+
 
 interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
 interface IAddparcelActionType { type: string, parcel: Parcel };
 interface IAddparcelsActionType { type: string, parcels: Parcel[] };
 interface IEditparcelActionType { type: string, parcel: Parcel };
 interface IRemoveparcelActionType { type: string, parcelId: number };
+interface IUpdateparcelCitiesType { type: string, cities: string[] };
 
 export type parcelActions = ILoadparcelsActionType;
 

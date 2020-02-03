@@ -91,36 +91,22 @@ class HttpService {
     logger.log('[httpService ] searchParcels ');
     let parcels = await this.getParcels();
 
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      nameSearchTerm &&
-      nameSearchTerm !== ""
-    ) {
+    if (parcels && parcels.length > 0 && nameSearchTerm &&  nameSearchTerm !== "" ) {
       const searchTerm = nameSearchTerm.trim().toLowerCase();
-      parcels = parcels.filter(
-        (item: Parcel) =>
-          item.customerName &&
-          item.customerName.toLowerCase().indexOf(searchTerm) !== -1
+      parcels = parcels.filter( (item: Parcel) =>
+        ((item.customerName && item.customerName.toLowerCase().indexOf(searchTerm) !== -1) ||
+        (item.address && item.address.toLowerCase().indexOf(searchTerm) !== -1) ||
+        (item.city && item.city.toLowerCase().indexOf(searchTerm) !== -1)
+        )
       );
     }
 
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      cityFilterTerm &&
-      cityFilterTerm !== ""
-    ) {
+    if ( parcels && parcels.length > 0 && cityFilterTerm && cityFilterTerm !== "" ) {
       const searchTerm = cityFilterTerm.trim().toLowerCase();
       parcels = parcels.filter((item: Parcel) => item.city === searchTerm);
     }
 
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      statusFilterTerm &&
-      statusFilterTerm !== ""
-    ) {
+    if ( parcels &&  parcels.length > 0 && statusFilterTerm &&  statusFilterTerm !== "" ) {
       const searchTerm = statusFilterTerm.trim().toLowerCase();
       parcels = parcels.filter((item: Parcel) => item.status === searchTerm);
     }

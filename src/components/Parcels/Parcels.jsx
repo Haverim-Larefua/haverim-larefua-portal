@@ -7,14 +7,13 @@ import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
 // import usePrevious from "../../contexts/userPrevious";
 import httpService from "../../services/http";
-import AppConstants from '../../constants/AppConstants';
+import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 
 const Parcels = () => {
-  const [parcelExplained, dispatch] = useContext(parcelContext);
-//   const prevParcelExplained = usePrevious(parcelExplained);
+  const [parcelExtendedData, dispatch] = useContext(parcelContext);
+  //   const prevparcelExtendedData = usePrevious(parcelExtendedData);
 
-  const [parcelsCities, setParcelsCities] = useState([]);
   const [statusFilterTerm, setStatusFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
@@ -22,42 +21,26 @@ const Parcels = () => {
 
   useEffect(() => {
     async function fetchData() {
-        if (searching) {
-            return;
-        }
-        setSearching(true);
-        const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm, nameSearchTerm );
-        dispatch(loadParcels(response));
-        setSearching(false);
+      if (searching) {
+        return;
+      }
+      setSearching(true);
+      const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm,  nameSearchTerm);
+      dispatch(loadParcels(response));
+      setSearching(false);
     }
     fetchData();
     //throttle(fetchData, 300);
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
-  useEffect(() => {
-    function getParcelsCitiesDistinct() {
-      let areas = [];
-      if (parcelExplained && parcelExplained.parcels && parcelExplained.parcels.length > 0) {
-        parcelExplained.parcels.forEach(item => {
-            if (!areas.includes(item.city)) {
-            areas.push(item.city);
-            }
-        })
-        }
-      setParcelsCities(areas);
-    }
-    getParcelsCitiesDistinct();
-  }, [parcelExplained]);
 
-
-  const statuses = Object.values(parcelStatusesValues); 
+  const statuses = Object.values(parcelStatusesValues);
 
   // ToolbarOptions
   const options = [
-      {title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm },
-      {title: AppConstants.cityUIName,   name: "cities", values: parcelsCities, filter: setCityFilterTerm }
+    { title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm },
+    { title: AppConstants.cityUIName,   name: "cities", values: parcelExtendedData.cities, filter: setCityFilterTerm }
   ];
-
 
   const handleChange = e => {
     const files = e.target.files;
@@ -74,7 +57,7 @@ const Parcels = () => {
   return (
     <div>
       <Table
-        data={parcelExplained.parcels}
+        data={parcelExtendedData.parcels}
         tableColumns={tableColumns}
         subHeaderComponent={
           <Toolbar

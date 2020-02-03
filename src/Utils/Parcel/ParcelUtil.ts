@@ -33,4 +33,16 @@ export class ParcelUtil {
       return [b, b];
     }
   }
+
+  static getParcelsCitiesDistinct(parcels : Parcel[]): string[]{
+    let areas: string[] = [];
+    if (parcels &&  parcels.length > 0 ) {
+      parcels.forEach(item => {
+        if (!areas.includes(item.city)) {
+          areas.push(item.city);
+        }
+      });
+    }
+    return areas;
+  }
 }
