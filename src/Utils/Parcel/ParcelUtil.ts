@@ -1,5 +1,4 @@
 import Parcel from "../../contexts/interfaces/parcels.interface";
-import { stringify } from "querystring";
 
 export class ParcelUtil {
   //sort parcels by their no property
@@ -33,5 +32,17 @@ export class ParcelUtil {
     } else { // A has no parcels at all
       return [b, b];
     }
+  }
+
+  static getParcelsCitiesDistinct(parcels : Parcel[]): string[]{
+    let areas: string[] = [];
+    if (parcels &&  parcels.length > 0 ) {
+      parcels.forEach(item => {
+        if (!areas.includes(item.city)) {
+          areas.push(item.city);
+        }
+      });
+    }
+    return areas;
   }
 }

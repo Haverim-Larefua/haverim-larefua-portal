@@ -1,4 +1,5 @@
 import httpService from "./http";
+import logger from "../Utils/logger";
 
 var murmurHash3 = require("murmurhash3js");
 
@@ -16,7 +17,7 @@ class PushNotificationService {
   }
 
   async requestNotificationPermission() {
-    console.log('[requestNotificationPermission] requesting notification premission...');
+    logger.log('[requestNotificationPermission] requesting notification premission...');
     let permission = Notification.permission;
     if (permission !== "granted") {
       permission = await window.Notification.requestPermission();
@@ -27,10 +28,10 @@ class PushNotificationService {
       if (permission !== "granted") {
         throw new Error("Permission not granted for Notification");
       }
-      console.log('[requestNotificationPermission] notification premission requested ', permission);
+      logger.log('[requestNotificationPermission] notification premission requested ', permission);
       return permission;
     }
-    console.log('[requestNotificationPermission] notification premission requested ', permission);
+    logger.log('[requestNotificationPermission] notification premission requested ', permission);
 
     return permission;
   }
@@ -52,7 +53,7 @@ class PushNotificationService {
 
   // returns the PushSubscription (object that contains unique endpoint for the push server + other info
   async createNotificationSubscription() : Promise<PushSubscription> {
-    console.log('[createNotificationSubscription] Creating Notification Subscription ...');
+    logger.log('[createNotificationSubscription] Creating Notification Subscription ...');
     
     const serviceWorker = await navigator.serviceWorker.ready; //wait for service worker installation to be ready
     
@@ -60,7 +61,7 @@ class PushNotificationService {
       userVisibleOnly: true,
       applicationServerKey: this.urlBase64ToUint8Array(this.myPubKey)
     });
-    console.log('[createNotificationSubscription] ...Notification Subscription Created ', subscription);
+    logger.log('[createNotificationSubscription] ...Notification Subscription Created ', subscription);
 
     return await this.postSubscription(subscription);
   }
@@ -75,7 +76,7 @@ class PushNotificationService {
   // send subscription to the server
   async postSubscription(subscription: PushSubscription): Promise<PushSubscription> {
     const body = JSON.stringify(subscription);
-    console.log('[postSubscription] posting subscription to serever...', body);
+    logger.log('[postSubscription] posting subscription to serever...', body);
     
     try {
       const fingerprint = this.createClientFingerprint();
@@ -89,16 +90,16 @@ class PushNotificationService {
 
   // returns the subscription if present or nothing
   public getUserSubscription(): Promise<PushSubscription | null> {
-    console.log('[getUserSubscription] Getting subscription ...');
+    logger.log('[getUserSubscription] Getting subscription ...');
     
     return navigator.serviceWorker.ready //wait for service worker installation to be ready, and then
       .then(serviceWorker => {
         const subscription = serviceWorker.pushManager.getSubscription();
-        console.log('[getUserSubscription] Subscription  got', subscription)
+        logger.log('[getUserSubscription] Subscription  got', subscription)
         return subscription;
       })
       .then(pushSubscription => {
-        console.log('[getUserSubscription] Subscription  got', pushSubscription);
+        logger.log('[getUserSubscription] Subscription  got', pushSubscription);
         return pushSubscription;
       });
   }
@@ -106,7 +107,7 @@ class PushNotificationService {
   // trigger notification at server
   async sendNotification() {
     const subscription = await this.getUserSubscription();
-    console.log('[sendNotification] retrieved subscription ', subscription);
+    logger.log('[sendNotification] retrieved subscription ', subscription);
     if (!subscription) {
       console.error('[sendNotification]] Could not retrieve subscription');
     } else {
@@ -121,9 +122,9 @@ class PushNotificationService {
   }
 
   async sendLocalNotification() {
-    console.log('[sendLocalNotification] sending local notification');
+    logger.log('[sendLocalNotification] sending local notification');
     const subscription = this.getUserSubscription();
-    console.log('[sendLocalNotification] retrieved subscription ', subscription);
+    logger.log('[sendLocalNotification] retrieved subscription ', subscription);
 
     const img = "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg";
     const text = "Take a look at this brand new t-shirt!";
@@ -144,11 +145,11 @@ class PushNotificationService {
 
   //TODO: Need to decide when to request Notification Permission from the user
   public async initPush() {
-    console.log('[initPush] started ');
+    logger.log('[initPush] started ');
     const permission = await this.requestNotificationPermission();
     if (permission === "granted") {
       const pushSubscription = await this.createNotificationSubscription();
-      console.log('[initPush] Subscription Created ', pushSubscription);
+      logger.log('[initPush] Subscription Created ', pushSubscription);
     }
   }
 }

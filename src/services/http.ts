@@ -1,7 +1,9 @@
 import axios, { AxiosInstance } from "axios";
+import logger from '../Utils/logger';
 import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
+import AppConstants from "../constants/AppConstants";
 
 class HttpService {
   private http: AxiosInstance;
@@ -21,6 +23,15 @@ class HttpService {
     });
   }
 
+
+  ////////////////////////////////////  CITIES ////////////////////////////////////
+  // cities list from data.gov.il
+  async getCities() {
+    const CITIES_ENDPOINT = 'https://data.gov.il/api/action/datastore_search?resource_id=5f75cd96-d670-43b0-bf6d-583436c5d054&limit=1300';
+    const response = await axios.get(CITIES_ENDPOINT);
+    return response.data;
+  }
+
   //////////////////////////////////// Push ////////////////////////////////////
   async sendPushNotification(subscription: PushSubscription, fingerprint: number) {
     const response = await this.http.post(`${this.config.PUSH_NOTIFY_POSTFIX}`, { subscription, fingerprint, id: 2 } );
@@ -34,12 +45,12 @@ class HttpService {
 
   //////////////////////////////////// Parcels ////////////////////////////////////
   async getParcels() {
-    console.log('[httpService ] getParcels ');
+    logger.log('[httpService ] getParcels ');
     try {
       const response = await this.http.get(`${this.config.PARCELS_POSTFIX}`);
       return response.data;
     } catch (error) {
-      console.error(
+      logger.error(
         "[HttpService] getParcels: could not retrieve parcels",
         error
       );
@@ -77,39 +88,25 @@ class HttpService {
 
   // TODO: this should be a query in DB
   async searchParcels( statusFilterTerm: string, cityFilterTerm: string, nameSearchTerm: string ) {
-    console.log('[httpService ] searchParcels ');
+    logger.log('[httpService ] searchParcels ');
     let parcels = await this.getParcels();
 
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      nameSearchTerm &&
-      nameSearchTerm !== ""
-    ) {
+    if (parcels && parcels.length > 0 && nameSearchTerm &&  nameSearchTerm !== "" ) {
       const searchTerm = nameSearchTerm.trim().toLowerCase();
-      parcels = parcels.filter(
-        (item: Parcel) =>
-          item.customerName &&
-          item.customerName.toLowerCase().indexOf(searchTerm) !== -1
+      parcels = parcels.filter( (item: Parcel) =>
+        ((item.customerName && item.customerName.toLowerCase().indexOf(searchTerm) !== -1) ||
+        (item.address && item.address.toLowerCase().indexOf(searchTerm) !== -1) ||
+        (item.city && item.city.toLowerCase().indexOf(searchTerm) !== -1)
+        )
       );
     }
 
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      cityFilterTerm &&
-      cityFilterTerm !== ""
-    ) {
+    if ( parcels && parcels.length > 0 && cityFilterTerm && cityFilterTerm !== "" ) {
       const searchTerm = cityFilterTerm.trim().toLowerCase();
       parcels = parcels.filter((item: Parcel) => item.city === searchTerm);
     }
 
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      statusFilterTerm &&
-      statusFilterTerm !== ""
-    ) {
+    if ( parcels &&  parcels.length > 0 && statusFilterTerm &&  statusFilterTerm !== "" ) {
       const searchTerm = statusFilterTerm.trim().toLowerCase();
       parcels = parcels.filter((item: Parcel) => item.status === searchTerm);
     }
@@ -160,11 +157,7 @@ class HttpService {
   }
 
   // TODO: this should be a query in DB
-  async searchUsers(
-    dayFilterTerm: string,
-    cityFilterTerm: string,
-    nameSearchTerm: string
-  ) {
+  async searchUsers( dayFilterTerm: string,  cityFilterTerm: string, nameSearchTerm: string ) {
     let users = await this.getUsers();
 
     if (users && users.length > 0 && nameSearchTerm && nameSearchTerm !== "") {
@@ -188,7 +181,7 @@ class HttpService {
       users = users.filter(
         (item: User) =>
           item.deliveryDays.indexOf(searchTerm) !== -1 ||
-          item.deliveryDays.indexOf("כל השבוע") !== -1
+          item.deliveryDays.indexOf(AppConstants.allWeek) !== -1
       );
     }
 
