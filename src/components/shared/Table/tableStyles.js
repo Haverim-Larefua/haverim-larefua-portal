@@ -19,13 +19,13 @@ const tableStyles = {
     style: {
       fontSize: 16,
       fontWeight: 'bold',
+      borderLeft: '1px solid #dcdeea',
+      borderImage:  'linear-gradient(to top, #dcdeea, rgb(255, 255, 255, 0)) 1 50%'
     },
-    activeSortStyle: {
-
-    }
   },
   cells: {
     style: {
+      borderLeft: '1px solid #dcdeea',
       fontSize: 16,
     },
   },
