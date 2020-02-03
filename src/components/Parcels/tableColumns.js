@@ -1,4 +1,5 @@
 import AppConstants from "../../constants/AppConstants";
+import React from 'react';
 
 const tableColumns  = [
    {
@@ -10,6 +11,7 @@ const tableColumns  = [
     name: AppConstants.statusUIName,
     selector: 'status',
     sortable: true,
+    cell: row => <span>{row.status}</span>,
     },
     {
       name: AppConstants.nameUIName,
