@@ -21,7 +21,7 @@ const Users = () => {
   const [nameSearchTerm, setNameSearchTerm] = useState("");
 
   useEffect(() => {
-    async function fetchData() { 
+    async function fetchData() {
       const response = await httpService.searchUsers( dayFilterTerm, cityFilterTerm, nameSearchTerm );
       dispatch(loadUsers(response));
     }
@@ -35,7 +35,7 @@ const Users = () => {
     {
       title: AppConstants.deliveryAreaUIName,
       name: "cities",
-      values: userExtendedData.deliveryAreas,
+      values: [AppConstants.all, ...userExtendedData.deliveryAreas],
       filter: setCityFilterTerm
     },
     {

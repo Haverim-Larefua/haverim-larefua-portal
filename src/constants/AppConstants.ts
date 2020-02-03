@@ -1,5 +1,5 @@
  class AppConstants {
-
+    static readonly chooseOne: string = 'בחר';
     static readonly statusUIName: string = 'סטטוס';
     static readonly addressUIName: string = 'כתובת';
     static readonly cityUIName: string = 'עיר';
@@ -26,7 +26,7 @@
     static readonly cardName: string = 'שם כרטיס';
 
     // Parcel status names
-    static readonly allStatusName: string = 'הכל';
+    static readonly all: string = 'הכל';
     static readonly readyStatusName: string = 'מוכנה לחלוקה';
     static readonly deliveringStatusName: string = 'בחלוקה';
     static readonly exceptionStatusName: string = 'בחריגה';

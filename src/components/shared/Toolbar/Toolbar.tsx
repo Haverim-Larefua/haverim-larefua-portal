@@ -8,6 +8,8 @@ export interface ToolbarOption {
   name: string;
   values: string[];
   filter: (val: string) => {};
+  bullets?: boolean;
+  isDisabled?: boolean;
 }
 export interface Props {
   title: string;
@@ -15,7 +17,8 @@ export interface Props {
   actionTitle: string;
   action: () => {};
   search: (searchTerm: string) => {};
-  uploadButton: boolean
+  uploadButton: boolean;
+
 }
 export interface State {
 }
@@ -62,7 +65,7 @@ class  Toolbar extends Component<Props, State> {
             return(
               <Fragment key={opt.title}>
                 <label className="fhh-toolbar__label">{opt.title}</label>
-                <Dropdown options={[...opt.values]} name={opt.name} filter={opt.filter}> </Dropdown>
+                <Dropdown options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}> </Dropdown>
               </Fragment>)
           })
        }

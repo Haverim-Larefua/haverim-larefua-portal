@@ -15,9 +15,12 @@ body,
 #wrapper {
   height: 100%;
 }
-
+/*Table height temporary fixes*/
 .fhh-header + div  {
   height: calc(100% - 60px);
+}
+.gvepOn  {
+  height: 100%;
 }
 
 body {

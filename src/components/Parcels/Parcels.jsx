@@ -34,13 +34,15 @@ const Parcels = () => {
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
 
-  const statuses = Object.values(parcelStatusesValues);
+  const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
 
   // ToolbarOptions
   const options = [
-    { title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm },
-    { title: AppConstants.cityUIName,   name: "cities", values: parcelExtendedData.cities, filter: setCityFilterTerm }
+    { title: AppConstants.statusUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true },
+    { title: AppConstants.cityUIName,   name: "cities", values: [AppConstants.all, ...parcelExtendedData.cities], filter: setCityFilterTerm }
   ];
+
+
 
   const handleChange = e => {
     const files = e.target.files;
