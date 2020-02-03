@@ -18,9 +18,10 @@ const ParcelContextProvider = props => {
     async function getAllparcelsfromDB() {
       logger.log('[ParcelContextProvider] getAllparcelsfromDB ');
       const response = await httpService.getParcels();
+      const dispParcels = ParcelUtil.createParcelsDisplay(response);
       logger.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', response);
-      dispatch(loadParcels(response));
-      const cities = ParcelUtil.getParcelsCitiesDistinct(response);
+      dispatch(loadParcels(dispParcels));
+      const cities = ParcelUtil.getParcelsCitiesDistinct(dispParcels);
       dispatch(updateParcelsCities(cities));
     }
     getAllparcelsfromDB()

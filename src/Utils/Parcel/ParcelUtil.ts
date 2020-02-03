@@ -1,9 +1,25 @@
-import Parcel from "../../contexts/interfaces/parcels.interface";
+import Parcel, { ParcelTracking } from "../../contexts/interfaces/parcels.interface";
+import AppConstants from "../../constants/AppConstants";
 
 export class ParcelUtil {
   //sort parcels by their no property
   static sortParcels(parcels: Parcel[]) {
     return [...parcels.sort((a, b) => a.no - b.no)];
+  }
+
+  static compareParcelTracking(a: ParcelTracking, b: ParcelTracking): number {
+    return (
+      a.updateDate.getTime() > b.updateDate.getTime() 
+      ? 1
+      : (a.updateDate.getTime() < b.updateDate.getTime()) 
+        ? -1
+        : 0
+    )
+  }
+
+  //sort parcelTracking by their updatedDate
+  static sortParcelTracking(parcelTracking: ParcelTracking[]) {
+    return parcelTracking? parcelTracking.sort(ParcelUtil.compareParcelTracking) : parcelTracking;
   }
 
   static parcelsEqual(a: Parcel, b: Parcel): boolean {
@@ -44,5 +60,20 @@ export class ParcelUtil {
       });
     }
     return areas;
+  }
+
+  //TODO: sort tracking by date
+  static createParcelsDisplay(dbParcels: Parcel[]): Parcel[] {
+    if (dbParcels && dbParcels.length > 0) {
+    dbParcels.forEach((parcel: Parcel) => {
+      ParcelUtil.sortParcelTracking(parcel.parcelTracking);
+      parcel.userName = parcel.user?.firstName + ' ' + parcel.user?.lastName;
+      parcel.status = 
+        (parcel.parcelTracking && parcel.parcelTracking.length > 0) 
+            ? parcel.parcelTracking[0].status 
+            : AppConstants.readyStatusName;
+    })
+    }
+    return dbParcels;
   }
 }

@@ -10,7 +10,7 @@ export const parcelStatusesValues = Object.freeze({
 });
 
 export class ParcelTracking {
-  updateDate: Date | undefined = undefined;
+  updateDate: Date = new Date();
   status: string = ""; //parcelStatusesValues
   userId: number | undefined = undefined;
   user: User | undefined = undefined;
@@ -49,6 +49,7 @@ export default class Parcel {
   updateDate: Date;
   userId: number | undefined;
   user: User | undefined;
+  userName: string | undefined;
   parcelTracking: ParcelTracking[] = [];
 
   constructor(
