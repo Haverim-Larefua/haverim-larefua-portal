@@ -3,7 +3,6 @@ import User from "./users.interface";
 import AppConstants from "../../constants/AppConstants";
 
 export const parcelStatusesValues = Object.freeze({
-  ALL: AppConstants.allStatusName,
   READY: AppConstants.readyStatusName,
   DELIVERING: AppConstants.deliveringStatusName,
   EXCEPTION: AppConstants.exceptionStatusName,
