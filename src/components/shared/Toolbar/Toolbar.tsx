@@ -28,7 +28,7 @@ class  Toolbar extends Component<Props, State> {
 
   handleKeyDown = (e: any) => {
     this.setState({ searchInputTerm: e.target.value });
-    if (e.key === "Enter" && e.target.value.length > 0) {
+    if (e.key === "Enter") {
       this.props.search(e.target.value);
     }
   };
