@@ -35,7 +35,7 @@ const tableColumns  = [
     },
     {
       name: AppConstants.userUIName,
-      selector: 'signature',
+      selector: 'user',
       sortable: false,
     },
   ]
