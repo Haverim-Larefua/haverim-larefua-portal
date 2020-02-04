@@ -37,6 +37,7 @@ const tableColumns  = [
       name: AppConstants.userUIName,
       selector: 'userName',
       sortable: false,
+      cell: row => (row.userName ? row.userName : <button>Click Me</button>),
     },
   ]
 
