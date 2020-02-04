@@ -5,6 +5,7 @@ WORKDIR /opt/app/hl_fe
 COPY  package* ./
 RUN npm install
 RUN npm install yarn
+RUN npm rebuild node-sass
 
 
 # Stage #2 - Copy data and run

@@ -9,9 +9,9 @@ export class ParcelUtil {
 
   static compareParcelTracking(a: ParcelTracking, b: ParcelTracking): number {
     return (
-      a.updateDate.getTime() > b.updateDate.getTime() 
+      a.updateDate.getTime() > b.updateDate.getTime()
       ? 1
-      : (a.updateDate.getTime() < b.updateDate.getTime()) 
+      : (a.updateDate.getTime() < b.updateDate.getTime())
         ? -1
         : 0
     )
@@ -23,7 +23,7 @@ export class ParcelUtil {
   }
 
   static parcelsEqual(a: Parcel, b: Parcel): boolean {
-    return  a.no === b.no && 
+    return  a.no === b.no &&
             JSON.stringify(a.updateDate) === JSON.stringify(b.updateDate);
   }
 
@@ -67,10 +67,10 @@ export class ParcelUtil {
     if (dbParcels && dbParcels.length > 0) {
     dbParcels.forEach((parcel: Parcel) => {
       ParcelUtil.sortParcelTracking(parcel.parcelTracking);
-      parcel.userName = parcel.user?.firstName + ' ' + parcel.user?.lastName;
-      parcel.status = 
-        (parcel.parcelTracking && parcel.parcelTracking.length > 0) 
-            ? parcel.parcelTracking[0].status 
+      parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
+      parcel.status =
+        (parcel.parcelTracking && parcel.parcelTracking.length > 0)
+            ? parcel.parcelTracking[0].status
             : AppConstants.readyStatusName;
     })
     }
