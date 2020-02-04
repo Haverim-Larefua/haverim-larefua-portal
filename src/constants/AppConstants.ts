@@ -14,6 +14,7 @@
     static readonly addUserUIName: string = 'הוספת שליח';
 
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
+    static readonly associateUserUIName: string = '+ שיוך לשליח';
 
     static readonly firstNameUIName: string = 'שם פרטי';
     static readonly lastNameUIName: string = 'שם משפחה';

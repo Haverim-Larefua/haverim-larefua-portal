@@ -9,6 +9,7 @@ import { parcelContext } from "../../contexts/parcelContext";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
+import logger from "../../Utils/logger";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
@@ -18,6 +19,8 @@ const Parcels = () => {
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
+
+  const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
 
   useEffect(() => {
     async function fetchData() {
@@ -42,12 +45,32 @@ const Parcels = () => {
     { title: AppConstants.cityUIName,   name: "cities", values: [AppConstants.all, ...parcelExtendedData.cities], filter: setCityFilterTerm }
   ];
 
+  //selectedRowsState = { allSelected, selectedCount, selectedRows }
+  const onSelectedRowsChanged = selectedRowsState => {
+    logger.log('[Parcels] onSelectedRowsChanged ', selectedRowsState);
+    setSelectedRowsState(selectedRowsState);
+  }
 
+  const buildSubTitle = () => {
+    return (
+        selectedRowsState.selectedCount > 0 
+          ? `${selectedRowsState.selectedCount} חבילות נבחרו` 
+          : ''
+          )
+  }
 
-  const handleChange = e => {
-    const files = e.target.files;
-    if (files) {
-      handleFile(files[0]);
+  const isWithOptionsAnSearch = () => {
+    return selectedRowsState.selectedCount === 0
+  }
+
+  const handleAction = e => {
+    if (isWithOptionsAnSearch()) { // load from file
+      const files = e.target.files;
+      if (files) {
+        handleFile(files[0]);
+      }
+    } else { // associate user to parcels
+      logger.log('[Parcel] handleAction associate user to parcel' );
     }
   };
 
@@ -56,25 +79,34 @@ const Parcels = () => {
     dispatch(addParcels(data));
   };
 
+  const buildToolBar = () => {
+    const withOptionsAndSearch = isWithOptionsAnSearch();
+    const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
+    return (  
+      <Toolbar
+        title={AppConstants.parcelsUIName}
+        subTitle={buildSubTitle()}
+        actionTitle={actionTitle}
+        action={handleAction}
+        withOptions = {withOptionsAndSearch}
+        options={options}
+        search={setNameSearchTerm}
+        withSearch = {withOptionsAndSearch}
+        uploadButton = {withOptionsAndSearch}
+      />)
+  }
+
   return (
     <div>
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}
-        subHeaderComponent={
-          <Toolbar
-            title={AppConstants.parcelsUIName}
-            actionTitle={AppConstants.addFromFileUIName}
-            action={handleChange}
-            options={options}
-            search={setNameSearchTerm}
-            uploadButton
-          />
-        }
+        onSelectedRowsChange={onSelectedRowsChanged}
+        subHeaderComponent={buildToolBar()}
       />
       {/* {searching && <Loader color="#d36ac2" width={6} speed={2} />} */}
     </div>
   );
-};
+}
 
 export default Parcels;
