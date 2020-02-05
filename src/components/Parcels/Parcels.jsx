@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
-import { addParcels, loadParcels } from "../../contexts/actions/parcels.action";
+import { addParcels, loadParcels, editParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
@@ -10,6 +10,8 @@ import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
+import Modal from "../shared/Modal/Modal";
+import UsersList from "../Users/UsersList";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
@@ -19,8 +21,11 @@ const Parcels = () => {
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
+  const [openUsersModal, setOpenUsersModal] = useState(false);
 
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
+
+  const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
     async function fetchData() {
@@ -36,6 +41,31 @@ const Parcels = () => {
     //throttle(fetchData, 300);
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
+  const showUsersModal = () => {
+    setOpenUsersModal(true);
+  };
+
+  const hideUsersModal = () => {
+    setOpenUsersModal(false);
+  };
+
+  const updateSelectedUser= (userId) => {
+    logger.log('[Parcels] updateSelectedUser', userId);
+    setSelectedUser(userId);
+  }
+
+  const associateUserToParcels = () => {
+    logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
+    hideUsersModal();
+    if (selectedRowsState.selectedCount > 0 ) {
+      selectedRowsState.selectedRows.forEach(row => {
+        const parcel = parcelExtendedData.parcels.find(p => p.id === row.id);
+        parcel.userId = selectedUser.value;
+        logger.log('[Parcels] associateUserToParcels dispatch', parcel);
+        dispatch(editParcel(parcel));
+      })
+    }
+  }
 
   const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
 
@@ -71,6 +101,7 @@ const Parcels = () => {
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
+      showUsersModal();
     }
   };
 
@@ -98,6 +129,10 @@ const Parcels = () => {
 
   return (
     <div>
+      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToParcels}>
+        <UsersList updateSelectedUser={updateSelectedUser}/>
+      </Modal>
+
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}

@@ -19,14 +19,21 @@
     transform: translate(-50%,-50%);
     width: 40vw;
     height: 40vh;
-    border-radius: 3px;
-
+    font-size: 14px;
  }
 
   .modal-close{
     float: left;
     height: 32px;
     width: 32px;
+  }
+  
+  .modal-button{
+    float: left;
+    height: 32px;
+    width: 100px;
+    background-color: blue;
+    color: white;
   }
 
   .display-block {

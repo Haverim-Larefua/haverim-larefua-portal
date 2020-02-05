@@ -58,10 +58,7 @@ class HttpService {
   }
 
   async createParcel(aParcel: Parcel) {
-    const response = await this.http.post(
-      `${this.config.PARCELS_POSTFIX}`,
-      aParcel
-    );
+    const response = await this.http.post(`${this.config.PARCELS_POSTFIX}`, aParcel );
     return response.data;
   }
 
@@ -75,9 +72,7 @@ class HttpService {
 
   async updateParcel(aParcel: Parcel) {
     const response = await this.http.put(
-      `${this.config.PARCELS_POSTFIX}/${aParcel.id}]`,
-      aParcel
-    );
+      `${this.config.PARCELS_POSTFIX}/${aParcel.id}`, aParcel );
     return response.data;
   }
 
