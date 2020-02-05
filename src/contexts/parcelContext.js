@@ -16,10 +16,11 @@ const ParcelContextProvider = props => {
   // TODO: already done by the parcel object for searching - check how to seperate
   useEffect(() => { 
     async function getAllparcelsfromDB() {
-      logger.log('[ParcelContextProvider] getAllparcelsfromDB ');
+      logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
       const response = await httpService.getParcels();
+      logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
       const dispParcels = ParcelUtil.createParcelsDisplay(response);
-      logger.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', response);
+      logger.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', dispParcels, response);
       dispatch(loadParcels(dispParcels));
       const cities = ParcelUtil.getParcelsCitiesDistinct(dispParcels);
       dispatch(updateParcelsCities(cities));

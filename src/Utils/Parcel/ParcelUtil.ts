@@ -8,13 +8,9 @@ export class ParcelUtil {
   }
 
   static compareParcelTracking(a: ParcelTracking, b: ParcelTracking): number {
-    return (
-      a.updateDate.getTime() > b.updateDate.getTime()
-      ? 1
-      : (a.updateDate.getTime() < b.updateDate.getTime())
-        ? -1
-        : 0
-    )
+    const aDate = new Date(a.statusDate).getTime();
+    const bDate = new Date(b.statusDate).getTime();
+    return ( aDate > bDate ? 1 : ((aDate < bDate) ? -1 : 0 ));
   }
 
   //sort parcelTracking by their updatedDate
@@ -65,14 +61,14 @@ export class ParcelUtil {
   //TODO: sort tracking by date
   static createParcelsDisplay(dbParcels: Parcel[]): Parcel[] {
     if (dbParcels && dbParcels.length > 0) {
-    dbParcels.forEach((parcel: Parcel) => {
-      ParcelUtil.sortParcelTracking(parcel.parcelTracking);
-      parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
-      parcel.status =
-        (parcel.parcelTracking && parcel.parcelTracking.length > 0)
-            ? parcel.parcelTracking[0].status
-            : AppConstants.readyStatusName;
-    })
+      dbParcels.forEach((parcel: Parcel) => {
+        ParcelUtil.sortParcelTracking(parcel.parcelTracking);
+        parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
+        parcel.status =
+          (parcel.parcelTracking && parcel.parcelTracking.length > 0)
+              ? parcel.parcelTracking[0].status
+              : AppConstants.readyStatusName;
+      })
     }
     return dbParcels;
   }

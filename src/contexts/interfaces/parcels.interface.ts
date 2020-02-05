@@ -10,7 +10,7 @@ export const parcelStatusesValues = Object.freeze({
 });
 
 export class ParcelTracking {
-  updateDate: Date = new Date();
+  statusDate: Date = new Date();
   status: string = ""; //parcelStatusesValues
   userId: number | undefined = undefined;
   user: User | undefined = undefined;

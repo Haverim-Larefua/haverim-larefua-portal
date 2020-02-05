@@ -6,20 +6,14 @@ import './Table.scss';
 import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
 
 const Table = (props) => {
-  const [selectedRows, setSelectedRows] = useState([]);
-
-
-  useEffect(() => {
-    logger.log('[Table ] useEffect selectedRows: ', selectedRows);
-  }, [selectedRows]);
-
+ 
   const handleButtonClick = () => {
-   alert('clicked');
+    //alert('clicked');
   };
 
   const handleChange = useCallback(state => {
-    setSelectedRows(state.selectedRows);
-  }, []);
+    props.onSelectedRowsChange(state);
+  },[]);
 
 
   const columns = useMemo(() => [
@@ -38,7 +32,6 @@ const Table = (props) => {
   const sortIcon = <SortIcon />
 
   return (
-
     <DataTable
       data={props.data}
       columns={columns}
@@ -48,7 +41,7 @@ const Table = (props) => {
       customStyles={tableStyles}
       noHeader
       subHeader
-      subHeaderComponent={(props.subHeaderComponent)}
+      subHeaderComponent={props.subHeaderComponent}
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
       sortIcon = {sortIcon}
