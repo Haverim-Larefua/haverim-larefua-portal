@@ -77,7 +77,12 @@ class HttpService {
   }
 
   async deleteParcel(aParcel: Parcel) {
-    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}]` );
+    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}` );
+    return response.data;
+  }
+
+  async assignUserToParcel(pacelId: number, userId: number) {
+    const response = await this.http.put(`${this.config.PARCELS_POSTFIX}/assign/${pacelId}/${userId}`);
     return response.data;
   }
 

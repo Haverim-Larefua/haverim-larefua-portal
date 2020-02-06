@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
-import { addParcels, loadParcels, editParcel } from "../../contexts/actions/parcels.action";
+import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
-// import usePrevious from "../../contexts/userPrevious";
+import { userContext } from "../../contexts/userContext";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
@@ -15,7 +15,7 @@ import UsersList from "../Users/UsersList";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
-  //   const prevparcelExtendedData = usePrevious(parcelExtendedData);
+  const [userExtendedData] = useContext(userContext);
 
   const [statusFilterTerm, setStatusFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
@@ -59,10 +59,11 @@ const Parcels = () => {
     hideUsersModal();
     if (selectedRowsState.selectedCount > 0 ) {
       selectedRowsState.selectedRows.forEach(row => {
-        const parcel = parcelExtendedData.parcels.find(p => p.id === row.id);
+        const parcel = {...parcelExtendedData.parcels.find(p => p.id === row.id)};
         parcel.userId = selectedUser.value;
+        parcel.user = userExtendedData.users.find(u => u.id === selectedUser.value);
         logger.log('[Parcels] associateUserToParcels dispatch', parcel);
-        dispatch(editParcel(parcel));
+        dispatch(assignUserToParcel(row.id, selectedUser.value));
       })
     }
   }

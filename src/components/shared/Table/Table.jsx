@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import logger from "../../../Utils/logger";
+import React, { useMemo, useCallback } from 'react';
+// import logger from "../../../Utils/logger";
 import tableStyles from './tableStyles';
 import DataTable from 'react-data-table-component';
 import './Table.scss';
@@ -34,6 +34,7 @@ const Table = (props) => {
   return (
     <DataTable
       data={props.data}
+      keyField='no'
       columns={columns}
       onSelectedRowsChange={handleChange}
       selectableRows

@@ -4,9 +4,8 @@ import { userContext } from "../../contexts/userContext";
 // import AppConstants from "../../constants/AppConstants";
 
 const UsersList = (props) => {
-    const [userExtendedData, dispatch] = useContext(userContext);
+    const [userExtendedData] = useContext(userContext);
     const [options, setOptions] = useState([]);
-    // const [selectedOption, setSelectedOption] = useState({});
 
     useEffect(() => {
         function createList() {

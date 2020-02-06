@@ -1,4 +1,4 @@
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS,
+import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCEL,
   IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES} from "../contexts/actions/parcels.action";
 import { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil"
@@ -35,6 +35,17 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
 
     case UPDATE_PARCEL_CITIES : {
       return { parcels: state.parcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(state.parcels) };
+    }
+
+    case ASSIGN_USER_TO_PARCEL: {
+      const foundIndex = state.parcels.findIndex( pack => pack.id === action.parcel.id );
+      if (foundIndex !== -1) {
+        let tempparcels = [...state.parcels];
+        tempparcels[foundIndex] = action.parcel;
+        return { parcels: tempparcels, action: action, cities: state.cities };
+      } else {
+        return state;
+      }
     }
     default:
       return state;
