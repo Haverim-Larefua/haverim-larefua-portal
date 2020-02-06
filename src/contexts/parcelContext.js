@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, 
+import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCEL,
          loadParcels, updateParcelsCities} from "../contexts/actions/parcels.action";
 import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
@@ -55,6 +55,13 @@ const ParcelContextProvider = props => {
         case REMOVE_PARCEL: {
           const response = await httpService.deletParcel( parcelExtendedData.action.parcelId );
           logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
+          break;
+        }
+        case ASSIGN_USER_TO_PARCEL: {
+          const response =  await httpService.assignUserToParcel(
+            parcelExtendedData.action.parcel.parcelId, 
+            parcelExtendedData.action.parcel.userId);
+          logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCEL", response );
           break;
         }
         case LOAD_PARCELS:
