@@ -1,0 +1,33 @@
+@import '../../../styles/colors';
+
+.fhh-status {
+    align-items: center;
+    border-radius: 12px;
+    display: flex;
+    font-size: 13px;
+    font-weight: bold;
+    height: 24px;
+    justify-content: center;
+    width: 120px;
+
+    &.ready {
+        background-color: $violet-pale;
+        color: $violet;
+    }
+
+    &.delivering {
+        background-color: $cyan-pale;
+        color: $cyan-dark;
+    }
+
+    &.delivered {
+        background-color: $green-pale;
+        color: $green;
+    }
+
+    &.exception {
+        background-color: $red-pale;
+        color:$red;
+    }
+
+}

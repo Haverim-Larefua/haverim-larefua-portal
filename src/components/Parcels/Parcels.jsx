@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import memoize from 'memoize-one';
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
+import {  withRouter, useHistory } from 'react-router-dom';
 import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
@@ -89,8 +90,8 @@ const Parcels = () => {
 
   const buildSubTitle = () => {
     return (
-        selectedRowsState.selectedCount > 0 
-          ? `${selectedRowsState.selectedCount} חבילות נבחרו` 
+        selectedRowsState.selectedCount > 0
+          ? `${selectedRowsState.selectedCount} חבילות נבחרו`
           : ''
           )
   }
@@ -113,7 +114,7 @@ const Parcels = () => {
 
   const associateUserToParcelClicked = (e) => {
     logger.log('[Parcel] associateUserToParcelClicked ', e);
-    //TODO  Open modal with users 
+    //TODO  Open modal with users
     showUsersModal();
   }
 
@@ -121,11 +122,15 @@ const Parcels = () => {
     const data = await ParcelsImporterService.ImportFromExcel(file);
     dispatch(addParcels(data));
   };
+  const history = useHistory();
+  const handleRowClick = (parcel) => {
+    history.push(`/parcel/${parcel.id}`);
+  }
 
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
     const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
-    return (  
+    return (
       <Toolbar
         title={AppConstants.parcelsUIName}
         subTitle={buildSubTitle()}
@@ -148,6 +153,7 @@ const Parcels = () => {
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}
+        rowClick={handleRowClick}
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
         handleCellButtonClick={associateUserToParcelClicked}
@@ -156,4 +162,5 @@ const Parcels = () => {
   );
 }
 
-export default Parcels;
+// export default Parcels;
+export default withRouter(Parcels);
