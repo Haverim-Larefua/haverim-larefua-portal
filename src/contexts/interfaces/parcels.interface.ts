@@ -9,6 +9,7 @@ export const parcelStatusesValues = Object.freeze({
   DELIVERED: AppConstants.deliveredStatusName
 });
 
+
 export class ParcelTracking {
   statusDate: Date = new Date();
   status: string = ""; //parcelStatusesValues
@@ -38,39 +39,39 @@ export class ParcelExtendedData {
 
 export default class Parcel {
   id: number | undefined;
-  no: number; // identification of customer
+  identity: number; // identification of customer
   customerName: string; // DB: customer name
   address: string;
   city: string;
   phone: string;
   comments: string;
-  status: string; // parcelStatusesValues
+  parcelTrackingStatus: string; // parcelStatusesValues
   signature: string; // base64
-  updateDate: Date;
-  userId: number | undefined;
+  lastUpdateDate: Date;
+  currentUserId: number | undefined;
   user: User | undefined;
   userName: string | undefined;
   parcelTracking: ParcelTracking[] = [];
 
   constructor(
-    no: number,
+    identity: number,
     customerName: string,
     address: string,
     city: string,
     phone: string,
     comments: string,
-    status: string,
-    updateDate: Date,
+    parcelTrackingStatus: string,
+    lastUpdateDate: Date,
     signature: string
   ) {
-    this.no = no;
+    this.identity = identity;
     this.customerName = customerName;
     this.address = address;
     this.city = city;
     this.comments = comments;
-    this.status = status;
+    this.parcelTrackingStatus = parcelTrackingStatus;
     this.signature = signature;
-    this.updateDate = updateDate;
+    this.lastUpdateDate = lastUpdateDate;
     this.phone = phone;
   }
 }

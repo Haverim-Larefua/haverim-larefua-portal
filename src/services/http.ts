@@ -108,7 +108,7 @@ class HttpService {
 
     if ( parcels &&  parcels.length > 0 && statusFilterTerm &&  statusFilterTerm !== "" ) {
       const searchTerm = statusFilterTerm.trim().toLowerCase();
-      parcels = parcels.filter((item: Parcel) => item.status === searchTerm);
+      parcels = parcels.filter((item: Parcel) => item.parcelTrackingStatus === searchTerm);
     }
 
     return parcels;

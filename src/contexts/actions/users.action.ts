@@ -43,6 +43,13 @@ interface IEditUserActionType { type: string, user: User };
 interface IRemoveUserActionType { type: string, userId: number };
 interface IUpdateUserAreaActionType { type: string, areas: string[] };
 
-export type UserActions = ILoadUsersActionType;
+export type UserActions = ILoadUsersActionType | 
+IAddUserActionType | 
+IAddUsersActionType | 
+IEditUserActionType |
+IRemoveUserActionType |
+IUpdateUserAreaActionType;
+
+;
 
 

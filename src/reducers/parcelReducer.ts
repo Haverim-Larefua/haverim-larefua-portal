@@ -14,7 +14,7 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       return { parcels: tempparcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
     }
     case ADD_PARCELS: {
-      // merge state.parcels with action.parcels according to parcel.no+parcel.updateDate
+      // merge state.parcels with action.parcels according to parcel.identity+parcel.lastUpdateDate
       const [mergedParcels, addedparcels] = ParcelUtil.mergeParcels(state.parcels, action.parcels);
       return { parcels: mergedParcels, action: addParcels(addedparcels), cities: ParcelUtil.getParcelsCitiesDistinct(mergedParcels) };
     }
