@@ -12,19 +12,20 @@ export const parcelContext = createContext();
 const ParcelContextProvider = props => {
   const [parcelExtendedData, dispatch] = useReducer(parcelReducer, defaultparcelExtendedData);
 
+  async function getAllparcelsfromDB() {
+    logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
+    const response = await httpService.getParcels();
+    logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
+    const dispParcels = ParcelUtil.prepareParcelsForDisplay(response);
+    logger.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', dispParcels, response);
+    dispatch(loadParcels(dispParcels));
+    const cities = ParcelUtil.getParcelsCitiesDistinct(dispParcels);
+    dispatch(updateParcelsCities(cities));
+  }
+
   //first time call that loads parcels from db
-  // TODO: already done by the parcel object for searching - check how to seperate
+  //TODO: already done by the parcel object for searching - check how to seperate
   useEffect(() => { 
-    async function getAllparcelsfromDB() {
-      logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
-      const response = await httpService.getParcels();
-      logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
-      const dispParcels = ParcelUtil.createParcelsDisplay(response);
-      logger.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', dispParcels, response);
-      dispatch(loadParcels(dispParcels));
-      const cities = ParcelUtil.getParcelsCitiesDistinct(dispParcels);
-      dispatch(updateParcelsCities(cities));
-    }
     getAllparcelsfromDB()
   }, []);
 
@@ -38,17 +39,20 @@ const ParcelContextProvider = props => {
       }
       switch (parcelExtendedData.action.type) {
         case ADD_PARCEL: {
-          const response = await httpService.createParcel( parcelExtendedData.action.parcel );
+          const response = await httpService.createParcel( ParcelUtil.prepareParcelForDBUpdate(parcelExtendedData.action.parcel ));
           logger.log( "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL",response );
           break;
         }
         case ADD_PARCELS: {
-          const response = await httpService.addParcels( parcelExtendedData.action.parcels );
+          const response = await httpService.addParcels( ParcelUtil.prepareParcelsForDBUpdate(parcelExtendedData.action.parcels) );
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS", response );
+          //TODO when addParcels will be batch operation - can retrieve the result and merge with current instead of retrieving all again
+          const getResponse = await getAllparcelsfromDB();
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS getAllparcelsfromDB", getResponse );
           break;
         }
         case EDIT_PARCEL: {
-          const response = await httpService.updateParcel( parcelExtendedData.action.parcel);
+          const response = await httpService.updateParcel( ParcelUtil.prepareParcelForDBUpdate(parcelExtendedData.action.parcel));
           logger.log( "[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL", response );
           break;
         }
@@ -60,7 +64,7 @@ const ParcelContextProvider = props => {
         case ASSIGN_USER_TO_PARCEL: {
           const response =  await httpService.assignUserToParcel(
             parcelExtendedData.action.parcel.parcelId, 
-            parcelExtendedData.action.parcel.userId);
+            parcelExtendedData.action.parcel.currentUserId);
           logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCEL", response );
           break;
         }

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import memoize from 'memoize-one';
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
@@ -54,18 +55,22 @@ const Parcels = () => {
     setSelectedUser(userId);
   }
 
-  const associateUserToParcels = () => {
+  const associateUserToSelectedParcels = () => {
     logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
     hideUsersModal();
     if (selectedRowsState.selectedCount > 0 ) {
       selectedRowsState.selectedRows.forEach(row => {
-        const parcel = {...parcelExtendedData.parcels.find(p => p.id === row.id)};
-        parcel.userId = selectedUser.value;
-        parcel.user = userExtendedData.users.find(u => u.id === selectedUser.value);
-        logger.log('[Parcels] associateUserToParcels dispatch', parcel);
-        dispatch(assignUserToParcel(row.id, selectedUser.value));
+        associateUserToParcel(selectedUser.value, row.id)
       })
     }
+  }
+
+  const associateUserToParcel = (userId, parcelId) => {
+    const parcel = {...parcelExtendedData.parcels.find(p => p.id === parcelId)};
+    parcel.currentUserId = userId;
+    parcel.user = userExtendedData.users.find(u => u.id === userId);
+    logger.log('[Parcels] associateUserToparcel dispatch', parcel);
+    dispatch(assignUserToParcel(parcelId, userId));
   }
 
   const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
@@ -106,6 +111,12 @@ const Parcels = () => {
     }
   };
 
+  const associateUserToParcelClicked = (e) => {
+    logger.log('[Parcel] associateUserToParcelClicked ', e);
+    //TODO  Open modal with users 
+    showUsersModal();
+  }
+
   const handleFile = async file => {
     const data = await ParcelsImporterService.ImportFromExcel(file);
     dispatch(addParcels(data));
@@ -130,7 +141,7 @@ const Parcels = () => {
 
   return (
     <div>
-      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToParcels}>
+      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
         <UsersList updateSelectedUser={updateSelectedUser}/>
       </Modal>
 
@@ -139,8 +150,8 @@ const Parcels = () => {
         tableColumns={tableColumns}
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
+        handleCellButtonClick={associateUserToParcelClicked}
       />
-      {/* {searching && <Loader color="#d36ac2" width={6} speed={2} />} */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { IActionBase, loadUsers } from "../actions/users.action";
+import { loadUsers, UserActions } from "../actions/users.action";
 import Parcel from "./parcels.interface";
 import AppConstants from "../../constants/AppConstants";
 
@@ -12,7 +12,7 @@ export const delivaryDaysValues = Object.freeze({
   FRIDAY: AppConstants.friday
 });
 
-export const defaultUserExtendedData = {
+export const defaultUserExtendedData: UserExtendedData = {
   users: [],
   action: loadUsers([]),
   deliveryAreas: []
@@ -20,10 +20,10 @@ export const defaultUserExtendedData = {
 
 export class UserExtendedData {
   users: User[] = []; // current in-memory users
-  action: IActionBase; // last action performed on in-memory users that needs to be performed on DB as well
+  action: UserActions; // last action performed on in-memory users that needs to be performed on DB as well
   deliveryAreas: string[] = []; // lis of all delivery areas (distinct) from all users (in DB)
 
-  constructor(users: User[], action: IActionBase, deliveryAreas: string[]) {
+  constructor(users: User[], action: UserActions, deliveryAreas: string[]) {
     this.users = [...users];
     this.action = action;
     this.deliveryAreas = deliveryAreas;
