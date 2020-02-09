@@ -3,25 +3,15 @@ import formatDate from '../../../Utils/dateFormatter';
 import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
 
-export interface DetailsTrackingTableProps {
-    deliveryTracking: IDeliveryTracking[];
-  }
 
-  export interface IDeliveryTracking {
 
-    statusDate: string;
-    status: string;
-    comments: string;
-    userId: number;
-  }
-
-const DetailsTrackingTable: React.FC<DetailsTrackingTableProps> = (props) => {
+const DetailsTrackingTable = (props) => {
     const [users] = useContext(userContext);
 
 
-    const getUserFullNameById = (id:number) => {
+    const getUserFullNameById = (id) => {
         if (users.users.length > 0) {
-            const user = users.users.find((u:any) => u.id === id);
+            const user = users.users.find((u) => u.id === id);
             return `${user.firstName} ${user.lastName}`;
         }
     };

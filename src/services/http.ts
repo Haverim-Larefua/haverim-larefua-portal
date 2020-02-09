@@ -58,10 +58,7 @@ class HttpService {
   }
 
   async createParcel(aParcel: Parcel) {
-    const response = await this.http.post(
-      `${this.config.PARCELS_POSTFIX}`,
-      aParcel
-    );
+    const response = await this.http.post(`${this.config.PARCELS_POSTFIX}`, aParcel );
     return response.data;
   }
 
@@ -75,14 +72,17 @@ class HttpService {
 
   async updateParcel(aParcel: Parcel) {
     const response = await this.http.put(
-      `${this.config.PARCELS_POSTFIX}/${aParcel.id}]`,
-      aParcel
-    );
+      `${this.config.PARCELS_POSTFIX}/${aParcel.id}`, aParcel );
     return response.data;
   }
 
   async deleteParcel(aParcel: Parcel) {
-    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}]` );
+    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}` );
+    return response.data;
+  }
+
+  async assignUserToParcel(pacelId: number, userId: number) {
+    const response = await this.http.put(`${this.config.PARCELS_POSTFIX}/assign/${pacelId}/${userId}`);
     return response.data;
   }
 
@@ -108,7 +108,7 @@ class HttpService {
 
     if ( parcels &&  parcels.length > 0 && statusFilterTerm &&  statusFilterTerm !== "" ) {
       const searchTerm = statusFilterTerm.trim().toLowerCase();
-      parcels = parcels.filter((item: Parcel) => item.status === searchTerm);
+      parcels = parcels.filter((item: Parcel) => item.parcelTrackingStatus === searchTerm);
     }
 
     return parcels;

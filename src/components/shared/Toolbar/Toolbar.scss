@@ -18,6 +18,13 @@
     width: 255px;
 }
 
+.fhh-toolbar__subtitle {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 155px;
+}
+
 .fhh-toolbar__search {
     background-color: $grey-light;
     border-radius: 4px;
@@ -52,4 +59,11 @@
 
 .fhh-toolbar__action {
     @extend %fhh-toolbar-button;
+}
+
+.fhh-toolbar__immediate_action {
+    @extend %fhh-toolbar-button;
+    margin-right: 0;
+    width: initial;
+
 }
