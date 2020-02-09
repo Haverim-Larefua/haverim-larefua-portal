@@ -52,6 +52,7 @@ const Table = (props) => {
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
       sortIcon = {sortIcon}
+      onRowClicked={(props.rowClick)}
     />
   );
 };

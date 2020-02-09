@@ -29,7 +29,7 @@ class App extends Component<any, any> {
                         <CitiesContextProvider><Users /></CitiesContextProvider>
                     </Route>
                     <Route path="/parcels"><Parcels /></Route>
-                    <Route path="/parcel"><ParcelDetails /></Route>
+                    <Route path="/parcel/:id"><ParcelDetails /></Route>
                   </Switch>
               </Router>
             </ErrorBoundary>

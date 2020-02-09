@@ -1,64 +1,59 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
+import { parcelContext } from "../../../contexts/parcelContext";
+import { userContext } from "../../../contexts/userContext";
 import './ParcelDetails.scss';
+import DetailsParcelTable from "./DetailsParcelTable";
+import DetailsUserTable from "./DetailsUserTable";
+import DetailsTrackingTable from "./DetailsTrackingTable";
 import { ReactComponent as BackIcon } from '../../../assets/icons/back.svg';
+import Status from '../../shared/Status/Status';
 
-const ParcelDetails = () => {
-    return (
+const ParcelDetails = (props) => {
+    console.log('Entering parcel Details');
+    const history = useHistory();
+    const handleNavigateBack = () => {
+        history.goBack();
+    }
+    const { params } = props.match;
+    const [parcels] = useContext(parcelContext);
+    const currentParcel = parcels.parcels.find(p => p.id === parseInt(params.id));
+    const deliveryStage = (currentParcel && currentParcel.parcelTracking.length > 0)
+        ? { status: currentParcel.parcelTracking[0].status, userId: currentParcel.parcelTracking[0].userId }
+        : '';
+    const [users] = useContext(userContext);
+    const deliveryTracking = (currentParcel && currentParcel.parcelTracking.length > 0) ? currentParcel.parcelTracking : '';
+
+    const getDeliveryUserById = (id) => {
+        if (users.users.length > 0) {
+            const deliveryUser = users.users.find(u => u.id === id);
+            return deliveryUser;
+        }
+    }
+
+    return currentParcel ? (
         <div className="fhh-details">
             <div className="fhh-details-header">
-                    <BackIcon />
-                    <h2>חבילה עבור בן אבו מירב</h2>
-                    <div className="fhh-details-header__ststus">
-                        נמסרה
-                    </div>
+                <BackIcon className="fhh-details__back" onClick={handleNavigateBack} />
+                <h2 className="fhh-details-header__title">
+                    {`חבילה עבור ${currentParcel.customerName}`}
+                </h2>
+                {deliveryStage ?
+                        <Status status={deliveryStage.status} />
+                : ''}
             </div>
-            <div className="fhh-details__parcel">
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">תאריך יצירה</div>
-                    <div className="fhh-details-cell__value">רביעי - 22.1.20</div>
+            <DetailsParcelTable currentParcel={currentParcel} />
+            {deliveryStage ?
+                <div>
+                <DetailsUserTable deliveryUser={getDeliveryUserById(deliveryStage.userId)} />
+                <DetailsTrackingTable deliveryTracking={deliveryTracking} />
                 </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">מזהה</div>
-                    <div className="fhh-details-cell__value">2034576</div>
-                </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">טלפון</div>
-                    <div className="fhh-details-cell__value">0534-4456765</div>
-                </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">עיר</div>
-                    <div className="fhh-details-cell__value">באר שבע</div>
-                </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">כתובת</div>
-                    <div className="fhh-details-cell__value">ישראל רבי עקיבא 45/ 30 </div>
-                </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">הערות</div>
-                    <div className="fhh-details-cell__value">רצוי להגיע בשעות הערב</div>
-                </div>
-            </div>
-            <div className="fhh-details__user">
-                <div className="fhh-details-cell">
+                : ''}
 
-                </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">שם שליח</div>
-                    <div className="fhh-details-cell__value">אליהו רוזמן   </div>
-                </div>
-                <div className="fhh-details-cell">
-                    <div className="fhh-details-cell__label">טלפון שליח</div>
-                    <div className="fhh-details-cell__value">052-4563645</div>
-                </div>
-                <div className="fhh-details-cell">
-
-                </div>
-            </div>
-            <h3 className="fhh-details__subtitle"></h3>
-            <div className="fhh-details__tracking"></div>
 
         </div>
     )
+        : ''
 }
 
-export default ParcelDetails;
+export default withRouter(ParcelDetails);
