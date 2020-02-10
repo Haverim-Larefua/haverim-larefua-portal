@@ -66,7 +66,7 @@ const Parcels = () => {
 
   const associateUserToListOfParcels = (parcelsToAssociate, userId) => {
     logger.log('[Parcels] associateUserToListOfParcels', parcelsToAssociate, userId);
-    
+
     if (parcelsToAssociate && parcelsToAssociate.length > 0 ) {
       parcelsToAssociate.forEach(id => {
         associateUserToParcel(userId, id)
@@ -121,7 +121,7 @@ const Parcels = () => {
     setParcelsToAssociate([e.currentTarget.id]);
     showUsersModal();
   }
-  
+
   const history = useHistory();
   const handleRowClick = (parcel) => {
     history.push(`/parcel/${parcel.id}`);
@@ -157,7 +157,8 @@ const Parcels = () => {
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
         handleCellButtonClick={associateUserToParcelClicked}
-        selectableRows='true'
+        selectableRows
+        pointerOnHover
       />
     </div>
   );
