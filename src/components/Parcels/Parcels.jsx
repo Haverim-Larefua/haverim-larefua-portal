@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
+import {  withRouter, useHistory } from 'react-router-dom';
 import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
@@ -120,11 +121,16 @@ const Parcels = () => {
     setParcelsToAssociate([e.currentTarget.id]);
     showUsersModal();
   }
+  
+  const history = useHistory();
+  const handleRowClick = (parcel) => {
+    history.push(`/parcel/${parcel.id}`);
+  }
 
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
     const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
-    return (  
+    return (
       <Toolbar
         title={AppConstants.parcelsUIName}
         subTitle={buildSubTitle()}
@@ -147,6 +153,7 @@ const Parcels = () => {
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}
+        rowClick={handleRowClick}
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
         handleCellButtonClick={associateUserToParcelClicked}
@@ -156,4 +163,5 @@ const Parcels = () => {
   );
 }
 
-export default Parcels;
+// export default Parcels;
+export default withRouter(Parcels);

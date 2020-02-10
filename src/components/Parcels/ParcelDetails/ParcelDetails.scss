@@ -1,0 +1,136 @@
+@import '../../../styles/colors';
+
+
+.fhh-details {
+    overflow: auto;
+}
+.fhh-details-header {
+    display: flex;
+    height: 114px;
+    align-items: center;
+    padding: 0 48px;
+}
+
+.fhh-details-header__title {
+    color: $dark;
+    font-weight: unset;
+    margin: 0 24px;
+}
+
+.fhh-details__subtitle {
+    margin: 0 88px 36px 88px;
+}
+
+.fhh-details__parcel,
+.fhh-details__user {
+    border: 1px solid $grey-mid;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 88px 36px 88px;
+    width: calc(100%-166px);
+}
+
+.fhh-details-cell__label {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.fhh-details-cell__value {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.fhh-details-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    padding: 11px 15px;
+    white-space: nowrap;
+
+    &.creation-date,
+    &.id,
+    &.phone,
+    &.city,
+    &.derivery-icon,
+    &.derivery-user {
+        border-left: 1px solid $grey-mid;
+    }
+
+    &.creation-date {
+        width: 14%;
+    }
+    &.id {
+        width: 12%;
+    }
+    &.phone {
+        width: 30%;
+    }
+    &.city {
+        width: 11%;
+     }
+    &.notes {
+        border-top: 1px solid $grey-mid;
+        flex-shrink: 0;
+        width: 100%;
+    }
+    &.derivery-user {
+        width: 17%;
+    }
+}
+
+.fhh-details__back {
+    cursor: pointer;
+}
+
+.fhh-details-tracking__table {
+    border: 1px solid $grey-mid;
+    display: flex;
+    flex-direction: column;
+    margin: 0 88px 36px 88px;
+    width: calc(100%-166px);
+}
+.fhh-details-tracking__head,
+.fhh-details-tracking__row {
+    display: flex;
+}
+
+.fhh-details-tracking__head {
+    border-bottom: 1px solid $grey-mid;
+    box-shadow: 0 1px 2px $shadow;
+    font-weight: bold;
+}
+.fhh-details-tracking__row {
+    &:not(:last-child) {
+        border-bottom: 1px solid $grey-mid;
+    }
+}
+.fhh-details-tracking__cell {
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    justify-content: center;
+    overflow: hidden;
+    padding: 11px 15px;
+    width: 100%;
+
+    &:not(:last-child) {
+        border-left: 1px solid $grey-mid;
+    }
+
+    &.date {
+        max-width: 200px;
+    }
+    &.day {
+        max-width: 140px;
+    }
+    &.hour {
+        max-width: 140px;
+    }
+    &.status {
+        max-width: 160px;
+    }
+    &.user {
+        max-width: 200px;
+    }
+}

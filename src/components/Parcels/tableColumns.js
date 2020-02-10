@@ -50,5 +50,4 @@ const tableColumns  = memoize(clickHandler =>[
    },
  ]);
 
-
   export default tableColumns;
