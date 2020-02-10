@@ -1,8 +1,6 @@
 import React from 'react';
 import './Status.scss';
-import statusToClassname from '../../../Utils/statusToClassname';
-
-
+import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
 export interface StatusProps {
     status: string;
   }
@@ -10,8 +8,9 @@ export interface StatusProps {
 const Status: React.FC<StatusProps> = (props) => {
 
   return (
-    <div className={`fhh-status ${statusToClassname(props.status)}`}>
-        {props.status}
+    <div className={`fhh-status ${props.status}`}>
+
+        {ParcelUtil.parcelStatusEnumToUIValue(props.status)}
     </div>
   );
 }
