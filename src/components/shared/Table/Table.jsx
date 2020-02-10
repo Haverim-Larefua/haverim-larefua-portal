@@ -7,10 +7,9 @@ import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending
 
 const Table = (props) => {
 
-
   const handleChange = useCallback(state => {
     props.onSelectedRowsChange(state);
-  },[]);
+  },[props]);
 
   const tableHeight = 'calc(100vh - 245px)';
   const sortIcon = <SortIcon />

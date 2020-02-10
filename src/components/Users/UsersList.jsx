@@ -24,7 +24,7 @@ const UsersList = (props) => {
     }
 
     function searchUsersList() {
-      if (searchInputTerm && searchInputTerm != '') {
+      if (searchInputTerm && searchInputTerm !== '') {
         if (usersList && usersList.length > 0) {
           const filteredList = usersList.filter(user => {
             const flName = user.firstName+user.lastName;

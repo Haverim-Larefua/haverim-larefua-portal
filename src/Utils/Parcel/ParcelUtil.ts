@@ -1,5 +1,4 @@
 import Parcel, { ParcelTracking, parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
-import AppConstants from "../../constants/AppConstants";
 
 export class ParcelUtil {
   //sort parcels by their no property
@@ -58,16 +57,19 @@ export class ParcelUtil {
     return areas;
   }
 
+
+  static prepareOneParcelForDisplay(parcel: Parcel): Parcel {
+    ParcelUtil.sortParcelTracking(parcel.parcelTracking);
+    parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
+    parcel.parcelTrackingStatus = ParcelUtil.parcelStatusEnumToUIValue(parcel.parcelTrackingStatus);
+    return parcel;
+  }
+
   //TODO: sort tracking by date
   static prepareParcelsForDisplay(dbParcels: Parcel[]): Parcel[] {
     if (dbParcels && dbParcels.length > 0) {
       dbParcels.forEach((parcel: Parcel) => {
-        ParcelUtil.sortParcelTracking(parcel.parcelTracking);
-        parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
-        const status =
-          (parcel.parcelTracking && parcel.parcelTracking.length > 0)
-              ? parcel.parcelTracking[0].status
-              : AppConstants.readyStatusName;
+        parcel = ParcelUtil.prepareOneParcelForDisplay(parcel);
       })
     }
     return dbParcels;

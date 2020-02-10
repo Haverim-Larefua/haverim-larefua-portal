@@ -13,6 +13,7 @@ import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interfac
 import logger from "../../Utils/logger";
 import Modal from "../shared/Modal/Modal";
 import UsersList from "../Users/UsersList";
+import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
