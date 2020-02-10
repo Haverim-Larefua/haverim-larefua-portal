@@ -21,7 +21,7 @@ const Table = (props) => {
       keyField='no'
       columns={props.tableColumns(props.handleCellButtonClick)}
       onSelectedRowsChange={handleChange}
-      selectableRows
+      selectableRows={props.selectableRows}
       highlightOnHover
       customStyles={tableStyles}
       noHeader

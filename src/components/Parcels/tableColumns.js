@@ -43,7 +43,7 @@ const tableColumns  = memoize(clickHandler =>[
      name: AppConstants.userUIName,
      selector: 'userName',
      sortable: false,
-     cell: row => (row.userName ? row.userName : <AssignButton name='assign' id={row.id} action={clickHandler}>Click Me</AssignButton>),
+     cell: row => (row.userName ? row.userName : <AssignButton name='assign' id={row.id} action={clickHandler} />),
      ignoreRowClick: row  =>(row.userName ? false : true),
      button: row  => (row.userName ? false : true),
      allowOverflow: row  => (row.userName ? false : true),
