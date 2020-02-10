@@ -60,6 +60,7 @@ const Users = () => {
           actionTitle={AppConstants.addUserUIName}
           options={options}
           search={setNameSearchTerm}
+          withOptions = 'true'
         />
       }
       />
