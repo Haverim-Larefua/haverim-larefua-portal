@@ -31,7 +31,6 @@ class App extends Component<any, any> {
                     </Route>
                     <Route path="/parcels"><Parcels /></Route>
                     <Route path="/parcel/:id"><ParcelDetails /></Route>
-                    <Route path="/usersList"><UsersList /></Route>
                   </Switch>
               </Router>
             </ErrorBoundary>

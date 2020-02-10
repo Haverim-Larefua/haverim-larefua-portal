@@ -56,11 +56,11 @@ const Parcels = () => {
     setSelectedUser(userId);
   }
 
-  const associateUserToParcel = (userId, parcelId) => {
+  const associateUserToOneParcel = (userId, parcelId) => {
     const parcel = { ...parcelExtendedData.parcels.find(p => p.id === parcelId) };
     parcel.currentUserId = userId;
     parcel.user = userExtendedData.users.find(u => u.id === userId);
-    logger.log("[Parcels] associateUserToParcel dispatch", parcel);
+    logger.log("[Parcels] associateUserToOneParcel dispatch", parcel);
     dispatch(assignUserToParcel(parcel));
   };
 
@@ -68,8 +68,9 @@ const Parcels = () => {
     logger.log('[Parcels] associateUserToListOfParcels', parcelsToAssociate, userId);
 
     if (parcelsToAssociate && parcelsToAssociate.length > 0 ) {
+      const uId = parseInt(userId);
       parcelsToAssociate.forEach(id => {
-        associateUserToParcel(userId, id)
+        associateUserToOneParcel(uId, parseInt(id))
       })
     }
   }
@@ -77,7 +78,7 @@ const Parcels = () => {
   const associateUserToSelectedParcels = () => {
     logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
     hideUsersModal();
-    associateUserToListOfParcels(parcelsToAssociate, selectedUser.value);
+    associateUserToListOfParcels(parcelsToAssociate, selectedUser);
   }
 
   const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
