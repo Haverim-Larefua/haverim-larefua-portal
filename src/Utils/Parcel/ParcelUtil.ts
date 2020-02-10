@@ -68,7 +68,6 @@ export class ParcelUtil {
           (parcel.parcelTracking && parcel.parcelTracking.length > 0)
               ? parcel.parcelTracking[0].status
               : AppConstants.readyStatusName;
-        parcel.parcelTrackingStatus = ParcelUtil.parcelStatusEnumToUIValue(status);
       })
     }
     return dbParcels;
@@ -77,7 +76,7 @@ export class ParcelUtil {
   // parcelTrackingStatus in DB is defined as @IsEnum(['ready', 'delivered', 'distribution', 'exception'])
   // need to translate from DB value to UI valued ans vice versa
   static parcelStatusEnumToUIValue (status : string) {
-    switch (status) { 
+    switch (status) {
       case 'ready': {
         return parcelStatusesValues.READY;
       }
