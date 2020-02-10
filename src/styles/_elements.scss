@@ -12,3 +12,9 @@
     white-space: nowrap;
     width: 8%;
 }
+
+//Clears the button default styling
+%button-reset {
+    border: 0;
+    background: none;
+}

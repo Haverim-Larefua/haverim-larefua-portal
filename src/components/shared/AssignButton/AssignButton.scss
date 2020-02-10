@@ -2,11 +2,10 @@
 @import '../../../styles/elements';
 
 .fhh-assign-button {
-    @extend %fhh-toolbar-button;
+    @extend %button-reset;
     align-items: center;
     display: flex;
-    justify-content: center;
-    padding-left: 9px;
-    width: 64px;
     margin-right: 0px;
+    padding: 0;
+    width: 100%;
  }
