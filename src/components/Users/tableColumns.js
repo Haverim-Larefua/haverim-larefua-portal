@@ -1,6 +1,7 @@
 import AppConstants from '../../constants/AppConstants';
+import memoize from 'memoize-one';
 
-const tableColumns  = [
+const tableColumns  = memoize(clickHandler => [
     {
       name: AppConstants.lastNameUIName,
       selector: 'lastName',
@@ -33,6 +34,6 @@ const tableColumns  = [
 
     },
 
-  ]
+  ]);
 
   export default tableColumns;

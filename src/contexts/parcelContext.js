@@ -63,8 +63,8 @@ const ParcelContextProvider = props => {
         }
         case ASSIGN_USER_TO_PARCEL: {
           const response =  await httpService.assignUserToParcel(
-            parcelExtendedData.action.parcel.parcelId, 
-            parcelExtendedData.action.parcel.currentUserId);
+            parcelExtendedData.action.parcel.currentUserId, 
+            parcelExtendedData.action.parcel.id);
           logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCEL", response );
           break;
         }
