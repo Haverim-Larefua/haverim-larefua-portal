@@ -2,6 +2,7 @@ import AppConstants from "../../constants/AppConstants";
 import React from 'react';
 import AssignButton from '../shared/AssignButton/AssignButton';
 import memoize from 'memoize-one';
+import Status from '../shared/Status/Status';
 
 const tableColumns  = memoize(clickHandler =>[
   {
@@ -17,7 +18,7 @@ const tableColumns  = memoize(clickHandler =>[
    name: AppConstants.statusUIName,
    selector: 'parcelTrackingStatus',
    sortable: true,
-   cell: row => <span>{row.parcelTrackingStatus}</span>,
+   cell: row => <Status status={row.parcelTrackingStatus} />,
    },
    {
      name: AppConstants.nameUIName,
