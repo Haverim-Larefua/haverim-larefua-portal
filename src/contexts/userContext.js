@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { userReducer } from "../reducers/userReducer";
-import { defaultUserExtendedData, UserExtendedData } from "./interfaces/users.interface";
+import { defaultUserExtendedData } from "./interfaces/users.interface";
 import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS,
          loadUsers, updateUsersAreas } from "./actions/users.action";
 import { UserUtil }  from '../Utils/User/UserUtil';

@@ -12,7 +12,6 @@ import Header from "../shared/Header/Header";
 import ErrorBoundary from "../shared/ErrorBoundary/ErrorBoundary";
 import CitiesContextProvider from "../../contexts/citiesContext";
 import ParcelDetails from "../Parcels/ParcelDetails/ParcelDetails";
-import UsersList from "../Users/UsersList";
 
 class App extends Component<any, any> {
   render() {
