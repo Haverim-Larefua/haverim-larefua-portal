@@ -1,0 +1,32 @@
+.login-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #333333;
+  opacity: 0.7;
+}
+
+.login-wrapper {
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+
+  .login-screen {
+    padding: 40px;
+    border: solid 1px #cccccc;
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+
+  .error-message {
+    margin-top: 10px;
+    color: red;
+  }
+}

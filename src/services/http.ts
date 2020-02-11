@@ -1,95 +1,120 @@
-import axios, { AxiosInstance } from "axios";
-import logger from '../Utils/logger';
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import logger, {Logger} from '../Utils/logger';
 import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
 import AppConstants from "../constants/AppConstants";
+import React, {Context, FC} from "react";
+import {AdminContext, IAdminContext} from "../contexts/adminContext";
+
+enum HttpMethod {
+  POST = 'post',
+  PUT = 'put',
+  DELETE = 'delete',
+  GET = 'get'
+}
+
+export interface IAuthAdminResponse {
+  admin: any,
+  token: string
+}
 
 class HttpService {
-  private http: AxiosInstance;
-  private config: Configuration;
+  // private http: AxiosInstance;
+  private baseURL: string;
 
   constructor() {
-    this.config = new Configuration();
-    this.http = axios.create({
-      baseURL: `${this.config.BACKEND_URL}/`,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      withCredentials: false
-      // method: 'HEAD'
-    });
+    this.baseURL = Configuration.URLS.BACKEND_URL + '/';
   }
 
+  private sendHttpRequest = <ResponseDataType>(url: string, method: HttpMethod, data?: any, headers?: any): Promise<ResponseDataType> => {
+    return new Promise<ResponseDataType>((resolve, reject) => {
+
+      const _headers: any = {
+        "Access-Control-Allow-Origin": "*",
+         Accept: "application/json",
+         "Content-Type": "application/json",
+      };
+
+      if (context.token) {
+        _headers.Authorization = `Berear ${context.token}`
+      }
+
+      const httpRequestOptions = {
+        baseURL: Configuration.URLS.BACKEND_URL,
+        url,
+        method,
+        headers: Object.assign(_headers, headers),
+        data,
+        responseType: 'json',
+      } as AxiosRequestConfig;
+
+      try {
+        axios(httpRequestOptions)
+            .then((response) => {
+              console.log(`sendHttpRequest:: response.data: ${response.data}`);
+              resolve(response.data);
+            }).catch((error) => {
+          reject(error);
+        });
+      } catch (e) {
+        console.log('sendHttpRequest:: error: ', e);
+      }
+    });
+  };
 
   ////////////////////////////////////  CITIES ////////////////////////////////////
-  // cities list from data.gov.il
-  async getCities() {
-    const CITIES_ENDPOINT = 'https://data.gov.il/api/action/datastore_search?resource_id=5f75cd96-d670-43b0-bf6d-583436c5d054&limit=1300';
-    const response = await axios.get(CITIES_ENDPOINT);
-    return response.data;
+  public  async getCities() {
+    return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
   }
 
-  //////////////////////////////////// Push ////////////////////////////////////
-  async sendPushNotification(subscription: PushSubscription, fingerprint: number) {
-    const response = await this.http.post(`${this.config.PUSH_NOTIFY_POSTFIX}`, { subscription, fingerprint, id: 2 } );
-    return response.data;
-  }
-
-  async sendPushSubscription(subscription: PushSubscription, fingerprint: number ) {
-    const response = await this.http.post( `${this.config.PUSH_SUBSCRIBE_POSTFIX}`, { subscription, fingerprint, id: 2 });
-    return response.data;
-  }
+  // //////////////////////////////////// Push ////////////////////////////////////
+  // async sendPushNotification(subscription: PushSubscription, fingerprint: number) {
+  //   const response = await this.http.post(`${this.config.PUSH_NOTIFY_POSTFIX}`, { subscription, fingerprint, id: 2 } );
+  //   return response.data;
+  // }
+  //
+  // async sendPushSubscription(subscription: PushSubscription, fingerprint: number ) {
+  //   const response = await this.http.post( `${this.config.PUSH_SUBSCRIBE_POSTFIX}`, { subscription, fingerprint, id: 2 });
+  //   return response.data;
+  // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels() {
-    logger.log('[httpService ] getParcels ');
-    try {
-      const response = await this.http.get(`${this.config.PARCELS_POSTFIX}`);
-      return response.data;
-    } catch (error) {
-      logger.error(
-        "[HttpService] getParcels: could not retrieve parcels",
-        error
-      );
-    }
+  async getParcels(): Promise<Parcel[]> {
+    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.GET);
   }
 
   async createParcel(aParcel: Parcel) {
-    const response = await this.http.post(`${this.config.PARCELS_POSTFIX}`, aParcel );
-    return response.data;
+    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, aParcel);
   }
 
+  // TODO: need to send all as bulk to server, for now keeping like this
   async addParcels(parcels: Parcel[]) {
+    const promises: any[] = [];
     if (parcels && parcels.length > 0) {
-      parcels.forEach(async parcel => {
-        await this.http.post(`${this.config.PARCELS_POSTFIX}`, parcel);
+      parcels.forEach(parcel => {
+        promises.push(this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, parcel));
       });
     }
+    return Promise.all(promises);
   }
 
   async updateParcel(aParcel: Parcel) {
-    const response = await this.http.put(
-      `${this.config.PARCELS_POSTFIX}/${aParcel.id}`, aParcel );
-    return response.data;
+    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.PUT, aParcel);
   }
 
   async deleteParcel(aParcel: Parcel) {
-    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}` );
-    return response.data;
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${aParcel.id}`, HttpMethod.DELETE);
   }
 
   async assignUserToParcel(pacelId: number, userId: number) {
-    const response = await this.http.put(`${this.config.PARCELS_POSTFIX}/assign/${pacelId}/${userId}`);
-    return response.data;
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/assign/${pacelId}/${userId}`, HttpMethod.PUT);
   }
 
   // TODO: this should be a query in DB
-  async searchParcels( statusFilterTerm: string, cityFilterTerm: string, nameSearchTerm: string ) {
+  async searchParcels( statusFilterTerm: string, cityFilterTerm: string, nameSearchTerm: string) {
     logger.log('[httpService ] searchParcels ');
-    let parcels = await this.getParcels();
+    let parcels: Parcel[] = await this.getParcels();
 
     if (parcels && parcels.length > 0 && nameSearchTerm &&  nameSearchTerm !== "" ) {
       const searchTerm = nameSearchTerm.trim().toLowerCase();
@@ -115,49 +140,35 @@ class HttpService {
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
-
-  async getUsers() {
-    try {
-      const response = await this.http.get(`${this.config.USERS_POSTFIX}`);
-      return response.data;
-    } catch (error) {
-      console.error("[HttpService] getUsers: could not retreive users ", error);
-    }
+  async getUsers(): Promise<User[]> {
+    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.GET);
   }
 
-  async createUser(aUser: User) {
-    const response = await this.http.post(
-      `${this.config.USERS_POSTFIX}`,
-      aUser
-    );
-    return response.data;
+  async createUser(aUser: User): Promise<{ id: number }> {
+    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST);
   }
 
-  async addUsers(users: User[]) {
+  // TODO: need to send all as bulk to server, for now keeping like this
+  async addUsers(users: User[]): Promise<{ id: number }[]> {
+    const promises: any[] = [];
     if (users && users.length > 0) {
-      users.forEach(async user => {
-        await this.http.post(`${this.config.USERS_POSTFIX}`, user);
+      users.forEach(user => {
+        promises.push(this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, user));
       });
     }
+    return Promise.all(promises);
   }
 
   async updateUser(aUser: User) {
-    const response = await this.http.put(
-      `${this.config.USERS_POSTFIX}/${aUser.id}]`,
-      aUser
-    );
-    return response.data;
+    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.PUT, aUser);
   }
 
   async deleteUser(aUser: User) {
-    const response = await this.http.delete(
-      `${this.config.USERS_POSTFIX}/${aUser.id}]`
-    );
-    return response.data;
+    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.DELETE);
   }
 
   // TODO: this should be a query in DB
-  async searchUsers( dayFilterTerm: string,  cityFilterTerm: string, nameSearchTerm: string ) {
+  async searchUsers( dayFilterTerm: string,  cityFilterTerm: string, nameSearchTerm: string) {
     let users = await this.getUsers();
 
     if (users && users.length > 0 && nameSearchTerm && nameSearchTerm !== "") {
@@ -186,6 +197,11 @@ class HttpService {
     }
 
     return users;
+  }
+
+  //////////////////////////////////// Authentication ////////////////////////////////////
+  async login(username: string, password: string): Promise<IAuthAdminResponse> {
+    return this.sendHttpRequest(Configuration.URLS.LOGIN, HttpMethod.POST, { username, password });
   }
 }
 

@@ -13,31 +13,37 @@ import ErrorBoundary from "../shared/ErrorBoundary/ErrorBoundary";
 import CitiesContextProvider from "../../contexts/citiesContext";
 import ParcelDetails from "../Parcels/ParcelDetails/ParcelDetails";
 import UsersList from "../Users/UsersList";
+import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
+import AdminContextProvider from "../../contexts/adminContext";
+import Login from "../Login/Login";
 
+const Protected = () => <h3>Protected</h3>
 class App extends Component<any, any> {
   render() {
     return (
-      <div className="App" id="wrapper">
-        <UserContextProvider>
-          <ParcelContextProvider>
-            <ErrorBoundary>
-              <Router>
-                  <Header />
-                  <Switch>
-                    <Route exact path="/"><Admin /></Route>
-                    <Route path="/admin"><Admin /></Route>
-                    <Route path="/users">
-                        <CitiesContextProvider><Users /></CitiesContextProvider>
-                    </Route>
-                    <Route path="/parcels"><Parcels /></Route>
-                    <Route path="/parcel/:id"><ParcelDetails /></Route>
-                    <Route path="/usersList"><UsersList /></Route>
-                  </Switch>
-              </Router>
-            </ErrorBoundary>
-          </ParcelContextProvider>
-        </UserContextProvider>
-      </div>
+        <AdminContextProvider>
+            <div className="App" id="wrapper">
+                <UserContextProvider>
+                  <ParcelContextProvider>
+                    <ErrorBoundary>
+                      <Router>
+                          <Header />
+                          <Switch>
+                            <Route exact path="/"><Admin /></Route>
+                            <Route path="/admin"><Admin /></Route>
+                            <Route path="/users"><CitiesContextProvider><Users /></CitiesContextProvider></Route>
+                            <Route path="/parcels"><Parcels /></Route>
+                            <Route path="/parcel/:id"><ParcelDetails /></Route>
+                            <Route path="/usersList"><UsersList /></Route>
+                            <Route path="/login"><Login /></Route>
+                            <PrivateRoute path='/protected'><Protected/></PrivateRoute>
+                          </Switch>
+                      </Router>
+                    </ErrorBoundary>
+                  </ParcelContextProvider>
+                </UserContextProvider>
+            </div>
+        </AdminContextProvider>
     );
   }
 }
