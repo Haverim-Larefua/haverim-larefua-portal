@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, Fragment } from "react";
 import './UsersList.scss';
 import { userContext } from "../../contexts/userContext";
 import UserListItem from './UserListItem';
+import createInitials from '../../Utils/User/InitialsCreator';
 
 const UsersList = (props) => {
     const [userExtendedData] = useContext(userContext);
@@ -17,7 +18,7 @@ const UsersList = (props) => {
     function createUsersUIList() {
       const opts = [];
       usersList.forEach(user => {
-        const initials = user.firstName.charAt(0)+ user.lastName.charAt(0);
+        const initials = createInitials(user.firstName, user.lastName);
         opts.push({value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}`});
       })
       setOptions(opts);

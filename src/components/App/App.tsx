@@ -17,24 +17,24 @@ class App extends Component<any, any> {
   render() {
     return (
       <div className="App" id="wrapper">
-        <UserContextProvider>
-          <ParcelContextProvider>
-            <ErrorBoundary>
-              <Router>
-                  <Header />
-                  <Switch>
-                    <Route exact path="/"><Admin /></Route>
-                    <Route path="/admin"><Admin /></Route>
-                    <Route path="/users">
-                        <CitiesContextProvider><Users /></CitiesContextProvider>
-                    </Route>
-                    <Route path="/parcels"><Parcels /></Route>
-                    <Route path="/parcel/:id"><ParcelDetails /></Route>
-                  </Switch>
-              </Router>
-            </ErrorBoundary>
-          </ParcelContextProvider>
-        </UserContextProvider>
+        <ErrorBoundary>
+          <Router>
+            <Header />
+            <Switch>
+              <Route exact path="/"> <Admin /> </Route>
+              <Route path="/admin">  <Admin /> </Route>
+              <UserContextProvider>
+                <Route path="/users">
+                  <CitiesContextProvider> <Users /> </CitiesContextProvider>
+                </Route>
+                <ParcelContextProvider>
+                  <Route path="/parcels"> <Parcels /> </Route>
+                  <Route path="/parcel/:id"> <ParcelDetails /> </Route>
+                </ParcelContextProvider>
+              </UserContextProvider>
+            </Switch>
+          </Router>
+        </ErrorBoundary>
       </div>
     );
   }
