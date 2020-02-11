@@ -1,13 +1,12 @@
 import React from "react";
 import "./admin.scss";
-import pushNotificationService from "../../services/pushNotification.service";
 
 
 const Admin: React.FC = () => {
 
   const triggerPushNotification = () => {
-    pushNotificationService.sendNotification();
-  }
+    console.log('Implement later');
+  };
 
   return (
     <div className="fhh-portal">

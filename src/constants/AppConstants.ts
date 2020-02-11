@@ -1,4 +1,5 @@
- class AppConstants {
+//TODO: Move all to i18n
+class AppConstants {
     static readonly chooseOne: string = 'בחר';
     static readonly statusUIName: string = 'סטטוס';
     static readonly addressUIName: string = 'כתובת';
@@ -42,6 +43,15 @@
     static readonly wednesday: string = 'ד';
     static readonly thursday: string = 'ה';
     static readonly friday: string = 'ו';
+}
+
+//TODO: Rename to AppConstants after move all AppConstants to i18n
+export const AppConstants1 = {
+    admin: {
+        token: '',
+        firstName: '',
+        lastName: ''
+    }
 }
 
 export default AppConstants;
