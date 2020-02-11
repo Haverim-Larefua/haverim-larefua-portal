@@ -14,9 +14,14 @@ import CitiesContextProvider from "../../contexts/citiesContext";
 import ParcelDetails from "../Parcels/ParcelDetails/ParcelDetails";
 import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
 import Login from "../Login/Login";
+import {AppConstants1} from "../../constants/AppConstants";
 
 class App extends Component<any, any> {
+
   render() {
+    const admin = localStorage.getItem('admin');
+    AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
+
     return (
         <div className="App" id="wrapper">
                 <ErrorBoundary>
@@ -27,14 +32,12 @@ class App extends Component<any, any> {
                         <Route exact path="/"><Admin /></Route>
                           <PrivateRoute path='/admin'><Admin/></PrivateRoute>
                           <UserContextProvider>
-                              <PrivateRoute path='/users'>
-                                  <CitiesContextProvider>
-                                      <Users />
-                                  </CitiesContextProvider>
-                              </PrivateRoute>
+                              <CitiesContextProvider>
+                                <PrivateRoute path='/users'><Users /></PrivateRoute>
+                              </CitiesContextProvider>
                               <ParcelContextProvider>
-                                  <Route path='/parcels'><Parcels/></Route>
-                                  <Route path='/parcel/:id'><ParcelDetails/></Route>
+                                  <PrivateRoute path='/parcels'><Parcels/></PrivateRoute>
+                                  <PrivateRoute path='/parcel/:id'><ParcelDetails/></PrivateRoute>
                               </ParcelContextProvider>
                           </UserContextProvider>
                       </Switch>

@@ -37,7 +37,7 @@ class HttpService {
          "Content-Type": "application/json",
       };
 
-      if (AppConstants1.admin.token) {
+      if (AppConstants1.admin && AppConstants1.admin.token) {
         _headers.Authorization = `Berear ${AppConstants1.admin.token}`
       }
 

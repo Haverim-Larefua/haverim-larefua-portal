@@ -17,6 +17,7 @@ const Login: React.FC = (): React.ReactElement => {
         httpService.login( username, password )
             .then((res: IAuthAdminResponse) => {
                 setToken(res.token);
+                localStorage.setItem('admin', JSON.stringify(res));
                 AppConstants1.admin = {
                     token: res.token,
                     firstName: res.admin.firstName,
