@@ -2,27 +2,27 @@ import AppConstants from '../../constants/AppConstants';
 
 const tableColumns  = [
     {
-      name: AppConstants.lastNameUIName,
+      name: AppConstants.lastName,
       selector: 'lastName',
       sortable: true,
     },
     {
-      name: AppConstants.firstNameUIName,
+      name: AppConstants.firstName,
       selector: 'firstName',
       sortable: true,
     },
     {
-      name: AppConstants.deliveryAreaUIName,
+      name: AppConstants.deliveryArea,
       selector: 'deliveryArea',
       sortable: true,
     },
     {
-      name: AppConstants.delivaryDaysUIName,
+      name: AppConstants.deliveryDays,
       selector: 'deliveryDays',
       sortable: true,
     },
     {
-      name: AppConstants.phoneUIName,
+      name: AppConstants.phone,
       selector: 'phone',
       sortable: true,
     },

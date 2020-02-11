@@ -28,7 +28,7 @@ export default class ParcelsImporterService {
             const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : '';
             const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName] : '';
             const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : '';
-            const phone = data[AppConstants.phoneUIName] ? data[AppConstants.phoneUIName] : '';
+            const phone = data[AppConstants.phone] ? data[AppConstants.phone] : '';
             const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : '';
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : '';
             const aparcel = new Parcel(no, customerName, address, city, phone, comments, 'new_status', dt, signature);
@@ -38,13 +38,13 @@ export default class ParcelsImporterService {
         return parcels;
     }
 
-    public static async ImportFromExcel(file: File): Promise<Parcel[]> { 
+    public static async ImportFromExcel(file: File): Promise<Parcel[]> {
         return new Promise((resolve, reject) => {
 
         /* Boilerplate to set up FileReader */
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
-   
+
       reader.onload = (e: any) => {
         /* Parse data */
         const bstr = e.target.result;
@@ -61,7 +61,7 @@ export default class ParcelsImporterService {
       };
 
       reader.onerror = reject;
-   
+
       if (rABS) {
         reader.readAsBinaryString(file);
       } else {

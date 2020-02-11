@@ -83,8 +83,8 @@ const Parcels = () => {
 
   const buildSubTitle = () => {
     return (
-        selectedRowsState.selectedCount > 0 
-          ? `${selectedRowsState.selectedCount} חבילות נבחרו` 
+        selectedRowsState.selectedCount > 0
+          ? `${selectedRowsState.selectedCount} חבילות נבחרו`
           : ''
           )
   }
@@ -113,7 +113,7 @@ const Parcels = () => {
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
     const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
-    return (  
+    return (
       <Toolbar
         title={AppConstants.parcelsUIName}
         subTitle={buildSubTitle()}
@@ -129,7 +129,7 @@ const Parcels = () => {
 
   return (
     <div>
-      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToParcels}>
+      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToParcels} actionBtnText={AppConstants.allocation}>
         <UsersList updateSelectedUser={updateSelectedUser}/>
       </Modal>
 

@@ -24,12 +24,13 @@ export interface Props {
   uploadButton: boolean;
 }
 export interface State {
+
 }
 
-class  Toolbar extends Component<Props, State> {
+class Toolbar extends Component<Props, State> {
 
   state = {
-    searchInputTerm: "",
+    searchInputTerm: ""
   };
 
   handleKeyDown = (e: any) => {

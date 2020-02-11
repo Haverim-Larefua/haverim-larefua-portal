@@ -29,7 +29,7 @@ const tableColumns  = [
       sortable: true,
     },
     {
-      name: AppConstants.phoneUIName,
+      name: AppConstants.phone,
       selector: 'phone',
       sortable: true,
     },
