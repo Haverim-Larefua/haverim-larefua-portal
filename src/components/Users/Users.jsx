@@ -121,19 +121,26 @@ const Users = () => {
     e.target.classList.toggle('selected');
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const newUserData = {...newUserForm, deliveryDays: availableDays};
+    console.log(newUserData); // TODO send newUserData to BE
+    handleClose();
+  };
+
   return (
       <div>
         <Modal show={showNewUserModal}
                title={AppConstants.addUserUIName}
                handleClose={handleClose}
-               handleAction={()=>{}}
+               handleAction={e => onSubmit(e)}
                actionBtnText={AppConstants.add}
                handleCancelAction = {handleClose}
                cancelBtnText={AppConstants.cancel}
         >
-          <form className='userForm'>
+          <form className='userForm' onSubmit={onSubmit}>
             {formFields.map( (item, i) => {
-              const notes = <textarea rows={10} />;
+              const notes = <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"/>;
                 return (
                   <fieldset key={i} className={`userFormField ${item}`}>
                     <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>

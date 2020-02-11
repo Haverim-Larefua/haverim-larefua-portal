@@ -13,7 +13,7 @@ const Modal = ({ title, handleClose, handleAction, show, children, actionBtnText
           </p>
         {children}
         <div className="modal-buttons-area">
-            <button className="modal-action-button" onClick={handleAction}> {actionBtnText} </button>
+            <button className="modal-action-button" onClick={handleAction} type="submit"> {actionBtnText} </button>
             <button className="modal-cancel-button" onClick={handleCancelAction}> {cancelBtnText} </button>
         </div>
       </section>
