@@ -8,6 +8,7 @@ import {AppConstants1} from "../../constants/AppConstants";
 
 const Login: React.FC = (): React.ReactElement => {
 
+    const [ token, setToken ] = useState<string>("");
     const [ username, setUsername ] = useState<string>("");
     const [ password, setPassword ] = useState<string>("");
     const [ loginErrorMessage, setLoginErrorMessage ] = useState<string>("");
@@ -15,6 +16,7 @@ const Login: React.FC = (): React.ReactElement => {
     const doLogin = () => {
         httpService.login( username, password )
             .then((res: IAuthAdminResponse) => {
+                setToken(res.token);
                 AppConstants1.admin = {
                     token: res.token,
                     firstName: res.admin.firstName,
@@ -28,7 +30,7 @@ const Login: React.FC = (): React.ReactElement => {
 
     return (
         <div>
-            { AppConstants1.admin.token && AppConstants1.admin.token !== '' ? <Redirect to="/" /> : null }
+            { token ? <Redirect to="/" /> : null }
             <div className='login-background'></div>
             <div className='login-wrapper'>
                 <div className='login-screen'>

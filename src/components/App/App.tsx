@@ -27,10 +27,14 @@ class App extends Component<any, any> {
                         <Route exact path="/"><Admin /></Route>
                           <PrivateRoute path='/admin'><Admin/></PrivateRoute>
                           <UserContextProvider>
-                              <PrivateRoute path='/users'><CitiesContextProvider> <Users /> </CitiesContextProvider></PrivateRoute>
+                              <PrivateRoute path='/users'>
+                                  <CitiesContextProvider>
+                                      <Users />
+                                  </CitiesContextProvider>
+                              </PrivateRoute>
                               <ParcelContextProvider>
-                                  <PrivateRoute path='/parcels'><Parcels/></PrivateRoute>
-                                  <PrivateRoute path='/parcel/:id'><ParcelDetails/></PrivateRoute>
+                                  <Route path='/parcels'><Parcels/></Route>
+                                  <Route path='/parcel/:id'><ParcelDetails/></Route>
                               </ParcelContextProvider>
                           </UserContextProvider>
                       </Switch>
