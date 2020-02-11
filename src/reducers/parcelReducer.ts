@@ -2,10 +2,12 @@ import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSI
   IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES} from "../contexts/actions/parcels.action";
 import { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil"
+import logger from "../Utils/logger";
 
 export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtendedData, action: IActionBase) => {
   switch (action.type) {
     case LOAD_PARCELS: {
+      logger.log('[parcelReducer] LOAD_PARCELS ', action.parcels);
       return { parcels: action.parcels, action: loadParcels([]), cities: state.cities };
     }
     case ADD_PARCEL: {
@@ -22,7 +24,7 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       const foundIndex = state.parcels.findIndex( pack => pack.id === action.parcel.id );
       if (foundIndex !== -1) {
         let tempparcels = [...state.parcels];
-        tempparcels[foundIndex] = action.parcel;
+        tempparcels[foundIndex] = ParcelUtil.prepareOneParcelForDisplay(action.parcel);
         return { parcels: tempparcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
       } else {
         return state;
@@ -41,7 +43,7 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       const foundIndex = state.parcels.findIndex( pack => pack.id === action.parcel.id );
       if (foundIndex !== -1) {
         let tempparcels = [...state.parcels];
-        tempparcels[foundIndex] = action.parcel;
+        tempparcels[foundIndex] = ParcelUtil.prepareOneParcelForDisplay(action.parcel);
         return { parcels: tempparcels, action: action, cities: state.cities };
       } else {
         return state;

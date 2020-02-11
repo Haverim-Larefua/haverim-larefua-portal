@@ -1,11 +1,11 @@
 @import '../../../styles/colors';
 @import '../../../styles/elements';
 
-.fhh-assign-button {
+.fhh-action-button {
     @extend %button-reset;
     align-items: center;
     display: flex;
     margin-right: 0px;
     padding: 0;
-    width: 100%;
+    width: 32px;
  }

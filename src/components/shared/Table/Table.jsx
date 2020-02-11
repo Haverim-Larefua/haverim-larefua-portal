@@ -6,11 +6,10 @@ import './Table.scss';
 import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
 
 const Table = (props) => {
- 
 
   const handleChange = useCallback(state => {
     props.onSelectedRowsChange(state);
-  },[]);
+  },[props]);
 
   const tableHeight = 'calc(100vh - 245px)';
   const sortIcon = <SortIcon />
@@ -21,7 +20,7 @@ const Table = (props) => {
       keyField='no'
       columns={props.tableColumns(props.handleCellButtonClick)}
       onSelectedRowsChange={handleChange}
-      selectableRows
+      selectableRows={props.selectableRows}
       highlightOnHover
       customStyles={tableStyles}
       noHeader
@@ -31,6 +30,7 @@ const Table = (props) => {
       fixedHeaderScrollHeight={tableHeight}
       sortIcon = {sortIcon}
       onRowClicked={(props.rowClick)}
+      pointerOnHover={props.pointerOnHover}
     />
   );
 };

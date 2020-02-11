@@ -1,11 +1,9 @@
-import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import logger, {Logger} from '../Utils/logger';
+import axios, {AxiosRequestConfig} from "axios";
+import logger from '../Utils/logger';
 import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
-import AppConstants from "../constants/AppConstants";
-import React, {Context, FC} from "react";
-import {AdminContext, IAdminContext} from "../contexts/adminContext";
+import AppConstants, {AppConstants1} from "../constants/AppConstants";
 
 enum HttpMethod {
   POST = 'post',
@@ -15,7 +13,10 @@ enum HttpMethod {
 }
 
 export interface IAuthAdminResponse {
-  admin: any,
+  admin: {
+    firstName: string,
+    lastName: string
+  },
   token: string
 }
 
@@ -36,8 +37,8 @@ class HttpService {
          "Content-Type": "application/json",
       };
 
-      if (context.token) {
-        _headers.Authorization = `Berear ${context.token}`
+      if (AppConstants1.admin.token) {
+        _headers.Authorization = `Berear ${AppConstants1.admin.token}`
       }
 
       const httpRequestOptions = {
@@ -52,13 +53,13 @@ class HttpService {
       try {
         axios(httpRequestOptions)
             .then((response) => {
-              console.log(`sendHttpRequest:: response.data: ${response.data}`);
+              logger.debug(`sendHttpRequest:: response.data: ${JSON.stringify(response.data)}`);
               resolve(response.data);
             }).catch((error) => {
           reject(error);
         });
       } catch (e) {
-        console.log('sendHttpRequest:: error: ', e);
+        logger.error('sendHttpRequest:: error: ', e);
       }
     });
   };
@@ -82,6 +83,7 @@ class HttpService {
   //////////////////////////////////// Parcels ////////////////////////////////////
   async getParcels(): Promise<Parcel[]> {
     return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.GET);
+    // return ParcelUtil.prepareParcelsForDisplay(parcels);
   }
 
   async createParcel(aParcel: Parcel) {

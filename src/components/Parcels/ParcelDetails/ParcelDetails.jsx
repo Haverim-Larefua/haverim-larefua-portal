@@ -38,15 +38,14 @@ const ParcelDetails = (props) => {
                 <h2 className="fhh-details-header__title">
                     {`חבילה עבור ${currentParcel.customerName}`}
                 </h2>
-                {deliveryStage ?
-                        <Status status={deliveryStage.status} />
-                : ''}
+                <Status status={currentParcel.parcelTrackingStatus} />
+
             </div>
             <DetailsParcelTable currentParcel={currentParcel} />
             {deliveryStage ?
                 <div>
-                <DetailsUserTable deliveryUser={getDeliveryUserById(deliveryStage.userId)} />
-                <DetailsTrackingTable deliveryTracking={deliveryTracking} />
+                    <DetailsUserTable deliveryUser={getDeliveryUserById(deliveryStage.userId)} />
+                    <DetailsTrackingTable deliveryTracking={deliveryTracking} />
                 </div>
                 : ''}
 

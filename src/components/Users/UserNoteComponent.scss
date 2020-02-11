@@ -1,0 +1,25 @@
+.note_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.note_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.buttons_container {
+  display: flex;
+  float: left;
+  flex-direction: row;
+  justify-content: flex-end;
+  visibility: hidden;
+}
+
+.rdt_TableRow {
+  &:hover {
+    .buttons_container {
+      visibility: visible;
+    }
+  }
+}

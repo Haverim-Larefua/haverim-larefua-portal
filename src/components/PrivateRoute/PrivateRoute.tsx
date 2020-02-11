@@ -1,14 +1,15 @@
-import React, {Component, FC} from "react";
-import {BrowserRouter as Router, Switch, Route, Redirect, RouteProps} from "react-router-dom";
-import {AdminContext, IAdminContext} from "../../contexts/adminContext";
+import React from "react";
+import {Route, Redirect, RouteProps} from "react-router-dom";
+import {AppConstants1} from "../../constants/AppConstants";
 
 export const PrivateRoute = (props: RouteProps, ...rest: any[]) => {
-    const context: IAdminContext = React.useContext<IAdminContext>(AdminContext);
+    const aaa = false;
+    console.log(`AppConstants1.admin.token: ${AppConstants1.admin.token}`);
     return (
         <Route
             {...rest}
             render={({ location }) =>
-                context.token ? (
+                aaa ? (
                     props.children
                 ) : (
                     <Redirect

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import memoize from 'memoize-one';
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
-import {  withRouter, useHistory } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
@@ -26,6 +25,7 @@ const Parcels = () => {
   const [openUsersModal, setOpenUsersModal] = useState(false);
 
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
+  const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState();
 
@@ -56,22 +56,29 @@ const Parcels = () => {
     setSelectedUser(userId);
   }
 
-  const associateUserToSelectedParcels = () => {
-    logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
-    hideUsersModal();
-    if (selectedRowsState.selectedCount > 0 ) {
-      selectedRowsState.selectedRows.forEach(row => {
-        associateUserToParcel(selectedUser.value, row.id)
+  const associateUserToOneParcel = (userId, parcelId) => {
+    const parcel = { ...parcelExtendedData.parcels.find(p => p.id === parcelId) };
+    parcel.currentUserId = userId;
+    parcel.user = userExtendedData.users.find(u => u.id === userId);
+    logger.log("[Parcels] associateUserToOneParcel dispatch", parcel);
+    dispatch(assignUserToParcel(parcel));
+  };
+
+  const associateUserToListOfParcels = (parcelsToAssociate, userId) => {
+    logger.log('[Parcels] associateUserToListOfParcels', parcelsToAssociate, userId);
+
+    if (parcelsToAssociate && parcelsToAssociate.length > 0 ) {
+      const uId = parseInt(userId);
+      parcelsToAssociate.forEach(id => {
+        associateUserToOneParcel(uId, parseInt(id))
       })
     }
   }
 
-  const associateUserToParcel = (userId, parcelId) => {
-    const parcel = {...parcelExtendedData.parcels.find(p => p.id === parcelId)};
-    parcel.currentUserId = userId;
-    parcel.user = userExtendedData.users.find(u => u.id === userId);
-    logger.log('[Parcels] associateUserToparcel dispatch', parcel);
-    dispatch(assignUserToParcel(parcelId, userId));
+  const associateUserToSelectedParcels = () => {
+    logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
+    hideUsersModal();
+    associateUserToListOfParcels(parcelsToAssociate, selectedUser);
   }
 
   const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
@@ -89,39 +96,33 @@ const Parcels = () => {
   }
 
   const buildSubTitle = () => {
-    return (
-        selectedRowsState.selectedCount > 0
-          ? `${selectedRowsState.selectedCount} חבילות נבחרו`
-          : ''
-          )
+    return (selectedRowsState.selectedCount > 0 ? `${selectedRowsState.selectedCount} חבילות נבחרו` : '' );
   }
 
   const isWithOptionsAnSearch = () => {
     return selectedRowsState.selectedCount === 0
   }
 
-  const handleAction = e => {
+  const handleAction = async (e) => {
     if (isWithOptionsAnSearch()) { // load from file
       const files = e.target.files;
       if (files) {
-        handleFile(files[0]);
+        const data = await ParcelsImporterService.ImportFromExcel(files[0]);
+        dispatch(addParcels(data));
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
+      setParcelsToAssociate(selectedRowsState.selectedRows.map(row => row.id));
       showUsersModal();
     }
   };
 
   const associateUserToParcelClicked = (e) => {
-    logger.log('[Parcel] associateUserToParcelClicked ', e);
-    //TODO  Open modal with users
+    logger.log('[Parcel] associateUserToParcelClicked ', e.currentTarget, e.target);
+    setParcelsToAssociate([e.currentTarget.id]);
     showUsersModal();
   }
 
-  const handleFile = async file => {
-    const data = await ParcelsImporterService.ImportFromExcel(file);
-    dispatch(addParcels(data));
-  };
   const history = useHistory();
   const handleRowClick = (parcel) => {
     history.push(`/parcel/${parcel.id}`);
@@ -157,6 +158,8 @@ const Parcels = () => {
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
         handleCellButtonClick={associateUserToParcelClicked}
+        selectableRows
+        pointerOnHover
       />
     </div>
   );
