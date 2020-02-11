@@ -1,4 +1,4 @@
-import React, {ChangeEvent, InputHTMLAttributes} from "react";
+import React, {InputHTMLAttributes} from "react";
 import "./Input.scss";
 
 interface IInput extends InputHTMLAttributes<HTMLInputElement> {

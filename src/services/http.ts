@@ -4,6 +4,7 @@ import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
 import AppConstants, {AppConstants1} from "../constants/AppConstants";
+import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 
 enum HttpMethod {
   POST = 'post',
@@ -66,7 +67,9 @@ class HttpService {
 
   ////////////////////////////////////  CITIES ////////////////////////////////////
   public  async getCities() {
-    return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
+    // return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
+    const response = await axios.get(Configuration.URLS.CITIES_ENDPOINT);
+    return response.data;
   }
 
   // //////////////////////////////////// Push ////////////////////////////////////
@@ -82,8 +85,8 @@ class HttpService {
 
   //////////////////////////////////// Parcels ////////////////////////////////////
   async getParcels(): Promise<Parcel[]> {
-    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.GET);
-    // return ParcelUtil.prepareParcelsForDisplay(parcels);
+    const prcls: Parcel[] = await  this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.GET);
+    return ParcelUtil.prepareParcelsForDisplay(prcls);
   }
 
   async createParcel(aParcel: Parcel) {
@@ -109,8 +112,8 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${aParcel.id}`, HttpMethod.DELETE);
   }
 
-  async assignUserToParcel(pacelId: number, userId: number) {
-    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/assign/${pacelId}/${userId}`, HttpMethod.PUT);
+  async assignUserToParcel(userId: number, pacelId: number,) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}/assign/${userId}`, HttpMethod.PUT);
   }
 
   // TODO: this should be a query in DB
@@ -147,7 +150,7 @@ class HttpService {
   }
 
   async createUser(aUser: User): Promise<{ id: number }> {
-    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST);
+    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, aUser);
   }
 
   // TODO: need to send all as bulk to server, for now keeping like this

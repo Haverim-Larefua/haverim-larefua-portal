@@ -66,14 +66,14 @@ export class ParcelUtil {
   }
 
   //TODO: sort tracking by date
-  // static prepareParcelsForDisplay(dbParcels: Parcel[]): Parcel[] {
-  //   if (dbParcels && dbParcels.length > 0) {
-  //     dbParcels.forEach((parcel: Parcel) => {
-  //       parcel = ParcelUtil.prepareOneParcelForDisplay(parcel);
-  //     })
-  //   }
-  //   return dbParcels;
-  // }
+  static prepareParcelsForDisplay(dbParcels: Parcel[]): Parcel[] {
+    if (dbParcels && dbParcels.length > 0) {
+      dbParcels.forEach((parcel: Parcel) => {
+        parcel = ParcelUtil.prepareOneParcelForDisplay(parcel);
+      })
+    }
+    return dbParcels;
+  }
 
   // parcelTrackingStatus in DB is defined as @IsEnum(['ready', 'delivered', 'distribution', 'exception'])
   // need to translate from DB value to UI valued ans vice versa
@@ -128,6 +128,7 @@ export class ParcelUtil {
 
   static prepareParcelForDBUpdate(parcel: Parcel): Parcel {
      const aParcel = {...parcel};
+     delete aParcel.parcelTracking;
      aParcel.parcelTrackingStatus = ParcelUtil.parcelUIStatusValueToEnum(aParcel.parcelTrackingStatus);
      return aParcel;
   }

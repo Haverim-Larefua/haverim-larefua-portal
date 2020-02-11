@@ -29,7 +29,7 @@ class App extends Component<any, any> {
                       <Header />
                       <Switch>
                         <Route path="/login"><Login /></Route>
-                        <Route exact path="/"><Admin /></Route>
+                        <Route exact path="/"><Login /></Route>
                           <PrivateRoute path='/admin'><Admin/></PrivateRoute>
                           <UserContextProvider>
                               <CitiesContextProvider>
