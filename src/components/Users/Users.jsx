@@ -22,7 +22,7 @@ const Users = () => {
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
 
-  const [showAddNewUserModal, setNewUserModal] = useState(true); // TODO change to false
+  const [showNewUserModal, setShowNewUserModal] = useState(false);
   const [newUserForm, setNewUserFormField] = useState({});
   const [availableDays, setDaySelection] = useState([]);
 
@@ -35,8 +35,6 @@ const Users = () => {
   }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   const days = Object.values(deliveryDaysValues);
-  console.log(availableDays);
-
   const allWeek = [1, 2, 3, 4, 5, 6];
 
   // ToolbarOptions
@@ -82,7 +80,7 @@ const Users = () => {
   }
 
   const handleClose = () => {
-    setNewUserModal(false);
+    setShowNewUserModal(false);
   };
 
   const onFieldChange = (e) => {
@@ -125,7 +123,14 @@ const Users = () => {
 
   return (
       <div>
-        <Modal show={showAddNewUserModal} title={AppConstants.addUserUIName} handleClose={handleClose} handleAction={()=>{}}>
+        <Modal show={showNewUserModal}
+               title={AppConstants.addUserUIName}
+               handleClose={handleClose}
+               handleAction={()=>{}}
+               actionBtnText={AppConstants.add}
+               handleCancelAction = {handleClose}
+               cancelBtnText={AppConstants.cancel}
+        >
           <form className='userForm'>
             {formFields.map( (item, i) => {
               const notes = <textarea rows={10} />;
@@ -151,7 +156,7 @@ const Users = () => {
               actionTitle={AppConstants.addUserUIName}
               options={options}
               search={setNameSearchTerm}
-              action={() => setNewUserModal(true)}
+              action={() => setShowNewUserModal(true)}
             />
           }
         />

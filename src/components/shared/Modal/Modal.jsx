@@ -1,7 +1,7 @@
 import React from 'react'
 import './Modal.scss';
 
-const Modal = ({ title, handleClose, handleAction, show, children, actionBtnText }) => {
+const Modal = ({ title, handleClose, handleAction, show, children, actionBtnText, handleCancelAction, cancelBtnText }) => {
   const showHideClassName = show ? "show" : "hide";
 
   return (
@@ -12,7 +12,10 @@ const Modal = ({ title, handleClose, handleAction, show, children, actionBtnText
             <button className="modal-close" onClick={handleClose}>X</button>
           </p>
         {children}
-        <button className="modal-button" onClick={handleAction}> {actionBtnText} </button>
+        <div className="modal-buttons-area">
+            <button className="modal-action-button" onClick={handleAction}> {actionBtnText} </button>
+            <button className="modal-cancel-button" onClick={handleCancelAction}> {cancelBtnText} </button>
+        </div>
       </section>
     </div>
   );

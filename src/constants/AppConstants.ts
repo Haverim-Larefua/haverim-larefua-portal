@@ -21,11 +21,11 @@
     static readonly parcelsUIName: string = 'חבילות';
 
     static readonly addUserUIName: string = 'הוספת שליח.ה';
+    static readonly add: string = 'הוספה';
+    static readonly cancel: string = 'ביטול';
 
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
     static readonly associateUserUIName: string = '+ שיוך לשליח.ה';
-
-
 
     static readonly commentsUIName: string = 'הערות';
     static readonly signatureUIName: string = 'חתימה';

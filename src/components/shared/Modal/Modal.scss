@@ -24,17 +24,6 @@
   border-bottom: 2px solid $blue;
   margin: 0;
 }
-button {
-  border: 0;
-  background: none;
-  font-size: 16px;
-  color: $grey;
-  cursor: pointer;
- &:focus {
-    border: none;
-    outline: none;
-  }
-}
 
 .title {
   display: inline-block;
@@ -44,16 +33,36 @@ button {
   float: left;
   height: 32px;
   width: 32px;
+  border: 0;
+  background: none;
+  font-size: 16px;
+  color: $grey;
+  cursor: pointer;
+  &:focus {
+    border: none;
+    outline: none;
+  }
 }
 
-.modal-button {
+.modal-buttons-area {
   float: left;
-  height: 32px;
+}
+.modal-action-button {
+  float: left;
+  height: 40px;
   width: 100px;
   background-color: blue;
   color: white;
+  margin-right: 20px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 16px;
 }
-
+.modal-cancel-button {
+  @extend .modal-action-button;
+  background-color: $grey-light;
+  color: black;
+}
 .show {
   display: flex;
 }
