@@ -54,7 +54,6 @@ const tableColumns  = memoize(clickHandler =>[
      minWidth: '230px',
      cell: row => (row.userName ? row.userName : <AssignButton name='assign' id={row.id} action={clickHandler} />),
      ignoreRowClick: row  =>(row.userName ? false : true),
-    //  button: row  => (row.userName ? false : true),
      allowOverflow: row  => (row.userName ? false : true),
    }
  ]);

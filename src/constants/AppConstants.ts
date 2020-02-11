@@ -50,4 +50,13 @@
     static readonly friday: string = 'שישי';
 }
 
+//TODO: Rename to AppConstants after move all AppConstants to i18n
+export const AppConstants1 = {
+    admin: {
+        token: '',
+        firstName: '',
+        lastName: ''
+    }
+}
+
 export default AppConstants;

@@ -12,30 +12,38 @@ import Header from "../shared/Header/Header";
 import ErrorBoundary from "../shared/ErrorBoundary/ErrorBoundary";
 import CitiesContextProvider from "../../contexts/citiesContext";
 import ParcelDetails from "../Parcels/ParcelDetails/ParcelDetails";
+import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
+import Login from "../Login/Login";
+import {AppConstants1} from "../../constants/AppConstants";
 
 class App extends Component<any, any> {
+
   render() {
+    const admin = localStorage.getItem('admin');
+    AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
+
     return (
-      <div className="App" id="wrapper">
-        <UserContextProvider>
-          <ParcelContextProvider>
-            <ErrorBoundary>
-              <Router>
-                  <Header />
-                  <Switch>
-                    <Route exact path="/"><Admin /></Route>
-                    <Route path="/admin"><Admin /></Route>
-                    <Route path="/users">
-                        <CitiesContextProvider><Users /></CitiesContextProvider>
-                    </Route>
-                    <Route path="/parcels"><Parcels /></Route>
-                    <Route path="/parcel/:id"><ParcelDetails /></Route>
-                  </Switch>
-              </Router>
-            </ErrorBoundary>
-          </ParcelContextProvider>
-        </UserContextProvider>
-      </div>
+        <div className="App" id="wrapper">
+                <ErrorBoundary>
+                  <Router>
+                      <Header />
+                      <Switch>
+                        <Route path="/login"><Login /></Route>
+                        <Route exact path="/"><Admin /></Route>
+                          <PrivateRoute path='/admin'><Admin/></PrivateRoute>
+                          <UserContextProvider>
+                              <CitiesContextProvider>
+                                <PrivateRoute path='/users'><Users /></PrivateRoute>
+                              </CitiesContextProvider>
+                              <ParcelContextProvider>
+                                  <PrivateRoute path='/parcels'><Parcels/></PrivateRoute>
+                                  <PrivateRoute path='/parcel/:id'><ParcelDetails/></PrivateRoute>
+                              </ParcelContextProvider>
+                          </UserContextProvider>
+                      </Switch>
+                  </Router>
+                </ErrorBoundary>
+        </div>
     );
   }
 }

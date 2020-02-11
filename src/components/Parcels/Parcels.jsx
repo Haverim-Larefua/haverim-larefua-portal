@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
-import {  withRouter, useHistory } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
@@ -13,7 +13,6 @@ import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interfac
 import logger from "../../Utils/logger";
 import Modal from "../shared/Modal/Modal";
 import UsersList from "../Users/UsersList";
-import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
