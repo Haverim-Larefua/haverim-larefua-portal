@@ -25,7 +25,7 @@ const Login: React.FC = (): React.ReactElement => {
                 };
             })
             .catch((err) => {
-                setLoginErrorMessage(`אירעה שגיאה: אנא בדוק שם משתמש וסיסמה`);
+                setLoginErrorMessage(`אירעה שגיאה: אנא בדוק/בדקי שם משתמש וסיסמה`);
             })
     };
 
@@ -35,10 +35,10 @@ const Login: React.FC = (): React.ReactElement => {
             <div className='login-background'></div>
             <div className='login-wrapper'>
                 <div className='login-screen'>
-                    <span>ברוכ.ה הבא.ה לחברים לרפואה</span>
+                    <span>ברוכים הבאים לשליחים לרפואה</span>
                     <Input type='text' name='username' label='שם משתמש' value={username} onChange={(e) => setUsername(e.target.value)} />
                     <Input type='password' name='password' label='סיסמה' value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <Button onClick={() => doLogin()}>התחבר</Button>
+                    <Button onClick={() => doLogin()}>התחבר/י</Button>
                     <div className='error-message'>{loginErrorMessage}</div>
                 </div>
             </div>
