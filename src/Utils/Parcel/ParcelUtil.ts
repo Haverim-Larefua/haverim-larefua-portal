@@ -128,6 +128,7 @@ export class ParcelUtil {
 
   static prepareParcelForDBUpdate(parcel: Parcel): Parcel {
      const aParcel = {...parcel};
+     delete aParcel.parcelTracking;
      aParcel.parcelTrackingStatus = ParcelUtil.parcelUIStatusValueToEnum(aParcel.parcelTrackingStatus);
      return aParcel;
   }

@@ -3,34 +3,48 @@ import './Dropdown.scss';
 import AppConstants from '../../../constants/AppConstants';
 
 
-class Dropdown extends React.Component {
-constructor(props){
- super(props);
+interface IDropdownProps {
+  options: string[];
+  name: string;
+  filter: (val: string) => {};
+  bullets?: boolean;
+  isDisabled?: boolean;
+}
 
- this.state = {
+interface IDropdownState {
+  displayMenu: boolean;
+  [key: string]: any; 
+} 
+
+class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
+
+  constructor(props: IDropdownProps){
+    super(props);
+
+    this.state = {
        displayMenu: false,
        [this.props.name]: this.props.options[0]
      };
 
-  this.showDropdownMenu = this.showDropdownMenu.bind(this);
-  this.togleDropDown = this.togleDropDown.bind(this);
-  this.handleChange = this.handleChange.bind(this);
-};
+    this.showDropdownMenu = this.showDropdownMenu.bind(this);
+    this.togleDropDown = this.togleDropDown.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  };
 
-togleDropDown() {
+  togleDropDown() {
     this.setState(prevState=>({
         displayMenu: !prevState.displayMenu
     }))
-}
+  }
 
-showDropdownMenu(event) {
+  showDropdownMenu(event: any) {
     event.preventDefault();
     this.setState({ displayMenu: true });
   }
 
-  handleChange(event) {
+  handleChange(event: any) {
     const {name, value} = event.target;
-    let newValue;
+    let newValue: string;
     value === AppConstants.all ? newValue = '' : newValue = value;
     this.setState({[name]: newValue});
     this.props.filter(newValue);

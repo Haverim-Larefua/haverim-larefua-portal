@@ -67,7 +67,9 @@ class HttpService {
 
   ////////////////////////////////////  CITIES ////////////////////////////////////
   public  async getCities() {
-    return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
+    // return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
+    const response = await axios.get(Configuration.URLS.CITIES_ENDPOINT);
+    return response.data;
   }
 
   // //////////////////////////////////// Push ////////////////////////////////////
@@ -110,7 +112,7 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${aParcel.id}`, HttpMethod.DELETE);
   }
 
-  async assignUserToParcel(pacelId: number, userId: number) {
+  async assignUserToParcel(userId: number, pacelId: number,) {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}/assign/${userId}`, HttpMethod.PUT);
   }
 
