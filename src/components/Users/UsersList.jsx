@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, Fragment } from "react";
 import './UsersList.scss';
 import { userContext } from "../../contexts/userContext";
-import UserListItem from './UserListItem';
+import UserListItem from './UserListItem.tsx';
 import createInitials from '../../Utils/User/InitialsCreator';
 
 const UsersList = (props) => {
@@ -31,12 +31,12 @@ const UsersList = (props) => {
             const flName = user.firstName+user.lastName;
             const lfName = user.lastName+user.firstName;
             const initials = user.firstName.charAt(0)+ user.lastName.charAt(0);
-            return  flName.includes(searchInputTerm) || 
-                    lfName.includes(searchInputTerm) || 
+            return  flName.includes(searchInputTerm) ||
+                    lfName.includes(searchInputTerm) ||
                     initials.includes(searchInputTerm);
           });
-          setUsersList(filteredList); 
-        } 
+          setUsersList(filteredList);
+        }
       } else {
         initializeUserList();
       }
@@ -45,11 +45,11 @@ const UsersList = (props) => {
     useEffect(() => {
       setUsersList(userExtendedData.users);
     }, [userExtendedData]);
-    
+
     useEffect(() => {
       createUsersUIList();
     }, [usersList]);
-    
+
     useEffect(() => {
       searchUsersList();
     }, [searchInputTerm])
@@ -72,16 +72,16 @@ const UsersList = (props) => {
         <ul className='users_list'>
           {options.map((item, i) => {
             return (
-              <UserListItem key={i} 
-                identifier={item.value} 
-                initials={item.initials} 
+              <UserListItem key={i}
+                identifier={item.value}
+                initials={item.initials}
                 label={item.label}
-                onUserCicked={onUserCicked} /> 
+                onUserCicked={onUserCicked} />
             );
           })}
         </ul>
       </Fragment>
     );
 }
- 
+
 export default UsersList;

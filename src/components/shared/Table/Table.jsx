@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 // import logger from "../../../Utils/logger";
-import tableStyles from './tableStyles';
+import tableStyles from './tableStyles.ts';
 import DataTable from 'react-data-table-component';
 import './Table.scss';
 import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
