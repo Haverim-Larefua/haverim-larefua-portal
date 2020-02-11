@@ -1,0 +1,11 @@
+@import '../../../styles/colors';
+@import '../../../styles/elements';
+
+.fhh-action-button {
+    @extend %button-reset;
+    align-items: center;
+    display: flex;
+    margin-right: 0px;
+    padding: 0;
+    width: 32px;
+ }

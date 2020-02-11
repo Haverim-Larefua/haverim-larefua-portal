@@ -24,6 +24,7 @@
     "styled-components": "^5.0.0",
     "ts-transformer-keys": "^0.4.1",
     "typescript": "^3.7.0-beta",
+    "uuid": "^3.4.0",
     "xlsx": "^0.15.4"
   },
   "scripts": {

@@ -1,4 +1,4 @@
-export default function formatDate(date) {
+export default function formatDate(date: string) {
     const newDate = new Date(date);
     const options = {year: 'numeric', month: 'numeric', day: 'numeric' };
     const formattedDate = {

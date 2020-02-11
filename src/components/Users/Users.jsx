@@ -45,8 +45,30 @@ const Users = () => {
     }
   ];
 
-  const cellButtonClicked = (e) => {
-    logger.log('[User] cellButtonClicked ', e.currentTarget, e.target);
+  const cellButtonClicked = (id,name) => {
+    logger.log('[Users] cellButtonClicked ', id, name);
+    const user = userExtendedData.users.find(usr => usr.phone === id);
+    if (!user) {
+      logger.error('[Users] cellButtonClicked user with phone ', id,'  not found');
+    }
+    switch (name) {
+      case 'notify' : {
+        logger.log('[Users] cellButtonClicked send notification to ', id);
+        break;
+      }
+      case 'edit': {
+        logger.log('[Users] cellButtonClicked edit ', id);
+        break;
+      }
+      case 'delete': {
+        logger.log('[Users] cellButtonClicked delete ', id);
+        break;
+      }
+      default: {
+        logger.warn('[Users] cellButtonClicked unkown action for user  ', id);
+        break;
+      }
+    }
   }
 
   return (
