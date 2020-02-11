@@ -4,6 +4,7 @@ import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
 import AppConstants from "../constants/AppConstants";
+import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 
 class HttpService {
   private http: AxiosInstance;
@@ -48,7 +49,7 @@ class HttpService {
     logger.log('[httpService ] getParcels ');
     try {
       const response = await this.http.get(`${this.config.PARCELS_POSTFIX}`);
-      return response.data;
+      return ParcelUtil.prepareParcelsForDisplay(response.data);
     } catch (error) {
       logger.error(
         "[HttpService] getParcels: could not retrieve parcels",
@@ -77,7 +78,12 @@ class HttpService {
   }
 
   async deleteParcel(aParcel: Parcel) {
-    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}]` );
+    const response = await this.http.delete( `${this.config.PARCELS_POSTFIX}/${aParcel.id}` );
+    return response.data;
+  }
+
+  async assignUserToParcel(pacelId: number, userId: number) {
+    const response = await this.http.put(`${this.config.PARCELS_POSTFIX}/assign/${pacelId}/${userId}`);
     return response.data;
   }
 
@@ -103,7 +109,7 @@ class HttpService {
 
     if ( parcels &&  parcels.length > 0 && statusFilterTerm &&  statusFilterTerm !== "" ) {
       const searchTerm = statusFilterTerm.trim().toLowerCase();
-      parcels = parcels.filter((item: Parcel) => item.status === searchTerm);
+      parcels = parcels.filter((item: Parcel) => item.parcelTrackingStatus === searchTerm);
     }
 
     return parcels;

@@ -1,32 +1,15 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import logger from "../../../Utils/logger";
+import React, { useCallback } from 'react';
+// import logger from "../../../Utils/logger";
 import tableStyles from './tableStyles';
 import DataTable from 'react-data-table-component';
 import './Table.scss';
 import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
 
 const Table = (props) => {
- 
-  const handleButtonClick = () => {
-    //alert('clicked');
-  };
 
   const handleChange = useCallback(state => {
     props.onSelectedRowsChange(state);
-  },[]);
-
-
-  const columns = useMemo(() => [
-  ...props.tableColumns,
-    {
-      cell: () => <button onClick={handleButtonClick}>Action</button>,
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      right: true,
-    },
-  ], [props.tableColumns]);
-
+  },[props]);
 
   const tableHeight = 'calc(100vh - 245px)';
   const sortIcon = <SortIcon />
@@ -34,9 +17,10 @@ const Table = (props) => {
   return (
     <DataTable
       data={props.data}
-      columns={columns}
+      keyField='no'
+      columns={props.tableColumns(props.handleCellButtonClick)}
       onSelectedRowsChange={handleChange}
-      selectableRows
+      selectableRows={props.selectableRows}
       highlightOnHover
       customStyles={tableStyles}
       noHeader
@@ -45,6 +29,8 @@ const Table = (props) => {
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
       sortIcon = {sortIcon}
+      onRowClicked={(props.rowClick)}
+      pointerOnHover={props.pointerOnHover}
     />
   );
 };

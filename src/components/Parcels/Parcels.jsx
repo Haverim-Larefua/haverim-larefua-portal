@@ -1,21 +1,23 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
-import { addParcels, loadParcels, editParcel } from "../../contexts/actions/parcels.action";
+import {  withRouter, useHistory } from 'react-router-dom';
+import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
-// import usePrevious from "../../contexts/userPrevious";
+import { userContext } from "../../contexts/userContext";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
 import Modal from "../shared/Modal/Modal";
 import UsersList from "../Users/UsersList";
+import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
-  //   const prevparcelExtendedData = usePrevious(parcelExtendedData);
+  const [userExtendedData] = useContext(userContext);
 
   const [statusFilterTerm, setStatusFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
@@ -24,6 +26,7 @@ const Parcels = () => {
   const [openUsersModal, setOpenUsersModal] = useState(false);
 
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
+  const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState();
 
@@ -54,17 +57,29 @@ const Parcels = () => {
     setSelectedUser(userId);
   }
 
-  const associateUserToParcels = () => {
-    logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
-    hideUsersModal();
-    if (selectedRowsState.selectedCount > 0 ) {
-      selectedRowsState.selectedRows.forEach(row => {
-        const parcel = parcelExtendedData.parcels.find(p => p.id === row.id);
-        parcel.userId = selectedUser.value;
-        logger.log('[Parcels] associateUserToParcels dispatch', parcel);
-        dispatch(editParcel(parcel));
+  const associateUserToOneParcel = (userId, parcelId) => {
+    const parcel = { ...parcelExtendedData.parcels.find(p => p.id === parcelId) };
+    parcel.currentUserId = userId;
+    parcel.user = userExtendedData.users.find(u => u.id === userId);
+    logger.log("[Parcels] associateUserToOneParcel dispatch", parcel);
+    dispatch(assignUserToParcel(parcel));
+  };
+
+  const associateUserToListOfParcels = (parcelsToAssociate, userId) => {
+    logger.log('[Parcels] associateUserToListOfParcels', parcelsToAssociate, userId);
+
+    if (parcelsToAssociate && parcelsToAssociate.length > 0 ) {
+      const uId = parseInt(userId);
+      parcelsToAssociate.forEach(id => {
+        associateUserToOneParcel(uId, parseInt(id))
       })
     }
+  }
+
+  const associateUserToSelectedParcels = () => {
+    logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
+    hideUsersModal();
+    associateUserToListOfParcels(parcelsToAssociate, selectedUser);
   }
 
   const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
@@ -82,33 +97,37 @@ const Parcels = () => {
   }
 
   const buildSubTitle = () => {
-    return (
-        selectedRowsState.selectedCount > 0
-          ? `${selectedRowsState.selectedCount} חבילות נבחרו`
-          : ''
-          )
+    return (selectedRowsState.selectedCount > 0 ? `${selectedRowsState.selectedCount} חבילות נבחרו` : '' );
   }
 
   const isWithOptionsAnSearch = () => {
     return selectedRowsState.selectedCount === 0
   }
 
-  const handleAction = e => {
+  const handleAction = async (e) => {
     if (isWithOptionsAnSearch()) { // load from file
       const files = e.target.files;
       if (files) {
-        handleFile(files[0]);
+        const data = await ParcelsImporterService.ImportFromExcel(files[0]);
+        dispatch(addParcels(data));
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
+      setParcelsToAssociate(selectedRowsState.selectedRows.map(row => row.id));
       showUsersModal();
     }
   };
 
-  const handleFile = async file => {
-    const data = await ParcelsImporterService.ImportFromExcel(file);
-    dispatch(addParcels(data));
-  };
+  const associateUserToParcelClicked = (e) => {
+    logger.log('[Parcel] associateUserToParcelClicked ', e.currentTarget, e.target);
+    setParcelsToAssociate([e.currentTarget.id]);
+    showUsersModal();
+  }
+
+  const history = useHistory();
+  const handleRowClick = (parcel) => {
+    history.push(`/parcel/${parcel.id}`);
+  }
 
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
@@ -129,19 +148,23 @@ const Parcels = () => {
 
   return (
     <div>
-      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToParcels} actionBtnText={AppConstants.allocation}>
+      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
         <UsersList updateSelectedUser={updateSelectedUser}/>
       </Modal>
 
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}
+        rowClick={handleRowClick}
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
+        handleCellButtonClick={associateUserToParcelClicked}
+        selectableRows
+        pointerOnHover
       />
-      {/* {searching && <Loader color="#d36ac2" width={6} speed={2} />} */}
     </div>
   );
 }
 
-export default Parcels;
+// export default Parcels;
+export default withRouter(Parcels);

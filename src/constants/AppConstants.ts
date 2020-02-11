@@ -6,6 +6,8 @@
     static readonly phone: string = 'טלפון';
     static readonly nameUIName: string = 'שם';
     static readonly identifierUIName: string ='מזהה';
+    static readonly catalogUIName: string ='מק״ט';
+
     static readonly userUIName: string = 'שליח.ה';
     static readonly usersUIName: string = 'שליחים.ות';
     static readonly firstName: string = 'שם פרטי';

@@ -11,7 +11,7 @@ import Users from "../Users/Users";
 import Header from "../shared/Header/Header";
 import ErrorBoundary from "../shared/ErrorBoundary/ErrorBoundary";
 import CitiesContextProvider from "../../contexts/citiesContext";
-import UsersList from "../Users/UsersList";
+import ParcelDetails from "../Parcels/ParcelDetails/ParcelDetails";
 
 class App extends Component<any, any> {
   render() {
@@ -29,7 +29,7 @@ class App extends Component<any, any> {
                         <CitiesContextProvider><Users /></CitiesContextProvider>
                     </Route>
                     <Route path="/parcels"><Parcels /></Route>
-                    <Route path="/usersList"><UsersList /></Route>
+                    <Route path="/parcel/:id"><ParcelDetails /></Route>
                   </Switch>
               </Router>
             </ErrorBoundary>

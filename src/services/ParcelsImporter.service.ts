@@ -31,9 +31,13 @@ export default class ParcelsImporterService {
             const phone = data[AppConstants.phone] ? data[AppConstants.phone] : '';
             const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : '';
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : '';
-            const aparcel = new Parcel(no, customerName, address, city, phone, comments, 'new_status', dt, signature);
-            logger.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
-            parcels.push(aparcel);
+            if (no !== '' && customerName !== '' && city !== '') {
+              const aparcel = new Parcel(no, customerName, address, city, phone, comments, AppConstants.readyStatusName, dt, signature);
+              logger.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
+              parcels.push(aparcel);
+            } else {
+              logger.error('[ParcelsImporterService] jsonDataToparcels invalid data');
+            }
         });
         return parcels;
     }

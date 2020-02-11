@@ -1,22 +1,21 @@
 import React, { useContext, useState, useEffect } from "react";
+import logger from "../../Utils/logger";
 
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { userContext } from "../../contexts/userContext";
 import { loadUsers } from "../../contexts/actions/users.action";
-// import usePrevious from "../../contexts/userPrevious";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { deliveryDaysValues } from "../../contexts/interfaces/users.interface";
 import { citiesContext } from "../../contexts/citiesContext";
 import Modal from "../shared/Modal/Modal";
 import UsersList from "./UsersList";
-import './users.scss';
+import './Users.scss';
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
-  // const prevUserExtendedData = usePrevious(UserExtendedData);
   const [cities] = useContext(citiesContext); // to be used by the add user modal
 
   const [dayFilterTerm, setDayFilterTerm] = useState("");
@@ -38,6 +37,7 @@ const Users = () => {
   const days = Object.values(deliveryDaysValues);
   console.log(availableDays);
 
+  const allWeek = [1, 2, 3, 4, 5, 6];
 
   // ToolbarOptions
   const options = [
@@ -55,6 +55,10 @@ const Users = () => {
     }
   ];
 
+  const cellButtonClicked = (e) => {
+    logger.log('[User] cellButtonClicked ', e.currentTarget, e.target);
+  }
+
   const handleClose = () => {
     setNewUserModal(false);
   };
@@ -62,11 +66,38 @@ const Users = () => {
   const onFieldChange = (e) => {
     setNewUserFormField({...newUserForm, [e.target.name]: e.target.value});
   };
-  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'userName', 'notes'];
+  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'userName', 'deliveryDays', 'notes'];
+
+  const deliverDaysSection =  <div className='availableDays'>
+      {days.map( (day, i) => {
+        return <span key={i} className={`daySelection ${day === AppConstants.allWeek ? 'fullWeek' : ''}`} onClick={ e => (day === AppConstants.allWeek) ? toggleAllWeekDays(e) : daySelection(e)}>{day}</span>
+      })}
+    </div>;
+
+  const toggleAllWeekDays = (e) => {
+    if(e.target.classList.contains('selected')){
+      Array.from(document.getElementsByClassName('daySelection')).forEach( el => el.classList.remove('selected'));
+      setDaySelection([]);
+    }
+    else {
+      Array.from(document.getElementsByClassName('daySelection')).forEach( el => el.classList.add('selected'));
+      setDaySelection(allWeek);
+    }
+
+  };
 
   const daySelection = (e) => {
-    const myDays = new Set(availableDays).add(e.target.innerHTML);
-    setDaySelection(Array.from(myDays));
+    const dayIndex = days.indexOf(e.target.innerHTML);
+    const selectedOption = e.target.innerHTML === AppConstants.allWeek ? allWeek : dayIndex;
+    let allMyDays;
+    if(e.target.classList.contains('selected')){
+      allMyDays = [...availableDays].filter( item =>  item !== selectedOption);
+      document.getElementsByClassName('fullWeek')[0].classList.remove('selected');
+    }
+    else {
+      allMyDays = [...availableDays, selectedOption].flat();
+    }
+    setDaySelection(Array.from(new Set(allMyDays)));
     e.target.classList.toggle('selected');
   };
 
@@ -80,20 +111,12 @@ const Users = () => {
                   <fieldset key={i} className={`userFormField ${item}`}>
                     <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
                     {item === 'notes' ? notes
-                        : <input className='input' type='text' id={item} name={item} onChange={e => onFieldChange(e)}/>
+                        : (item === 'deliveryDays' ? deliverDaysSection : <input className='input' type='text' id={item} name={item} onChange={e => onFieldChange(e)}/>)
                     }
                   </fieldset>
                 )
                 })
             }
-            <div>
-              <label>{AppConstants.deliveryDays}</label>
-              <div className='availableDays'>
-                {days.map( (day, i) => {
-                  return <span key={i} className='daySelection' onClick={ e => daySelection(e)}>{day}</span>
-                })}
-              </div>
-            </div>
           </form>
         </Modal>
 
