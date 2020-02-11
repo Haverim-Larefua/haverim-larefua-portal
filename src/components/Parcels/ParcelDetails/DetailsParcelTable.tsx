@@ -9,9 +9,9 @@ export interface DetailsParcelTableProps {
     address: string;
     city: string;
     comments: string;
-    no: number;
+    identity: number;
     phone: string;
-    updateDate: string;
+    lastUpdateDate: string;
   }
 
 const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
@@ -20,13 +20,13 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
         <div className="fhh-details-cell creation-date">
             <div className="fhh-details-cell__label">תאריך יצירה</div>
             <div className="fhh-details-cell__value">
-            {`${formatDate(props.currentParcel.updateDate).weekday} - ${formatDate(props.currentParcel.updateDate).date}` }
+            {`${formatDate(props.currentParcel.lastUpdateDate).weekday} - ${formatDate(props.currentParcel.lastUpdateDate).date}` }
             </div>
         </div>
         <div className="fhh-details-cell id">
             <div className="fhh-details-cell__label">מזהה</div>
             <div className="fhh-details-cell__value">
-                {props.currentParcel.no}
+                {props.currentParcel.identity}
             </div>
         </div>
         <div className="fhh-details-cell phone">

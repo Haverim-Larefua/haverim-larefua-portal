@@ -16,10 +16,8 @@ const ParcelContextProvider = props => {
     logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
     const response = await httpService.getParcels();
     logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
-    const dispParcels = ParcelUtil.prepareParcelsForDisplay(response);
-    logger.log('[ParcelContextProvider] getAllparcelsfromDB dispatching loadParcels  ', dispParcels, response);
-    dispatch(loadParcels(dispParcels));
-    const cities = ParcelUtil.getParcelsCitiesDistinct(dispParcels);
+    dispatch(loadParcels(response));
+    const cities = ParcelUtil.getParcelsCitiesDistinct(response);
     dispatch(updateParcelsCities(cities));
   }
 
@@ -41,6 +39,8 @@ const ParcelContextProvider = props => {
         case ADD_PARCEL: {
           const response = await httpService.createParcel( ParcelUtil.prepareParcelForDBUpdate(parcelExtendedData.action.parcel ));
           logger.log( "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL",response );
+          const getResponse = await getAllparcelsfromDB();
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCEL getAllparcelsfromDB", getResponse );
           break;
         }
         case ADD_PARCELS: {
@@ -63,14 +63,14 @@ const ParcelContextProvider = props => {
         }
         case ASSIGN_USER_TO_PARCEL: {
           const response =  await httpService.assignUserToParcel(
-            parcelExtendedData.action.parcel.parcelId, 
-            parcelExtendedData.action.parcel.currentUserId);
+            parcelExtendedData.action.parcel.currentUserId, 
+            parcelExtendedData.action.parcel.id);
           logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCEL", response );
           break;
         }
         case LOAD_PARCELS:
         default:
-          logger.log( "[ParcelContextProvider] updateParcelsInDB no action", parcelExtendedData.action.type );
+          logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD_PARCELS etc. no action", parcelExtendedData.action.type );
           break;
       }
     }

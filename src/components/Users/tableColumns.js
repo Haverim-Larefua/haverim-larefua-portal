@@ -1,6 +1,9 @@
+import React from 'react';
 import AppConstants from '../../constants/AppConstants';
+import memoize from 'memoize-one';
+import UserNoteComponent from './UserNoteComponent';
 
-const tableColumns  = [
+const tableColumns  = memoize(clickHandler => [
     {
       name: AppConstants.lastNameUIName,
       selector: 'lastName',
@@ -30,9 +33,12 @@ const tableColumns  = [
       name: AppConstants.commentsUIName,
       selector: 'notes',
       sortable: true,
+      minWidth: '250px',
+      cell: row => (<UserNoteComponent note={row.notes} itemId={row.phone} action={clickHandler}/>),
+      ignoreRowClick: row  =>(row.userName ? false : true),
+      allowOverflow: row  => (row.userName ? false : true),
+    }
 
-    },
-
-  ]
+  ]);
 
   export default tableColumns;
