@@ -34,10 +34,10 @@ class UserNoteComponent extends Component<UserNoteComponentProps> {
         <span className="note_text"> {this.props.note} </span>
         <div className="buttons_container">
           <ActionButton
-            name="edit"
+            name="notify"
             action={this.onButtonClicked}
             itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
-            icon={<EditIcon />}
+            icon={<NotifyIcon />}
           />
           <ActionButton
             name="delete"
@@ -46,10 +46,10 @@ class UserNoteComponent extends Component<UserNoteComponentProps> {
             icon={<DeleteIcon />}
           />
           <ActionButton
-            name="notify"
+            name="edit"
             action={this.onButtonClicked}
             itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
-            icon={<NotifyIcon />}
+            icon={<EditIcon />}
           />
         </div>
       </div>
