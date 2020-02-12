@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, Fragment } from "react";
 import './UsersList.scss';
 import { userContext } from "../../contexts/userContext";
-import UserListItem from './UserListItem.tsx';
+import UserListItem from './UserListItem';
 import createInitials from '../../Utils/User/InitialsCreator';
 
 const UsersList = (props) => {
