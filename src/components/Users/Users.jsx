@@ -147,6 +147,7 @@ const Users = () => {
         <Table
           data={userExtendedData.users}
           tableColumns={tableColumns}
+          handleCellButtonClick={cellButtonClicked}
           subHeaderComponent={
             <Toolbar
               title={AppConstants.usersUIName}
