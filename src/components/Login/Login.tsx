@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import "./Login.scss";
+import { withRouter, useHistory } from 'react-router-dom';
 import {Input} from "../../ui-components/Input/Input";
 import {Button} from "../../ui-components/Button/Button";
 import httpService, {IAuthAdminResponse} from "../../services/http";
@@ -7,6 +8,8 @@ import {Redirect} from "react-router-dom";
 import {AppConstants1} from "../../constants/AppConstants";
 
 const Login: React.FC = (): React.ReactElement => {
+
+    const history = useHistory();
 
     const [ token, setToken ] = useState<string>("");
     const [ username, setUsername ] = useState<string>("");
@@ -23,6 +26,7 @@ const Login: React.FC = (): React.ReactElement => {
                     firstName: res.admin.firstName,
                     lastName: res.admin.lastName
                 };
+                history.goBack();
             })
             .catch((err) => {
                 setLoginErrorMessage(`אירעה שגיאה: אנא בדוק/בדקי שם משתמש וסיסמה`);
@@ -46,4 +50,4 @@ const Login: React.FC = (): React.ReactElement => {
     )
 
 };
-export default Login;
+export default withRouter(Login);

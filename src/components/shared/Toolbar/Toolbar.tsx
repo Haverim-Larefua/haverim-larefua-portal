@@ -1,18 +1,18 @@
 import React, { Component, Fragment } from 'react';
+import Dropdown from '../Dropdown/Dropdown';
 import './Toolbar.scss';
 import UploadButton from '../UploadButton/UploadButton';
-import Dropdown from "../Dropdown/Dropdown_trial";
 // import logger from '../../../Utils/logger';
 
 export interface ToolbarOption {
   title: string;
   name: string;
   values: string[];
-  filter: (val: string) => {};
+  filter: (val:string) => {};
   bullets?: boolean;
   isDisabled?: boolean;
 }
-export interface Props {
+export interface IToolbarProps {
   title: string;
   subTitle: string;
   withOptions: boolean;
@@ -23,14 +23,13 @@ export interface Props {
   search: (searchTerm: string) => {};
   uploadButton: boolean;
 }
-export interface State {
-
+export interface IToolbarState {
 }
 
-class Toolbar extends Component<Props, State> {
+class  Toolbar extends Component<IToolbarProps, IToolbarState> {
 
   state = {
-    searchInputTerm: ""
+    searchInputTerm: "",
   };
 
   handleKeyDown = (e: any) => {
