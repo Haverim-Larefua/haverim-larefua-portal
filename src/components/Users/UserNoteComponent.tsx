@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./UserNoteComponent.scss";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
-import { ReactComponent as NotifyIcon } from "../../assets/icons/signature.svg";
+import { ReactComponent as NotifyIcon } from "../../assets/icons/imsg.svg";
 import { ReactComponent as EditIcon } from "../../assets/icons/edit.svg";
 
 

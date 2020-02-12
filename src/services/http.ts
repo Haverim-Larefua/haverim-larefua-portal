@@ -5,6 +5,7 @@ import Configuration from "../configuration/Configuration";
 import User from "../contexts/interfaces/users.interface";
 import AppConstants, {AppConstants1} from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
+import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
 
 enum HttpMethod {
   POST = 'post',
@@ -66,7 +67,7 @@ class HttpService {
   };
 
   ////////////////////////////////////  CITIES ////////////////////////////////////
-  public  async getCities() {
+  public  async getCities(): Promise<CitiesAndSettlements> {
     // return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
     const response = await axios.get(Configuration.URLS.CITIES_ENDPOINT);
     return response.data;
@@ -108,8 +109,8 @@ class HttpService {
     return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.PUT, aParcel);
   }
 
-  async deleteParcel(aParcel: Parcel) {
-    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${aParcel.id}`, HttpMethod.DELETE);
+  async deleteParcel(pacelId: number) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}`, HttpMethod.DELETE);
   }
 
   async assignUserToParcel(userId: number, pacelId: number,) {

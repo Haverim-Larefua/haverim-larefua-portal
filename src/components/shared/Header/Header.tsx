@@ -7,7 +7,7 @@ const Header: React.FC = () => {
 
   return (
     <div className="fhh-header">
-      <div className="fhh-header__logo">חברים לרפואה</div>
+      <div className="fhh-header__logo">שליחים לרפואה</div>
       <nav className="fhh-header__nav">
         <NavLink activeClassName="fhh-nav__item--active "  className="fhh-nav__item" to='/admin' >מבט על</NavLink>
         <NavLink activeClassName="fhh-nav__item--active " className="fhh-nav__item" to='/parcels'> חבילות</NavLink>
