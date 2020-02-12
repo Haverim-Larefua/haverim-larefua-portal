@@ -1,7 +1,7 @@
 import AppConstants from "../../constants/AppConstants";
 import React from "react";
 
-const UserForm = ({formFields, onFieldChange, deliverDaysSection}) => {
+const UserForm = ({onSubmit, formFields, onFieldChange, deliverDaysSection}) => {
     return (
     <form className='userForm' onSubmit={onSubmit}>
         {formFields.map( (item, i) => {
