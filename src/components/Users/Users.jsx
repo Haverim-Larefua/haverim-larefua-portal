@@ -81,7 +81,7 @@ const Users = () => {
   const onFieldChange = (e) => {
     setNewUserFormField({...newUserForm, [e.target.name]: e.target.value});
   };
-  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'userName', 'deliveryDays', 'notes'];
+  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'deliveryDays', 'notes'];
 
   const deliverDaysSection =  <div className='availableDays'>
       {days.map( (day, i) => {
@@ -118,7 +118,7 @@ const Users = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const newUserData = {...newUserForm, deliveryDays: availableDays};
+    const newUserData = {...newUserForm, deliveryDays: availableDays, password: "123456"};
     console.log(newUserData);
     dispatch(httpService.createUser(newUserData));
     handleClose();
