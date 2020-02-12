@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {useContext, useState, useEffect, Fragment} from "react";
 import logger from "../../Utils/logger";
 
 import Table from "../shared/Table/Table";
@@ -14,6 +14,7 @@ import Modal from "../shared/Modal/Modal";
 import UsersList from "./UsersList";
 import './Users.scss';
 import UserForm from "./UserForm";
+import Dropdown from "../shared/Dropdown/Dropdown";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
@@ -38,19 +39,12 @@ const Users = () => {
   const days = Object.values(deliveryDaysValues);
   const allWeek = [1, 2, 3, 4, 5, 6];
 
-  // ToolbarOptions
   const options = [
     {
       title: AppConstants.deliveryArea,
       name: "cities",
       values: [AppConstants.all, ...userExtendedData.deliveryAreas],
       filter: setCityFilterTerm
-    },
-    {
-      title: AppConstants.deliveryDays,
-      name: "days",
-      values: days,
-      filter: setDayFilterTerm
     }
   ];
 
@@ -78,7 +72,7 @@ const Users = () => {
         break;
       }
     }
-  }
+  };
 
   const handleClose = () => {
     setShowNewUserModal(false);
@@ -130,7 +124,6 @@ const Users = () => {
   };
 
 
-
   return (
       <div>
         <Modal show={showNewUserModal}
@@ -141,7 +134,14 @@ const Users = () => {
                handleCancelAction = {handleClose}
                cancelBtnText={AppConstants.cancel}
         >
-          <UserForm onFieldChange={onFieldChange} formFields={formFields} deliverDaysSection={deliverDaysSection} onSubmit={onSubmit}/>
+          <UserForm
+              onFieldChange={onFieldChange}
+              formFields={formFields}
+              deliverDaysSection={deliverDaysSection}
+              userExtendedData={userExtendedData}
+              setCityFilterTerm={setCityFilterTerm}
+              onSubmit={onSubmit}
+          />
         </Modal>
 
         <Table

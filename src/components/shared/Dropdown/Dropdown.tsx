@@ -7,14 +7,15 @@ interface IDropdownProps {
   options: string[];
   name: string;
   filter: (val: string) => {};
+  onSelection?: (val: string) => {};
   bullets?: boolean;
   isDisabled?: boolean;
 }
 
 interface IDropdownState {
   displayMenu: boolean;
-  [key: string]: any; 
-} 
+  [key: string]: any;
+}
 
 class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
@@ -27,11 +28,11 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
      };
 
     this.showDropdownMenu = this.showDropdownMenu.bind(this);
-    this.togleDropDown = this.togleDropDown.bind(this);
+    this.toggleDropDown = this.toggleDropDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
   };
 
-  togleDropDown() {
+  toggleDropDown() {
     this.setState(prevState=>({
         displayMenu: !prevState.displayMenu
     }))
@@ -44,17 +45,18 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
   handleChange(event: any) {
     const {name, value} = event.target;
+    this.props.onSelection && this.props.onSelection(event);
     let newValue: string;
     value === AppConstants.all ? newValue = '' : newValue = value;
     this.setState({[name]: newValue});
     this.props.filter(newValue);
-    this.togleDropDown();
+    this.toggleDropDown();
   }
 
   render() {
     return (
         <div  className={`fhh-dropdown ${this.props.isDisabled ? 'disabled' : ''}`} >
-            { this.state.displayMenu ? (<div  className="fhh-dropdown__screen" onClick={this.togleDropDown}></div>) : ''}
+            { this.state.displayMenu ? (<div  className="fhh-dropdown__screen" onClick={this.toggleDropDown}></div>) : ''}
          <div className="fhh-dropdown__button" onClick={this.showDropdownMenu}>{this.state[this.props.name] ? this.state[this.props.name] : AppConstants.all}</div>
           { this.state.displayMenu ? (
           <div className="fhh-dropdown__items-container">
