@@ -13,7 +13,7 @@ const UserForm = ({onSubmit, formFields, onFieldChange, deliverDaysSection, user
                     <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
                     {item === 'notes' ? notes
                         : (item === 'deliveryDays' ? deliverDaysSection
-                            :( item === 'deliveryArea' ? <Dropdown onSelection={onFieldChange} className="input" options={[AppConstants.all, ...userExtendedData.deliveryAreas]} name="deliverArea" filter={setCityFilterTerm} isDisabled={false}> </Dropdown>
+                            :( item === 'deliveryArea' ? <Dropdown onSelection={onFieldChange} className="input" options={[AppConstants.all, ...userExtendedData.deliveryAreas]} name="deliveryArea" filter={setCityFilterTerm} isDisabled={false}> </Dropdown>
                                 : <input className='input' type='text' id={item} name={item} onChange={e => onFieldChange(e)}/>))
                     }
                 </fieldset>

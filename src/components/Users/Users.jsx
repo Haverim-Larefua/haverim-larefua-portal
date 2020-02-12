@@ -119,7 +119,8 @@ const Users = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const newUserData = {...newUserForm, deliveryDays: availableDays};
-    console.log(newUserData); // TODO send newUserData to BE
+    console.log(newUserData);
+    dispatch(httpService.createUser(newUserData));
     handleClose();
   };
 

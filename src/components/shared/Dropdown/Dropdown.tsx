@@ -6,7 +6,7 @@ import AppConstants from '../../../constants/AppConstants';
 interface IDropdownProps {
   options: string[];
   name: string;
-  filter: (val: string) => {};
+  filter?: (val: string) => {};
   onSelection?: (val: string) => {};
   bullets?: boolean;
   isDisabled?: boolean;
@@ -49,7 +49,7 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     let newValue: string;
     value === AppConstants.all ? newValue = '' : newValue = value;
     this.setState({[name]: newValue});
-    this.props.filter(newValue);
+    this.props.filter && this.props.filter(newValue);
     this.toggleDropDown();
   }
 
