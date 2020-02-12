@@ -41,13 +41,13 @@ export function assignUserToParcel(parcel: Parcel): IAssigUserToParcelActionType
   return {type: ASSIGN_USER_TO_PARCEL, parcel};
 }
 
-interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
-interface IAddparcelActionType { type: string, parcel: Parcel };
-interface IAddparcelsActionType { type: string, parcels: Parcel[] };
-interface IEditparcelActionType { type: string, parcel: Parcel };
-interface IRemoveparcelActionType { type: string, parcelId: number };
-interface IUpdateparcelCitiesType { type: string, cities: string[] };
-interface IAssigUserToParcelActionType { type: string, parcel: Parcel };
+export interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
+export interface IAddparcelActionType { type: string, parcel: Parcel };
+export interface IAddparcelsActionType { type: string, parcels: Parcel[] };
+export interface IEditparcelActionType { type: string, parcel: Parcel };
+export interface IRemoveparcelActionType { type: string, parcelId: number };
+export interface IUpdateparcelCitiesType { type: string, cities: string[] };
+export interface IAssigUserToParcelActionType { type: string, parcel: Parcel };
 
 export type parcelActions = ILoadparcelsActionType;
 
