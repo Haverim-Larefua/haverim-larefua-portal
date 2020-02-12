@@ -13,6 +13,7 @@ import { citiesContext } from "../../contexts/citiesContext";
 import Modal from "../shared/Modal/Modal";
 import UsersList from "./UsersList";
 import './Users.scss';
+import UserForm from "./UserForm";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
@@ -128,6 +129,8 @@ const Users = () => {
     handleClose();
   };
 
+
+
   return (
       <div>
         <Modal show={showNewUserModal}
@@ -138,20 +141,7 @@ const Users = () => {
                handleCancelAction = {handleClose}
                cancelBtnText={AppConstants.cancel}
         >
-          <form className='userForm' onSubmit={onSubmit}>
-            {formFields.map( (item, i) => {
-              const notes = <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"/>;
-                return (
-                  <fieldset key={i} className={`userFormField ${item}`}>
-                    <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
-                    {item === 'notes' ? notes
-                        : (item === 'deliveryDays' ? deliverDaysSection : <input className='input' type='text' id={item} name={item} onChange={e => onFieldChange(e)}/>)
-                    }
-                  </fieldset>
-                )
-                })
-            }
-          </form>
+          <UserForm onFieldChange={onFieldChange} formFields={formFields} deliverDaysSection={deliverDaysSection} onSubmit={onSubmit}/>
         </Modal>
 
         <Table
