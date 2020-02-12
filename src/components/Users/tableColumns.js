@@ -5,31 +5,31 @@ import UserNoteComponent from './UserNoteComponent';
 
 const tableColumns  = memoize(clickHandler => [
     {
-      name: AppConstants.lastNameUIName,
+      name: AppConstants.lastName,
       selector: 'lastName',
       sortable: true,
       maxWidth: '250px',
     },
     {
-      name: AppConstants.firstNameUIName,
+      name: AppConstants.firstName,
       selector: 'firstName',
       sortable: true,
       maxWidth: '200px',
     },
     {
-      name: AppConstants.deliveryAreaUIName,
+      name: AppConstants.deliveryArea,
       selector: 'deliveryArea',
       sortable: true,
       maxWidth: '250px',
     },
     {
-      name: AppConstants.delivaryDaysUIName,
+      name: AppConstants.deliveryDays,
       selector: 'deliveryDays',
       sortable: true,
       maxWidth: '250px',
     },
     {
-      name: AppConstants.phoneUIName,
+      name: AppConstants.phone,
       selector: 'phone',
       sortable: true,
     },

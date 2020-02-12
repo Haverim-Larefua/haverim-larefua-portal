@@ -2,11 +2,11 @@ import { loadUsers, UserActions } from "../actions/users.action";
 import Parcel from "./parcels.interface";
 import AppConstants from "../../constants/AppConstants";
 
-export const delivaryDaysValues = Object.freeze({
+export const deliveryDaysValues = Object.freeze({
   ALL_WEEK: AppConstants.allWeek,
   SUNDAY: AppConstants.sunday,
   MONDAY: AppConstants.monday,
-  TEUSDAY: AppConstants.teusday,
+  TUESDAY: AppConstants.tuesday,
   WEDNESDAY: AppConstants.wednesday,
   THURSDAY: AppConstants.thursday,
   FRIDAY: AppConstants.friday

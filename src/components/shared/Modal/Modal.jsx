@@ -1,15 +1,21 @@
 import React from 'react'
 import './Modal.scss';
 
-const Modal = ({ handleClose, handleAction, show, children }) => {
-  const showHideClassName = show ? "modal display-block" : "modal display-none";
+const Modal = ({ title, handleClose, handleAction, show, children, actionBtnText, handleCancelAction, cancelBtnText }) => {
+  const showHideClassName = show ? "show" : "hide";
 
   return (
-    <div className={showHideClassName}>
+    <div className={`modal ${showHideClassName}`}>
       <section className="modal-main">
-        <button className="modal-close" onClick={handleClose}> X </button>
+          <p className="modal-header">
+            <title className="title">{title}</title>
+            <button className="modal-close" onClick={handleClose}>X</button>
+          </p>
         {children}
-        <button className="modal-button" onClick={handleAction}> שיוך </button>
+        <div className="modal-buttons-area">
+            <button className="modal-action-button" onClick={handleAction} type="submit"> {actionBtnText} </button>
+            <button className="modal-cancel-button" onClick={handleCancelAction}> {cancelBtnText} </button>
+        </div>
       </section>
     </div>
   );

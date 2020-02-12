@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
 import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
-import Table from "../shared/Table/Table";
+import Table from "../shared/Table/Table.jsx";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
