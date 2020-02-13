@@ -1,17 +1,8 @@
 import React from "react";
-import './UserListItem.scss';
 import UserDetails from './UserDetails'
+import './UserListItem.scss';
 
-interface UserListItemProps {
-    identifier: string;
-    label: String;
-    initials: String;
-    selected: boolean;
-    showUserDetails: string;
-    onUserCicked: (event: any) => void;
-}
-
-const UserListItem: React.FC<UserListItemProps> = (props:UserListItemProps) => {
+const UserListItem = (props) => {
     return (
         <li className={`fhh-userlist-item ${props.selected ? 'selected' : ''}`} id={props.identifier} onClick={props.onUserCicked}>
             <span className='fhh-userlist-item__initials'>{props.initials} </span>
