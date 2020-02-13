@@ -41,7 +41,7 @@ const DetailsTrackingTable = (props) => {
                                     <div className="fhh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
                                     <div className="fhh-details-tracking__cell status"><Status status={track.status} /></div>
                                     <div className="fhh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
-                                    <div className="fhh-details-tracking__cell comments">---</div>
+                                    <div className="fhh-details-tracking__cell comments">{track.notes}</div>
                                 </div>
                             )
                         })}

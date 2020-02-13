@@ -11,7 +11,7 @@ import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
-import Modal from "../shared/Modal/Modal";
+import UsersModal from "../Users/UsersModal";
 import UsersList from "../Users/UsersList";
 
 const Parcels = () => {
@@ -147,9 +147,9 @@ const Parcels = () => {
 
   return (
     <div>
-      <Modal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
+      <UsersModal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
         <UsersList updateSelectedUser={updateSelectedUser}/>
-      </Modal>
+      </UsersModal>
 
       <Table
         data={parcelExtendedData.parcels}
