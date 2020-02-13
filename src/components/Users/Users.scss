@@ -14,7 +14,7 @@
   flex-direction: column;
   margin-top: 10px;
 
-  &.userName {
+  &.username {
     flex: auto;
     margin-right: 10px;
   }
@@ -38,6 +38,8 @@
 .input {
   height: 40px;
   width: 280px;
+  outline: 0;
+  border: 1px solid $grey-mid;
 }
 
 .label {
@@ -74,12 +76,16 @@
 .deliveryArea {
   .fhh-dropdown__items-container {
     width: 280px;
+    height: auto;
+    max-height: 300px;
+    overflow: scroll;
   }
   .fhh-dropdown, .fhh-dropdown > .fhh-dropdown__button, .fhh-dropdown__screen {
     width: 280px;
     height: 40px;
     border-radius: 0;
     margin-left: 0;
+    border-color: $grey-mid;
   }
 }
 

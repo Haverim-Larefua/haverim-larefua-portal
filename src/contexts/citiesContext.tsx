@@ -8,7 +8,7 @@ export const citiesContext = createContext<string[]>([]);
 
 const CitiesContextProvider: React.FC = (props) => {
     const [cities, setCities] = useState<string[]>([]);
-  
+
     //first time call
     useEffect(() => {
         async function getAllCities() {
@@ -20,12 +20,12 @@ const CitiesContextProvider: React.FC = (props) => {
         }
         getAllCities();
       },[]);
-  
+
     return (
       <citiesContext.Provider value={cities}>
         {props.children}
       </citiesContext.Provider>
     );
   }
-   
+
   export default CitiesContextProvider;

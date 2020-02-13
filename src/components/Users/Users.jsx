@@ -18,7 +18,7 @@ import Dropdown from "../shared/Dropdown/Dropdown";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
-  const [cities] = useContext(citiesContext); // to be used by the add user modal
+  const cities = useContext(citiesContext); // to be used by the add user modal
 
   const [dayFilterTerm, setDayFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
@@ -124,7 +124,6 @@ const Users = () => {
     handleClose();
   };
 
-
   return (
       <div>
         <Modal show={showNewUserModal}
@@ -139,8 +138,8 @@ const Users = () => {
               onFieldChange={onFieldChange}
               formFields={formFields}
               deliverDaysSection={deliverDaysSection}
-              userExtendedData={userExtendedData}
               setCityFilterTerm={setCityFilterTerm}
+              cities={cities}
               onSubmit={onSubmit}
           />
         </Modal>

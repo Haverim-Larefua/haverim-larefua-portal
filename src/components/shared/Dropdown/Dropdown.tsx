@@ -57,7 +57,7 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     return (
         <div  className={`fhh-dropdown ${this.props.isDisabled ? 'disabled' : ''}`} >
             { this.state.displayMenu ? (<div  className="fhh-dropdown__screen" onClick={this.toggleDropDown}></div>) : ''}
-         <div className="fhh-dropdown__button" onClick={this.showDropdownMenu}>{this.state[this.props.name] ? this.state[this.props.name] : AppConstants.all}</div>
+         <div className="fhh-dropdown__button" onClick={this.toggleDropDown}>{this.state[this.props.name] ? this.state[this.props.name] : AppConstants.all}</div>
           { this.state.displayMenu ? (
           <div className="fhh-dropdown__items-container">
               {this.props.options.map(item => {

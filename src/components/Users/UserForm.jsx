@@ -3,7 +3,7 @@ import React from "react";
 import Dropdown from "../shared/Dropdown/Dropdown";
 import Modal from "../shared/Modal/Modal";
 
-const UserForm = ({onSubmit, formFields, onFieldChange, deliverDaysSection, userExtendedData, setCityFilterTerm}) => {
+const UserForm = ({onSubmit, formFields, onFieldChange, deliverDaysSection, setCityFilterTerm, cities}) => {
     return (
     <form className='userForm' onSubmit={onSubmit}>
         {formFields.map( (item, i) => {
@@ -13,7 +13,7 @@ const UserForm = ({onSubmit, formFields, onFieldChange, deliverDaysSection, user
                     <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
                     {item === 'notes' ? notes
                         : (item === 'deliveryDays' ? deliverDaysSection
-                            :( item === 'deliveryArea' ? <Dropdown onSelection={onFieldChange} className="input" options={[AppConstants.all, ...userExtendedData.deliveryAreas]} name="deliveryArea" filter={setCityFilterTerm} isDisabled={false}> </Dropdown>
+                            :( item === 'deliveryArea' ? <Dropdown onSelection={onFieldChange} className="input" options={cities} name="deliveryArea" filter={setCityFilterTerm} isDisabled={false}> </Dropdown>
                                 : <input className='input' type='text' id={item} name={item} onChange={e => onFieldChange(e)}/>))
                     }
                 </fieldset>
