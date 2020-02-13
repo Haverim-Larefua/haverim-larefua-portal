@@ -1,0 +1,56 @@
+@import '../../styles//colors';
+@import '../../styles/elements';
+
+.fhh-user-details {
+    background-color: $white;
+    border-radius: 3px;
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+    border-color: $grey-mid;
+    box-shadow: 2px 4px 3px 0 rgba(224, 224, 224, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    right: 102%;
+    top: 10%;
+    width: 538px;
+}
+
+.fhh-user-details__user {
+    width: 100%;
+}
+.fhh-user-details__phone {
+    width: 34%;
+}
+.fhh-user-details__city {
+    width: 33%;
+}
+.fhh-user-details__days {
+    width: 33%;
+}
+.fhh-user-details__notes {
+    width: 100%;
+}
+
+.fhh-user-details__item {
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    border-color: $grey-mid;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    height: 72px;
+    justify-content: space-evenly;
+    line-height: 1.5;
+    padding:  0 16px;
+}
+
+.fhh-user-details__label {
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+
+.fhh-user-details__user-name {
+    font-size: 24px;
+}

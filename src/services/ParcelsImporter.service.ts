@@ -36,7 +36,7 @@ export default class ParcelsImporterService {
               logger.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
               parcels.push(aparcel);
             } else {
-              logger.error('[ParcelsImporterService] jsonDataToparcels invalid data');
+              logger.error('[ParcelsImporterService] jsonDataToparcels: invalid data');
             }
         });
         return parcels;
@@ -60,8 +60,13 @@ export default class ParcelsImporterService {
         const data = XLSX.utils.sheet_to_json<any>(ws); // any[]
         let result = new ImportedData(data, this.make_cols(ws['!ref']));
         const dt = new Date(file.name.split('.')[0]);
-        let parcels = this.jsonDataToparcels(result.data, dt);
-        resolve(parcels);
+        if (dt instanceof Date && (dt.toString() !== "Invalid Date")) {
+          let parcels = this.jsonDataToparcels(result.data, dt);
+          resolve(parcels);
+        } else {
+          logger.error('[ParcelsImporterService] ImportFromExcel: invliad file name - must be of the form yyyy-mm-dd.xls');
+          resolve([]);
+        }
       };
 
       reader.onerror = reject;

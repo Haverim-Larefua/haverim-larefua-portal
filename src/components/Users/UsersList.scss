@@ -1,25 +1,45 @@
 @import '../../styles//colors';
 @import '../../styles/elements';
 
-.users_list {
-    list-style-type: none;
+
+.fhh-userlist {
+    display: flex;
+    flex-direction: column;
+}
+
+.fhh-userlist__head {
+    border: 1px solid $grey-mid;
+    box-shadow: 0 2px 3px 0 rgba(224, 224, 224, 0.5);
+    padding: 16px 23px;
+}
+
+.fhh-userlist__title {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 12px;
 }
 
 
-.search {
+.fhh-userlist__search {
     background-color: $grey-light;
     border-radius: 4px;
     height: 40px;
-    max-height: 40px;
-    margin-left: 6%;
-    width: 25%;
 }
 
-.search-input {
-    padding: 0 43px 0 0;
-    font-size: 16px;
-    border: 0;
-    height: 100%;
+.fhh-userlist__search-input {
     background-color: transparent;
+    border: 0;
+    font-size: 16px;
+    height: 100%;
+    padding: 0 43px 0 0;
 }
 
+.fhh-userlist__items{
+    box-shadow: inset 0px -4px 3px -3px rgba(224, 224, 224, 0.5);
+    list-style-type: none;
+    margin: 0;
+    max-height: 382px;
+    overflow: auto;
+    padding: 0;
+}
