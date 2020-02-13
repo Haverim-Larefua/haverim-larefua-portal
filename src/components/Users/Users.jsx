@@ -117,8 +117,8 @@ const Users = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const newUserData = {...newUserForm, deliveryDays: availableDays, password: "123456"};
-    console.log(newUserData);
-    dispatch(httpService.createUser(newUserData));
+    const reformattedUser = {...newUserData, deliveryDays: `[${newUserData.deliveryDays}]` }; // TODO remove this after refactoring the DB, currently expects an array as a string ("[]"), The DB should be fixed to only be expecting an array
+    dispatch(httpService.createUser(reformattedUser));
     handleClose();
   };
 
