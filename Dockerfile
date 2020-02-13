@@ -16,6 +16,7 @@ RUN mkdir -p /opt/app/hl_fe/
 WORKDIR /opt/app/hl_fe
 COPY . .
 COPY --from=0 /opt/app/hl_fe/node_modules ./node_modules
+RUN npm rebuild node-sass
 RUN yarn build
 EXPOSE 3000
 RUN chmod 755 ${APP_PATH}/scripts/startService.sh
