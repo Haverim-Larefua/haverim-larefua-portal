@@ -16,7 +16,7 @@
     static readonly deliveryDays: string = 'ימי חלוקה';
     static readonly email: string = 'אימייל';
     static readonly password: string = 'סיסמה';
-    static readonly userName: string = 'שם משתמש.ת';
+    static readonly username: string = 'שם משתמש.ת';
     static readonly notes: string = 'הערות';
     static readonly parcelsUIName: string = 'חבילות';
 

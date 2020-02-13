@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {useContext, useState, useEffect, Fragment} from "react";
 import logger from "../../Utils/logger";
 
 import Table from "../shared/Table/Table";
@@ -14,10 +14,11 @@ import Modal from "../shared/Modal/Modal";
 import UsersList from "./UsersList";
 import './Users.scss';
 import UserForm from "./UserForm";
+import Dropdown from "../shared/Dropdown/Dropdown";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
-  const [cities] = useContext(citiesContext); // to be used by the add user modal
+  const cities = useContext(citiesContext); // to be used by the add user modal
 
   const [dayFilterTerm, setDayFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
@@ -38,19 +39,12 @@ const Users = () => {
   const days = Object.values(deliveryDaysValues);
   const allWeek = [1, 2, 3, 4, 5, 6];
 
-  // ToolbarOptions
   const options = [
     {
       title: AppConstants.deliveryArea,
       name: "cities",
       values: [AppConstants.all, ...userExtendedData.deliveryAreas],
       filter: setCityFilterTerm
-    },
-    {
-      title: AppConstants.deliveryDays,
-      name: "days",
-      values: days,
-      filter: setDayFilterTerm
     }
   ];
 
@@ -78,7 +72,7 @@ const Users = () => {
         break;
       }
     }
-  }
+  };
 
   const handleClose = () => {
     setShowNewUserModal(false);
@@ -87,7 +81,7 @@ const Users = () => {
   const onFieldChange = (e) => {
     setNewUserFormField({...newUserForm, [e.target.name]: e.target.value});
   };
-  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'userName', 'deliveryDays', 'notes'];
+  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'deliveryDays', 'notes'];
 
   const deliverDaysSection =  <div className='availableDays'>
       {days.map( (day, i) => {
@@ -124,12 +118,11 @@ const Users = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const newUserData = {...newUserForm, deliveryDays: availableDays};
-    console.log(newUserData); // TODO send newUserData to BE
+    const newUserData = {...newUserForm, deliveryDays: availableDays, password: "123456"};
+    console.log(newUserData);
+    dispatch(httpService.createUser(newUserData));
     handleClose();
   };
-
-
 
   return (
       <div>
@@ -141,7 +134,14 @@ const Users = () => {
                handleCancelAction = {handleClose}
                cancelBtnText={AppConstants.cancel}
         >
-          <UserForm onFieldChange={onFieldChange} formFields={formFields} deliverDaysSection={deliverDaysSection} onSubmit={onSubmit}/>
+          <UserForm
+              onFieldChange={onFieldChange}
+              formFields={formFields}
+              deliverDaysSection={deliverDaysSection}
+              setCityFilterTerm={setCityFilterTerm}
+              cities={cities}
+              onSubmit={onSubmit}
+          />
         </Modal>
 
         <Table
