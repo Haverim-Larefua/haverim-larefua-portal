@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect, Fragment} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import logger from "../../Utils/logger";
 
 import Table from "../shared/Table/Table";
@@ -11,10 +11,8 @@ import AppConstants from "../../constants/AppConstants";
 import { deliveryDaysValues } from "../../contexts/interfaces/users.interface";
 import { citiesContext } from "../../contexts/citiesContext";
 import Modal from "../shared/Modal/Modal";
-import UsersList from "./UsersList";
 import './Users.scss';
 import UserForm from "./UserForm";
-import Dropdown from "../shared/Dropdown/Dropdown";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
