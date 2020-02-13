@@ -21,7 +21,6 @@ const UsersList = (props) => {
     const opts = [];
     usersList.forEach(user => {
       const initials = createInitials(user.firstName, user.lastName)
-      // const initials = user.firstName.charAt(0) + user.lastName.charAt(0);
       opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}` });
     })
     setOptions(opts);
