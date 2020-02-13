@@ -1,7 +1,6 @@
 import AppConstants from "../../constants/AppConstants";
 import React from "react";
 import Dropdown from "../shared/Dropdown/Dropdown";
-import Modal from "../shared/Modal/Modal";
 
 const UserForm = ({onSubmit, formFields, onFieldChange, deliverDaysSection, setCityFilterTerm, cities}) => {
     return (
