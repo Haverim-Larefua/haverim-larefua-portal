@@ -150,9 +150,11 @@ const Users = () => {
             <Toolbar
               title={AppConstants.usersUIName}
               actionTitle={AppConstants.addUserUIName}
-              options={options}
-              search={setNameSearchTerm}
               action={() => setShowNewUserModal(true)}
+              withOptions
+              options={options}
+              withSearch
+              search={setNameSearchTerm}
             />
           }
         />

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import formatDate from '../../../Utils/dateFormatter';
 import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
+import {ParcelUtil} from '../../../Utils/Parcel/ParcelUtil';
 
 
 
@@ -12,6 +13,9 @@ const DetailsTrackingTable = (props) => {
     const getUserFullNameById = (id) => {
         if (users.users.length > 0) {
             const user = users.users.find((u) => u.id === id);
+            if (!user) {
+                return '';
+            }
             return `${user.firstName} ${user.lastName}`;
         }
     };
@@ -39,7 +43,7 @@ const DetailsTrackingTable = (props) => {
                                     <div className="fhh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
                                     <div className="fhh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
                                     <div className="fhh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
-                                    <div className="fhh-details-tracking__cell status"><Status status={track.status} /></div>
+                                    <div className="fhh-details-tracking__cell status"><Status status={ParcelUtil.parcelStatusEnumToUIValue(track.status)} /></div>
                                     <div className="fhh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
                                     <div className="fhh-details-tracking__cell comments">{track.notes}</div>
                                 </div>

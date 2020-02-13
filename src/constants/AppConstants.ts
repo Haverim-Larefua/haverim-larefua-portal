@@ -8,24 +8,24 @@
     static readonly identifierUIName: string ='מזהה';
     static readonly catalogUIName: string ='מק״ט';
 
-    static readonly userUIName: string = 'שליח.ה';
-    static readonly usersUIName: string = 'שליחים.ות';
+    static readonly userUIName: string = 'שליח/ה';
+    static readonly usersUIName: string = 'שליחים/ות';
     static readonly firstName: string = 'שם פרטי';
     static readonly lastName: string = 'שם משפחה';
     static readonly deliveryArea: string = 'עיר חלוקה';
     static readonly deliveryDays: string = 'ימי חלוקה';
     static readonly email: string = 'אימייל';
     static readonly password: string = 'סיסמה';
-    static readonly username: string = 'שם משתמש.ת';
+    static readonly username: string = 'שם משתמש/ת';
     static readonly notes: string = 'הערות';
     static readonly parcelsUIName: string = 'חבילות';
 
-    static readonly addUserUIName: string = 'הוספת שליח.ה';
+    static readonly addUserUIName: string = 'הוספת שליח/ה';
     static readonly add: string = 'הוספה';
     static readonly cancel: string = 'ביטול';
 
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
-    static readonly associateUserUIName: string = '+ שיוך לשליח.ה';
+    static readonly associateUserUIName: string = '+ שיוך לשליח/ה';
 
     static readonly commentsUIName: string = 'הערות';
     static readonly signatureUIName: string = 'חתימה';
