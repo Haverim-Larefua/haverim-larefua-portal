@@ -1,4 +1,5 @@
 import User from "../../contexts/interfaces/users.interface";
+import AppConstants from "../../constants/AppConstants";
 
 export class UserUtil {
     
@@ -25,10 +26,14 @@ export class UserUtil {
   }
 
   static prepareOneUserForDisplay(user: User): User {
-    let mapObj = ["", "א", "ב", "ג", "ד", "ה", "ו"];
-    user.deliveryDays = user.deliveryDays.replace(/1|2|3|4|5|6/gi, function(matched){
-      return mapObj[parseInt(matched)];
-    });
+    if (user.deliveryDays === "1,2,3,4,5,6" || user.deliveryDays === "[1,2,3,4,5,6]") {
+      user.deliveryDays = AppConstants.allWeek;
+    } else {
+      const mapObj = ["", "א", "ב", "ג", "ד", "ה", "ו"];
+      user.deliveryDays = user.deliveryDays.replace(/1|2|3|4|5|6/gi, function(matched){
+        return mapObj[parseInt(matched)];
+      });
+    }
     return user;
   }
 
