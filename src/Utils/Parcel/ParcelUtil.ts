@@ -62,6 +62,8 @@ export class ParcelUtil {
     ParcelUtil.sortParcelTracking(parcel.parcelTracking);
     parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
     parcel.parcelTrackingStatus = ParcelUtil.parcelStatusEnumToUIValue(parcel.parcelTrackingStatus);
+    parcel.parcelTracking.forEach(track => 
+      track.status = ParcelUtil.parcelStatusEnumToUIValue(track.status));
     return parcel;
   }
 
