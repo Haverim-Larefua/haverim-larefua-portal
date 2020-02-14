@@ -43,7 +43,7 @@ const DetailsTrackingTable = (props) => {
                                     <div className="fhh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
                                     <div className="fhh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
                                     <div className="fhh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
-                                    <div className="fhh-details-tracking__cell status"><Status status={ParcelUtil.parcelStatusEnumToUIValue(track.status)} /></div>
+                                    <div className="fhh-details-tracking__cell status"><Status status={track.status} /></div>
                                     <div className="fhh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
                                     <div className="fhh-details-tracking__cell comments">{track.notes}</div>
                                 </div>
