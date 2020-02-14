@@ -48,6 +48,13 @@
     static readonly wednesday: string = 'רביעי';
     static readonly thursday: string = 'חמישי';
     static readonly friday: string = 'שישי';
+
+    static readonly sundayInitial: string = 'א';
+    static readonly mondayInitial: string = 'ב';
+    static readonly tuesdayInitial: string = 'ג';
+    static readonly wednesdayInitial: string = 'ד';
+    static readonly thursdayInitial: string = 'ה';
+    static readonly fridayInitial: string = 'ו';
 }
 
 //TODO: Rename to AppConstants after move all AppConstants to i18n
