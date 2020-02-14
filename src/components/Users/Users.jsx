@@ -8,7 +8,7 @@ import { userContext } from "../../contexts/userContext";
 import { loadUsers } from "../../contexts/actions/users.action";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
-import { deliveryDaysValues } from "../../contexts/interfaces/users.interface";
+import { deliveryDaysValues, deliveryDaysInitialValues } from "../../contexts/interfaces/users.interface";
 import { citiesContext } from "../../contexts/citiesContext";
 import Modal from "../shared/Modal/Modal";
 import './Users.scss';
@@ -37,12 +37,20 @@ const Users = () => {
   const days = Object.values(deliveryDaysValues);
   const allWeek = [1, 2, 3, 4, 5, 6];
 
+  const daysInitials = Object.values(deliveryDaysInitialValues);
+  // ToolbarOptions
   const options = [
     {
       title: AppConstants.deliveryArea,
       name: "cities",
       values: [AppConstants.all, ...userExtendedData.deliveryAreas],
       filter: setCityFilterTerm
+    },
+    {
+      title: AppConstants.deliveryDays,
+      name: "days",
+      values: [AppConstants.all, ...daysInitials],
+      filter: setDayFilterTerm
     }
   ];
 
