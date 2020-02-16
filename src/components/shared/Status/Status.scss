@@ -1,4 +1,5 @@
 @import '../../../styles/colors';
+@import '../../../styles/elements';
 
 .fhh-status {
     align-items: center;
@@ -11,23 +12,19 @@
     width: 120px;
 
     &.ready {
-        background-color: $violet-pale;
-        color: $violet;
+        @extend %status-ready;
     }
 
     &.distribution {
-        background-color: $cyan-pale;
-        color: $cyan-dark;
+        @extend %status-distribution;
     }
 
     &.delivered {
-        background-color: $green-pale;
-        color: $green;
+        @extend %status-delivered;
     }
 
     &.exception {
-        background-color: $red-pale;
-        color:$red;
+        @extend %status-exception;
     }
 
 }
