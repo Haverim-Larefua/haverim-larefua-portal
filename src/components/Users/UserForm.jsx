@@ -1,11 +1,12 @@
 import AppConstants from "../../constants/AppConstants";
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
+import logger from "../../Utils/logger";
 import httpService from "../../services/http";
 import Dropdown from "../shared/Dropdown/Dropdown";
+import Modal from "../shared/Modal/Modal";
 import { citiesContext } from "../../contexts/citiesContext";
 import { userContext } from "../../contexts/userContext";
 import { deliveryDaysValues } from "../../contexts/interfaces/users.interface";
-import Modal from "../shared/Modal/Modal";
 import './Users.scss';
 
 const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
@@ -13,6 +14,18 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
     const [userExtendedData, dispatch] = useContext(userContext);
     const [availableDays, setDaySelection] = useState([]);
     const [newUserForm, setNewUserFormField] = useState({});
+
+    useEffect(() => {
+        function fetchUser() {
+          const user = userExtendedData.users.find(usr => usr.id === editUserId);
+          if (!user) {
+             logger.error('[UserForm] useEffect user with id ', editUserId,'  not found');
+          }
+          setNewUserFormField(user);
+        }
+        fetchUser();
+    }, [editUserId]);
+    
 
     const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'deliveryDays', 'notes'];
     const days = Object.values(deliveryDaysValues);

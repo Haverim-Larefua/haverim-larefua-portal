@@ -171,8 +171,8 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.PUT, aUser);
   }
 
-  async deleteUser(aUser: User) {
-    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.DELETE);
+  async deleteUser(id: number) {
+    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${id}`, HttpMethod.DELETE);
   }
 
   // TODO: this should be a query in DB

@@ -1,4 +1,5 @@
 @import '../../../styles/colors';
+@import '../../../styles/elements';
 
 .modal {
     position: fixed;
@@ -29,25 +30,21 @@
   display: inline-block;
 }
 
-.modal-close {
-  float: left;
+.modal-close{
+  @extend %button-reset;
+  position: absolute;
   height: 32px;
   width: 32px;
-  border: 0;
-  background: none;
-  font-size: 16px;
-  color: $grey;
   cursor: pointer;
-  &:focus {
-    border: none;
-    outline: none;
-  }
+  left: 0;
+  top: 0;
 }
 
 .modal-buttons-area {
   float: left;
 }
 .modal-action-button {
+  @extend %button-reset;
   float: left;
   height: 40px;
   width: 100px;
@@ -70,6 +67,4 @@
 .hide {
   display: none;
 }
-.display-none {
-  display: none;
-}
+
