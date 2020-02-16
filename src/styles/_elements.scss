@@ -13,6 +13,26 @@
     width: 8%;
 }
 
+
+%status-ready {
+    background-color: $violet-pale;
+    color: $violet;
+}
+
+%status-distribution {
+    background-color: $cyan-pale;
+    color: $cyan-dark;
+}
+
+%status-delivered {
+    background-color: $green-pale;
+    color: $green;
+}
+
+%status-exception {
+    background-color: $red-pale;
+    color:$red;
+}
 //Clears the button default styling
 %button-reset {
     border: 0;

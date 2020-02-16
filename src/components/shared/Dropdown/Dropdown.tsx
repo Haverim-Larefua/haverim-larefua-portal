@@ -1,6 +1,7 @@
 import React from 'react';
 import './Dropdown.scss';
 import AppConstants from '../../../constants/AppConstants';
+import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
 
 
 interface IDropdownProps {
@@ -72,7 +73,7 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
                  />
               <div className="fhh-dropdown__item-title">
-                {this.props.bullets ? <span className="fhh-dropdown__pointer"></span> : ''}
+                {this.props.bullets && <span className={`fhh-dropdown__pointer ${ParcelUtil.parcelUIStatusValueToEnum(item)}`}></span>}
                 {item}
                 </div>
              </label>)
