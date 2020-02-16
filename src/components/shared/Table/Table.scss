@@ -5,6 +5,13 @@
         transition-duration: 0ms !important;
     }
 }
+
 .sc-fzXfMy.gWCGEL.rdt_TableBody {
     overflow-y: overlay;
+}
+
+@-moz-document url-prefix() {
+    .sc-fzXfMy.gWCGEL.rdt_TableBody {
+        overflow: hidden;
+    }
 }
