@@ -28,7 +28,7 @@ const ParcelDetails = (props) => {
     const getDeliveryUserById = (id) => {
         if (users.users.length > 0) {
             let deliveryUser = users.users.find(u => u.id === id);
-            if (!deliveryUser) { 
+            if (!deliveryUser) {
                 deliveryUser = new User('','','','','','','','');
             }
             return deliveryUser;
@@ -48,14 +48,12 @@ const ParcelDetails = (props) => {
 
             </div>
             <DetailsParcelTable currentParcel={currentParcel} />
-            {deliveryStage ?
+            {deliveryStage &&
                 <div>
-                    <DetailsUserTable deliveryUser={getDeliveryUserById(deliveryStage.userId)} />
+                    <DetailsUserTable deliveryUser={getDeliveryUserById(currentParcel.currentUserId)} />
                     <DetailsTrackingTable deliveryTracking={deliveryTracking} signature={currentParcel.signature} />
                 </div>
-                : ''}
-
-
+            }
         </div>
     )
         : ''
