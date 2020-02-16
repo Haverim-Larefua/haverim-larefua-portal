@@ -133,4 +133,11 @@
     &.user {
         max-width: 200px;
     }
+
+    &.comments {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        overflow: initial;
+    }
 }
