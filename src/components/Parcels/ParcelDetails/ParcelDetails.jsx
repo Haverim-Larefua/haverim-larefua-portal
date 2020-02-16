@@ -35,6 +35,8 @@ const ParcelDetails = (props) => {
         }
     }
 
+
+
     return currentParcel ? (
         <div className="fhh-details">
             <div className="fhh-details-header">
@@ -49,7 +51,7 @@ const ParcelDetails = (props) => {
             {deliveryStage ?
                 <div>
                     <DetailsUserTable deliveryUser={getDeliveryUserById(deliveryStage.userId)} />
-                    <DetailsTrackingTable deliveryTracking={deliveryTracking} />
+                    <DetailsTrackingTable deliveryTracking={deliveryTracking} signature={currentParcel.signature} />
                 </div>
                 : ''}
 
