@@ -22,7 +22,11 @@
 
     static readonly addUserUIName: string = 'הוספת שליח/ה';
     static readonly add: string = 'הוספה';
+    static readonly editUserUIName: string = 'עריכת שליח/ה';
+    static readonly edit: string = 'עריכה';
     static readonly cancel: string = 'ביטול';
+    static readonly deleteUserUIName: string = 'מחיקת שליח/ה';
+    static readonly delete: string = 'מחק/י';
 
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
     static readonly associateUserUIName: string = '+ שיוך לשליח/ה';
