@@ -26,7 +26,7 @@ export class UserUtil {
   }
 
   static prepareOneUserForDisplay(user: User): User {
-    if (user.deliveryDays === "1,2,3,4,5,6" || user.deliveryDays === "[1,2,3,4,5,6]") {
+    if (user.deliveryDays.includes("1,2,3,4,5,6")) {
       user.deliveryDays = AppConstants.allWeek;
     } else {
       const mapObj = ["", "א", "ב", "ג", "ד", "ה", "ו"];
