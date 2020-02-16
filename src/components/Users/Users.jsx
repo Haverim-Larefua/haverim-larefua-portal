@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {useContext, useState, useEffect} from "react";
 import logger from "../../Utils/logger";
 
 import Table from "../shared/Table/Table";
@@ -8,16 +8,15 @@ import { userContext } from "../../contexts/userContext";
 import { loadUsers } from "../../contexts/actions/users.action";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
-import { deliveryDaysValues } from "../../contexts/interfaces/users.interface";
+import { deliveryDaysValues, deliveryDaysInitialValues } from "../../contexts/interfaces/users.interface";
 import { citiesContext } from "../../contexts/citiesContext";
 import Modal from "../shared/Modal/Modal";
-import UsersList from "./UsersList";
 import './Users.scss';
 import UserForm from "./UserForm";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
-  const [cities] = useContext(citiesContext); // to be used by the add user modal
+  const cities = useContext(citiesContext); // to be used by the add user modal
 
   const [dayFilterTerm, setDayFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
@@ -38,6 +37,7 @@ const Users = () => {
   const days = Object.values(deliveryDaysValues);
   const allWeek = [1, 2, 3, 4, 5, 6];
 
+  const daysInitials = Object.values(deliveryDaysInitialValues);
   // ToolbarOptions
   const options = [
     {
@@ -49,7 +49,7 @@ const Users = () => {
     {
       title: AppConstants.deliveryDays,
       name: "days",
-      values: days,
+      values: [AppConstants.all, ...daysInitials],
       filter: setDayFilterTerm
     }
   ];
@@ -78,7 +78,7 @@ const Users = () => {
         break;
       }
     }
-  }
+  };
 
   const handleClose = () => {
     setShowNewUserModal(false);
@@ -87,7 +87,7 @@ const Users = () => {
   const onFieldChange = (e) => {
     setNewUserFormField({...newUserForm, [e.target.name]: e.target.value});
   };
-  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'userName', 'deliveryDays', 'notes'];
+  const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'deliveryDays', 'notes'];
 
   const deliverDaysSection =  <div className='availableDays'>
       {days.map( (day, i) => {
@@ -124,12 +124,11 @@ const Users = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const newUserData = {...newUserForm, deliveryDays: availableDays};
-    console.log(newUserData); // TODO send newUserData to BE
+    const newUserData = {...newUserForm, deliveryDays: availableDays, password: "123456"};
+    const reformattedUser = {...newUserData, deliveryDays: `[${newUserData.deliveryDays}]` }; // TODO remove this after refactoring the DB, currently expects an array as a string ("[]"), The DB should be fixed to only be expecting an array
+    dispatch(httpService.createUser(reformattedUser));
     handleClose();
   };
-
-
 
   return (
       <div>
@@ -141,7 +140,14 @@ const Users = () => {
                handleCancelAction = {handleClose}
                cancelBtnText={AppConstants.cancel}
         >
-          <UserForm onFieldChange={onFieldChange} formFields={formFields} deliverDaysSection={deliverDaysSection} onSubmit={onSubmit}/>
+          <UserForm
+              onFieldChange={onFieldChange}
+              formFields={formFields}
+              deliverDaysSection={deliverDaysSection}
+              setCityFilterTerm={setCityFilterTerm}
+              cities={cities}
+              onSubmit={onSubmit}
+          />
         </Modal>
 
         <Table
@@ -152,9 +158,11 @@ const Users = () => {
             <Toolbar
               title={AppConstants.usersUIName}
               actionTitle={AppConstants.addUserUIName}
-              options={options}
-              search={setNameSearchTerm}
               action={() => setShowNewUserModal(true)}
+              withOptions
+              options={options}
+              withSearch
+              search={setNameSearchTerm}
             />
           }
         />

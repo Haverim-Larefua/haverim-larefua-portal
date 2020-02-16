@@ -12,6 +12,16 @@ export const deliveryDaysValues = Object.freeze({
   FRIDAY: AppConstants.friday
 });
 
+export const deliveryDaysInitialValues = Object.freeze({
+  ALL_WEEK: AppConstants.allWeek,
+  SUNDAY: AppConstants.sundayInitial,
+  MONDAY: AppConstants.mondayInitial,
+  TUESDAY: AppConstants.tuesdayInitial,
+  WEDNESDAY: AppConstants.wednesdayInitial,
+  THURSDAY: AppConstants.thursdayInitial,
+  FRIDAY: AppConstants.fridayInitial
+});
+
 export const defaultUserExtendedData: UserExtendedData = {
   users: [],
   action: loadUsers([]),

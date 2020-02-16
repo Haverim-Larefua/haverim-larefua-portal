@@ -3,6 +3,8 @@ import formatDate from '../../../Utils/dateFormatter';
 import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
 import Signature from './Signature';
+import {ParcelUtil} from '../../../Utils/Parcel/ParcelUtil';
+import AppConstants from '../../../constants/AppConstants';
 
 
 
@@ -13,6 +15,9 @@ const DetailsTrackingTable = (props) => {
     const getUserFullNameById = (id) => {
         if (users.users.length > 0) {
             const user = users.users.find((u) => u.id === id);
+            if (!user) {
+                return '';
+            }
             return `${user.firstName} ${user.lastName}`;
         }
     };
@@ -46,9 +51,10 @@ const DetailsTrackingTable = (props) => {
                                     <div className="fhh-details-tracking__cell status"><Status status={track.status} /></div>
                                     <div className="fhh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
                                     <div className="fhh-details-tracking__cell comments"><span>{track.comments}</span>
-                                        {track.status === 'delivered' && props.deliveryTracking.length === index + 1 ?
+                                    {console.log('Track Status: ', track.status)}
+                                        {(track.status === AppConstants.deliveredStatusName && props.deliveryTracking.length === index + 1) &&
                                             <Signature signature={props.signature} />
-                                            : ''}
+                                        }
                                     </div>
                                 </div>
                             )

@@ -6,6 +6,7 @@ import User from "../contexts/interfaces/users.interface";
 import AppConstants, {AppConstants1} from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
+import { UserUtil } from "../Utils/User/UserUtil";
 
 enum HttpMethod {
   POST = 'post',
@@ -147,7 +148,8 @@ class HttpService {
 
   //////////////////////////////////// Users ////////////////////////////////////
   async getUsers(): Promise<User[]> {
-    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.GET);
+    const users: User[] =  await this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.GET);
+    return UserUtil.prepareUsersForDisplay(users);
   }
 
   async createUser(aUser: User): Promise<{ id: number }> {

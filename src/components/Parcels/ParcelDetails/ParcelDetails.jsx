@@ -8,6 +8,7 @@ import DetailsUserTable from "./DetailsUserTable";
 import DetailsTrackingTable from "./DetailsTrackingTable";
 import { ReactComponent as BackIcon } from '../../../assets/icons/back.svg';
 import Status from '../../shared/Status/Status';
+import User from '../../../contexts/interfaces/users.interface';
 
 const ParcelDetails = (props) => {
     console.log('Entering parcel Details');
@@ -26,7 +27,10 @@ const ParcelDetails = (props) => {
 
     const getDeliveryUserById = (id) => {
         if (users.users.length > 0) {
-            const deliveryUser = users.users.find(u => u.id === id);
+            let deliveryUser = users.users.find(u => u.id === id);
+            if (!deliveryUser) { 
+                deliveryUser = new User('','','','','','','','');
+            }
             return deliveryUser;
         }
     }
