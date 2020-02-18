@@ -41,7 +41,7 @@ const Users = () => {
       } else {
         setShowNewUserModal(false);
       }
-    } 
+    }
     handleEditUser();
   }, [editUserId]);
 
@@ -68,7 +68,7 @@ const Users = () => {
 
 
   const daysInitials = Object.values(deliveryDaysInitialValues);
-  
+
   const options = [ // ToolbarOptions
     {
       title: AppConstants.deliveryArea,
@@ -133,10 +133,10 @@ const Users = () => {
   };
 
   return (
-      <div>
+    <React.Fragment>
         <UserForm showNewUserModal={showNewUserModal}  handleClose={handleClose} editUserId={editUserId}/>
 
-        <ConfirmDeleteUser show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete} 
+        <ConfirmDeleteUser show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
           text={deleteUserText}/>
 
         <Table
@@ -155,7 +155,7 @@ const Users = () => {
             />
           }
         />
-      </div>
+      </ React.Fragment>
   );
 };
 

@@ -32,7 +32,8 @@
   width: 160px;
   &::after {
     border-color: $dark transparent transparent transparent;
-    border: 6px solid;
+    border-style: solid;
+    border-width: 6px;
     content: "";
     height: 0px;
     transform: translateY(5px);
