@@ -1,4 +1,6 @@
 import React, {useContext, useState, useEffect} from "react";
+import * as firebase from 'firebase/app';
+
 import logger from "../../Utils/logger";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
