@@ -1,7 +1,7 @@
 @import '../../../styles//colors';
 @import '../../../styles/elements';
 
-.fhh-user-details {
+.ffh-user-details {
     background-color: $white;
     border-radius: 3px;
     border-width: 1px 0 0 1px;
@@ -16,23 +16,23 @@
     width: 538px;
 }
 
-.fhh-user-details__user {
+.ffh-user-details__user {
     width: 100%;
 }
-.fhh-user-details__phone {
+.ffh-user-details__phone {
     width: 34%;
 }
-.fhh-user-details__city {
+.ffh-user-details__city {
     width: 33%;
 }
-.fhh-user-details__days {
+.ffh-user-details__days {
     width: 33%;
 }
-.fhh-user-details__notes {
+.ffh-user-details__notes {
     width: 100%;
 }
 
-.fhh-user-details__item {
+.ffh-user-details__item {
     border-width: 0 1px 1px 0;
     border-style: solid;
     border-color: $grey-mid;
@@ -45,12 +45,12 @@
     padding:  0 16px;
 }
 
-.fhh-user-details__label {
+.ffh-user-details__label {
     font-weight: bold;
     padding: 0;
     margin: 0;
 }
 
-.fhh-user-details__user-name {
+.ffh-user-details__user-name {
     font-size: 24px;
 }

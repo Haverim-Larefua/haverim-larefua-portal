@@ -56,14 +56,14 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
 
   render() {
     return (
-        <div  className={`fhh-dropdown ${this.props.isDisabled ? 'disabled' : ''}`} >
-            { this.state.displayMenu ? (<div  className="fhh-dropdown__screen" onClick={this.toggleDropDown}></div>) : ''}
-         <div className="fhh-dropdown__button" onClick={this.toggleDropDown}>{this.state[this.props.name] ? this.state[this.props.name] : AppConstants.all}</div>
+        <div  className={`ffh-dropdown ${this.props.isDisabled ? 'disabled' : ''}`} >
+            { this.state.displayMenu ? (<div  className="ffh-dropdown__screen" onClick={this.toggleDropDown}></div>) : ''}
+         <div className="ffh-dropdown__button" onClick={this.toggleDropDown}>{this.state[this.props.name] ? this.state[this.props.name] : AppConstants.all}</div>
           { this.state.displayMenu ? (
-          <div className="fhh-dropdown__items-container">
+          <div className="ffh-dropdown__items-container">
               {this.props.options.map(item => {
               return (
-              <label className="fhh-dropdown__item" key={item}>
+              <label className="ffh-dropdown__item" key={item}>
                  <input
                   type="radio"
                   name={this.props.name}
@@ -72,8 +72,8 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
                   onChange={this.handleChange}
 
                  />
-              <div className="fhh-dropdown__item-title">
-                {this.props.bullets && <span className={`fhh-dropdown__pointer ${ParcelUtil.parcelUIStatusValueToEnum(item)}`}></span>}
+              <div className="ffh-dropdown__item-title">
+                {this.props.bullets && <span className={`ffh-dropdown__pointer ${ParcelUtil.parcelUIStatusValueToEnum(item)}`}></span>}
                 {item}
                 </div>
              </label>)

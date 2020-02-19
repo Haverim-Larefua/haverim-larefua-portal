@@ -9,7 +9,7 @@ interface AssignButtonProps {
 }
 const AssignButton: React.FC<AssignButtonProps> = (props) => {
     return(
-        <button id={props.id} name={props.name} className="fhh-assign-button" onClick={props.action}>
+        <button id={props.id} name={props.name} className="ffh-assign-button" onClick={props.action}>
             <Icon />
         </button>
     )

@@ -6,14 +6,14 @@ import './Header.scss';
 const Header: React.FC = () => {
 
   return (
-    <div className="fhh-header">
-      <div className="fhh-header__logo">שליחים לרפואה</div>
-      <nav className="fhh-header__nav">
-        <NavLink activeClassName="fhh-nav__item--active "  className="fhh-nav__item" to='/admin' >מבט על</NavLink>
-        <NavLink activeClassName="fhh-nav__item--active " className="fhh-nav__item" to='/parcels'> חבילות</NavLink>
-        <NavLink activeClassName="fhh-nav__item--active "  className="fhh-nav__item" to='/users' > שליחים</NavLink>
+    <div className="ffh-header">
+      <div className="ffh-header__logo">שליחים לרפואה</div>
+      <nav className="ffh-header__nav">
+        <NavLink activeClassName="ffh-nav__item--active "  className="ffh-nav__item" to='/admin' >מבט על</NavLink>
+        <NavLink activeClassName="ffh-nav__item--active " className="ffh-nav__item" to='/parcels'> חבילות</NavLink>
+        <NavLink activeClassName="ffh-nav__item--active "  className="ffh-nav__item" to='/users' > שליחים</NavLink>
       </nav>
-      <div className="fhh-header__user">
+      <div className="ffh-header__user">
 
       </div>
     </div>

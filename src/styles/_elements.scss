@@ -1,4 +1,4 @@
-%fhh-toolbar-button {
+%ffh-toolbar-button {
     background-color: $white;
     border-radius: 4px;
     border: 1px solid $grey-mid;
@@ -32,6 +32,14 @@
 %status-exception {
     background-color: $red-pale;
     color:$red;
+}
+
+%input {
+    border-radius: 4px;
+    border: solid 1px #dee2e6;
+    font-size: 16px;
+    height: 40px;
+    padding: 0 10px;
 }
 //Clears the button default styling
 %button-reset {

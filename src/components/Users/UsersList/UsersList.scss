@@ -2,18 +2,18 @@
 @import '../../../styles/elements';
 
 
-.fhh-userlist {
+.ffh-userlist {
     display: flex;
     flex-direction: column;
 }
 
-.fhh-userlist__head {
+.ffh-userlist__head {
     border: 1px solid $grey-mid;
     box-shadow: 0 2px 3px 0 rgba(224, 224, 224, 0.5);
     padding: 16px 23px;
 }
 
-.fhh-userlist__title {
+.ffh-userlist__title {
     font-size: 16px;
     font-weight: bold;
     line-height: 1.5;
@@ -21,13 +21,13 @@
 }
 
 
-.fhh-userlist__search {
+.ffh-userlist__search {
     background-color: $grey-light;
     border-radius: 4px;
     height: 40px;
 }
 
-.fhh-userlist__search-input {
+.ffh-userlist__search-input {
     background-color: transparent;
     border: 0;
     font-size: 16px;
@@ -35,7 +35,7 @@
     padding: 0 43px 0 0;
 }
 
-.fhh-userlist__items{
+.ffh-userlist__items{
     box-shadow: inset 0px -4px 3px -3px rgba(224, 224, 224, 0.5);
     list-style-type: none;
     margin: 0;

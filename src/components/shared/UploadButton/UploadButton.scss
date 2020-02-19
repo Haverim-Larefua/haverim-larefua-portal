@@ -1,8 +1,8 @@
 @import '../../../styles/colors';
 @import '../../../styles/elements';
 
-.fhh-upload-button {
-    @extend %fhh-toolbar-button;
+.ffh-upload-button {
+    @extend %ffh-toolbar-button;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -10,7 +10,7 @@
     min-width: 142px;
  }
 
-.fhh-upload-button__input {
+.ffh-upload-button__input {
     width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
