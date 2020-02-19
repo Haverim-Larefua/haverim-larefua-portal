@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { userContext } from '../../contexts/userContext';
+import { userContext } from '../../../contexts/userContext';
 import './UserDetails.scss';
 
 const UserDetails = (props) => {

@@ -1,13 +1,13 @@
-import AppConstants from "../../constants/AppConstants";
+import AppConstants from "../../../constants/AppConstants";
 import React, {useContext, useState, useEffect} from "react";
-import logger from "../../Utils/logger";
-import httpService from "../../services/http";
-import Dropdown from "../shared/Dropdown/Dropdown";
-import Modal from "../shared/Modal/Modal";
-import { citiesContext } from "../../contexts/citiesContext";
-import { userContext } from "../../contexts/userContext";
-import { deliveryDaysValues } from "../../contexts/interfaces/users.interface";
-import './Users.scss';
+import logger from "../../../Utils/logger";
+import httpService from "../../../services/http";
+import Dropdown from "../../shared/Dropdown/Dropdown";
+import Modal from "../../shared/Modal/Modal";
+import { citiesContext } from "../../../contexts/citiesContext";
+import { userContext } from "../../../contexts/userContext";
+import { deliveryDaysValues } from "../../../contexts/interfaces/users.interface";
+import './UserForm.scss';
 
 const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
     const cities = useContext(citiesContext); 
@@ -26,8 +26,7 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
         fetchUser();
     }, [editUserId]);
     
-
-    const formFields = ['email', 'password', 'firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'deliveryDays', 'notes'];
+    const formFields = ['firstName', 'lastName', 'phone', 'email', 'username', 'password', 'deliveryArea', '', 'deliveryDays', 'notes'];
     const days = Object.values(deliveryDaysValues);
     const allWeek = [1, 2, 3, 4, 5, 6];
 
@@ -94,6 +93,8 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
             <form className='userForm' onSubmit={onSubmit}>
                 {formFields.map( (item, i) => {
                     const notes = <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"/>;
+                    const inputClass = (item === '') ? 'input empty' : 'input';
+                    const inputType = (item === 'password') ? 'password' : 'text';
                     return (
                         <fieldset key={i} className={`userFormField ${item}`}>
                         <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
@@ -107,7 +108,7 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
                                             options={cities} 
                                             name="deliveryArea" 
                                             isDisabled={false} /> 
-                                        : <input className='input' type='text' id={item} name={item} onChange={e => onFieldChange(e)}/>
+                                        : <input className={inputClass} type={inputType} value={newUserForm? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)}/>
                                     )
                                 )
                             }

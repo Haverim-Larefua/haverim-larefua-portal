@@ -3,9 +3,7 @@ import formatDate from '../../../Utils/dateFormatter';
 import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
 import Signature from './Signature';
-import {ParcelUtil} from '../../../Utils/Parcel/ParcelUtil';
 import AppConstants from '../../../constants/AppConstants';
-
 
 
 const DetailsTrackingTable = (props) => {

@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import "./Login.scss";
 import { withRouter, useHistory } from 'react-router-dom';
-import {Input} from "../../ui-components/Input/Input";
-import {Button} from "../../ui-components/Button/Button";
+import Input from "../shared/Input/Input";
+import {Button} from "../shared/Button/Button";
 import httpService, {IAuthAdminResponse} from "../../services/http";
 import {Redirect} from "react-router-dom";
 import {AppConstants1} from "../../constants/AppConstants";

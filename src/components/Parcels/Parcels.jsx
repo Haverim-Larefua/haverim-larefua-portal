@@ -11,8 +11,8 @@ import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
-import UsersModal from "../Users/UsersModal";
-import UsersList from "../Users/UsersList";
+import UsersModal from "../Users/UsersList/UsersModal";
+import UsersList from "../Users/UsersList/UsersList";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);

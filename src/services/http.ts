@@ -78,6 +78,9 @@ class HttpService {
   // async sendPushNotification(subscription: PushSubscription, fingerprint: number) {
   //   const response = await this.http.post(`${this.config.PUSH_NOTIFY_POSTFIX}`, { subscription, fingerprint, id: 2 } );
   //   return response.data;
+
+
+  // sendPushMessage = (config: IPushNotificationConfiguration) - not ready yet in server
   // }
   //
   // async sendPushSubscription(subscription: PushSubscription, fingerprint: number ) {

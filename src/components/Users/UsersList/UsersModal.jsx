@@ -1,6 +1,6 @@
 import React from 'react'
 import './UsersModal.scss';
-import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg';
+import { ReactComponent as CloseIcon } from '../../../assets/icons/close.svg';
 
 const UsersModal = ({ handleClose, handleAction, show, children }) => {
   const showHideClassName = show ? "users-modal users-display-block" : "users-modal users-display-none";
