@@ -10,7 +10,7 @@ import { deliveryDaysValues } from "../../../contexts/interfaces/users.interface
 import './UserForm.scss';
 
 const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
-    const cities = useContext(citiesContext); 
+    const cities = useContext(citiesContext);
     const [userExtendedData, dispatch] = useContext(userContext);
     const [availableDays, setDaySelection] = useState([]);
     const [newUserForm, setNewUserFormField] = useState({});
@@ -25,7 +25,7 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
         }
         fetchUser();
     }, [editUserId]);
-    
+
     const formFields = ['firstName', 'lastName', 'phone', 'email', 'username', 'password', 'deliveryArea', '', 'deliveryDays', 'notes'];
     const days = Object.values(deliveryDaysValues);
     const allWeek = [1, 2, 3, 4, 5, 6];
@@ -58,8 +58,8 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
 
     const deliverDaysSection =  <div className='availableDays'>
        {days.map( (day, i) => {
-         return (<span key={i} 
-                       className={`daySelection ${day === AppConstants.allWeek ? 'fullWeek' : ''}`} 
+         return (<span key={i}
+                       className={`daySelection ${day === AppConstants.allWeek ? 'fullWeek' : ''}`}
                        onClick={ e => (day === AppConstants.allWeek) ? toggleAllWeekDays(e) : daySelection(e)}>{day}
                  </span>)
        })}
@@ -69,7 +69,7 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
       setNewUserFormField({...newUserForm, [e.target.name]: e.target.value});
     };
 
-    
+
     const onSubmit = (e) => {
         e.preventDefault();
         const newUserData = {...newUserForm, deliveryDays: availableDays, password: "123456"};
@@ -90,29 +90,29 @@ const UserForm = ({showNewUserModal, handleClose, editUserId}) => {
                actionBtnText={AppConstants.add}
                cancelBtnText={AppConstants.cancel}
         >
-            <form className='userForm' onSubmit={onSubmit}>
+            <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map( (item, i) => {
                     const notes = <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"/>;
-                    const inputClass = (item === '') ? 'input empty' : 'input';
+                    const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
                     const inputType = (item === 'password') ? 'password' : 'text';
                     return (
-                        <fieldset key={i} className={`userFormField ${item}`}>
+                        <div key={i} className={`ffh-user-form-field ${item}`}>
                         <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
                             {item === 'notes' ? notes
-                                : (item === 'deliveryDays' 
-                                    ? deliverDaysSection 
-                                    :( item === 'deliveryArea' 
-                                        ? <Dropdown 
-                                            onSelection={onFieldChange} 
-                                            className="input" 
-                                            options={cities} 
-                                            name="deliveryArea" 
-                                            isDisabled={false} /> 
+                                : (item === 'deliveryDays'
+                                    ? deliverDaysSection
+                                    :( item === 'deliveryArea'
+                                        ? <Dropdown
+                                            onSelection={onFieldChange}
+                                            className="ffh-user-form-field__input"
+                                            options={cities}
+                                            name="deliveryArea"
+                                            isDisabled={false} />
                                         : <input className={inputClass} type={inputType} value={newUserForm? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)}/>
                                     )
                                 )
                             }
-                        </fieldset>
+                        </div>
                     )
                     })
                 }

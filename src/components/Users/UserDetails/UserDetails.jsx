@@ -15,23 +15,23 @@ const UserDetails = (props) => {
   const userDetails = getDeliveryUserById(parseInt(props.user));
 
   return (
-    <div className="fhh-user-details">
-      <div className="fhh-user-details__item fhh-user-details__user">
-      <div className="fhh-user-details__user-name">
+    <div className="ffh-user-details">
+      <div className="ffh-user-details__item ffh-user-details__user">
+      <div className="ffh-user-details__user-name">
       {userDetails.firstName} {userDetails.lastName}
       </div>
       </div>
-      <div className="fhh-user-details__item fhh-user-details__phone">
-        <h4 className="fhh-user-details__label">טלפון</h4>
+      <div className="ffh-user-details__item ffh-user-details__phone">
+        <h4 className="ffh-user-details__label">טלפון</h4>
         {userDetails.phone}</div>
-      <div className="fhh-user-details__item fhh-user-details__city">
-        <h4 className="fhh-user-details__label">עיר חלוקה</h4>
+      <div className="ffh-user-details__item ffh-user-details__city">
+        <h4 className="ffh-user-details__label">עיר חלוקה</h4>
         {userDetails.deliveryArea}</div>
-      <div className="fhh-user-details__item fhh-user-details__days">
-        <h4 className="fhh-user-details__label">ימי חלוקה</h4>
+      <div className="ffh-user-details__item ffh-user-details__days">
+        <h4 className="ffh-user-details__label">ימי חלוקה</h4>
         {userDetails.deliveryDays}</div>
-      <div className="fhh-user-details__item fhh-user-details__notes">
-        <h4 className="fhh-user-details__label">הערות</h4>
+      <div className="ffh-user-details__item ffh-user-details__notes">
+        <h4 className="ffh-user-details__label">הערות</h4>
         {userDetails.notes}</div>
     </div>
   );

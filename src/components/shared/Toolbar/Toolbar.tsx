@@ -44,14 +44,14 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
     if (this.props.uploadButton === true) {
       button = <UploadButton title={this.props.actionTitle} action={this.props.action}></UploadButton>;
     } else {
-      button = <button className="fhh-toolbar__immediate_action" onClick={this.props.action}> {this.props.actionTitle} </button>
+      button = <button className="ffh-toolbar__immediate_action" onClick={this.props.action}> {this.props.actionTitle} </button>
     }
 
     let searchFragment;
     if (this.props.withSearch) {
       searchFragment = (
-          <div className="fhh-toolbar__search">
-            <input className="fhh-toolbar__search-input" type="text" placeholder="חיפוש"
+          <div className="ffh-toolbar__search">
+            <input className="ffh-toolbar__search-input" type="text" placeholder="חיפוש"
                 onKeyDown={this.handleKeyDown}/>
           </div>)
     } else {
@@ -61,12 +61,12 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
     let optionsFragment;
     if (this.props.withOptions) {
       optionsFragment = (
-                <div className="fhh-toolbar__filters">
+                <div className="ffh-toolbar__filters">
                   {
                     this.props.options.map((opt) => {
                     return(
                         <Fragment key={opt.title}>
-                          <label className="fhh-toolbar__label">{opt.title}</label>
+                          <label className="ffh-toolbar__label">{opt.title}</label>
                           <Dropdown options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}> </Dropdown>
                         </Fragment>)
                     })
@@ -77,11 +77,11 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
     }
 
   return (
-    <div className="fhh-toolbar">
-      <div className="fhh-toolbar__title">
+    <div className="ffh-toolbar">
+      <div className="ffh-toolbar__title">
        {this.props.title}
        </div>
-       <div className="fhh-toolbar__subtitle">
+       <div className="ffh-toolbar__subtitle">
        {this.props.subTitle}
       </div>
        {searchFragment}

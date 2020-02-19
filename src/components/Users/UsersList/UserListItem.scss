@@ -1,6 +1,6 @@
 @import "../../../styles/colors";
 
-.fhh-userlist-item {
+.ffh-userlist-item {
   align-items: center;
   cursor: pointer;
   display: flex;
@@ -11,7 +11,7 @@
   white-space: nowrap;
 }
 
-.fhh-userlist-item__initials {
+.ffh-userlist-item__initials {
   align-items: center;
   background-color: $grey-mid;
   border-radius: 50%;
@@ -24,10 +24,10 @@
   width: 36px;
 }
 
-.fhh-userlist-item {
+.ffh-userlist-item {
   &.selected {
     background-color: $blue;
-    .fhh-userlist-item__name {
+    .ffh-userlist-item__name {
       color: $white;
     }
   }

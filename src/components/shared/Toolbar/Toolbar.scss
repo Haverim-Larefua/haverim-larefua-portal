@@ -3,7 +3,7 @@
 @import '../../../styles/elements';
 // Toolbar
 
-.fhh-toolbar {
+.ffh-toolbar {
     align-items: center;
     display: flex;
     height: 120px;
@@ -11,21 +11,21 @@
     width: 100%;
 }
 
-.fhh-toolbar__title {
+.ffh-toolbar__title {
     font-size: 32px;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 255px;
 }
 
-.fhh-toolbar__subtitle {
+.ffh-toolbar__subtitle {
     font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 155px;
 }
 
-.fhh-toolbar__search {
+.ffh-toolbar__search {
     background-color: $grey-light;
     border-radius: 4px;
     height: 40px;
@@ -33,7 +33,7 @@
     width: 25%;
 }
 
-.fhh-toolbar__search-input {
+.ffh-toolbar__search-input {
     padding: 0 43px 0 0;
     font-size: 16px;
     border: 0;
@@ -42,28 +42,28 @@
     width: 100%;
 }
 
-.fhh-toolbar__filters {
+.ffh-toolbar__filters {
     align-items: center;
     display: flex;
 }
 
-.fhh-toolbar__label {
+.ffh-toolbar__label {
     font-weight: bold;
     font-size: 16px;
     margin-left: 10px;
 }
 
-.fhh-dropdown {
+.ffh-dropdown {
     margin-left: 25px;
     width: 160px;
 }
 
-.fhh-toolbar__action {
-    @extend %fhh-toolbar-button;
+.ffh-toolbar__action {
+    @extend %ffh-toolbar-button;
 }
 
-.fhh-toolbar__immediate_action {
-    @extend %fhh-toolbar-button;
+.ffh-toolbar__immediate_action {
+    @extend %ffh-toolbar-button;
     margin-right: 0;
     width: initial;
 

@@ -17,10 +17,10 @@ class ActionButton extends Component<ActionButtonProps> {
 
     render() {
         return (
-            <button 
-                id={this.props.itemIdentifier} 
-                name={this.props.name} 
-                className="fhh-action-button" 
+            <button
+                id={this.props.itemIdentifier}
+                name={this.props.name}
+                className="ffh-action-button"
                 onClick={this.props.action}>
                 {this.props.icon}
             </button>

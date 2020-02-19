@@ -8,7 +8,7 @@ export interface StatusProps {
 const Status: React.FC<StatusProps> = (props) => {
 
   return (
-    <div className={`fhh-status ${ParcelUtil.parcelUIStatusValueToEnum(props.status)}`}>
+    <div className={`ffh-status ${ParcelUtil.parcelUIStatusValueToEnum(props.status)}`}>
         {props.status}
     </div>
   );

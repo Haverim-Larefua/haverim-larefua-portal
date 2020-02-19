@@ -12,7 +12,7 @@ class DropdownItem extends React.Component<DropdownItemProp> {
 
     render() {
         return(
-            <label className="fhh-dropdown__item">
+            <label className="ffh-dropdown__item">
                 <input
                     type="radio"
                     name={this.props.name}
@@ -20,7 +20,7 @@ class DropdownItem extends React.Component<DropdownItemProp> {
                     checked={this.props.checked}
                     onChange={this.props.handleChange}
                 />
-                <div className="fhh-dropdown__item-title">{this.props.value}</div>
+                <div className="ffh-dropdown__item-title">{this.props.value}</div>
             </label>
         )
     }

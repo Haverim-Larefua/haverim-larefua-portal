@@ -16,7 +16,7 @@ body,
   height: 100%;
 }
 /*Table height temporary fixes*/
-.fhh-header + div  {
+.ffh-header + div  {
   height: calc(100% - 60px);
 }
 .gvepOn  {

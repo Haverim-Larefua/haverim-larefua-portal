@@ -9,7 +9,7 @@ const Admin: React.FC = () => {
   };
 
   return (
-    <div className="fhh-portal">
+    <div className="ffh-portal">
       <button   className="btn btn-primary"
         onClick={() => triggerPushNotification()} >
         Trigger Push Notification
