@@ -1,4 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
+
 import logger from "../../Utils/logger";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
@@ -8,7 +9,7 @@ import { loadUsers, removeUser } from "../../contexts/actions/users.action";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { deliveryDaysInitialValues } from "../../contexts/interfaces/users.interface";
-import UserForm from "./UserForm";
+import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
 
 const Users = () => {
@@ -59,6 +60,7 @@ const Users = () => {
     function handleNotifyUser() {
       if (notifyUserId && notifyUserId !== "") {
       } else {
+        //httpService.sendNotification();
       }
     }
     handleNotifyUser();
@@ -125,6 +127,9 @@ const Users = () => {
   };
 
   const handleClose = () => {
+    if (editUserId === "") {
+      setShowNewUserModal(false);
+    }
     setEditUserId("");
     setDeleteUserId("");
     setNotifyUserId("");

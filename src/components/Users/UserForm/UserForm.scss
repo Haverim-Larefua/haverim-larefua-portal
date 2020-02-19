@@ -1,0 +1,99 @@
+@import '../../../styles/colors';
+
+.userForm {
+  width: 640px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.userFormField {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+
+  &.username {
+    flex: auto;
+    margin-right: 10px;
+  }
+
+  &.deliveryDays {
+    flex: auto;
+    .label {
+      margin-right: 10px;
+    }
+  }
+
+  &.notes {
+    width: 100%;
+     textarea {
+       border: 1px solid $grey-mid;
+       width: 100%;
+       margin-bottom: 10px;
+     }
+   }
+}
+.input {
+  height: 40px;
+  width: 280px;
+  outline: 0;
+  border: 1px solid $grey-mid;
+  
+  &.empty {
+    visibility: hidden;
+  }
+}
+
+.label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.availableDays {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+}
+.daySelection {
+  margin: 7px;
+  width: auto;
+  height: 36px;
+  font-size: 16px;
+  text-align: center;
+  padding: 10px 15px;
+  border-radius: 18px;
+  border: solid 1px $grey-mid;
+  cursor: pointer;
+
+  &.selected {
+    border-width: 2px;
+    border-color: $orange;
+    color: $orange;
+    font-weight: bold;
+    padding: 8px 12px;
+  }
+}
+
+.deliveryArea {
+  .fhh-dropdown__items-container {
+    width: 280px;
+    height: auto;
+    max-height: 300px;
+    overflow: scroll;
+  }
+  .fhh-dropdown, .fhh-dropdown > .fhh-dropdown__button, .fhh-dropdown__screen {
+    width: 280px;
+    height: 40px;
+    border-radius: 0;
+    margin-left: 0;
+    border-color: $grey-mid;
+  }
+}
+
+
+
+
+

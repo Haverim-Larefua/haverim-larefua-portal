@@ -1,6 +1,6 @@
 import React from "react";
 import './UserListItem.scss';
-import UserDetails from './UserDetails'
+import UserDetails from '../UserDetails/UserDetails'
 
 interface UserListItemProps {
     identifier: string;

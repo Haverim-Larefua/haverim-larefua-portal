@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import './UsersList.scss';
-import { userContext } from "../../contexts/userContext";
-import createInitials from '../../Utils/User/InitialsCreator';
+import { userContext } from "../../../contexts/userContext";
+import createInitials from '../../../Utils/User/InitialsCreator';
 import UserListItem from './UserListItem';
 
 const UsersList = (props) => {

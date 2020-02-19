@@ -8,11 +8,8 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-importScripts('https://www.gstatic.com/firebasejs/3.4.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/3.4.0/firebase-messaging.js');
-import firebaseConfig from "./Utils/Messaging/messageUtil";
-
 import logger from './Utils/logger';
+
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
@@ -61,6 +58,11 @@ export function register(config) {
       }
     });
 
+    window.self.addEventListener("push", receivePushNotification);
+    logger.log("[service-worker register] receivePushNotification registered")
+    
+    window.self.addEventListener("notificationclick", openPushNotification);
+    logger.log("[service-worker register] openPushNotification registered")
   }
 }
 
@@ -146,15 +148,40 @@ export function unregister() {
 
 ///////////////  push notification related functions ///////////
 
-firebase.initializeApp(firebaseConfig);
-const messaging = firebase.messaging();
-messaging.setBackgroundMessageHandler(function(payload) {
-  title = 'Hi there';
-  options = {
-    body: payload.data.status
+function receivePushNotification(event /*PushEvent*/) {
+  logger.log("[Service Worker] Push Received ", event);
+  const def = {
+    text: "notification body",
+    icon: "avicon",
+    badge: "/favicon.ico",
+    tag: "notification tag",
+    title: " notification title"
   };
-  return self.registration.showNotification(tite, options);
 
-})
+  const { image, tag, url, title, text } = event.data ? event.data.json() : def;
+  const options = {
+    data: url,
+    body: text,
+    icon: image,
+    vibrate: [200, 100, 200],
+    tag: tag,
+    image: image,
+    badge: "/favicon.ico",
+    actions: [
+      {
+        action: "Detail",
+        title: "View",
+        icon: "https://via.placeholder.com/128/ff0000"
+      }
+    ]
+  };
+  event.waitUntil(window.self.registration.showNotification(title, options));
+}
+
+function openPushNotification(event /*PushEvent*/) {
+  logger.log("[Service Worker] Notification click Received.", event.notification.data);
+  event.notification.close();
+  //event.waitUntil(clients.openWindow(event.notification.data));
+}
 
 //////////// end push notification related functions ///////////

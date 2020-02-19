@@ -4,7 +4,7 @@ import './index.css';
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 import App from './components/App/App';
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './serviceWorker_with_own_push';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
