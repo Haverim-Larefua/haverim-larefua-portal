@@ -2,7 +2,6 @@ import AppConstants from "../../../constants/AppConstants";
 import React, { useContext, useState, useEffect } from "react";
 import logger from "../../../Utils/logger";
 import httpService from "../../../services/http";
-import Dropdown from "../../shared/Dropdown/Dropdown";
 import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
 import { userContext } from "../../../contexts/userContext";
@@ -40,6 +39,15 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
         }
     }
 
+    const citiesDatalist = <datalist id='citiesList'>
+                                {cities.map((city) => {
+                                    return (
+                                        <option value={city}>{city}</option>
+                                    )
+                                })}
+                            </datalist>;
+
+
     const onFieldChange = (e) => {
         setNewUserFormField({ ...newUserForm, [e.target.name]: e.target.value });
     };
@@ -69,27 +77,23 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                     const notes = <textarea rows={10} onChange={e => onFieldChange(e)} name="notes" />;
                     const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
                     const inputType = (item === 'password') ? 'password' : 'text';
+                    const getInput = (item) => {
+                        switch (item) {
+                            case 'notes': return notes;
+                            case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />
+                            default: return <input className={inputClass} type={inputType} list={item === 'deliveryArea' ? 'citiesList' : ''} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
+                        }
+                    }
+
                     return (
                         <div key={i} className={`ffh-user-form-field ${item}`}>
                             <label htmlFor={item} className='label'>{AppConstants[`${item}`]}</label>
-                            {item === 'notes' ? notes
-                                : (item === 'deliveryDays'
-                                    ? <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />
-                                    : (item === 'deliveryArea'
-                                        ? <Dropdown
-                                            onSelection={onFieldChange}
-                                            className="ffh-user-form-field__input"
-                                            options={cities}
-                                            name="deliveryArea"
-                                            isDisabled={false} />
-                                        : <input className={inputClass} type={inputType} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />
-                                    )
-                                )
-                            }
+                            {getInput(item)}
                         </div>
                     )
                 })
                 }
+                {citiesDatalist}
             </form>
         </Modal>
     )
