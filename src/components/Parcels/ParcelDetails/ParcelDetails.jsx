@@ -38,10 +38,10 @@ const ParcelDetails = (props) => {
 
 
     return currentParcel ? (
-        <div className="fhh-details">
-            <div className="fhh-details-header">
-                <BackIcon className="fhh-details__back" onClick={handleNavigateBack} />
-                <h2 className="fhh-details-header__title">
+        <div className="ffh-details">
+            <div className="ffh-details-header">
+                <BackIcon className="ffh-details__back" onClick={handleNavigateBack} />
+                <h2 className="ffh-details-header__title">
                     {`חבילה עבור ${currentParcel.customerName}`}
                 </h2>
                 <Status status={currentParcel.parcelTrackingStatus} />

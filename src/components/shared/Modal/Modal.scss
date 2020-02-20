@@ -12,18 +12,18 @@
     align-items: center;
 }
 
-.fhh-modal__screen {
-  &.fhh-modal__screen--show {
+.ffh-modal__screen {
+  &.ffh-modal__screen--show {
     @extend %modal-screen;
     display: flex;
   }
 
-  &.fhh-modal__screen--hide {
+  &.ffh-modal__screen--hide {
     @extend %modal-screen;
     display: none;
   }
 }
-.fhh-modal {
+.ffh-modal {
   position:fixed;
   padding: 0 30px 20px;
   background: white;
@@ -31,7 +31,7 @@
   border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
-.fhh-modal__header{
+.ffh-modal__header{
   font-size: 24px;
   border-bottom: 2px solid $blue;
   height: 72px;
@@ -41,18 +41,18 @@
   justify-content: space-between;
 }
 
-.fhh-modal__title {
+.ffh-modal__title {
   font-size: 24px;
   font-weight: normal;
 }
 
-.fhh-modal__actions {
+.ffh-modal__actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-%fhh-modal__action {
+%ffh-modal__action {
   @extend %button-reset;
   font-weight: bold;
   font-size: 16px;
@@ -62,13 +62,13 @@
   cursor: pointer;
 }
 
-.fhh-modal__action--submit {
-  @extend %fhh-modal__action;
+.ffh-modal__action--submit {
+  @extend %ffh-modal__action;
   color: $white;
   background-color: $blue;
   border-radius: 4px;
 }
-.fhh-modal__action--cancel {
-  @extend %fhh-modal__action;
+.ffh-modal__action--cancel {
+  @extend %ffh-modal__action;
 }
 

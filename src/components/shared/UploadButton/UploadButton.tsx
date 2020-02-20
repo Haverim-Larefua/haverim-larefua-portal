@@ -8,10 +8,10 @@ interface UploadButtonProps {
 }
 const UploadButton: React.FC<UploadButtonProps> = (props) => {
     return(
-        <label className="fhh-upload-button">
+        <label className="ffh-upload-button">
             <Icon />
             <span>{props.title} </span>
-            <input className="fhh-upload-button__input" onChange={props.action} type="file"></input>
+            <input className="ffh-upload-button__input" onChange={props.action} type="file"></input>
         </label>
     )
 }

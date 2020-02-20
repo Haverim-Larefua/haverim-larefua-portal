@@ -38,11 +38,11 @@ const DropDownItems = props.options.map((option)=>
 
 
   return (
-    <div className="fhh-dropdown" >
-      {displayMenu ? (<div className="fhh-dropdown__screen" onClick={toggleDropDown}></div>) : ''}
-      <div className="fhh-dropdown__button" onClick={showDropdownMenu}>{chosenOption ? chosenOption : 'בחר'}</div>
+    <div className="ffh-dropdown" >
+      {displayMenu ? (<div className="ffh-dropdown__screen" onClick={toggleDropDown}></div>) : ''}
+      <div className="ffh-dropdown__button" onClick={showDropdownMenu}>{chosenOption ? chosenOption : 'בחר'}</div>
       {displayMenu ? (
-        <div className="fhh-dropdown__items-container">
+        <div className="ffh-dropdown__items-container">
           {DropDownItems}
         </div>
       ) : ''

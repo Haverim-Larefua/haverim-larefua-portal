@@ -67,15 +67,15 @@ const UsersList = (props) => {
   };
 
   return (
-    <div className="fhh-userlist">
-      <div className="fhh-userlist__head">
-        <div className="fhh-userlist__title">שיוך לשליח</div>
-        <div className="fhh-userlist__search">
-          <input className="fhh-userlist__search-input" type="text" placeholder="חיפוש"
+    <div className="ffh-userlist">
+      <div className="ffh-userlist__head">
+        <div className="ffh-userlist__title">שיוך לשליח</div>
+        <div className="ffh-userlist__search">
+          <input className="ffh-userlist__search-input" type="text" placeholder="חיפוש"
             onChange={handleChange} />
         </div>
       </div>
-      <ul className='fhh-userlist__items'>
+      <ul className='ffh-userlist__items'>
         {options.map((item, i) => {
           return (
             <UserListItem key={i}

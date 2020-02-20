@@ -1,17 +1,17 @@
 @import "../../../styles/colors";
 
-.fhh-signature {
+.ffh-signature {
   height: 32px;
   position: relative;
 
   &:hover {
-    .fhh-signature__pane {
+    .ffh-signature__pane {
         display: flex;
     }
   }
 }
 
-.fhh-signature__pane {
+.ffh-signature__pane {
   background-color: $white;
   border-radius: 4px;
   border: solid 1px $grey-light;
@@ -27,6 +27,6 @@
   padding: 10px;
 }
 
-.fhh-signature__image {
+.ffh-signature__image {
     max-width: 100%;
 }

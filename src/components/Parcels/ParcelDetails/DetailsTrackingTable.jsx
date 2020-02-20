@@ -25,30 +25,30 @@ const DetailsTrackingTable = (props) => {
 
 
         <div>
-            <h3 className="fhh-details__subtitle">
+            <h3 className="ffh-details__subtitle">
                 מעקב חבילה
         </h3>
 
-            <div className="fhh-details__tracking">
-                <div className="fhh-details-tracking__table">
-                    <div className="fhh-details-tracking__head">
-                        <div className="fhh-details-tracking__cell date">תאריך</div>
-                        <div className="fhh-details-tracking__cell day">יום</div>
-                        <div className="fhh-details-tracking__cell hour">שעה</div>
-                        <div className="fhh-details-tracking__cell status">סטטוס</div>
-                        <div className="fhh-details-tracking__cell user">שליח</div>
-                        <div className="fhh-details-tracking__cell comments">הערות</div>
+            <div className="ffh-details__tracking">
+                <div className="ffh-details-tracking__table">
+                    <div className="ffh-details-tracking__head">
+                        <div className="ffh-details-tracking__cell date">תאריך</div>
+                        <div className="ffh-details-tracking__cell day">יום</div>
+                        <div className="ffh-details-tracking__cell hour">שעה</div>
+                        <div className="ffh-details-tracking__cell status">סטטוס</div>
+                        <div className="ffh-details-tracking__cell user">שליח</div>
+                        <div className="ffh-details-tracking__cell comments">הערות</div>
                     </div>
-                    <div className="fhh-details-tracking__body">
+                    <div className="ffh-details-tracking__body">
                         {props.deliveryTracking.map((track, index) => {
                             return (
-                                <div className="fhh-details-tracking__row" key={index}>
-                                    <div className="fhh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
-                                    <div className="fhh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
-                                    <div className="fhh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
-                                    <div className="fhh-details-tracking__cell status"><Status status={track.status} /></div>
-                                    <div className="fhh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
-                                    <div className="fhh-details-tracking__cell comments"><span>{track.comments}</span>
+                                <div className="ffh-details-tracking__row" key={index}>
+                                    <div className="ffh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
+                                    <div className="ffh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
+                                    <div className="ffh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
+                                    <div className="ffh-details-tracking__cell status"><Status status={track.status} /></div>
+                                    <div className="ffh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
+                                    <div className="ffh-details-tracking__cell comments"><span>{track.comments}</span>
                                     {console.log('Track Status: ', track.status)}
                                         {(track.status === AppConstants.deliveredStatusName && props.deliveryTracking.length === index + 1) &&
                                             <Signature signature={props.signature} />

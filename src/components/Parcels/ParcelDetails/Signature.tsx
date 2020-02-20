@@ -9,11 +9,11 @@ export interface SignatureProps {
 
 const Signature:React.FC<SignatureProps> = (props) => {
     return (
-        <div className="fhh-signature">
+        <div className="ffh-signature">
             <SignatureIcon />
             {props.signature &&
-                <div className="fhh-signature__pane">
-                    <img className="fhh-signature__image" src={`data:image/png;base64,${props.signature}`} alt="חתימה" />
+                <div className="ffh-signature__pane">
+                    <img className="ffh-signature__image" src={`data:image/png;base64,${props.signature}`} alt="חתימה" />
                 </div>
             }
         </div>
