@@ -152,7 +152,8 @@ class HttpService {
   }
 
   async createUser(aUser: User): Promise<{ id: number }> {
-    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, aUser);
+    const user = UserUtil.prepareOneUserForDBUpdate(aUser);
+    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, user);
   }
 
   // TODO: need to send all as bulk to server, for now keeping like this
@@ -160,14 +161,16 @@ class HttpService {
     const promises: any[] = [];
     if (users && users.length > 0) {
       users.forEach(user => {
-        promises.push(this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, user));
+        const dbUsr = UserUtil.prepareOneUserForDBUpdate(user);
+        promises.push(this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, dbUsr));
       });
     }
     return Promise.all(promises);
   }
 
   async updateUser(aUser: User) {
-    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.PUT, aUser);
+    const user = UserUtil.prepareOneUserForDBUpdate(aUser);
+    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.PUT, user);
   }
 
   async deleteUser(id: number) {

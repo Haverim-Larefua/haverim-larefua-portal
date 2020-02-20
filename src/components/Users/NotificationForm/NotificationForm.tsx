@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./NotificationForm.scss";
 
 import httpService from "../../../services/http";
-import { Button } from "../../shared/Button/Button";
 import Input from "../../shared/Input/Input";
 import Modal from "../../shared/Modal/Modal";
 import AppConstants from "../../../constants/AppConstants";

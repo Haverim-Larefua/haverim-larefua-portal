@@ -22,6 +22,21 @@ export const deliveryDaysInitialValues = Object.freeze({
   FRIDAY: AppConstants.fridayInitial
 });
 
+export const delivaryDaysToInitials = new Map ([
+  [AppConstants.sunday, AppConstants.sundayInitial],
+  [AppConstants.monday, AppConstants.mondayInitial],
+  [AppConstants.tuesday, AppConstants.tuesdayInitial],
+  [AppConstants.wednesday, AppConstants.wednesdayInitial],
+  [AppConstants.thursday, AppConstants.thursdayInitial],
+  [AppConstants.friday, AppConstants.fridayInitial],
+  [AppConstants.allWeek, AppConstants.sundayInitial + ',' + 
+                         AppConstants.mondayInitial + ',' + 
+                         AppConstants.tuesdayInitial + ',' +
+                         AppConstants.wednesdayInitial + ',' + 
+                         AppConstants.thursdayInitial + ',' + 
+                         AppConstants.fridayInitial]
+]);
+
 export const defaultUserExtendedData: UserExtendedData = {
   users: [],
   action: loadUsers([]),
@@ -46,7 +61,7 @@ export default class User {
   lastName: string;
   address: string;
   deliveryArea: string;
-  deliveryDays: string; // delivaryDaysValues
+  deliveryDays: string; 
   phone: string;
   notes: string;
   role: string; // DB: role_fk maybe a number or enum
