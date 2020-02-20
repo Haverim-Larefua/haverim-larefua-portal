@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "../shared/Modal/Modal";
 import AppConstants from "../../constants/AppConstants";
+import './ConfirmDeleteUser.scss';
 
 const ConfirmDeleteUser = ({ show, handleClose, handleDelete, text }) => {
   return (
@@ -12,8 +13,8 @@ const ConfirmDeleteUser = ({ show, handleClose, handleDelete, text }) => {
       actionBtnText={AppConstants.delete}
       handleAction={handleDelete}
     >
-      <div>
-        <span>{text}</span>
+      <div className='ffh-confirmation-message'>
+        {text}
       </div>
     </Modal>
   );
