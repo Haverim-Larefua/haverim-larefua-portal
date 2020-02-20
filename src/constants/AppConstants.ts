@@ -28,6 +28,8 @@
     static readonly deleteUserUIName: string = 'מחיקת שליח/ה';
     static readonly delete: string = 'מחק/י';
 
+    static readonly notify: string = 'שליחת הודעה ל ';
+
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
     static readonly associateUserUIName: string = '+ שיוך לשליח/ה';
 
