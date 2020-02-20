@@ -1,10 +1,11 @@
 import AppConstants from "../../../constants/AppConstants";
 import React, { useContext, useState, useEffect } from "react";
 import logger from "../../../Utils/logger";
-import httpService from "../../../services/http";
 import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
 import { userContext } from "../../../contexts/userContext";
+import { addUser, editUser } from "../../../contexts/actions/users.action";
+import { delivaryDaysToInitials } from '../../../contexts/interfaces/users.interface';
 import DaysSelection from './DaysSelection';
 import './UserForm.scss';
 
@@ -25,7 +26,7 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
         fetchUser();
     }, [editUserId]);
 
-    const formFields = ['firstName', 'lastName', 'phone', 'email', 'username', 'password', 'deliveryArea', '', 'deliveryDays', 'notes'];
+    const formFields = ['firstName', 'lastName', 'phone', 'username', 'password', 'deliveryArea', 'deliveryDays', 'notes'];
 
     const handleDaySelection = (e) => {
         if (userAvailableDays.indexOf(e.target.value) < 0) {
@@ -53,22 +54,22 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const newUserData = { ...newUserForm, deliveryDays: userAvailableDays, password: "123456" };
-        const reformattedUser = { ...newUserData, deliveryDays: `[${newUserData.userAvailableDays}]` }; // TODO remove this after refactoring the DB, currently expects an array as a string ("[]"), The DB should be fixed to only be expecting an array
+        const convertedDays = userAvailableDays.map(val => delivaryDaysToInitials.get(val));
+        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(',') };
         if (editUserId) {
-            dispatch(httpService.createUser(reformattedUser)); //TODO:  Edit user not create one
+            dispatch(editUser(newUserData)); 
         } else {
-            dispatch(httpService.createUser(reformattedUser));
+            dispatch(addUser(newUserData));
         }
         handleClose();
     };
 
     return (
         <Modal show={showNewUserModal}
-            title={AppConstants.addUserUIName}
+            title={ editUserId ? AppConstants.editUserUIName : AppConstants.addUserUIName}
             handleClose={handleClose}
             handleAction={e => onSubmit(e)}
-            actionBtnText={AppConstants.add}
+            actionBtnText={editUserId ? AppConstants.edit : AppConstants.add}
             cancelBtnText={AppConstants.cancel}
         >
             <form className='ffh-user-form' onSubmit={onSubmit}>
