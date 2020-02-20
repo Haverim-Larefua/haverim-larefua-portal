@@ -75,14 +75,10 @@ class HttpService {
   }
 
   // //////////////////////////////////// Push ////////////////////////////////////
-  // async sendPushNotification(subscription: PushSubscription, fingerprint: number) {
-  //   const response = await this.http.post(`${this.config.PUSH_NOTIFY_POSTFIX}`, { subscription, fingerprint, id: 2 } );
-  //   return response.data;
+  async sendPushNotification(userId: string, title: string, subtitle: string, message: string) {
+    return this.sendHttpRequest(`${Configuration.URLS.PUSH}/push/${userId}`, HttpMethod.PUT, {title, subtitle, message});
+  }
 
-
-  // sendPushMessage = (config: IPushNotificationConfiguration) - not ready yet in server
-  // }
-  //
   // async sendPushSubscription(subscription: PushSubscription, fingerprint: number ) {
   //   const response = await this.http.post( `${this.config.PUSH_SUBSCRIBE_POSTFIX}`, { subscription, fingerprint, id: 2 });
   //   return response.data;
