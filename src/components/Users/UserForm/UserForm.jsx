@@ -40,13 +40,12 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
     }
 
     const citiesDatalist = <datalist id='citiesList'>
-                                {cities.map((city) => {
+                                {cities.map((city, i) => {
                                     return (
-                                        <option value={city}>{city}</option>
+                                        <option value={city} key={i}>{city}</option>
                                     )
                                 })}
                             </datalist>;
-
 
     const onFieldChange = (e) => {
         setNewUserFormField({ ...newUserForm, [e.target.name]: e.target.value });
@@ -74,12 +73,11 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
         >
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {
-                    const notes = <textarea rows={10} onChange={e => onFieldChange(e)} name="notes" />;
                     const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
                     const inputType = (item === 'password') ? 'password' : 'text';
                     const getInput = (item) => {
                         switch (item) {
-                            case 'notes': return notes;
+                            case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />
                             default: return <input className={inputClass} type={inputType} list={item === 'deliveryArea' ? 'citiesList' : ''} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
