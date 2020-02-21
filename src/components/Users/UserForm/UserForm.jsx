@@ -5,7 +5,7 @@ import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
 import { userContext } from "../../../contexts/userContext";
 import { addUser, editUser } from "../../../contexts/actions/users.action";
-import { delivaryDaysToInitials } from '../../../contexts/interfaces/users.interface';
+import { delivaryDaysToInitials } from '../../../constants/AppConstants';
 import DaysSelection from './DaysSelection';
 import './UserForm.scss';
 
@@ -22,6 +22,18 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                 logger.error('[UserForm] useEffect user with id ', editUserId, '  not found');
             }
             setNewUserFormField(user);
+
+            if (user && user.deliveryDays) {
+                const daysNames = Array.from(delivaryDaysToInitials.keys());
+                const userDeliveryDays = user.deliveryDays.split(',');
+                let convertedDays = [];
+                userDeliveryDays.forEach(day => {
+                    const aDay = daysNames.find(key =>  delivaryDaysToInitials.get(key) === day);
+                    convertedDays.push(aDay);
+                })
+                console.log(convertedDays);
+                setUserAvailableDays(convertedDays.join(','));
+            }
         }
         fetchUser();
     }, [editUserId]);
