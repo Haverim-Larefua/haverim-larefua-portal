@@ -1,41 +1,5 @@
 import { loadUsers, UserActions } from "../actions/users.action";
 import Parcel from "./parcels.interface";
-import AppConstants from "../../constants/AppConstants";
-
-export const deliveryDaysValues = Object.freeze({
-  ALL_WEEK: AppConstants.allWeek,
-  SUNDAY: AppConstants.sunday,
-  MONDAY: AppConstants.monday,
-  TUESDAY: AppConstants.tuesday,
-  WEDNESDAY: AppConstants.wednesday,
-  THURSDAY: AppConstants.thursday,
-  FRIDAY: AppConstants.friday
-});
-
-export const deliveryDaysInitialValues = Object.freeze({
-  ALL_WEEK: AppConstants.allWeek,
-  SUNDAY: AppConstants.sundayInitial,
-  MONDAY: AppConstants.mondayInitial,
-  TUESDAY: AppConstants.tuesdayInitial,
-  WEDNESDAY: AppConstants.wednesdayInitial,
-  THURSDAY: AppConstants.thursdayInitial,
-  FRIDAY: AppConstants.fridayInitial
-});
-
-export const delivaryDaysToInitials = new Map ([
-  [AppConstants.sunday, AppConstants.sundayInitial],
-  [AppConstants.monday, AppConstants.mondayInitial],
-  [AppConstants.tuesday, AppConstants.tuesdayInitial],
-  [AppConstants.wednesday, AppConstants.wednesdayInitial],
-  [AppConstants.thursday, AppConstants.thursdayInitial],
-  [AppConstants.friday, AppConstants.fridayInitial],
-  [AppConstants.allWeek, AppConstants.sundayInitial + ',' + 
-                         AppConstants.mondayInitial + ',' + 
-                         AppConstants.tuesdayInitial + ',' +
-                         AppConstants.wednesdayInitial + ',' + 
-                         AppConstants.thursdayInitial + ',' + 
-                         AppConstants.fridayInitial]
-]);
 
 export const defaultUserExtendedData: UserExtendedData = {
   users: [],

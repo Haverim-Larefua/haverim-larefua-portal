@@ -61,7 +61,25 @@
     static readonly wednesdayInitial: string = 'ד';
     static readonly thursdayInitial: string = 'ה';
     static readonly fridayInitial: string = 'ו';
-}
+
+    static readonly allWeekDetailed =  
+            AppConstants.sundayInitial + ',' + 
+            AppConstants.mondayInitial + ',' + 
+            AppConstants.tuesdayInitial + ',' +
+            AppConstants.wednesdayInitial + ',' + 
+            AppConstants.thursdayInitial + ',' + 
+            AppConstants.fridayInitial;
+ }
+
+export const delivaryDaysToInitials = new Map<string, string> ([
+  [AppConstants.allWeek, AppConstants.allWeek],
+  [AppConstants.sunday, AppConstants.sundayInitial],
+  [AppConstants.monday, AppConstants.mondayInitial],
+  [AppConstants.tuesday, AppConstants.tuesdayInitial],
+  [AppConstants.wednesday, AppConstants.wednesdayInitial],
+  [AppConstants.thursday, AppConstants.thursdayInitial],
+  [AppConstants.friday, AppConstants.fridayInitial]
+]);
 
 //TODO: Rename to AppConstants after move all AppConstants to i18n
 export const AppConstants1 = {

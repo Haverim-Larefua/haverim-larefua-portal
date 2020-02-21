@@ -7,8 +7,7 @@ import tableColumns from "./tableColumns";
 import { userContext } from "../../contexts/userContext";
 import { loadUsers, removeUser } from "../../contexts/actions/users.action";
 import httpService from "../../services/http";
-import AppConstants from "../../constants/AppConstants";
-import { deliveryDaysInitialValues } from "../../contexts/interfaces/users.interface";
+import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstants";
 import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
 import NotificationForm from "./NotificationForm/NotificationForm";
@@ -71,7 +70,7 @@ const Users = () => {
   }, [notifyUserId])
 
 
-  const daysInitials = Object.values(deliveryDaysInitialValues);
+  const daysInitials = delivaryDaysToInitials.values();
 
   const options = [ // ToolbarOptions
     {

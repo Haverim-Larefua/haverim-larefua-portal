@@ -11,7 +11,6 @@ import Status from '../../shared/Status/Status';
 import User from '../../../contexts/interfaces/users.interface';
 
 const ParcelDetails = (props) => {
-    console.log('Entering parcel Details');
     const history = useHistory();
     const handleNavigateBack = () => {
         history.goBack();
