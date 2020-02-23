@@ -32,13 +32,19 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                     convertedDays.push(aDay);
                 })
                 console.log(convertedDays);
-                setUserAvailableDays(convertedDays.join(','));
+                setUserAvailableDays(convertedDays);
             }
         }
         fetchUser();
     }, [editUserId]);
 
-    const formFields = ['firstName', 'lastName', 'phone', 'username', 'password', 'deliveryArea', 'deliveryDays', 'notes'];
+
+    let formFields = [];
+    if (editUserId) {
+      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'deliveryDays', 'notes'];
+    } else {
+      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
+    }
 
     const handleDaySelection = (e) => {
         if (userAvailableDays.indexOf(e.target.value) < 0) {
