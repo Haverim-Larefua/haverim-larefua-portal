@@ -6,12 +6,14 @@ import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
 import { userContext } from "../../../contexts/userContext";
 import DaysSelection from './DaysSelection';
+import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
 
 const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
     const cities = useContext(citiesContext);
     const [userExtendedData, dispatch] = useContext(userContext);
     const [userAvailableDays, setUserAvailableDays] = useState([]);
+    const [userDeliveryArea, setUserDeliveryArea] = useState('');
     const [newUserForm, setNewUserFormField] = useState({});
 
     useEffect(() => {
@@ -39,13 +41,9 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
         }
     }
 
-    const citiesDatalist = <datalist id='citiesList'>
-                                {cities.map((city, i) => {
-                                    return (
-                                        <option value={city} key={i}>{city}</option>
-                                    )
-                                })}
-                            </datalist>;
+    const handleCitySelection = (e) => {
+        setUserDeliveryArea(e.target.innerText);
+    }
 
     const onFieldChange = (e) => {
         setNewUserFormField({ ...newUserForm, [e.target.name]: e.target.value });
@@ -53,7 +51,7 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const newUserData = { ...newUserForm, deliveryDays: userAvailableDays, password: "123456" };
+        const newUserData = { ...newUserForm, deliveryDays: userAvailableDays, deliveryArea: userDeliveryArea, password: "123456" };
         const reformattedUser = { ...newUserData, deliveryDays: `[${newUserData.userAvailableDays}]` }; // TODO remove this after refactoring the DB, currently expects an array as a string ("[]"), The DB should be fixed to only be expecting an array
         if (editUserId) {
             dispatch(httpService.createUser(reformattedUser)); //TODO:  Edit user not create one
@@ -78,8 +76,9 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                     const getInput = (item) => {
                         switch (item) {
                             case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
-                            case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />
-                            default: return <input className={inputClass} type={inputType} list={item === 'deliveryArea' ? 'citiesList' : ''} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
+                            case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />;
+                            case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} />
+                            default: return <input className={inputClass} type={inputType} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }
 
@@ -91,7 +90,6 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                     )
                 })
                 }
-                {citiesDatalist}
             </form>
         </Modal>
     )
