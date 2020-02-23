@@ -21,7 +21,7 @@ const UsersList = (props) => {
     const opts = [];
     usersList.forEach(user => {
       const initials = createInitials(user.firstName, user.lastName)
-      opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}` });
+      opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}`, initialsColors: initialsColors()});
     })
     setOptions(opts);
   }
@@ -65,6 +65,12 @@ const UsersList = (props) => {
     setSearchInputTerm(e.target.value);
   };
 
+  const initialsColors = () => {
+    const num = Math.floor(Math.random() * 4) + 1;
+    console.log('COLOR SCHEME: ', num)
+    return `color-${num}`
+}
+
   return (
     <div className="ffh-userlist">
       <div className="ffh-userlist__head">
@@ -80,6 +86,7 @@ const UsersList = (props) => {
             <UserListItem key={i}
               identifier={item.value}
               initials={item.initials}
+              initialsColors={item.initialsColors}
               label={item.label}
               selected={item.value === parseInt(selectedUser)}
               showUserDetails={selectedUser}
