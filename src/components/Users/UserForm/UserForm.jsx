@@ -36,6 +36,10 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                 console.log(convertedDays);
                 setUserAvailableDays(convertedDays);
             }
+
+            if (user && user.deliveryArea) {
+                setUserDeliveryArea(user.deliveryArea);
+            }
         }
         fetchUser();
     }, [editUserId]);
@@ -71,7 +75,7 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
     const onSubmit = (e) => {
         e.preventDefault();
         const convertedDays = userAvailableDays.map(val => delivaryDaysToInitials.get(val));
-        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(',') };
+        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), deliveryArea: userDeliveryArea };
         if (editUserId) {
             dispatch(editUser(newUserData));
         } else {
