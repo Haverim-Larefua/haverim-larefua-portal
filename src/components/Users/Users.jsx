@@ -7,10 +7,10 @@ import tableColumns from "./tableColumns";
 import { userContext } from "../../contexts/userContext";
 import { loadUsers, removeUser } from "../../contexts/actions/users.action";
 import httpService from "../../services/http";
-import AppConstants from "../../constants/AppConstants";
-import { deliveryDaysInitialValues } from "../../contexts/interfaces/users.interface";
+import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstants";
 import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
+import NotificationForm from "./NotificationForm/NotificationForm";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
@@ -21,9 +21,11 @@ const Users = () => {
   const [showNewUserModal, setShowNewUserModal] = useState(false);
   const [editUserId, setEditUserId] = useState("");
   const [notifyUserId, setNotifyUserId] = useState("");
+  const [notifyUserName, setNotifyUserName] = useState("");
   const [deleteUserId, setDeleteUserId] = useState("");
   const [deleteUserText, setDeleteUserText] = useState("");
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
+  const [showNotificationDialog, setShowNoticationDialog] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -59,15 +61,16 @@ const Users = () => {
   useEffect(() => {
     function handleNotifyUser() {
       if (notifyUserId && notifyUserId !== "") {
+        setShowNoticationDialog(true);
       } else {
-        //httpService.sendNotification();
+        setShowNoticationDialog(false);
       }
     }
     handleNotifyUser();
   }, [notifyUserId])
 
 
-  const daysInitials = Object.values(deliveryDaysInitialValues);
+  const daysInitials = delivaryDaysToInitials.values();
 
   const options = [ // ToolbarOptions
     {
@@ -99,6 +102,7 @@ const Users = () => {
       case 'notify' : {
         logger.log('[Users] cellButtonClicked send notification to ', id, user.id);
         setNotifyUserId(user.id); // because setState is async - we handle the action in useEffect
+        setNotifyUserName(user.firstName + ' ' + user.lastName);
         break;
       }
       case 'edit': {
@@ -141,6 +145,8 @@ const Users = () => {
 
         <ConfirmDeleteUser show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
           text={deleteUserText}/>
+
+        <NotificationForm show={showNotificationDialog} handleClose={handleClose} userId={notifyUserId} userName={notifyUserName}/>
 
         <Table
           data={userExtendedData.users}

@@ -22,7 +22,6 @@ class UserNoteComponent extends Component<UserNoteComponentProps> {
 ;  }
 
   public onButtonClicked(e: any): void {
-    console.log("[UserNoteComponent] onButtonClicked ", e, e.currentTarget.id, e.currentTarget.name);
     //take out the _uuid from e.currentTarget.id
     const id =  e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_uuid:'));
     this.props.action(id, e.currentTarget.name);

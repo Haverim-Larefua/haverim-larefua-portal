@@ -4,6 +4,7 @@ const Configuration = {
         LOGIN: '/auth/admin',
         PARCELS: '/parcels',
         USERS: '/users',
+        PUSH: '/push-token',
         CITIES_ENDPOINT: 'https://data.gov.il/api/action/datastore_search?resource_id=ec172c08-27fe-4d97-960d-dabf741c077f&limit=1300'
         // taken from https://data.gov.il/he/dataset/citiesandsettelments
     }

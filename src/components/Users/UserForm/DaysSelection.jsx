@@ -1,10 +1,11 @@
 import React from 'react';
-import { deliveryDaysValues } from '../../../contexts/interfaces/users.interface';
-import './DaySelection.scss';
+import './DaySelection.scss'; 
+import { delivaryDaysToInitials } from "../../../constants/AppConstants";
 
-const days = Object.values(deliveryDaysValues);
 
 const DaysSelection = (props) => {
+    const days = Array.from(delivaryDaysToInitials.keys());
+
     return (
         <div className="ffh-day-selection">
             {days.map((day, i) => {

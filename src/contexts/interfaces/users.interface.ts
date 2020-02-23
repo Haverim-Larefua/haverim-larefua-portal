@@ -1,26 +1,5 @@
 import { loadUsers, UserActions } from "../actions/users.action";
 import Parcel from "./parcels.interface";
-import AppConstants from "../../constants/AppConstants";
-
-export const deliveryDaysValues = Object.freeze({
-  ALL_WEEK: AppConstants.allWeek,
-  SUNDAY: AppConstants.sunday,
-  MONDAY: AppConstants.monday,
-  TUESDAY: AppConstants.tuesday,
-  WEDNESDAY: AppConstants.wednesday,
-  THURSDAY: AppConstants.thursday,
-  FRIDAY: AppConstants.friday
-});
-
-export const deliveryDaysInitialValues = Object.freeze({
-  ALL_WEEK: AppConstants.allWeek,
-  SUNDAY: AppConstants.sundayInitial,
-  MONDAY: AppConstants.mondayInitial,
-  TUESDAY: AppConstants.tuesdayInitial,
-  WEDNESDAY: AppConstants.wednesdayInitial,
-  THURSDAY: AppConstants.thursdayInitial,
-  FRIDAY: AppConstants.fridayInitial
-});
 
 export const defaultUserExtendedData: UserExtendedData = {
   users: [],
@@ -46,7 +25,7 @@ export default class User {
   lastName: string;
   address: string;
   deliveryArea: string;
-  deliveryDays: string; // delivaryDaysValues
+  deliveryDays: string; 
   phone: string;
   notes: string;
   role: string; // DB: role_fk maybe a number or enum

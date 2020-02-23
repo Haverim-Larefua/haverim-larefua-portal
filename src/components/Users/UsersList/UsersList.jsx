@@ -57,7 +57,6 @@ const UsersList = (props) => {
   }, [searchInputTerm])
 
   const onUserCicked = e => {
-    console.log(`[UsersList] onUserCicked`, e, e.target.id, e.currentTarget.id);
     props.updateSelectedUser(e.currentTarget.id);
     setSelectedUser(e.currentTarget.id);
   };
