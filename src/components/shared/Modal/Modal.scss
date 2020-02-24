@@ -67,6 +67,9 @@
   color: $white;
   background-color: $blue;
   border-radius: 4px;
+  &:hover {
+    background-color: $dark-blue;
+  }
 }
 .ffh-modal__action--cancel {
   @extend %ffh-modal__action;
