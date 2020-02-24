@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
-import { addParcels, loadParcels, assignUserToParcel } from "../../contexts/actions/parcels.action";
+import { addParcels, loadParcels, assignUserToParcels } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
@@ -9,7 +9,7 @@ import { parcelContext } from "../../contexts/parcelContext";
 import { userContext } from "../../contexts/userContext";
 import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
-import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
+import Parcel, { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
 import UsersModal from "../Users/UsersList/UsersModal";
 import UsersList from "../Users/UsersList/UsersList";
@@ -61,17 +61,20 @@ const Parcels = () => {
     parcel.currentUserId = userId;
     parcel.user = userExtendedData.users.find(u => u.id === userId);
     logger.log("[Parcels] associateUserToOneParcel dispatch", parcel);
-    dispatch(assignUserToParcel(parcel));
+    // dispatch(assignUserToParcel(parcel));
+    return parcel;
   };
 
   const associateUserToListOfParcels = (parcelsToAssociate, userId) => {
     logger.log('[Parcels] associateUserToListOfParcels', parcelsToAssociate, userId);
 
+    const parcels = [];
     if (parcelsToAssociate && parcelsToAssociate.length > 0 ) {
       const uId = parseInt(userId);
       parcelsToAssociate.forEach(id => {
-        associateUserToOneParcel(uId, parseInt(id))
-      })
+        parcels.push(associateUserToOneParcel(uId, parseInt(id)));
+      });
+      dispatch(assignUserToParcels(parcels));
     }
   }
 

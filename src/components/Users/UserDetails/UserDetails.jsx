@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { userContext } from '../../../contexts/userContext';
 import './UserDetails.scss';
+import Initials from '../UsersList/Initials';
 
 const UserDetails = (props) => {
 
@@ -18,6 +19,7 @@ const UserDetails = (props) => {
     <div className="ffh-user-details">
       <div className="ffh-user-details__item ffh-user-details__user">
       <div className="ffh-user-details__user-name">
+      <Initials initialsColors={props.initialsColors} initials={props.initials} />
       {userDetails.firstName} {userDetails.lastName}
       </div>
       </div>

@@ -42,3 +42,31 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+# Build - Digital Ocean
+Log in to the machine<br />
+###### `ssh root@165.227.223.247`
+
+
+Switch to the applicative user<br />
+###### `su - ffh_user`
+
+
+Go to the portal git workspace<br />
+###### `cd /home/ffh_user/dev/git_ws/ffh/portal`
+
+Pull latest changes from git (Branch=master)<br />
+###### `git pull`
+
+Build the docker image<br />
+###### `docker build . -t ffh_portal`
+
+Remove the old container<br />
+###### `docker rm -f ffh_portal`
+
+Create a container from the image.<br />
+###### `docker create --name ffh_portal -p 3001:3001 ffh_portal:<version> - current 0.1.0`
+
+Start the container.<br />
+###### `docker start ffh_portal`

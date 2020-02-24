@@ -1,6 +1,6 @@
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCEL,
+import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCELS,
   IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES} from "../contexts/actions/parcels.action";
-import { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
+import Parcel, { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil"
 import logger from "../Utils/logger";
 
@@ -39,15 +39,18 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       return { parcels: state.parcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(state.parcels) };
     }
 
-    case ASSIGN_USER_TO_PARCEL: {
-      const foundIndex = state.parcels.findIndex( pack => pack.id === action.parcel.id );
-      if (foundIndex !== -1) {
-        let tempparcels = [...state.parcels];
-        tempparcels[foundIndex] = ParcelUtil.prepareOneParcelForDisplay(action.parcel);
-        return { parcels: tempparcels, action: action, cities: state.cities };
-      } else {
-        return state;
-      }
+    case ASSIGN_USER_TO_PARCELS: {
+      const newStateParcels: Parcel[] = [];
+      const parcelsIds = action.parcels.map((p: Parcel) => p.id);
+      state.parcels.forEach((parcel: Parcel) => {
+        if (parcelsIds.includes(parcel.id)) {
+          const currentParcel: Parcel = action.parcels.find((par: Parcel) => par.id === parcel.id);
+          newStateParcels.push(ParcelUtil.prepareOneParcelForDisplay(currentParcel));
+        } else {
+          newStateParcels.push(parcel);
+        }
+      });
+      return { parcels: newStateParcels, action: action, cities: state.cities };
     }
     default:
       return state;

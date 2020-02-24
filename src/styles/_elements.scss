@@ -2,7 +2,7 @@
     background-color: $white;
     border-radius: 4px;
     border: 1px solid $grey-mid;
-    box-shadow: 0 2px 2px 0 rgba(165, 165, 165, 0.5);
+    box-shadow: 0 1px 1px 0 rgba(165, 165, 165, 0.5);
     color: $blue;
     cursor: pointer;
     font-size: 16px;
@@ -11,6 +11,9 @@
     margin-right: auto;
     white-space: nowrap;
     width: 8%;
+    &:hover {
+        background-color: $grey-light;
+    }
 }
 
 
