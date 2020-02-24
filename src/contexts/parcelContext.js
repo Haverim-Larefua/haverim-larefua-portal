@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCEL,
+import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCELS,
          loadParcels, updateParcelsCities} from "../contexts/actions/parcels.action";
 import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
@@ -23,7 +23,7 @@ const ParcelContextProvider = props => {
 
   //first time call that loads parcels from db
   //TODO: already done by the parcel object for searching - check how to seperate
-  useEffect(() => { 
+  useEffect(() => {
     getAllparcelsfromDB()
   }, []);
 
@@ -61,11 +61,10 @@ const ParcelContextProvider = props => {
           logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
           break;
         }
-        case ASSIGN_USER_TO_PARCEL: {
-          const response =  await httpService.assignUserToParcel(
-            parcelExtendedData.action.parcel.currentUserId, 
-            parcelExtendedData.action.parcel.id);
-          logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCEL", response );
+        case ASSIGN_USER_TO_PARCELS: {
+          const parcelIds = parcelExtendedData.action.parcels.map(parcel => parcel.id);
+          const response =  await httpService.assignUserToParcels(parcelExtendedData.action.parcels[0].currentUserId, parcelIds);
+          logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCELS", response );
           break;
         }
         case LOAD_PARCELS:

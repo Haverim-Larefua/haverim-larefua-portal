@@ -113,8 +113,8 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}`, HttpMethod.DELETE);
   }
 
-  async assignUserToParcel(userId: number, pacelId: number,) {
-    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}/assign/${userId}`, HttpMethod.PUT);
+  async assignUserToParcels(userId: number, parcelsId: number[]) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/assign/${userId}`, HttpMethod.PUT, parcelsId);
   }
 
   // TODO: this should be a query in DB
