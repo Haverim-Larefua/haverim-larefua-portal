@@ -23,8 +23,8 @@ const Modal: React.FC<IModalProps> = (props): React.ReactElement => {
     <div className={`ffh-modal__screen ${showHideClassName}`}>
       <div className="ffh-modal">
         <header className="ffh-modal__header">
-          {props.type === 'alert' && <AlertIcon />}
-          {props.type === 'error' && <ErrorIcon />}
+          {props.type === 'alert' && <AlertIcon className="ffh-modal__icon" />}
+          {props.type === 'error' && <ErrorIcon className="ffh-modal__icon" />}
           <h2 className="ffh-modal__title">{props.title}</h2>
           <CloseIcon className="ffh-modal__close" onClick={props.handleClose} />
         </header>
