@@ -3,18 +3,26 @@ import Modal from "../shared/Modal/Modal";
 import AppConstants from "../../constants/AppConstants";
 import './ConfirmDeleteUser.scss';
 
-const ConfirmDeleteUser = ({ show, handleClose, handleDelete, text }) => {
+interface IConfirmDeleteUserProps {
+  show: boolean;
+  handleClose: ()=> void;
+  handleDelete: ()=> void;
+  text: string;
+}
+
+const ConfirmDeleteUser: React.FC<IConfirmDeleteUserProps> = (props): React.ReactElement =>{
   return (
     <Modal
-      show={show}
+      show={props.show}
       title={AppConstants.deleteUserUIName}
       cancelBtnText={AppConstants.cancel}
-      handleClose={handleClose}
+      handleClose={props.handleClose}
       actionBtnText={AppConstants.delete}
-      handleAction={handleDelete}
+      handleAction={props.handleDelete}
+      type={'alert'}
     >
       <div className='ffh-confirmation-message'>
-        {text}
+        {props.text}
       </div>
     </Modal>
   );

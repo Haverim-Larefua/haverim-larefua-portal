@@ -2,14 +2,14 @@
 @import '../../../styles/elements';
 
 %modal-screen {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    height: 100vh;
+    justify-content: center;
     position: fixed;
     top: 0;
     width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
     z-index: 1;
-    justify-content: center;
-    align-items: center;
 }
 
 .ffh-modal__screen {
@@ -24,49 +24,55 @@
   }
 }
 .ffh-modal {
-  position:fixed;
-  padding: 0 30px 20px;
   background: white;
-  font-size: 14px;
   border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  position:fixed;
 }
 .ffh-modal__header{
-  font-size: 24px;
-  border-bottom: 2px solid $blue;
-  height: 72px;
-  display: flex;
-  margin: 0;
   align-items: center;
-  justify-content: space-between;
+  display: flex;
+  height: 72px;
+  margin: 0;
+  padding: 0 24px;
 }
 
 .ffh-modal__title {
-  font-size: 24px;
-  font-weight: normal;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.ffh-modal__icon {
+  margin-left: 10px;
+}
+
+.ffh-modal__close {
+  cursor: pointer;
+  margin-right: auto;
 }
 
 .ffh-modal__actions {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: flex-end;
+  padding: 12px 24px;
 }
 
 %ffh-modal__action {
   @extend %button-reset;
-  font-weight: bold;
+  cursor: pointer;
   font-size: 16px;
+  font-weight: bold;
   height: 40px;
   min-width: 100px;
   padding: 0 10px;
-  cursor: pointer;
 }
 
 .ffh-modal__action--submit {
   @extend %ffh-modal__action;
-  color: $white;
   background-color: $blue;
   border-radius: 4px;
+  color: $white;
   &:hover {
     background-color: $dark-blue;
   }

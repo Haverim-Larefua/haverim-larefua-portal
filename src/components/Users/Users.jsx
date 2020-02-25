@@ -112,7 +112,7 @@ const Users = () => {
       }
       case 'delete': {
         logger.log('[Users] cellButtonClicked delete ', id, user.id);
-        let txt = 'האם אכן תרצה/י למחוק?';
+        let txt = 'הפעולה תמחק את פרטי השליח מהמערכת';
         if (user.parcels && user.parcels.length > 0) {
           const prcl = user.parcels.find(p => p.parcelTrackingStatus === AppConstants.deliveringStatusName);
           if (prcl && prcl.length > 0) {
