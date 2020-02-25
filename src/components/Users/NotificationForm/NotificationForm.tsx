@@ -28,10 +28,7 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
         }
         httpService.sendPushNotification(props.userId, title, subtitle, message)
             .then((res) => {
-                setTitle("");
-                setSubtitle("");
-                setMessage("");
-                setNotificationErrorMessage("");
+                handleClose();
             })
             .catch((err) => {
                 setNotificationErrorMessage(`.אירעה שגיאה בשליחת ההודעה. נסו שוב`);
