@@ -1,0 +1,43 @@
+import React from 'react'
+import './Modal.scss';
+import { ReactComponent as CloseIcon } from '../../../assets/icons/close.svg';
+import { ReactComponent as AlertIcon } from '../../../assets/icons/alert.svg';
+import { ReactComponent as ErrorIcon } from '../../../assets/icons/error.svg';
+import { Interface } from 'readline';
+
+interface IModalProps {
+    title: string;
+    handleClose: ()=>void;
+    handleAction: ()=>void;
+    show: boolean;
+    children: any;
+    actionBtnText: string;
+    cancelBtnText: string;
+    type?: 'error' | 'alert';
+}
+
+const Modal: React.FC<IModalProps> = (props): React.ReactElement => {
+  const showHideClassName = props.show ? "ffh-modal__screen--show" : "ffh-modal__screen--hide";
+
+  return (
+    <div className={`ffh-modal__screen ${showHideClassName}`}>
+      <div className="ffh-modal">
+        <header className="ffh-modal__header">
+          {props.type === 'alert' && <AlertIcon />}
+          {props.type === 'error' && <ErrorIcon />}
+          <h2 className="ffh-modal__title">{props.title}</h2>
+          <CloseIcon className="ffh-modal__close" onClick={props.handleClose} />
+        </header>
+        <main className="ffh-modal__content">
+          {props.children}
+        </main>
+        <div className="ffh-modal__actions">
+          <button className="ffh-modal__action--cancel" onClick={props.handleClose}> {props.cancelBtnText} </button>
+          <button className="ffh-modal__action--submit" onClick={props.handleAction} type="submit"> {props.actionBtnText} </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Modal;

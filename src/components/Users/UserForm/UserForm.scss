@@ -2,12 +2,15 @@
 @import "../../../styles/elements";
 
 .ffh-user-form {
-  width: 640px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   align-content: center;
+  align-items: center;
+  box-shadow: inset 0px 2px 6px -3px rgba(0, 0, 0, 0.2),
+              inset 0px -2px 6px -3px rgba(0, 0, 0, 0.2);
+  display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 24px 12px;
+  width: 640px;
 }
 .ffh-user-form-field {
   border: 0;
@@ -16,18 +19,8 @@
   margin-top: 20px;
   width: 48%;
 
-  // &.username {
-  //   width: 100%;
-  //   .ffh-user-form-field__input {
-  //     width: 48%;
-  //   }
-  // }
-
   &.deliveryDays {
     flex: auto;
-    .label {
-      margin-right: 10px;
-    }
   }
 
   &.notes {
@@ -52,48 +45,3 @@
   font-weight: bold;
 }
 
-.availableDays {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  align-content: center;
-}
-.daySelection {
-  margin: 7px;
-  width: auto;
-  height: 36px;
-  font-size: 16px;
-  text-align: center;
-  padding: 10px 15px;
-  border-radius: 18px;
-  border: solid 1px $grey-mid;
-  cursor: pointer;
-  width: 100%;
-  white-space: nowrap;
-
-  &.selected {
-    border-width: 2px;
-    border-color: $orange;
-    color: $orange;
-    font-weight: bold;
-    padding: 8px 12px;
-  }
-}
-
-.deliveryArea {
-  .ffh-dropdown__items-container {
-    height: auto;
-    max-height: 300px;
-    overflow: scroll;
-    width: 100%;
-  }
-  .ffh-dropdown,
-  .ffh-dropdown > .ffh-dropdown__button,
-  .ffh-dropdown__screen {
-    height: 40px;
-    border-radius: 0;
-    margin-left: 0;
-    border-color: $grey-mid;
-    width: 100%;
-  }
-}
