@@ -3,7 +3,6 @@ import './Modal.scss';
 import { ReactComponent as CloseIcon } from '../../../assets/icons/close.svg';
 import { ReactComponent as AlertIcon } from '../../../assets/icons/alert.svg';
 import { ReactComponent as ErrorIcon } from '../../../assets/icons/error.svg';
-import { Interface } from 'readline';
 
 interface IModalProps {
     title: string;
