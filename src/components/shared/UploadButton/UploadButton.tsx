@@ -1,6 +1,6 @@
 import React from 'react';
 import './UploadButton.scss';
-import { ReactComponent as Icon} from '../../../assets/icons/add.svg';
+import { ReactComponent as Icon} from '../../../assets/icons/upload.svg';
 
 interface UploadButtonProps {
     title: string;

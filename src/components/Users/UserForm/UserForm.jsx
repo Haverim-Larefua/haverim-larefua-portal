@@ -100,7 +100,7 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                         switch (item) {
                             case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />;
-                            case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} />
+                            case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} height='260px'/>
                             default: return <input className={inputClass} type={inputType} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }

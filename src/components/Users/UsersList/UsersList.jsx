@@ -2,7 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import './UsersList.scss';
 import { userContext } from "../../../contexts/userContext";
 import createInitials from '../../../Utils/User/InitialsCreator';
+import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import UserListItem from './UserListItem';
+import AppConstants, { delivaryDaysToInitials } from "../../../constants/AppConstants";
 
 const UsersList = (props) => {
   const [userExtendedData] = useContext(userContext);
@@ -13,6 +15,8 @@ const UsersList = (props) => {
 
   const [selectedUser, setSelectedUser] = useState();
 
+  const [selectedDay, setSelectedDay] = useState(AppConstants.all);
+
   function initializeUserList() {
     setUsersList(userExtendedData.users);
   }
@@ -21,7 +25,7 @@ const UsersList = (props) => {
     const opts = [];
     usersList.forEach(user => {
       const initials = createInitials(user.firstName, user.lastName)
-      opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}`, initialsColors: initialsColors()});
+      opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}`, deliveryDays: user.deliveryDays, initialsColors: initialsColors() });
     })
     setOptions(opts);
   }
@@ -69,15 +73,34 @@ const UsersList = (props) => {
     const num = Math.floor(Math.random() * 4) + 1;
     console.log('COLOR SCHEME: ', num)
     return `color-${num}`
-}
+  }
+
+  const days = Array.from(delivaryDaysToInitials.values());
+
+  const handleSelection = (e) => {
+    setSelectedDay(e.target.innerText);
+    let filteredUsersList = userExtendedData.users;
+    if (e.target.innerText !== AppConstants.all) {
+      filteredUsersList = userExtendedData.users.filter((user)=>{
+        return user.deliveryDays.includes(e.target.innerText);
+      });
+    }
+  setUsersList(filteredUsersList);
+  }
 
   return (
     <div className="ffh-userlist">
       <div className="ffh-userlist__head">
         <div className="ffh-userlist__title">שיוך לשליח</div>
+        <div className="ffh-userlist__control">
         <div className="ffh-userlist__search">
           <input className="ffh-userlist__search-input" type="text" placeholder="חיפוש"
             onChange={handleChange} />
+        </div>
+        <div className="ffh-userlist__filter">
+          <div className="ffh-userlist__filter-label">ימי חלוקה</div>
+        <SelectFilter onSelect={handleSelection} items={days} selected={selectedDay} hideFilter  />
+        </div>
         </div>
       </div>
       <ul className='ffh-userlist__items'>

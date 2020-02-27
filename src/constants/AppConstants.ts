@@ -31,7 +31,7 @@
     static readonly notify: string = 'שליחת הודעה ל ';
 
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
-    static readonly associateUserUIName: string = '+ שיוך לשליח/ה';
+    static readonly associateUserUIName: string = 'שיוך לשליח/ה';
 
     static readonly commentsUIName: string = 'הערות';
     static readonly signatureUIName: string = 'חתימה';
@@ -62,12 +62,12 @@
     static readonly thursdayInitial: string = 'ה';
     static readonly fridayInitial: string = 'ו';
 
-    static readonly allWeekDetailed =  
-            AppConstants.sundayInitial + ',' + 
-            AppConstants.mondayInitial + ',' + 
+    static readonly allWeekDetailed =
+            AppConstants.sundayInitial + ',' +
+            AppConstants.mondayInitial + ',' +
             AppConstants.tuesdayInitial + ',' +
-            AppConstants.wednesdayInitial + ',' + 
-            AppConstants.thursdayInitial + ',' + 
+            AppConstants.wednesdayInitial + ',' +
+            AppConstants.thursdayInitial + ',' +
             AppConstants.fridayInitial;
  }
 

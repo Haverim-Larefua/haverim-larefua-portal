@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import './Toolbar.scss';
 import UploadButton from '../UploadButton/UploadButton';
+import { ReactComponent as AddUserIcon } from '../../../assets/icons/add-volunteer.svg';
 // import logger from '../../../Utils/logger';
 
 export interface ToolbarOption {
@@ -44,7 +45,7 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
     if (this.props.uploadButton === true) {
       button = <UploadButton title={this.props.actionTitle} action={this.props.action}></UploadButton>;
     } else {
-      button = <button className="ffh-toolbar__immediate_action" onClick={this.props.action}> {this.props.actionTitle} </button>
+      button = <button className="ffh-toolbar__immediate_action" onClick={this.props.action}><AddUserIcon /> {this.props.actionTitle} </button>
     }
 
     let searchFragment;
