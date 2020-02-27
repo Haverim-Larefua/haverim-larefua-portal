@@ -17,8 +17,8 @@
     font-size: 14px;
     position:fixed;
     right: 50%;
-    transform: translateX(320px);
     top: 94px;
+    transform: translateX(320px);
     width: 640px;
  }
 
@@ -26,9 +26,9 @@
     @extend %button-reset;
     cursor: pointer;
     height: 32px;
-    left: 0;
+    left: 14px;
     position: absolute;
-    top: 0;
+    top: 14px;
     width: 32px;
   }
 

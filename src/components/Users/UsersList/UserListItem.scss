@@ -22,7 +22,7 @@
   height: 36px;
   justify-content: center;
   margin-left: 13px;
-  width: 36px;
+  min-width: 36px;
   &.color-1{
     @extend %status-ready;
   }
@@ -39,9 +39,11 @@
 
 .ffh-userlist-item {
   &.selected {
-    background-color: $blue;
-    .ffh-userlist-item__name {
-      color: $white;
-    }
+    background-color: $grey-bright;
   }
+}
+
+.ffh-userlist-item__selected-icon {
+  margin-left: 13px;
+  min-width: 36px;
 }

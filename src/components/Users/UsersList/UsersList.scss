@@ -14,7 +14,7 @@
 }
 
 .ffh-userlist__title {
-    font-size: 16px;
+    font-size: 21px;
     font-weight: bold;
     line-height: 1.5;
     margin-bottom: 12px;
@@ -33,10 +33,10 @@
 }
 
 .ffh-userlist__filter {
-    width: 48%;
+    align-items: center;
     display: flex;
     white-space: nowrap;
-    align-items: center;
+    width: 48%;
 }
 
 .ffh-userlist__filter-label {
