@@ -2,7 +2,7 @@
 @import '../../../styles/elements';
 
 
-.users-modal {
+.ffh-users-modal {
     height: 100%;
     left: 0;
     position: fixed;
@@ -11,7 +11,7 @@
     z-index: 1;
   }
 
-  .users-modal-main {
+  .ffh-users-modal-main {
     background: white;
     box-shadow: 0 2px 4px 0 rgba(23, 23, 23, 0.5);
     font-size: 14px;
@@ -22,7 +22,7 @@
     width: 640px;
  }
 
-  .users-modal-close{
+  .ffh-users-modal-close{
     @extend %button-reset;
     cursor: pointer;
     height: 32px;
@@ -32,7 +32,7 @@
     width: 32px;
   }
 
-  .users-modal-button{
+  .ffh-users-modal-button{
     @extend %button-reset;
     background-color: $blue;
     border-radius: 4px;
@@ -47,12 +47,4 @@
     &:hover {
       background-color: $dark-blue;
     }
-  }
-
-  .users-display-block {
-    display: block;
-  }
-
-  .users-display-none {
-    display: none;
   }

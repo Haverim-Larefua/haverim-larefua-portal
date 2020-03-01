@@ -13,7 +13,6 @@ interface IConfirmDeleteUserProps {
 const ConfirmDeleteUser: React.FC<IConfirmDeleteUserProps> = (props): React.ReactElement =>{
   return (
     <Modal
-      show={props.show}
       title={AppConstants.deleteUserUIName}
       cancelBtnText={AppConstants.cancel}
       handleClose={props.handleClose}
