@@ -66,5 +66,7 @@
     @extend %ffh-toolbar-button;
     margin-right: 0;
     width: initial;
+    display: flex;
+    align-items: center;
 
 }

@@ -10,6 +10,16 @@
     @extend %input;
     align-items: center;
     display: flex;
+    &::after {
+        border-color: #1d1d1f transparent transparent transparent;
+        border-style: solid;
+        border-width: 6px;
+        content: '';
+        height: 0px;
+        margin-right: auto;
+        transform: translateY(5px);
+        width: 0px;
+    }
 }
 
 .ffh-select-filter__input-ph {
@@ -41,7 +51,6 @@
 .ffh-select-filter__dropdown {
     background-color: $white;
     border: 1px solid $grey-mid;
-    height: 250px;
     overflow: hidden;
     position: absolute;
     top: 40px;

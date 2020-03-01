@@ -16,18 +16,19 @@
     box-shadow: 0 2px 4px 0 rgba(23, 23, 23, 0.5);
     font-size: 14px;
     position:fixed;
-    right: 400px;
+    right: 50%;
     top: 94px;
-    width: 318px;
+    transform: translateX(320px);
+    width: 640px;
  }
 
   .users-modal-close{
     @extend %button-reset;
     cursor: pointer;
     height: 32px;
-    left: 0;
+    left: 14px;
     position: absolute;
-    top: 0;
+    top: 14px;
     width: 32px;
   }
 

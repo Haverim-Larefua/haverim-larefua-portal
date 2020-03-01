@@ -95,12 +95,13 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {
                     const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
-                    const inputType = (item === 'password') ? 'password' : 'text';
+                    // const inputType = (item === 'password') ? 'password' : 'text';
+                    const inputType = 'text';
                     const getInput = (item) => {
                         switch (item) {
                             case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />;
-                            case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} />
+                            case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} height='260px'/>
                             default: return <input className={inputClass} type={inputType} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }
