@@ -10,7 +10,7 @@ import DayPicker from './DayPicker';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
 
-const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
+const UserForm = ({ handleClose, editUserId }) => {
     const cities = useContext(citiesContext);
     const [userExtendedData, dispatch] = useContext(userContext);
     const [userAvailableDays, setUserAvailableDays] = useState([]);
@@ -90,12 +90,11 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
     };
 
     return (
-        <Modal show={showNewUserModal}
-            title={ editUserId ? AppConstants.editUserUIName : AppConstants.addUserUIName}
-            handleClose={handleClose}
-            handleAction={e => onSubmit(e)}
-            actionBtnText={editUserId ? AppConstants.edit : AppConstants.add}
-            cancelBtnText={AppConstants.cancel}
+        <Modal  title={ editUserId ? AppConstants.editUserUIName : AppConstants.addUserUIName}
+                handleClose={handleClose}
+                handleAction={e => onSubmit(e)}
+                actionBtnText={editUserId ? AppConstants.edit : AppConstants.add}
+                cancelBtnText={AppConstants.cancel}
         >
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {

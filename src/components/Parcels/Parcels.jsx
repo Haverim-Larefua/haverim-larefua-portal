@@ -150,10 +150,11 @@ const Parcels = () => {
 
   return (
     <div>
+      {openUsersModal &&
       <UsersModal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
         <UsersList updateSelectedUser={updateSelectedUser}/>
       </UsersModal>
-
+    }
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}

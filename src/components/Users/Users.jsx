@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import logger from "../../Utils/logger";
 import Table from "../shared/Table/Table";
@@ -29,7 +29,7 @@ const Users = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await httpService.searchUsers( dayFilterTerm, cityFilterTerm, nameSearchTerm );
+      const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
       dispatch(loadUsers(response));
     }
     fetchData();
@@ -92,14 +92,14 @@ const Users = () => {
     setDeleteUserId("");
   }
 
-  const cellButtonClicked = (id,name) => {
+  const cellButtonClicked = (id, name) => {
     logger.log('[Users] cellButtonClicked on ', id, name);
     const user = userExtendedData.users.find(usr => usr.phone === id);
     if (!user) {
-      logger.error('[Users] cellButtonClicked user with phone ', id,'  not found');
+      logger.error('[Users] cellButtonClicked user with phone ', id, '  not found');
     }
     switch (name) {
-      case 'notify' : {
+      case 'notify': {
         logger.log('[Users] cellButtonClicked send notification to ', id, user.id);
         setNotifyUserId(user.id); // because setState is async - we handle the action in useEffect
         setNotifyUserName(user.firstName + ' ' + user.lastName);
@@ -141,30 +141,35 @@ const Users = () => {
 
   return (
     <React.Fragment>
-        <UserForm showNewUserModal={showNewUserModal}  handleClose={handleClose} editUserId={editUserId}/>
 
+      <Table
+        data={userExtendedData.users}
+        tableColumns={tableColumns}
+        handleCellButtonClick={cellButtonClicked}
+        subHeaderComponent={
+          <Toolbar
+            title={AppConstants.usersUIName}
+            actionTitle={AppConstants.addUserUIName}
+            action={() => setShowNewUserModal(true)}
+            withOptions
+            options={options}
+            withSearch
+            search={setNameSearchTerm}
+          />
+        }
+      />
+      {showNewUserModal &&
+        <UserForm showNewUserModal={showNewUserModal} handleClose={handleClose} editUserId={editUserId} />
+      }
+      {showComfirmDeleteDialog &&
         <ConfirmDeleteUser show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
-          text={deleteUserText}/>
+        text={deleteUserText} />
+      }
+      {showNotificationDialog &&
+        <NotificationForm show={showNotificationDialog} handleClose={handleClose} userId={notifyUserId} userName={notifyUserName} />
+      }
 
-        <NotificationForm show={showNotificationDialog} handleClose={handleClose} userId={notifyUserId} userName={notifyUserName}/>
-
-        <Table
-          data={userExtendedData.users}
-          tableColumns={tableColumns}
-          handleCellButtonClick={cellButtonClicked}
-          subHeaderComponent={
-            <Toolbar
-              title={AppConstants.usersUIName}
-              actionTitle={AppConstants.addUserUIName}
-              action={() => setShowNewUserModal(true)}
-              withOptions
-              options={options}
-              withSearch
-              search={setNameSearchTerm}
-            />
-          }
-        />
-      </ React.Fragment>
+    </ React.Fragment>
   );
 };
 

@@ -8,7 +8,6 @@ interface IModalProps {
     title: string;
     handleClose: ()=>void;
     handleAction: ()=>void;
-    show: boolean;
     children: any;
     actionBtnText: string;
     cancelBtnText: string;
@@ -16,10 +15,9 @@ interface IModalProps {
 }
 
 const Modal: React.FC<IModalProps> = (props): React.ReactElement => {
-  const showHideClassName = props.show ? "ffh-modal__screen--show" : "ffh-modal__screen--hide";
 
   return (
-    <div className={`ffh-modal__screen ${showHideClassName}`}>
+    <div className="ffh-modal__screen">
       <div className="ffh-modal">
         <header className="ffh-modal__header">
           {props.type === 'alert' && <AlertIcon className="ffh-modal__icon" />}
