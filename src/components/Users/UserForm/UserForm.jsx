@@ -95,7 +95,8 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {
                     const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
-                    const inputType = (item === 'password') ? 'password' : 'text';
+                    // const inputType = (item === 'password') ? 'password' : 'text';
+                    const inputType = 'text';
                     const getInput = (item) => {
                         switch (item) {
                             case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;

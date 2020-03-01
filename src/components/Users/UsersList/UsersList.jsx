@@ -88,14 +88,14 @@ const UsersList = (props) => {
   return (
     <div className="ffh-userlist">
       <div className="ffh-userlist__head">
-        <div className="ffh-userlist__title">שיוך חבילות לשליח</div>
+        <div className="ffh-userlist__title">{AppConstants.associateParcelToUserUIName}</div>
         <div className="ffh-userlist__control">
           <div className="ffh-userlist__search">
-            <input className="ffh-userlist__search-input" type="text" placeholder="חיפוש"
+            <input className="ffh-userlist__search-input" type="text" placeholder={AppConstants.searchUIName}
               onChange={handleChange} />
           </div>
           <div className="ffh-userlist__filter">
-            <div className="ffh-userlist__filter-label">ימי חלוקה</div>
+            <div className="ffh-userlist__filter-label">{AppConstants.deliveryDays}</div>
             <SelectFilter onSelect={handleSelection} items={days} selected={selectedDay} hideFilter showOptionAll/>
           </div>
         </div>

@@ -27,11 +27,13 @@
     static readonly cancel: string = 'ביטול';
     static readonly deleteUserUIName: string = 'מחיקת שליח/ה';
     static readonly delete: string = 'מחק/י';
+    static readonly searchUIName: string = 'חיפוש';
 
     static readonly notify: string = 'שליחת הודעה ל ';
 
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
     static readonly associateUserUIName: string = 'שיוך לשליח/ה';
+    static readonly associateParcelToUserUIName: string = 'שיוך חבילות לשליח/ה';
 
     static readonly commentsUIName: string = 'הערות';
     static readonly signatureUIName: string = 'חתימה';

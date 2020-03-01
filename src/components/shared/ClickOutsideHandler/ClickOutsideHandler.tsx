@@ -1,9 +1,14 @@
 import React, { useRef, useEffect } from "react";
 
-const ClickOutsideHandler = (props) => {
+interface ClickOutsideHandlerProps {
+  onClickOutside: () => void;
+  children: Element;
+}
 
-    const useOutsideClickHandler = (ref) => {
-        const handleClickOutside = (event) => {
+const ClickOutsideHandler: React.FC<ClickOutsideHandlerProps>  = (props) => {
+
+    const useOutsideClickHandler = (ref:any) => {
+        const handleClickOutside = (event:any) => {
           if (ref.current && !ref.current.contains(event.target)) {
             props.onClickOutside();
           }
