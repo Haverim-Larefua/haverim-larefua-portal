@@ -6,11 +6,11 @@ import { citiesContext } from "../../../contexts/citiesContext";
 import { userContext } from "../../../contexts/userContext";
 import { addUser, editUser } from "../../../contexts/actions/users.action";
 import { delivaryDaysToInitials } from '../../../constants/AppConstants';
-import DaysSelection from './DaysSelection';
+import DayPicker from './DayPicker';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
 
-const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
+const UserForm = ({ handleClose, editUserId }) => {
     const cities = useContext(citiesContext);
     const [userExtendedData, dispatch] = useContext(userContext);
     const [userAvailableDays, setUserAvailableDays] = useState([]);
@@ -69,6 +69,11 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
         } else {
             setUserAvailableDays(userAvailableDays.filter(item => item !== e.target.value));
         }
+
+
+    }
+    if (userAvailableDays.length === 6) {
+        setUserAvailableDays([AppConstants.allWeek]);
     }
 
     const handleCitySelection = (e) => {
@@ -141,12 +146,11 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
     };
 
     return (
-        <Modal show={showNewUserModal}
-            title={ editUserId ? AppConstants.editUserUIName : AppConstants.addUserUIName}
-            handleClose={handleClose}
-            handleAction={e => onSubmit(e)}
-            actionBtnText={editUserId ? AppConstants.edit : AppConstants.add}
-            cancelBtnText={AppConstants.cancel}
+        <Modal  title={ editUserId ? AppConstants.editUserUIName : AppConstants.addUserUIName}
+                handleClose={handleClose}
+                handleAction={e => onSubmit(e)}
+                actionBtnText={editUserId ? AppConstants.edit : AppConstants.add}
+                cancelBtnText={AppConstants.cancel}
         >
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {
@@ -156,7 +160,7 @@ const UserForm = ({ showNewUserModal, handleClose, editUserId }) => {
                     const getInput = (item) => {
                         switch (item) {
                             case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
-                            case 'deliveryDays': return <DaysSelection selectedDays={userAvailableDays} onChange={handleDaySelection} />;
+                            case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
                             case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} height='260px'/>
                             default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }

@@ -44,20 +44,19 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
     }
 
     return (
-        <Modal show={props.show}
-               title= {`${AppConstants.notify}  ${props.userName}` }
+        <Modal title= {`${AppConstants.notify}  ${props.userName}` }
                handleClose={handleClose}
                handleAction={() => notify()}
                actionBtnText="שלח/י"
                cancelBtnText={AppConstants.cancel}
         >
+            <div className='ffh-user-notification'>
                     <Input type='text' name='title' label='כותרת' value={title} required onChange={(e) => setTitle(e.target.value)} />
                     <Input type='text' name='subtitle' label='כותרת משנה' value={subtitle} required onChange={(e) => setSubtitle(e.target.value)} />
-                    <fieldset className='fieldset'>
-                        <label htmlFor="message" className="label">הודעה</label>
-                        <textarea rows={5} name="message" className="message" value={message} required onChange={e => setMessage(e.target.value)} />
+                    <label htmlFor="message" className="ffh-form-label">הודעה</label>
+                    <textarea rows={5} name="message"  className="ffh-form-textarea" value={message} required onChange={e => setMessage(e.target.value)} />
                         <div className='error-message'>{notificationErrorMessage}</div>
-                    </fieldset>
+            </div>
 
         </Modal>
     )
