@@ -1,9 +1,13 @@
 import React from 'react';
-import './DaySelection.scss'; 
+import './DayPicker.scss';
 import { delivaryDaysToInitials } from "../../../constants/AppConstants";
 
+interface IDayPickerProps {
+    onChange: ()=> void;
+    selectedDays: string[];
+}
 
-const DaysSelection = (props) => {
+const DayPicker: React.FC<IDayPickerProps> = (props) => {
     const days = Array.from(delivaryDaysToInitials.keys());
 
     return (
@@ -26,4 +30,4 @@ const DaysSelection = (props) => {
     )
 }
 
-export default DaysSelection;
+export default DayPicker;
