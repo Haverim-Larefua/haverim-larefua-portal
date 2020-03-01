@@ -33,7 +33,7 @@ const UserListItem: React.FC<UserListItemProps> = (props:UserListItemProps) => {
         <li className={`ffh-userlist-item ${props.selected ? 'selected' : ''}`} id={props.identifier} onClick={onLineClicked}>
             {props.selected ? <SelectedIcon className="ffh-userlist-item__selected-icon" /> : <Initials initialsColors={props.initialsColors} initials={props.initials} />}
             <span className='ffh-userlist-item__name'>{props.label}</span>
-            {props.showUserDetails == props.identifier ?
+            {props.showUserDetails === props.identifier ?
                 <UserDetails user={props.showUserDetails}
                              initialsColors={props.initialsColors}
                              initials={props.initials}

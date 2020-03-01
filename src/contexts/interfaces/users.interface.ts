@@ -28,18 +28,20 @@ export default class User {
   deliveryDays: string; 
   phone: string;
   notes: string;
-  role: string; // DB: role_fk maybe a number or enum
+  userName: string;
+  password: string;
   parcels: Parcel[] = [];
 
   constructor(firstName: string,lastName: string,address: string, deliveryArea: string,
-              deliveryDays: string, phone: string, notes: string, role: string) {
+              deliveryDays: string, phone: string, notes: string, userName: string, password: string) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.address = address;
     this.deliveryArea = deliveryArea;
     this.deliveryDays = deliveryDays;
     this.notes = notes;
-    this.role = role;
+    this.userName = userName;
+    this.password = password;
     this.phone = phone;
   }
 }

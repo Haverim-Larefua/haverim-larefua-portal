@@ -40,10 +40,17 @@ const UserForm = ({ handleClose, editUserId }) => {
             if (user && user.deliveryArea) {
                 setUserDeliveryArea(user.deliveryArea);
             }
+
+            // password is always phone - and cannot be changed
+            if (user && user.password && user.phone) {
+                user.password = user.phone;
+            }
         }
         fetchUser();
     }, [editUserId]);
 
+    
+                
 
     let formFields = [];
     if (editUserId) {
@@ -73,19 +80,68 @@ const UserForm = ({ handleClose, editUserId }) => {
         setUserDeliveryArea(e.target.innerText);
     }
 
+    const hebCharToEng = (char) => {
+        return String.fromCharCode((char-1391 > 122) ? 122 : char - 1391); // dif between ascii of א and a;
+    }
+
+    const createUsername = (firstName, lastName,  phone)  => {
+        const last4chars = phone.substring(phone.length - 4);
+        let firstChar = firstName.charCodeAt(0);
+        firstChar = firstChar > 1487 ? hebCharToEng(firstChar) : String.fromCharCode(firstChar); 
+        let secondChar = lastName.charCodeAt(0);
+        secondChar = secondChar > 1487 ? hebCharToEng(secondChar) : String.fromCharCode(secondChar); 
+        return firstChar + secondChar + last4chars;
+    }
+
     const onFieldChange = (e) => {
-        setNewUserFormField({ ...newUserForm, [e.target.name]: e.target.value });
+        const name = e.target.name;
+        const value = e.target.value;
+
+        let phoneVal = newUserForm ? newUserForm.phone : '';
+        let fnameVal = newUserForm ? newUserForm.firstName : '';
+        let lnameVal = newUserForm ? newUserForm.lastName : '';
+        let passwordVal = newUserForm ? newUserForm.password : '';
+        
+        if (name === 'phone') {
+            phoneVal = value;
+            passwordVal = value;
+        }
+        
+        if (name == 'firstName' ) {
+            fnameVal = value;
+        }
+        
+        if (name == 'lastName') {
+            lnameVal = value;
+        }
+        const userName = createUsername(fnameVal, lnameVal, phoneVal);
+        
+        setNewUserFormField({ ...newUserForm, 
+            ['phone']: phoneVal, 
+            ['firstName']: fnameVal, 
+            ['lastName']: lnameVal, 
+            ['password']: passwordVal, 
+            ['username']: userName, 
+            [name]: value });
+        
     };
 
+    const cleanForm = () => {
+        setUserAvailableDays("");
+        setUserDeliveryArea("");
+        setNewUserFormField({});
+    }
+ 
     const onSubmit = (e) => {
         e.preventDefault();
-        const convertedDays = userAvailableDays.map(val => delivaryDaysToInitials.get(val));
+        const convertedDays = userAvailableDays ? userAvailableDays.map(val => delivaryDaysToInitials.get(val)) : '';
         const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), deliveryArea: userDeliveryArea };
         if (editUserId) {
             dispatch(editUser(newUserData));
         } else {
             dispatch(addUser(newUserData));
         }
+        cleanForm();
         handleClose();
     };
 
@@ -99,14 +155,14 @@ const UserForm = ({ handleClose, editUserId }) => {
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {
                     const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
-                    // const inputType = (item === 'password') ? 'password' : 'text';
+                    const readonly = (item === 'password' || item === 'username') ? true : false;
                     const inputType = 'text';
                     const getInput = (item) => {
                         switch (item) {
                             case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
                             case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} height='260px'/>
-                            default: return <input className={inputClass} type={inputType} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
+                            default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }
 
