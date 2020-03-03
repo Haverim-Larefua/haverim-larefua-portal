@@ -30,7 +30,7 @@ const Parcels = () => {
   const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
-    async function fetchData() {
+    const interval = setInterval(async () => {     
       if (searching) {
         return;
       }
@@ -38,9 +38,9 @@ const Parcels = () => {
       const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm,  nameSearchTerm);
       dispatch(loadParcels(response));
       setSearching(false);
-    }
-    fetchData();
-    //throttle(fetchData, 300);
+    }, 60000);
+    
+    return () => clearInterval(interval);
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   const showUsersModal = () => {
