@@ -26,13 +26,21 @@ const Users = () => {
   const [deleteUserText, setDeleteUserText] = useState("");
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
   const [showNotificationDialog, setShowNoticationDialog] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
+    const interval = setInterval(async () => {
+      if (searching) {
+        return;
+      }
+      setSearching(true);
       const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
       dispatch(loadUsers(response));
-    }
-    fetchData();
+      setSearching(false);
+    }, 60000);
+
+    return () => clearInterval(interval);
+
   }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   useEffect(() => {
