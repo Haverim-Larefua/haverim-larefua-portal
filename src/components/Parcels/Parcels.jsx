@@ -29,18 +29,23 @@ const Parcels = () => {
 
   const [selectedUser, setSelectedUser] = useState();
 
+  const refreshData = async () => {
+    if (searching) {
+      return;
+    }
+    setSearching(true);
+    const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm,  nameSearchTerm);
+    dispatch(loadParcels(response));
+    setSearching(false);
+  }
   useEffect(() => {
-    const interval = setInterval(async () => {     
-      if (searching) {
-        return;
-      }
-      setSearching(true);
-      const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm,  nameSearchTerm);
-      dispatch(loadParcels(response));
-      setSearching(false);
-    }, 60000);
-    
+    const interval = setInterval(refreshData, 60000);
     return () => clearInterval(interval);
+  }, []);
+
+
+  useEffect(() => {
+    refreshData();
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   const showUsersModal = () => {

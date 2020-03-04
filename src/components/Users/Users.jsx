@@ -28,20 +28,27 @@ const Users = () => {
   const [showNotificationDialog, setShowNoticationDialog] = useState(false);
   const [searching, setSearching] = useState(false);
 
+  const refreshData = async () => {
+    logger.log('[Users] refreshData ', searching);
+    if (searching) {
+      return;
+    }
+    setSearching(true);
+    const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
+    dispatch(loadUsers(response));
+    setSearching(false);
+  }
+
   useEffect(() => {
-    const interval = setInterval(async () => {
-      if (searching) {
-        return;
-      }
-      setSearching(true);
-      const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
-      dispatch(loadUsers(response));
-      setSearching(false);
-    }, 60000);
+    logger.log('[Users] useEffect [] setInterval');
+    const interval = setInterval(refreshData, 60000);
+    return () => { logger.log('[Users] useEffect [] clear interval ') ;clearInterval(interval)};
+  }, []);
 
-    return () => clearInterval(interval);
-
-  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
+  useEffect(() => {
+    logger.log('[Users ] useEffect [filters] refresh data');
+    refreshData();
+  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]);
 
   useEffect(() => {
     function handleEditUser() {
@@ -79,12 +86,12 @@ const Users = () => {
 
 
   const daysInitials = delivaryDaysToInitials.values();
-
+  const deliveryAreas = userExtendedData && userExtendedData.deliveryAreas ? userExtendedData.deliveryAreas : [];
   const options = [ // ToolbarOptions
     {
       title: AppConstants.deliveryArea,
       name: "cities",
-      values: [AppConstants.all, ...userExtendedData.deliveryAreas],
+      values: [AppConstants.all, ...deliveryAreas],
       filter: setCityFilterTerm
     },
     {
@@ -120,11 +127,11 @@ const Users = () => {
       }
       case 'delete': {
         logger.log('[Users] cellButtonClicked delete ', id, user.id);
-        let txt = 'הפעולה תמחק את פרטי השליח מהמערכת';
+        let txt = AppConstants.deleteUserConfirmation;
         if (user.parcels && user.parcels.length > 0) {
           const prcl = user.parcels.find(p => p.parcelTrackingStatus === AppConstants.deliveringStatusName);
           if (prcl && prcl.length > 0) {
-            txt = ' ? ישנן חבילות משוייכות לשליח זה. האם בכל זאת תרצה.י למחוק ';
+            txt = AppConstants.deleteUserWarningConfirmation;
           }
         }
         setDeleteUserText(txt);
@@ -142,9 +149,6 @@ const Users = () => {
     if (editUserId === "") {
       setShowNewUserModal(false);
     }
-    setEditUserId("");
-    setDeleteUserId("");
-    setNotifyUserId("");
   };
 
   return (

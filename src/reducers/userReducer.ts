@@ -2,11 +2,14 @@ import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS, UPDATE_USERS_A
     IActionBase, addUser, addUsers, editUser, loadUsers, removeUser } from "../contexts/actions/users.action";
 import { UserExtendedData, defaultUserExtendedData} from "../contexts/interfaces/users.interface";
 import { UserUtil } from "../Utils/User/UserUtil";
+import logger from "../Utils/logger";
 
 export const userReducer = ( state: UserExtendedData = defaultUserExtendedData, action: IActionBase) => {
+  logger.log('[userReducer] reduce ', action.type);
   switch (action.type) {
     case LOAD_USERS: {
-      return { users: action.users, action: loadUsers([]), deliveryAreas: state.deliveryAreas };
+      logger.log('[userReducer] reduce LOAD_USERS #', action.users.length);
+      return { users: action.users, action: loadUsers([]), deliveryAreas: state.deliveryAreas};
     }
     case ADD_USER: {
       let tempusers = [...state.users];

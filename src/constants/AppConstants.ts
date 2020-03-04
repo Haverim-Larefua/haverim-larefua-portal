@@ -15,8 +15,8 @@
     static readonly deliveryArea: string = 'עיר חלוקה';
     static readonly deliveryDays: string = 'ימי חלוקה';
     static readonly email: string = 'אימייל';
-    static readonly password: string = 'סיסמה';
-    static readonly username: string = 'שם משתמש/ת';
+    static readonly password: string = ' סיסמא ( תצוגה בלבד) ';
+    static readonly username: string = ' שם משתמש/ת ( תצוגה בלבד)';
     static readonly notes: string = 'הערות';
     static readonly parcelsUIName: string = 'חבילות';
 
@@ -25,7 +25,7 @@
     static readonly editUserUIName: string = 'עריכת שליח/ה';
     static readonly edit: string = 'עריכה';
     static readonly cancel: string = 'ביטול';
-    static readonly deleteUserUIName: string = 'מחיקת שליח/ה';
+    static readonly deleteUserUIName: string = 'מחיקת פרטי שליח/ה';
     static readonly delete: string = 'מחק/י';
     static readonly searchUIName: string = 'חיפוש';
 
@@ -34,6 +34,10 @@
     static readonly addFromFileUIName: string = 'הוספה מקובץ';
     static readonly associateUserUIName: string = 'שיוך לשליח/ה';
     static readonly associateParcelToUserUIName: string = 'שיוך חבילות לשליח/ה';
+
+
+    static readonly deleteUserConfirmation: string = 'הפעולה תמחק את פרטי השליח מהמערכת';
+    static readonly deleteUserWarningConfirmation: string =  ' ? ישנן חבילות משוייכות לשליח זה. האם בכל זאת תרצה.י למחוק ';
 
     static readonly commentsUIName: string = 'הערות';
     static readonly signatureUIName: string = 'חתימה';

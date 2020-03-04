@@ -16,7 +16,7 @@ export class Logger {
     }
 
     debug(message?: any, ...optionalParams: any[]) {
-        aLogger.debug(message, ...optionalParams);
+        aLogger.trace(message, ...optionalParams);
     }
 
     info(message?: any, ...optionalParams: any[]) {

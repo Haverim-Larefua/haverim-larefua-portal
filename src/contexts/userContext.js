@@ -6,24 +6,23 @@ import { defaultUserExtendedData } from "./interfaces/users.interface";
 import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS,
          loadUsers, updateUsersAreas } from "./actions/users.action";
 import { UserUtil }  from '../Utils/User/UserUtil';
-
 export const userContext = createContext(defaultUserExtendedData);
 
 const UserContextProvider = props => {
   const [userExtendedData, dispatch] = useReducer(userReducer, defaultUserExtendedData);
   
+  async function getAllUsersfromDB() {
+    logger.log('[UserContextProvider] getAllUsersfromDB ');
+    const response = await httpService.getUsers();
+    logger.log('[UserContextProvider] getAllUsersfromDB dispatching loadUsers  #', response.length);
+    dispatch(loadUsers(response));
+    const areas = UserUtil.getUsersAreasDistinct(response);
+    dispatch(updateUsersAreas(areas));
+  }
+
   // first time call that loads users from db
   // TODO: already done by the parcel object for searching - check how to seperate
   useEffect(() => {
-    async function getAllUsersfromDB() {
-      logger.log('[UserContextProvider] getAllUsersfromDB ');
-      const response = await httpService.getUsers();
-      logger.log('[UserContextProvider] getAllUsersfromDB dispatching loadUsers  ', response);
-      dispatch(loadUsers(response));
-      const areas = UserUtil.getUsersAreasDistinct(response);
-      dispatch(updateUsersAreas(areas));
-    }
-   
     getAllUsersfromDB()
   }, []);
 
@@ -39,11 +38,15 @@ const UserContextProvider = props => {
         case ADD_USER: {
           const response = await httpService.createUser( userExtendedData.action.user );
           logger.log("[UserContextProvider] updateUsersInDB ADD_USER", response );
+          const getResponse = await getAllUsersfromDB();
+          logger.log("[UserContextProvider] updateUsersInDB ADD_USER getAllUsersfromDB", getResponse );
           break;
         }
         case ADD_USERS: {
           const response = await httpService.addUsers( userExtendedData.action.users );
-          logger.log( "[UserContextProvider] updateUsersInDB ADD_USER", response);
+          logger.log( "[UserContextProvider] updateUsersInDB ADD_USERS", response);
+          const getResponse = await getAllUsersfromDB();
+          logger.log("[UserContextProvider] updateUsersInDB ADD_USERS getAllUsersfromDB", getResponse );
           break;
         }
         case EDIT_USER: {

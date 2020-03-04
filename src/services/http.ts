@@ -56,13 +56,13 @@ class HttpService {
       try {
         axios(httpRequestOptions)
             .then((response) => {
-              logger.debug(`sendHttpRequest:: response.data: ${JSON.stringify(response.data)}`);
+              logger.debug(`[http] sendHttpRequest:: response.data: ${JSON.stringify(response.data)}`);
               resolve(response.data);
             }).catch((error) => {
           reject(error);
         });
       } catch (e) {
-        logger.error('sendHttpRequest:: error: ', e);
+        logger.error('[http ]sendHttpRequest:: error: ', e);
       }
     });
   };

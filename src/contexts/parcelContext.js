@@ -38,14 +38,14 @@ const ParcelContextProvider = props => {
       switch (parcelExtendedData.action.type) {
         case ADD_PARCEL: {
           const response = await httpService.createParcel( ParcelUtil.prepareParcelForDBUpdate(parcelExtendedData.action.parcel ));
-          logger.log( "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL",response );
+          logger.log( "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL");
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCEL getAllparcelsfromDB", getResponse );
           break;
         }
         case ADD_PARCELS: {
           const response = await httpService.addParcels( ParcelUtil.prepareParcelsForDBUpdate(parcelExtendedData.action.parcels) );
-          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS", response );
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS"); 
           //TODO when addParcels will be batch operation - can retrieve the result and merge with current instead of retrieving all again
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS getAllparcelsfromDB", getResponse );
@@ -69,7 +69,7 @@ const ParcelContextProvider = props => {
         }
         case LOAD_PARCELS:
         default:
-          logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD_PARCELS etc. no action", parcelExtendedData.action.type );
+          logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD etc. no action", parcelExtendedData.action.type );
           break;
       }
     }

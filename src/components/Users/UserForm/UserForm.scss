@@ -26,7 +26,7 @@
   &.notes {
     width: 100%;
     textarea {
-      border: 1px solid $grey-mid;
+      @extend %textarea;
       width: 100%;
       margin-bottom: 10px;
     }
@@ -36,8 +36,12 @@
   &.empty {
     visibility: hidden;
   }
-    @extend %input;
-    outline: 0;
+  @extend %input;
+  outline: 0;
+  
+  &[readonly] {
+    color: $grey;
+  }
 }
 
 .label {
