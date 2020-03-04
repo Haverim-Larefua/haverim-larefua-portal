@@ -19,9 +19,14 @@ const UserForm = ({ handleClose, editUserId }) => {
 
     useEffect(() => {
         function fetchUser() {
-            const user = userExtendedData.users.find(usr => usr.id === editUserId);
-            if (!user) {
-                logger.error('[UserForm] useEffect user with id ', editUserId, '  not found');
+            let user;
+            if (editUserId && editUserId !== "") {
+                user = userExtendedData.users.find(usr => usr.id === editUserId);
+                if (!user) {
+                    logger.error('[UserForm] useEffect user with id ', editUserId, '  not found');
+                }
+            } else {
+                setUserAvailableDays([AppConstants.allWeek]);
             }
             setNewUserFormField(user);
 
@@ -90,7 +95,8 @@ const UserForm = ({ handleClose, editUserId }) => {
         firstChar = firstChar > 1487 ? hebCharToEng(firstChar) : String.fromCharCode(firstChar); 
         let secondChar = lastName.charCodeAt(0);
         secondChar = secondChar > 1487 ? hebCharToEng(secondChar) : String.fromCharCode(secondChar); 
-        return firstChar + secondChar + last4chars;
+        const rnd = Math.floor(Math.random() * 10); 
+        return firstChar + secondChar + last4chars + '-' + rnd;
     }
 
     const onFieldChange = (e) => {
@@ -107,21 +113,21 @@ const UserForm = ({ handleClose, editUserId }) => {
             passwordVal = value;
         }
         
-        if (name == 'firstName' ) {
+        if (name === 'firstName' ) {
             fnameVal = value;
         }
         
-        if (name == 'lastName') {
+        if (name === 'lastName') {
             lnameVal = value;
         }
         const userName = createUsername(fnameVal, lnameVal, phoneVal);
         
         setNewUserFormField({ ...newUserForm, 
-            ['phone']: phoneVal, 
-            ['firstName']: fnameVal, 
-            ['lastName']: lnameVal, 
-            ['password']: passwordVal, 
-            ['username']: userName, 
+            'phone' : phoneVal, 
+            'firstName': fnameVal, 
+            'lastName': lnameVal, 
+            'password': passwordVal, 
+            'username': userName, 
             [name]: value });
         
     };
@@ -159,7 +165,7 @@ const UserForm = ({ handleClose, editUserId }) => {
                     const inputType = 'text';
                     const getInput = (item) => {
                         switch (item) {
-                            case 'notes': return <textarea rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
+                            case 'notes': return <textarea className="notes" rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
                             case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} height='260px'/>
                             default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;

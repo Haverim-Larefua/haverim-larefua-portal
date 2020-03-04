@@ -35,7 +35,6 @@ export function removeUser(userId: number): IRemoveUserActionType {
 export function updateUsersAreas(areas: string[]) : IUpdateUserAreaActionType {
   return {type: UPDATE_USERS_AREAS, areas};
 }
-
 interface ILoadUsersActionType { type: string , users: User[]};
 interface IAddUserActionType { type: string, user: User };
 interface IAddUsersActionType { type: string, users: User[] };
@@ -49,7 +48,5 @@ IAddUsersActionType |
 IEditUserActionType |
 IRemoveUserActionType |
 IUpdateUserAreaActionType;
-
-;
 
 
