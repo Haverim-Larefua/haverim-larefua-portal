@@ -32,12 +32,12 @@ const DetailsTrackingTable = (props) => {
             <div className="ffh-details__tracking">
                 <div className="ffh-details-tracking__table">
                     <div className="ffh-details-tracking__head">
-                        <div className="ffh-details-tracking__cell date">תאריך</div>
-                        <div className="ffh-details-tracking__cell day">יום</div>
-                        <div className="ffh-details-tracking__cell hour">שעה</div>
-                        <div className="ffh-details-tracking__cell status">סטטוס</div>
-                        <div className="ffh-details-tracking__cell user">שליח</div>
-                        <div className="ffh-details-tracking__cell comments">הערות</div>
+                        <div className="ffh-details-tracking__cell date">{AppConstants.dateUIName}</div>
+                        <div className="ffh-details-tracking__cell day">{AppConstants.dayUIName}</div>
+                        <div className="ffh-details-tracking__cell hour">{AppConstants.hourUIName}</div>
+                        <div className="ffh-details-tracking__cell status">{AppConstants.statusUIName}</div>
+                        <div className="ffh-details-tracking__cell user">{AppConstants.userUIName}</div>
+                        <div className="ffh-details-tracking__cell comments">{AppConstants.notes}</div>
                     </div>
                     <div className="ffh-details-tracking__body">
                         {props.deliveryTracking.map((track, index) => {

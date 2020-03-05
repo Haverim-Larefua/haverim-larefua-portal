@@ -23,7 +23,7 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
 
     const notify = () => {
         if (!title || title === '' || !subtitle || subtitle === '' || !message || message === '') {
-            setNotificationErrorMessage('יש למלא את כל השדות');
+            setNotificationErrorMessage(AppConstants.fillAllFields);
             return;
         }
         httpService.sendPushNotification(props.userId, title, subtitle, message)
@@ -31,7 +31,7 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
                 handleClose();
             })
             .catch((err) => {
-                setNotificationErrorMessage(`.אירעה שגיאה בשליחת ההודעה. נסו שוב`);
+                setNotificationErrorMessage(AppConstants.formTryAgain);
             })
     };
 
@@ -47,13 +47,13 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
         <Modal title= {`${AppConstants.notify}  ${props.userName}` }
                handleClose={handleClose}
                handleAction={() => notify()}
-               actionBtnText="שלח/י"
+               actionBtnText={AppConstants.send}
                cancelBtnText={AppConstants.cancel}
         >
             <div className='ffh-user-notification'>
-                    <Input type='text' name='title' label='כותרת' value={title} required onChange={(e) => setTitle(e.target.value)} />
-                    <Input type='text' name='subtitle' label='כותרת משנה' value={subtitle} required onChange={(e) => setSubtitle(e.target.value)} />
-                    <label htmlFor="message" className="ffh-form-label">הודעה</label>
+                    <Input type='text' name='title' label={AppConstants.title} value={title} required onChange={(e) => setTitle(e.target.value)} />
+                    <Input type='text' name='subtitle' label={AppConstants.subtitle} value={subtitle} required onChange={(e) => setSubtitle(e.target.value)} />
+                    <label htmlFor="message" className="ffh-form-label">{AppConstants.message}</label>
                     <textarea rows={5} name="message"  className="ffh-form-textarea" value={message} required onChange={e => setMessage(e.target.value)} />
                         <div className='error-message'>{notificationErrorMessage}</div>
             </div>

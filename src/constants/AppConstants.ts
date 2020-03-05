@@ -40,6 +40,23 @@
 
     static readonly cardName: string = 'שם כרטיס';
     static readonly allocation: string = 'שיוך';
+    static readonly fillAllFields: string = 'יש למלא את כל השדות';
+    static readonly formTryAgain: string = '.אירעה שגיאה בשליחת ההודעה. נסו שוב';
+    static readonly send: string = 'שלח/י';
+    static readonly title: string = 'כותרת';
+    static readonly subtitle: string = 'כותרת משנה';
+    static readonly message: string = 'הודעה';
+    static readonly dateUIName = 'תאריך';
+    static readonly dayUIName = 'יום';
+    static readonly hourUIName = 'שעה';
+    static readonly creationDateUIName = 'תאריך יצירה';
+    static readonly deliveryUserNameUIName = 'שם שליח';
+    static readonly deliveryUserPhoneUIName = 'טלפון שליח';
+
+
+    //Navigation
+    static readonly navOverviewUIName: string = 'מבט על';
+    static readonly navUsersUIName: string = 'שליחים';
 
     // Parcel status names
     static readonly all: string = 'הכל';
