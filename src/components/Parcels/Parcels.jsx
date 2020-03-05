@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
-import { addParcels, loadParcels, assignUserToParcels } from "../../contexts/actions/parcels.action";
+import { addParcels, loadParcels, assignUserToParcels, searchParcels } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
@@ -28,6 +28,7 @@ const Parcels = () => {
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState();
+  const [refreshTime, setRefreshTime] = useState(0);
 
   const refreshData = async () => {
     if (searching) {
@@ -37,15 +38,18 @@ const Parcels = () => {
     const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm,  nameSearchTerm);
     dispatch(loadParcels(response));
     setSearching(false);
+    setRefreshTime(refreshTime + 1);
   }
+  
   useEffect(() => {
-    const interval = setInterval(refreshData, 60000);
-    return () => clearInterval(interval);
-  }, []);
+    const timer = setTimeout(refreshData, 30000);
+    return () => { clearTimeout(timer)};
+  }, [[refreshTime]]);
 
 
   useEffect(() => {
     refreshData();
+    dispatch(searchParcels({dayFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   const showUsersModal = () => {

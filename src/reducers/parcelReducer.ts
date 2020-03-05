@@ -1,4 +1,4 @@
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCELS,
+import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS,
   IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES} from "../contexts/actions/parcels.action";
 import Parcel, { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil"
@@ -8,31 +8,35 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
   switch (action.type) {
     case LOAD_PARCELS: {
       logger.log('[parcelReducer] LOAD_PARCELS ', action.parcels);
-      return { parcels: action.parcels, action: loadParcels([]), cities: state.cities };
+      return { parcels: action.parcels, action: loadParcels([]), searchParams: state.searchParams, cities: state.cities };
+    }
+    case SEARCH_PARCELS: {
+      logger.log('[userReducer] reduce SEARCH_PARCELS #', state.parcels.length, action.searchParams);
+      return { users: state.parcels, action: loadParcels([]), searchParams: action.searchParams, cities: state.cities};
     }
     case ADD_PARCEL: {
       let tempparcels = [...state.parcels];
       tempparcels.push(action.parcel);
-      return { parcels: tempparcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
+      return { parcels: tempparcels, action: action, searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
     }
     case ADD_PARCELS: {
       // merge state.parcels with action.parcels according to parcel.identity+parcel.lastUpdateDate
       const [mergedParcels, addedparcels] = ParcelUtil.mergeParcels(state.parcels, action.parcels);
-      return { parcels: mergedParcels, action: addParcels(addedparcels), cities: ParcelUtil.getParcelsCitiesDistinct(mergedParcels) };
+      return { parcels: mergedParcels, action: addParcels(addedparcels), searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(mergedParcels) };
     }
     case EDIT_PARCEL: {
       const foundIndex = state.parcels.findIndex( pack => pack.id === action.parcel.id );
       if (foundIndex !== -1) {
         let tempparcels = [...state.parcels];
         tempparcels[foundIndex] = ParcelUtil.prepareOneParcelForDisplay(action.parcel);
-        return { parcels: tempparcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
+        return { parcels: tempparcels, action: action, searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
       } else {
         return state;
       }
     }
     case REMOVE_PARCEL: {
       const tmpparcels = state.parcels.filter( pkg => pkg.id !== action.parcelId );
-      return { parcels: tmpparcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(tmpparcels) };
+      return { parcels: tmpparcels, action: action, searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(tmpparcels) };
     }
 
     case UPDATE_PARCEL_CITIES : {

@@ -145,6 +145,12 @@ class HttpService {
     return parcels;
   }
 
+  async getParcelsCitiesDistinct() {
+    logger.log('[httpService ] getParcelsCitiesDistinct ');
+    let parcels: Parcel[] = await this.getParcels();
+    return ParcelUtil.getParcelsCitiesDistinct(parcels);
+  }
+
   //////////////////////////////////// Users ////////////////////////////////////
   async getUsers(): Promise<User[]> {
     const users: User[] =  await this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.GET);
@@ -207,6 +213,12 @@ class HttpService {
     }
 
     return users;
+  }
+
+  async getUsersAreasDistinct() {
+    logger.log('[httpService ] getUsersAreasDistinct ');
+    let users: User[] = await this.getUsers();
+    return UserUtil.getUsersAreasDistinct(users);
   }
 
   //////////////////////////////////// Authentication ////////////////////////////////////

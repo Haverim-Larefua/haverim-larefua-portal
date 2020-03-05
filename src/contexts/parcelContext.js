@@ -14,15 +14,20 @@ const ParcelContextProvider = props => {
 
   async function getAllparcelsfromDB() {
     logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
-    const response = await httpService.getParcels();
+    const response = await httpService.searchParcels(
+      parcelExtendedData.searchParams.statusFilter,
+      parcelExtendedData.searchParams.cityFilter,
+      parcelExtendedData.searchParams.nameFilter );
+    // const response = await httpService.getParcels();
     logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
     dispatch(loadParcels(response));
-    const cities = ParcelUtil.getParcelsCitiesDistinct(response);
+
+    //need to query all parcels not only the search !
+    const cities = await httpService.getParcelsCitiesDistinct();
     dispatch(updateParcelsCities(cities));
   }
 
   //first time call that loads parcels from db
-  //TODO: already done by the parcel object for searching - check how to seperate
   useEffect(() => {
     getAllparcelsfromDB()
   }, []);
@@ -54,11 +59,15 @@ const ParcelContextProvider = props => {
         case EDIT_PARCEL: {
           const response = await httpService.updateParcel( ParcelUtil.prepareParcelForDBUpdate(parcelExtendedData.action.parcel));
           logger.log( "[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL", response );
+          const getResponse = await getAllparcelsfromDB();
+          logger.log("[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL getAllparcelsfromDB", getResponse );
           break;
         }
         case REMOVE_PARCEL: {
           const response = await httpService.deletParcel( parcelExtendedData.action.parcelId );
           logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
+          const getResponse = await getAllparcelsfromDB();
+          logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse );
           break;
         }
         case ASSIGN_USER_TO_PARCELS: {
