@@ -5,7 +5,7 @@ import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { userContext } from "../../contexts/userContext";
-import { loadUsers, removeUser } from "../../contexts/actions/users.action";
+import { loadUsers, removeUser, searchUsers } from "../../contexts/actions/users.action";
 import httpService from "../../services/http";
 import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstants";
 import UserForm from "./UserForm/UserForm";
@@ -27,6 +27,7 @@ const Users = () => {
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
   const [showNotificationDialog, setShowNoticationDialog] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [refreshTime, setRefreshTime] = useState(0);
 
   const refreshData = async () => {
     logger.log('[Users] refreshData ', searching);
@@ -37,17 +38,18 @@ const Users = () => {
     const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
     dispatch(loadUsers(response));
     setSearching(false);
+    setRefreshTime(refreshTime + 1);
   }
 
   useEffect(() => {
-    logger.log('[Users] useEffect [] setInterval');
-    const interval = setInterval(refreshData, 60000);
-    return () => { logger.log('[Users] useEffect [] clear interval ') ;clearInterval(interval)};
-  }, []);
+    const timer = setTimeout(refreshData, 30000);
+    return () => { clearTimeout(timer)};
+  }, [refreshTime]);
 
   useEffect(() => {
     logger.log('[Users ] useEffect [filters] refresh data');
     refreshData();
+    dispatch(searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
   }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]);
 
   useEffect(() => {
@@ -149,11 +151,12 @@ const Users = () => {
     if (editUserId === "") {
       setShowNewUserModal(false);
     }
+    // logger.log('[Users] handleClose dispathing searchUsers #', userExtendedData.users.length);
+    // dispatch(searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
   };
 
   return (
     <React.Fragment>
-
       <Table
         data={userExtendedData.users}
         tableColumns={tableColumns}

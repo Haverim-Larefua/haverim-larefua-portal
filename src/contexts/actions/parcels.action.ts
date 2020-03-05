@@ -1,4 +1,4 @@
-import Parcel from "../interfaces/parcels.interface";
+import Parcel, { ISearchParcelsParams } from "../interfaces/parcels.interface";
 
 export interface IActionBase {
   type: string;
@@ -10,11 +10,16 @@ export const ADD_PARCELS: string = "ADD_PARCELS"; // add also to DB
 export const EDIT_PARCEL: string = "EDIT_PARCEL"; // edit also in DB
 export const REMOVE_PARCEL: string = "REMOVE_PARCEL"; // remove also from DB
 export const LOAD_PARCELS: string = "LOAD_PARCELS"; //
+export const SEARCH_PARCELS: string = "SEARCH_PARCELS";
 export const UPDATE_PARCEL_CITIES: string = "UPDATE_PARCEL_CITIES"; // first load/edit/remove/add -> recalc cities
 export const ASSIGN_USER_TO_PARCELS: string = "ASSIGN_USER_TO_PARCELS";
 
 export function loadParcels(parcels: Parcel[]): ILoadparcelsActionType {
     return {type: LOAD_PARCELS, parcels };
+}
+
+export function searchParcels(params: ISearchParcelsParams): ISearchParcelsActionType {
+  return {type: SEARCH_PARCELS, searchParams: params };
 }
 
 export function addParcel(parcel: Parcel): IAddparcelActionType {
@@ -42,6 +47,7 @@ export function assignUserToParcels(parcels: Parcel[]): IAssigUserToParcelAction
 }
 
 export interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
+export interface ISearchParcelsActionType { type: string , searchParams: ISearchParcelsParams};
 export interface IAddparcelActionType { type: string, parcel: Parcel };
 export interface IAddparcelsActionType { type: string, parcels: Parcel[] };
 export interface IEditparcelActionType { type: string, parcel: Parcel };

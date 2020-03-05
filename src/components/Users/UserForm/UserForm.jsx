@@ -143,8 +143,10 @@ const UserForm = ({ handleClose, editUserId }) => {
         const convertedDays = userAvailableDays ? userAvailableDays.map(val => delivaryDaysToInitials.get(val)) : '';
         const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), deliveryArea: userDeliveryArea };
         if (editUserId) {
+            logger.log('[[UserForm] onSubmit dispathing editUser');
             dispatch(editUser(newUserData));
         } else {
+            logger.log('[[UserForm] onSubmit dispathing addUser');
             dispatch(addUser(newUserData));
         }
         cleanForm();

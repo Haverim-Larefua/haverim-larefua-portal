@@ -1,4 +1,4 @@
-import User from '../interfaces/users.interface';
+import User, { ISearchUsersParams } from '../interfaces/users.interface';
 
 export interface IActionBase {
   type: string;
@@ -10,10 +10,15 @@ export const ADD_USERS: string = "ADD_USERS";
 export const EDIT_USER: string = "EDIT_USER";
 export const REMOVE_USER: string = "REMOVE_USER";
 export const LOAD_USERS: string = "LOAD_USERS";
+export const SEARCH_USERS: string = "SEARCH_USERS";
 export const UPDATE_USERS_AREAS: string = "UPDATE_USER_AREAS"; // first load/edit/remove/add -> recalc areas
 
 export function loadUsers(users: User[]): ILoadUsersActionType {
     return {type: LOAD_USERS, users };
+}
+
+export function searchUsers(params: ISearchUsersParams): ISearchUsersActionType {
+  return {type: SEARCH_USERS, searchParams: params };
 }
 
 export function addUser(tmpuser: User): IAddUserActionType {
@@ -36,6 +41,7 @@ export function updateUsersAreas(areas: string[]) : IUpdateUserAreaActionType {
   return {type: UPDATE_USERS_AREAS, areas};
 }
 interface ILoadUsersActionType { type: string , users: User[]};
+interface ISearchUsersActionType { type: string , searchParams: ISearchUsersParams};
 interface IAddUserActionType { type: string, user: User };
 interface IAddUsersActionType { type: string, users: User[] };
 interface IEditUserActionType { type: string, user: User };
