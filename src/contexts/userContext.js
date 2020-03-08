@@ -3,7 +3,7 @@ import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { userReducer } from "../reducers/userReducer";
 import { defaultUserExtendedData } from "./interfaces/users.interface";
-import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS, SEARCH_USERS,
+import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS, SEARCH_USERS, UPDATE_USERS_AREAS, 
          loadUsers, updateUsersAreas } from "./actions/users.action";
 import { UserUtil }  from '../Utils/User/UserUtil';
 export const userContext = createContext(defaultUserExtendedData);
@@ -70,6 +70,7 @@ const UserContextProvider = props => {
           break;
         }
         case SEARCH_USERS: 
+        case UPDATE_USERS_AREAS:
         case LOAD_USERS:
         default:
           logger.log("[UserContextProvider] updateUsersInDB no action", userExtendedData.action.type );
