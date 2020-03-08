@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.11.2"
+    "@fortawesome/fontawesome-free": "^5.11.2",
+    "@svgr/webpack": "^5.2.0"
   }
 }
