@@ -5,8 +5,7 @@ import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { userContext } from "../../contexts/userContext";
-import { loadUsers, removeUser, searchUsers } from "../../contexts/actions/users.action";
-import httpService from "../../services/http";
+import { removeUser, searchUsers } from "../../contexts/actions/users.action";
 import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstants";
 import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
@@ -26,29 +25,29 @@ const Users = () => {
   const [deleteUserText, setDeleteUserText] = useState("");
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
   const [showNotificationDialog, setShowNoticationDialog] = useState(false);
-  const [searching, setSearching] = useState(false);
-  const [refreshTime, setRefreshTime] = useState(0);
+  // const [searching, setSearching] = useState(false);
+  // const [refreshTime, setRefreshTime] = useState(0);
 
-  const refreshData = async () => {
-    logger.log('[Users] refreshData ', searching);
-    if (searching) {
-      return;
-    }
-    setSearching(true);
-    const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
-    dispatch(loadUsers(response));
-    setSearching(false);
-    setRefreshTime(refreshTime + 1);
-  }
+  // const refreshData = async () => {
+  //   logger.log('[Users] refreshData ', searching);
+  //   if (searching) {
+  //     return;
+  //   }
+  //   setSearching(true);
+  //   const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
+  //   dispatch(loadUsers(response));
+  //   setSearching(false);
+  //   setRefreshTime(refreshTime + 1);
+  // }
 
-  useEffect(() => {
-    const timer = setTimeout(refreshData, 30000);
-    return () => { clearTimeout(timer)};
-  }, [refreshTime]);
+  // useEffect(() => {
+  //   const timer = setTimeout(refreshData, 30000);
+  //   return () => { clearTimeout(timer)};
+  // }, [refreshTime]);
 
   useEffect(() => {
     logger.log('[Users ] useEffect [filters] refresh data');
-    refreshData();
+    // refreshData();
     dispatch(searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
   }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]);
 

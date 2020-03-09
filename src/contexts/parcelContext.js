@@ -1,36 +1,51 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect, useState } from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, ASSIGN_USER_TO_PARCELS,
+import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, 
+         SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES,
          loadParcels, updateParcelsCities} from "../contexts/actions/parcels.action";
 import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 
-export const parcelContext = createContext();
+export const parcelContext = createContext(defaultparcelExtendedData);
 
 const ParcelContextProvider = props => {
   const [parcelExtendedData, dispatch] = useReducer(parcelReducer, defaultparcelExtendedData);
+  const [refreshTime, setRefreshTime] = useState(0);
+  const [searching, setSearching] = useState(false);
 
+  
   async function getAllparcelsfromDB() {
     logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
+    if (searching) {
+      return;
+    }
+    setSearching(true);
     const response = await httpService.searchParcels(
       parcelExtendedData.searchParams.statusFilter,
       parcelExtendedData.searchParams.cityFilter,
       parcelExtendedData.searchParams.nameFilter );
-    // const response = await httpService.getParcels();
     logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
     dispatch(loadParcels(response));
 
     //need to query all parcels not only the search !
     const cities = await httpService.getParcelsCitiesDistinct();
     dispatch(updateParcelsCities(cities));
+
+    setSearching(false);
+    setRefreshTime(refreshTime + 1);
   }
 
   //first time call that loads parcels from db
   useEffect(() => {
     getAllparcelsfromDB()
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(getAllparcelsfromDB, 30000);
+    return () => { clearTimeout(timer)};
+  }, [refreshTime]);
 
   //on every change to parcels
   useEffect(() => {
@@ -76,14 +91,20 @@ const ParcelContextProvider = props => {
           logger.log( "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCELS", response );
           break;
         }
+        case SEARCH_PARCELS:  {
+          const getResponse = await getAllparcelsfromDB();
+          logger.log("[UserContextProvider] updateParcelsInDB SEARCH_PARCELS getAllparcelsfromDB", getResponse );
+          break;
+        }
+        case UPDATE_PARCEL_CITIES:
         case LOAD_PARCELS:
         default:
-          logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD etc. no action", parcelExtendedData.action.type );
+          logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD, UPDATE_CITIES - no action", parcelExtendedData.action.type );
           break;
       }
     }
     updateParcelsInDB();
-  }, [parcelExtendedData.parcels]);
+  }, [parcelExtendedData]);
 
   return (
     <parcelContext.Provider value={[parcelExtendedData, dispatch]}>

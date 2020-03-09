@@ -1,13 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
-import { addParcels, loadParcels, assignUserToParcels, searchParcels } from "../../contexts/actions/parcels.action";
+import { addParcels, assignUserToParcels, searchParcels } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
 import { userContext } from "../../contexts/userContext";
-import httpService from "../../services/http";
 import AppConstants from "../../constants/AppConstants";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
@@ -21,35 +20,15 @@ const Parcels = () => {
   const [statusFilterTerm, setStatusFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
-  const [searching, setSearching] = useState(false);
   const [openUsersModal, setOpenUsersModal] = useState(false);
 
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState();
-  const [refreshTime, setRefreshTime] = useState(0);
-
-  const refreshData = async () => {
-    if (searching) {
-      return;
-    }
-    setSearching(true);
-    const response = await httpService.searchParcels(statusFilterTerm, cityFilterTerm,  nameSearchTerm);
-    dispatch(loadParcels(response));
-    setSearching(false);
-    setRefreshTime(refreshTime + 1);
-  }
-  
-  useEffect(() => {
-    const timer = setTimeout(refreshData, 30000);
-    return () => { clearTimeout(timer)};
-  }, [[refreshTime]]);
-
 
   useEffect(() => {
-    refreshData();
-    dispatch(searchParcels({dayFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
+    dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   const showUsersModal = () => {
