@@ -80,18 +80,23 @@ end
 
 group Change Search Params Flow
 UI -> UI: change search params
-UI -> server: Get Users (context state.SearchParams)
-server --> UI: users list
-UI -> reducer: Dispatch LOAD_USERS(users list)
+UI -> reducer: Dispatch SEARCH_USERS(search params)
+reducer -> context: Update Context state with search params (UserExtendedData.searchParams)
+== Users Part==
+context -> effect: Launch useEffect on context state change. Action = SEARCH_USERS.
+effect -> server: Get Users (context state.SearchParams)
+server --> effect: users list
+effect -> reducer: Dispatch LOAD_USERS(users list)
 reducer -> context: Update Context state with users list (UserExtendedData.users)
 context -> effect: Launch useEffect on context state change. Action = LOAD_USERS.
 effect -> effect: Do nothing for action LOAD_USERS
-
-UI -> reducer: Dispatch SEARCH_USERS(search params)
-reducer -> context: Update Context state with search params (UserExtendedData.searchParams)
-context -> effect: Launch useEffect on context state change. Action = SEARCH_USERS.
-effect -> effect: Do nothing for action SEARCH_USERS.
-
+== Areas Part==
+inital_effect -> server: Get users areas distinct
+server --> inital_effect: areas
+inital_effect -> reducer : Dispatch UPDATE_USERS_AREAS(areas)
+reducer -> context: Update context state with areas (UserExtendedData.deliveryAreas)
+context -> effect: Launch useEffect on context state change. Action = UPDATE_USERS_AREAS.
+effect -> effect: Do nothing for action UPDATE_USERS_AREAS
 end
 
 @enduml

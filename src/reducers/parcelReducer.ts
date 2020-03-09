@@ -11,8 +11,8 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       return { parcels: action.parcels, action: loadParcels([]), searchParams: state.searchParams, cities: state.cities };
     }
     case SEARCH_PARCELS: {
-      logger.log('[userReducer] reduce SEARCH_PARCELS #', state.parcels.length, action.searchParams);
-      return { users: state.parcels, action: loadParcels([]), searchParams: action.searchParams, cities: state.cities};
+      logger.log('[parcelReducer] reduce SEARCH_PARCELS #', state.parcels.length, action.searchParams);
+      return { users: state.parcels, action: action, searchParams: action.searchParams, cities: state.cities};
     }
     case ADD_PARCEL: {
       let tempparcels = [...state.parcels];
@@ -40,7 +40,8 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
     }
 
     case UPDATE_PARCEL_CITIES : {
-      return { parcels: state.parcels, action: action, cities: ParcelUtil.getParcelsCitiesDistinct(state.parcels) };
+      logger.log('[parcelReducer] UPDATE_PARCEL_CITIES ', action.parcels);
+      return { parcels: state.parcels, action: action, searchParams: state.searchParams, cities: action.cities};
     }
 
     case ASSIGN_USER_TO_PARCELS: {
@@ -54,7 +55,7 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
           newStateParcels.push(parcel);
         }
       });
-      return { parcels: newStateParcels, action: action, cities: state.cities };
+      return { parcels: newStateParcels, action: action, searchParams: state.searchParams, cities: state.cities };
     }
     default:
       return state;
