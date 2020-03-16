@@ -28,16 +28,16 @@ class App extends Component<any, any> {
                   <Router>
                       <Header />
                       <Switch>
-                        <Route path="/login"><Login /></Route>
-                        <Route exact path="/"><Admin /></Route>
-                          <PrivateRoute path='/admin'><Admin/></PrivateRoute>
+                        <Route path="/login" component={Login} />
+                        <PrivateRoute exact path="/" component={Admin} />
+                          <PrivateRoute path='/admin' component={Admin} />
                           <UserContextProvider>
                               <CitiesContextProvider>
-                                <PrivateRoute path='/users'><Users /></PrivateRoute>
+                                <PrivateRoute path='/users' component={Users} />
                               </CitiesContextProvider>
                               <ParcelContextProvider>
-                                  <PrivateRoute path='/parcels'><Parcels/></PrivateRoute>
-                                  <PrivateRoute path='/parcel/:id'><ParcelDetails/></PrivateRoute>
+                                  <PrivateRoute path='/parcels' component={Parcels} />
+                                  <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
                               </ParcelContextProvider>
                           </UserContextProvider>
                       </Switch>

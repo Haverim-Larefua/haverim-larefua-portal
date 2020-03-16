@@ -3,9 +3,8 @@ import "./Login.scss";
 import { withRouter, useHistory } from 'react-router-dom';
 import Input from "../shared/Input/Input";
 import {Button} from "../shared/Button/Button";
-import httpService, {IAuthAdminResponse} from "../../services/http";
 import {Redirect} from "react-router-dom";
-import {AppConstants1} from "../../constants/AppConstants";
+import AuthService from "../../services/authService";
 
 const Login: React.FC = (): React.ReactElement => {
 
@@ -16,22 +15,15 @@ const Login: React.FC = (): React.ReactElement => {
     const [ password, setPassword ] = useState<string>("");
     const [ loginErrorMessage, setLoginErrorMessage ] = useState<string>("");
 
-    const doLogin = () => {
-        httpService.login( username, password )
-            .then((res: IAuthAdminResponse) => {
-                setToken(res.token);
-                localStorage.setItem('admin', JSON.stringify(res));
-                AppConstants1.admin = {
-                    token: res.token,
-                    firstName: res.admin.firstName,
-                    lastName: res.admin.lastName
-                };
-                history.goBack();
-            })
-            .catch((err) => {
-                setLoginErrorMessage(`אירעה שגיאה: אנא בדוק/בדקי שם משתמש וסיסמה`);
-            })
-    };
+    const doLogin = async () => {
+        try {
+            const response = await AuthService.login(username, password);
+            setToken(response);
+            history.push('/');
+        } catch (err) {
+            setLoginErrorMessage(`אירעה שגיאה: אנא בדוק/בדקי שם משתמש וסיסמה`);
+        }
+    }
 
     return (
         <div>

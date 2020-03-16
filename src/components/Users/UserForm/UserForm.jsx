@@ -89,13 +89,23 @@ const UserForm = ({ handleClose, editUserId }) => {
         return String.fromCharCode((char-1391 > 122) ? 122 : char - 1391); // dif between ascii of א and a;
     }
 
-    const createUsername = (firstName, lastName,  phone)  => {
+    const createUsername = (firstName, lastName,  phone, currentUserName)  => {
         const last4chars = phone.substring(phone.length - 4);
         let firstChar = firstName.charCodeAt(0);
         firstChar = firstChar > 1487 ? hebCharToEng(firstChar) : String.fromCharCode(firstChar); 
+        if (firstChar === ' ') {
+            firstChar = 'a';
+        }
         let secondChar = lastName.charCodeAt(0);
         secondChar = secondChar > 1487 ? hebCharToEng(secondChar) : String.fromCharCode(secondChar); 
-        const rnd = Math.floor(Math.random() * 10); 
+        if (secondChar === ' ') {
+            secondChar = 'z';
+        }
+        const indx = currentUserName ? currentUserName.indexOf('-') : -1;
+        let rnd = Math.floor(Math.random() * 10);
+        if (indx >=0) {
+            rnd = currentUserName.substring(indx+1);
+        } 
         return firstChar + secondChar + last4chars + '-' + rnd;
     }
 
@@ -120,7 +130,7 @@ const UserForm = ({ handleClose, editUserId }) => {
         if (name === 'lastName') {
             lnameVal = value;
         }
-        const userName = createUsername(fnameVal, lnameVal, phoneVal);
+        const userName = createUsername(fnameVal, lnameVal, phoneVal, newUserForm ? newUserForm.username : '');
         
         setNewUserFormField({ ...newUserForm, 
             'phone' : phoneVal, 
