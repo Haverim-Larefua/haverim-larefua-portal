@@ -44,13 +44,18 @@
     }
 }
 
-
 .ffh-header__user {
     background-color: rgba(255, 255, 255, 0.38);
     border-radius: 50%;
     height: 36px;
     margin-right: auto;
     width: 36px;
-    // background: url("../../../assets/icons/add-volunteer.svg");
-    // background-size: 32px 32px;
 }
+
+.ffh-header__menu {
+    list-style-type:none;
+    margin-right: auto;
+    margin-top: 36px;
+}
+
+

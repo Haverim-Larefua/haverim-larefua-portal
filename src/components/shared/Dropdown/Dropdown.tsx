@@ -4,7 +4,7 @@ import AppConstants from '../../../constants/AppConstants';
 import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
 
 
-interface IDropdownProps {
+export interface IDropdownProps {
   options: string[];
   name: string;
   filter?: (val: string) => {};
@@ -13,7 +13,7 @@ interface IDropdownProps {
   isDisabled?: boolean;
 }
 
-interface IDropdownState {
+export interface IDropdownState {
   displayMenu: boolean;
   [key: string]: any;
 }

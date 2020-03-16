@@ -7,6 +7,7 @@ import AppConstants, {AppConstants1} from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
 import { UserUtil } from "../Utils/User/UserUtil";
+import AuthService from "./authService";
 
 enum HttpMethod {
   POST = 'post',
@@ -40,7 +41,7 @@ class HttpService {
          "Content-Type": "application/json",
       };
 
-      if (AppConstants1.admin && AppConstants1.admin.token) {
+      if (AuthService.isLoggedIn()) {
         _headers.Authorization = `Berear ${AppConstants1.admin.token}`
       }
 
@@ -224,6 +225,10 @@ class HttpService {
   //////////////////////////////////// Authentication ////////////////////////////////////
   async login(username: string, password: string): Promise<IAuthAdminResponse> {
     return this.sendHttpRequest(Configuration.URLS.LOGIN, HttpMethod.POST, { username, password });
+  }
+
+  async createAdmin(username: string, password: string): Promise<IAuthAdminResponse> {
+    return this.sendHttpRequest(Configuration.URLS.ADMIN, HttpMethod.POST, { username, password })
   }
 }
 

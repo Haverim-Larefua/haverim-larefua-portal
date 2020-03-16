@@ -2,6 +2,7 @@ const Configuration = {
     URLS: {
         BACKEND_URL: process.env.REACT_APP_BACKEND_URL || "http://localhost:3001",
         LOGIN: '/auth/admin',
+        ADMIN: '/admins',
         PARCELS: '/parcels',
         USERS: '/users',
         PUSH: '/push-token',

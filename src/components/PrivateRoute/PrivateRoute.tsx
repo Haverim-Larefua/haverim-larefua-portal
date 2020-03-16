@@ -1,22 +1,21 @@
 import React from "react";
 import {Route, Redirect, RouteProps} from "react-router-dom";
-import {AppConstants1} from "../../constants/AppConstants";
+import AuthService from "../../services/authService";
 
-export const PrivateRoute = (props: RouteProps) => {
+interface PrivateRouteProps extends RouteProps {
+    // tslint:disable-next-line:no-any
+    component: any;
+}
+
+export const PrivateRoute = (props: PrivateRouteProps) => {
+    const { component: Component, ...rest } = props;
     return (
         <Route
-            {...props}
-            render={({ location }) =>
-                AppConstants1.admin && AppConstants1.admin.token && AppConstants1.admin.token !== '' ? (
-                    props.children
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: "/login",
-                            state: { from: location }
-                        }}
-                    />
-                )
+            {...rest}
+            render={(routeProps) =>
+                AuthService.isLoggedIn() 
+                  ? (<Component {...routeProps} /> ) 
+                  : (<Redirect to={{pathname: '/login', state: {push: true, from: routeProps.location} }} /> )
             }
         />
     );
