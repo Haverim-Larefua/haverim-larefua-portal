@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './SelectFilter.scss';
 import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
 import AppConstants from "../../../constants/AppConstants";
@@ -10,7 +10,14 @@ const SelectFilter = (props) => {
     const [listItems, setListItems] = useState([]);
     const [initialItems, setInitialItems] = useState([]);
     const [dropDownVisible, setDropDownVisible] = useState(false);
+    const textInput = useRef(null);
 
+    // componentDidMount
+    useEffect(()=> {
+        if (textInput && textInput.current) {
+            textInput.current.focus();
+        }
+    })
 
     useEffect(() => {
         setListItems(props.items);
@@ -44,7 +51,8 @@ const SelectFilter = (props) => {
                         {!props.hideFilter &&
                             <div className="ffh-select-filter__input-ph">
                                 <SearchIcon className="ffh-select-filter__input-icon" />
-                                <input type="text" className="ffh-select-filter__input" onChange={filterItems} />
+                                <input type="text" className="ffh-select-filter__input" onChange={filterItems} 
+                                       ref={textInput} /> 
                             </div>
                         }
                         <div className="ffh-select-filter__options">
