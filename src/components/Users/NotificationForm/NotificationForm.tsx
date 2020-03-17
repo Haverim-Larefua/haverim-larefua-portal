@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import "./NotificationForm.scss";
 
 import httpService from "../../../services/http";
@@ -44,10 +44,10 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
     }
 
     return (
-        <Modal title= {`${AppConstants.notify}  ${props.userName}` }
+        <Modal title= {`${AppConstants.notify}${props.userName}` }
                handleClose={handleClose}
                handleAction={() => notify()}
-               actionBtnText="שלח/י"
+               actionBtnText="שליחה"
                cancelBtnText={AppConstants.cancel}
         >
             <div className='ffh-user-notification'>

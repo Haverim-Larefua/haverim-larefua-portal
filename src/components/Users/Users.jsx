@@ -147,11 +147,10 @@ const Users = () => {
   };
 
   const handleClose = () => {
-    if (editUserId === "") {
-      setShowNewUserModal(false);
-    }
-    // logger.log('[Users] handleClose dispathing searchUsers #', userExtendedData.users.length);
-    // dispatch(searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
+    setShowNewUserModal(false);
+    setEditUserId('');
+    setDeleteUserId('');
+    setNotifyUserId('');
   };
 
   return (
