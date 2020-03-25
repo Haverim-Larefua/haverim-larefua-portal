@@ -27,8 +27,8 @@ properties ([
     ]),
 ])
 
-String nodeName     = buildServers[prmTargetEnv]
 String prmTargetEnv = params.TARGET_ENV
+String nodeName     = buildServers[prmTargetEnv]
 
 
 
