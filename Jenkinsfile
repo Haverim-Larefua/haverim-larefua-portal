@@ -102,7 +102,7 @@ node (nodeName) {
 				
 				
 				### Create a container from the image
-				docker create --name ${docker_name} -p 3000:3000 -e REACT_APP_BACKEND_URL=http://${backendUrl}:3001 ${docker_name}:${docker_version}
+				docker create --name ${dockerName} -p 3000:3000 -e REACT_APP_BACKEND_URL=http://${backendUrl}:3001 ${dockerName}:${dockerVersion}
 
 
 				### Start the container.
