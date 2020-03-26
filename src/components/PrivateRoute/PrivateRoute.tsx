@@ -13,7 +13,7 @@ export const PrivateRoute = (props: PrivateRouteProps) => {
         <Route
             {...rest}
             render={(routeProps) =>
-                AuthService.isLoggedIn() 
+                true /*AuthService.isLoggedIn()*/
                   ? (<Component {...routeProps} /> ) 
                   : (<Redirect to={{pathname: '/login', state: {push: true, from: routeProps.location} }} /> )
             }
