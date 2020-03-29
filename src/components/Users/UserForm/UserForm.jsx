@@ -9,6 +9,7 @@ import { delivaryDaysToInitials } from '../../../constants/AppConstants';
 import DayPicker from './DayPicker';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
+import { UserUtil } from "../../../Utils/User/UserUtil";
 
 const UserForm = ({ handleClose, editUserId }) => {
     const cities = useContext(citiesContext);
@@ -89,24 +90,10 @@ const UserForm = ({ handleClose, editUserId }) => {
         return String.fromCharCode((char-1391 > 122) ? 122 : char - 1391); // dif between ascii of א and a;
     }
 
-    const createUsername = (firstName, lastName,  phone, currentUserName)  => {
-        const last4chars = phone.substring(phone.length - 4);
-        let firstChar = firstName.charCodeAt(0);
-        firstChar = firstChar > 1487 ? hebCharToEng(firstChar) : String.fromCharCode(firstChar); 
-        if (firstChar === ' ') {
-            firstChar = 'a';
-        }
-        let secondChar = lastName.charCodeAt(0);
-        secondChar = secondChar > 1487 ? hebCharToEng(secondChar) : String.fromCharCode(secondChar); 
-        if (secondChar === ' ') {
-            secondChar = 'z';
-        }
-        const indx = currentUserName ? currentUserName.indexOf('-') : -1;
-        let rnd = Math.floor(Math.random() * 10);
-        if (indx >=0) {
-            rnd = currentUserName.substring(indx+1);
-        } 
-        return firstChar + secondChar + last4chars + '-' + rnd;
+    // 'haver' + ordinal number
+    const createUsername = ()  => {
+        const lastNumber = UserUtil.lastUserNumber(userExtendedData.users);
+        return 'haver'+(lastNumber+1)
     }
 
     const onFieldChange = (e) => {
@@ -117,10 +104,12 @@ const UserForm = ({ handleClose, editUserId }) => {
         let fnameVal = newUserForm ? newUserForm.firstName : '';
         let lnameVal = newUserForm ? newUserForm.lastName : '';
         let passwordVal = newUserForm ? newUserForm.password : '';
-        
+        let userName = newUserForm  ? newUserForm.username  : '';
+
         if (name === 'phone') {
             phoneVal = value;
             passwordVal = value;
+            userName = userName == '' ? createUsername() : userName;
         }
         
         if (name === 'firstName' ) {
@@ -130,7 +119,6 @@ const UserForm = ({ handleClose, editUserId }) => {
         if (name === 'lastName') {
             lnameVal = value;
         }
-        const userName = createUsername(fnameVal, lnameVal, phoneVal, newUserForm ? newUserForm.username : '');
         
         setNewUserFormField({ ...newUserForm, 
             'phone' : phoneVal, 
