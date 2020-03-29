@@ -36,7 +36,7 @@ export default class User {
   deliveryDays: string; 
   phone: string;
   notes: string;
-  userName: string;
+  username: string;
   password: string;
   parcels: Parcel[] = [];
 
@@ -48,7 +48,7 @@ export default class User {
     this.deliveryArea = deliveryArea;
     this.deliveryDays = deliveryDays;
     this.notes = notes;
-    this.userName = userName;
+    this.username = userName;
     this.password = password;
     this.phone = phone;
   }

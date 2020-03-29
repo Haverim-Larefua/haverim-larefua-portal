@@ -79,4 +79,11 @@ export class UserUtil {
     }
     return users;
   }
+
+  static lastUserNumber(users: User[]) : number {
+    const tmpUsers = users.filter( usr => usr.username.startsWith('haver'));
+    const usrNumbers = tmpUsers ? tmpUsers.map(usr => Number(usr.username.substr(5))) : [];
+    const sortedNumbers = usrNumbers.filter(n => !Number.isNaN(n)).sort((a, b) => b - a);
+    return sortedNumbers && sortedNumbers.length > 0 ? sortedNumbers[0] : 0; 
+  }
 }
