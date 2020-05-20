@@ -49,7 +49,7 @@ const UserForm = ({ handleClose, editUserId }) => {
 
             // password is always phone - and cannot be changed
             if (user && user.password && user.phone) {
-                user.password = user.phone;
+                user.password = String(user.phone).replace(/\D/g,'');; // make sure the pass will be only numbers
             }
         }
         fetchUser();
@@ -108,7 +108,7 @@ const UserForm = ({ handleClose, editUserId }) => {
 
         if (name === 'phoneUIName') {
             phoneVal = value;
-            passwordVal = String(phoneVal).replace(/\D/g,'');
+            passwordVal = String(phoneVal).replace(/\D/g,''); // make sure the pass will be only numbers
             userName = userName == '' ? createUsername() : userName;
         }
         
