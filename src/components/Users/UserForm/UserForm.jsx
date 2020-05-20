@@ -62,7 +62,7 @@ const UserForm = ({ handleClose, editUserId }) => {
     if (editUserId) {
       formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'deliveryDays', 'notes'];
     } else {
-      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
+      formFields = ['firstName', 'lastName', 'phoneUIName', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
     }
 
     const handleDaySelection = (e) => {
@@ -106,9 +106,9 @@ const UserForm = ({ handleClose, editUserId }) => {
         let passwordVal = newUserForm ? newUserForm.password : '';
         let userName = newUserForm  ? newUserForm.username  : '';
 
-        if (name === 'phone') {
+        if (name === 'phoneUIName') {
             phoneVal = value;
-            passwordVal = value;
+            passwordVal = String(phoneVal).replace(/\D/g,'');
             userName = userName == '' ? createUsername() : userName;
         }
         
