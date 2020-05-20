@@ -59,6 +59,14 @@ export default class ParcelsImporterService {
         /* Convert array of arrays */
         const data = XLSX.utils.sheet_to_json<any>(ws); // any[]
         let result = new ImportedData(data, this.make_cols(ws['!ref']));
+        const dt = new Date();
+        let parcels = this.jsonDataToparcels(result.data, dt);
+        resolve(parcels);
+        /* 
+        * This part of the code is for keeping the file with Format name in this format yyy-mm-dd.xls
+        * there bug in this code as it should verify if there is already a package with this date and ID - but its not working
+        */
+        /* 
         const dt = new Date(file.name.split('.')[0]);
         if (dt instanceof Date && (dt.toString() !== "Invalid Date")) {
           let parcels = this.jsonDataToparcels(result.data, dt);
@@ -66,7 +74,7 @@ export default class ParcelsImporterService {
         } else {
           logger.error('[ParcelsImporterService] ImportFromExcel: invliad file name - must be of the form yyyy-mm-dd.xls');
           resolve([]);
-        }
+        }*/
       };
 
       reader.onerror = reject;
