@@ -3,7 +3,7 @@
     static readonly statusUIName: string = 'סטטוס';
     static readonly addressUIName: string = 'כתובת';
     static readonly cityUIName: string = 'עיר';
-    static readonly phone: string = 'טלפון';
+    static readonly phoneUIName: string = 'טלפון';
     static readonly nameUIName: string = 'שם';
     static readonly identifierUIName: string ='מזהה';
     static readonly catalogUIName: string ='מק״ט';

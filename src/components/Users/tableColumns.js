@@ -29,7 +29,7 @@ const tableColumns  = memoize(clickHandler => [
       maxWidth: '250px',
     },
     {
-      name: AppConstants.phone,
+      name: AppConstants.phoneUIName,
       selector: 'phone',
       sortable: true,
     },
