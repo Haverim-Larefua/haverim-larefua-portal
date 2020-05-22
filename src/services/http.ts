@@ -111,7 +111,8 @@ class HttpService {
   }
 
   async deleteParcel(pacelId: number) {
-    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}`, HttpMethod.DELETE);
+    // only mark the parcel as deleted - but do not really dlete it
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}/1`, HttpMethod.DELETE);
   }
 
   async assignUserToParcels(userId: number, parcelsId: number[]) {

@@ -79,7 +79,7 @@ const ParcelContextProvider = props => {
           break;
         }
         case REMOVE_PARCEL: {
-          const response = await httpService.deletParcel( parcelExtendedData.action.parcelId );
+          const response = await httpService.deleteParcel( parcelExtendedData.action.parcelId );
           logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse );

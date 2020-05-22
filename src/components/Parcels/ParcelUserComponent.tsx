@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
 import { ReactComponent as AssignIcon} from '../../assets/icons/add-volunteer.svg';
+import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
+import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
+import AppConstants from "../../constants/AppConstants";
 
 const uuidv4 = require('uuid/v4');
 
 export interface ParcelUserComponentProps {
     name: string;
     itemId: string;
+    status: string;
     action: (id: number, name: string) => void;
   }
 
@@ -25,9 +29,11 @@ class ParcelUserComponent extends Component<ParcelUserComponentProps> {
     }
   
     render() {
+      const status = ParcelUtil.parcelUIStatusValueToEnum(this.props.status);
       return (
         <div className="name_container" id={`${this.props.itemId}_uuid:${uuidv4()}`}>
           <span className="name_text"> {this.props.name} </span>
+          <div className="buttons_container">
           {!this.props.name && 
               <ActionButton
                   name="assign"
@@ -36,13 +42,14 @@ class ParcelUserComponent extends Component<ParcelUserComponentProps> {
                   icon={<AssignIcon/>}
               />
           }
-          <div className="buttons_container">
+          {(status ===  'ready' || status === 'exception') && 
             <ActionButton
               name="delete"
               action={this.onButtonClicked}
               itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
               icon={<DeleteIcon />}
             />
+          }
           </div>
         </div>
       );

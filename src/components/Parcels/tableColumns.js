@@ -54,7 +54,7 @@ const tableColumns  = memoize(clickHandler =>[
      selector: 'userName',
      sortable: true,
      minWidth: '350px',
-     cell: row => (<ParcelUserComponent name={row.userName} itemId={row.id} action={clickHandler}/>),
+     cell: row => (<ParcelUserComponent name={row.userName} itemId={row.id} status={row.parcelTrackingStatus} action={clickHandler}/>),
      ignoreRowClick: row  =>(row.userName ? false : true),
      allowOverflow: row  => (row.userName ? false : true),
    }
