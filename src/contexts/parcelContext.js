@@ -79,10 +79,14 @@ const ParcelContextProvider = props => {
           break;
         }
         case REMOVE_PARCEL: {
-          const response = await httpService.deleteParcel( parcelExtendedData.action.parcelId );
-          logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
-          const getResponse = await getAllparcelsfromDB();
-          logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse );
+          try {
+            const response = await httpService.deleteParcel( parcelExtendedData.action.parcelId );
+            logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
+            const getResponse = await getAllparcelsfromDB();
+            logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse );
+          } catch (e) {
+            logger.log(e);
+          }
           break;
         }
         case ASSIGN_USER_TO_PARCELS: {

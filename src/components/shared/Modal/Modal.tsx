@@ -30,7 +30,9 @@ const Modal: React.FC<IModalProps> = (props): React.ReactElement => {
         </main>
         <div className="ffh-modal__actions">
           <button className="ffh-modal__action--cancel" onClick={props.handleClose}> {props.cancelBtnText} </button>
-          <button className="ffh-modal__action--submit" onClick={props.handleAction} type="submit"> {props.actionBtnText} </button>
+          {props.type === 'alert' && 
+            <button className="ffh-modal__action--submit" onClick={props.handleAction} type="submit"> {props.actionBtnText} </button>
+          }
         </div>
       </div>
     </div>

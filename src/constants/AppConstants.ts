@@ -1,4 +1,8 @@
  class AppConstants {
+
+  static readonly errorUIName: string = 'סליחה תקלה';
+  static readonly closeUIName: string = 'סגירה';
+
     static readonly chooseOne: string = 'בחירה';
     static readonly statusUIName: string = 'סטטוס';
     static readonly addressUIName: string = 'כתובת';
