@@ -43,7 +43,7 @@ class ParcelUserComponent extends Component<ParcelUserComponentProps> {
                   icon={<AssignIcon/>}
               />
           }
-          {(status ===  'ready' || status === 'exception') && 
+          {(true || (status ===  'ready' || status === 'exception')) && 
             <ActionButton
               name="delete"
               action={this.onButtonClicked}

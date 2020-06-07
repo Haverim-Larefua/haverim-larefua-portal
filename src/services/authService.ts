@@ -1,4 +1,4 @@
-import httpService, { IAuthAdminResponse } from "./http";
+import httpService from "./http";
 import { AppConstants1 } from "../constants/AppConstants";
 import logger from "../Utils/logger";
 

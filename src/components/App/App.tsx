@@ -32,17 +32,18 @@ class App extends Component<any, any> {
                         <Route path="/login" component={Login} />
                         <PrivateRoute exact path="/" component={Admin} />
                           <PrivateRoute path='/admin' component={Admin} />
-                          {/* <ErrorContextProvider> */}
+                          
                           <UserContextProvider>
                               <CitiesContextProvider>
                                 <PrivateRoute path='/users' component={Users} />
                               </CitiesContextProvider>
-                              <ParcelContextProvider>
+                              <ErrorContextProvider>
+                                <ParcelContextProvider>
                                   <PrivateRoute path='/parcels' component={Parcels} />
                                   <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
-                              </ParcelContextProvider>
+                                </ParcelContextProvider>
+                              </ErrorContextProvider>
                           </UserContextProvider>
-                          {/* </ErrorContextProvider> */}
                       </Switch>
                   </Router>
                 </ErrorBoundary>

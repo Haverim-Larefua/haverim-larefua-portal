@@ -9,7 +9,6 @@ const errorReducer = ( state: Error, action: IActionBase) => {
         return { ...state, error: action.error };
         }
     };
-
 }
 
 export default errorReducer;

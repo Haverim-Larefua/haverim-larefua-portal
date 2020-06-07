@@ -1,6 +1,5 @@
 import AppConstants from "../../constants/AppConstants";
 import React from 'react';
-import AssignButton from '../shared/AssignButton/AssignButton';
 import memoize from 'memoize-one';
 import Status from '../shared/Status/Status';
 import ParcelUserComponent from './ParcelUserComponent';

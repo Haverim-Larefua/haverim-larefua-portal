@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect, useState, useContext} from
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
-import { errorReducer } from "../reducers/errorReducer";
+import errorReducer from "../reducers/errorReducer";
 import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, 
          SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES,
          loadParcels, updateParcelsCities} from "../contexts/actions/parcels.action";
@@ -17,7 +17,7 @@ const ParcelContextProvider = props => {
   const [parcelExtendedData, dispatch] = useReducer(parcelReducer, defaultparcelExtendedData);
   const [refreshTime, setRefreshTime] = useState(0);
   const [searching, setSearching] = useState(false);
-  // const [error, dispatchError] = useReducer(errorReducer);
+  const [error, dispatchError] = useReducer(errorReducer);
   
   async function getAllparcelsfromDB() {
     logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
@@ -88,7 +88,7 @@ const ParcelContextProvider = props => {
           } catch (e) {
             logger.log(e);
             const error = new Error('Error deleting parcel' , 1, e);
-            // dispatchError(addError(error));
+            dispatchError(addError(error));
           }
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse );

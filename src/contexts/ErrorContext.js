@@ -1,4 +1,5 @@
-import { createContext } from "react";
+import React, { createContext, useReducer } from "react";
+import errorReducer from "../reducers/errorReducer";
 import { defaultError } from "./interfaces/error.interface";
 
 export const errorContext = createContext(defaultError);
