@@ -11,7 +11,7 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       return { parcels: action.parcels, action: loadParcels([]), searchParams: state.searchParams, cities: state.cities };
     }
     case SEARCH_PARCELS: {
-      logger.log('[parcelReducer] reduce SEARCH_PARCELS #', state.parcels.length, action.searchParams);
+      logger.log('[parcelReducer] reduce SEARCH_PARCELS #', state.parcels?.length, action.searchParams);
       return { users: state.parcels, action: action, searchParams: action.searchParams, cities: state.cities};
     }
     case ADD_PARCEL: {

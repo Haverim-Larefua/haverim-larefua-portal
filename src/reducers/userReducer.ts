@@ -8,11 +8,11 @@ export const userReducer = ( state: UserExtendedData = defaultUserExtendedData, 
   logger.log('[userReducer] reduce with', action.type);
   switch (action.type) {
     case LOAD_USERS: {
-      logger.log('[userReducer] reduce LOAD_USERS #', action.users.length);
+      logger.log('[userReducer] reduce LOAD_USERS #', action.users?.length);
       return { users: action.users, action: loadUsers([]), searchParams: state.searchParams, deliveryAreas: state.deliveryAreas};
     }
     case SEARCH_USERS: {
-      logger.log('[userReducer] reduce SEARCH_USERS #', state.users.length, action.searchParams);
+      logger.log('[userReducer] reduce SEARCH_USERS #', state.users?.length, action.searchParams);
       return { users: state.users, action: action, searchParams: action.searchParams, deliveryAreas: state.deliveryAreas};
     }
     case ADD_USER: {

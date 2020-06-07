@@ -72,8 +72,6 @@ const Parcels = () => {
     const parcel = { ...parcelExtendedData.parcels.find(p => p.id === parcelId) };
     parcel.currentUserId = userId;
     parcel.user = userExtendedData.users.find(u => u.id === userId);
-    logger.log("[Parcels] associateUserToOneParcel dispatch", parcel);
-    // dispatch(assignUserToParcel(parcel));
     return parcel;
   };
 
@@ -152,7 +150,7 @@ const Parcels = () => {
       setDeleteParcelId(parcel.id); // because setState is async - we handle the action in useEffect
     } else if (name === 'assign') {
       logger.log('[Parcels] cellButtonClicked assign ', id, parcel.id);
-      setParcelsToAssociate(id);
+      setParcelsToAssociate([id]);
       showUsersModal();
     } else {
       logger.warn('[Parcels] cellButtonClicked unkown action for parcel  ', id, parcel.id);

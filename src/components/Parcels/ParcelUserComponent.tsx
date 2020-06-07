@@ -5,6 +5,7 @@ import { ReactComponent as AssignIcon} from '../../assets/icons/add-volunteer.sv
 import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import AppConstants from "../../constants/AppConstants";
+import "./ParcelUserComponent.scss";
 
 const uuidv4 = require('uuid/v4');
 

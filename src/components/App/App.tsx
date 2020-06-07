@@ -15,6 +15,7 @@ import ParcelDetails from "../Parcels/ParcelDetails/ParcelDetails";
 import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
 import Login from "../Login/Login";
 import {AppConstants1} from "../../constants/AppConstants";
+import ErrorContextProvider from "../../contexts/ErrorContext";
 
 class App extends Component<any, any> {
 
@@ -31,6 +32,7 @@ class App extends Component<any, any> {
                         <Route path="/login" component={Login} />
                         <PrivateRoute exact path="/" component={Admin} />
                           <PrivateRoute path='/admin' component={Admin} />
+                          {/* <ErrorContextProvider> */}
                           <UserContextProvider>
                               <CitiesContextProvider>
                                 <PrivateRoute path='/users' component={Users} />
@@ -40,6 +42,7 @@ class App extends Component<any, any> {
                                   <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
                               </ParcelContextProvider>
                           </UserContextProvider>
+                          {/* </ErrorContextProvider> */}
                       </Switch>
                   </Router>
                 </ErrorBoundary>
