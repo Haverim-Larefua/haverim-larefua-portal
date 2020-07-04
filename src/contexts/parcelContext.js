@@ -1,12 +1,16 @@
-import React, { createContext, useReducer, useEffect, useState } from "react";
+import React, { createContext, useReducer, useEffect, useState} from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
+import { errorReducer } from "../reducers/errorReducer";
 import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, 
          SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES,
          loadParcels, updateParcelsCities} from "../contexts/actions/parcels.action";
 import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
+import { addError } from "../contexts/actions/error.action";
+import { SystemError } from "../contexts/interfaces/error.interface";
+
 
 export const parcelContext = createContext(defaultparcelExtendedData);
 
@@ -14,7 +18,7 @@ const ParcelContextProvider = props => {
   const [parcelExtendedData, dispatch] = useReducer(parcelReducer, defaultparcelExtendedData);
   const [refreshTime, setRefreshTime] = useState(0);
   const [searching, setSearching] = useState(false);
-
+  const [, dispatchError] = useReducer(errorReducer);
   
   async function getAllparcelsfromDB() {
     logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
@@ -58,14 +62,14 @@ const ParcelContextProvider = props => {
       switch (parcelExtendedData.action.type) {
         case ADD_PARCEL: {
           const response = await httpService.createParcel( ParcelUtil.prepareParcelForDBUpdate(parcelExtendedData.action.parcel ));
-          logger.log( "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL");
+          logger.log( "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL ", response);
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCEL getAllparcelsfromDB", getResponse );
           break;
         }
         case ADD_PARCELS: {
           const response = await httpService.addParcels( ParcelUtil.prepareParcelsForDBUpdate(parcelExtendedData.action.parcels) );
-          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS"); 
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS ", response); 
           //TODO when addParcels will be batch operation - can retrieve the result and merge with current instead of retrieving all again
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS getAllparcelsfromDB", getResponse );
@@ -79,8 +83,14 @@ const ParcelContextProvider = props => {
           break;
         }
         case REMOVE_PARCEL: {
-          const response = await httpService.deletParcel( parcelExtendedData.action.parcelId );
-          logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
+          try {
+            const response = await httpService.deleteParcel( parcelExtendedData.action.parcelId );
+            logger.log( "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response );
+          } catch (e) {
+            logger.log(e);
+            const err = new SystemError('Error deleting parcel' , 1, e.message);
+            dispatchError(addError(err));
+          }
           const getResponse = await getAllparcelsfromDB();
           logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse );
           break;

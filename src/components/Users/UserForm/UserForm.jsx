@@ -86,9 +86,9 @@ const UserForm = ({ handleClose, editUserId }) => {
         setUserDeliveryArea(e.target.innerText);
     }
 
-    const hebCharToEng = (char) => {
-        return String.fromCharCode((char-1391 > 122) ? 122 : char - 1391); // dif between ascii of א and a;
-    }
+    // const hebCharToEng = (char) => {
+    //     return String.fromCharCode((char-1391 > 122) ? 122 : char - 1391); // dif between ascii of א and a;
+    // }
 
     // 'haver' + ordinal number
     const createUsername = ()  => {
@@ -109,7 +109,7 @@ const UserForm = ({ handleClose, editUserId }) => {
         if (name === 'phoneUIName') {
             phoneVal = value;
             passwordVal = String(phoneVal).replace(/\D/g,''); // make sure the pass will be only numbers
-            userName = userName == '' ? createUsername() : userName;
+            userName = userName === '' ? createUsername() : userName;
         }
         
         if (name === 'firstName' ) {

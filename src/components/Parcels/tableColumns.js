@@ -1,8 +1,9 @@
 import AppConstants from "../../constants/AppConstants";
 import React from 'react';
-import AssignButton from '../shared/AssignButton/AssignButton';
 import memoize from 'memoize-one';
 import Status from '../shared/Status/Status';
+import ParcelUserComponent from './ParcelUserComponent';
+
 
 const tableColumns  = memoize(clickHandler =>[
   {
@@ -50,9 +51,9 @@ const tableColumns  = memoize(clickHandler =>[
    {
      name: AppConstants.userUIName,
      selector: 'userName',
-     sortable: false,
-     minWidth: '230px',
-     cell: row => (row.userName ? row.userName : <AssignButton name='assign' id={row.id} action={clickHandler} />),
+     sortable: true,
+     minWidth: '350px',
+     cell: row => (<ParcelUserComponent name={row.userName} itemId={row.id} status={row.parcelTrackingStatus} action={clickHandler}/>),
      ignoreRowClick: row  =>(row.userName ? false : true),
      allowOverflow: row  => (row.userName ? false : true),
    }

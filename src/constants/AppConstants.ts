@@ -1,4 +1,8 @@
  class AppConstants {
+
+  static readonly errorUIName: string = 'סליחה תקלה';
+  static readonly closeUIName: string = 'סגירה';
+
     static readonly chooseOne: string = 'בחירה';
     static readonly statusUIName: string = 'סטטוס';
     static readonly addressUIName: string = 'כתובת';
@@ -26,6 +30,7 @@
     static readonly edit: string = 'שמירה';
     static readonly cancel: string = 'ביטול';
     static readonly deleteUserUIName: string = 'מחיקת פרטי שליח/ה';
+    static readonly deleteParcelUIName: string = 'מחיקת חבילה';
     static readonly delete: string = 'מחיקה';
     static readonly searchUIName: string = 'חיפוש';
 
@@ -37,7 +42,10 @@
 
 
     static readonly deleteUserConfirmation: string = 'הפעולה תמחק את פרטי השליח מהמערכת';
-    static readonly deleteUserWarningConfirmation: string =  ' ? ישנן חבילות משוייכות לשליח זה. האם בכל זאת תרצה.י למחוק ';
+    static readonly deleteUserWarningConfirmation: string =  ' ? ישנן חבילות משוייכות לשליח זה. האם בכל זאת תרצה/י למחוק ';
+
+    static readonly deleteParcelConfirmation: string = 'הפעולה תמחק את החבילה מהמערכת';
+    static readonly deleteParcelWarningConfirmation: string =  ' ? ישנו שליח המיועד לאסוף את החבילה. האם בכל זאת תרצה/י למחוק ';
 
     static readonly commentsUIName: string = 'הערות';
     static readonly signatureUIName: string = 'חתימה';

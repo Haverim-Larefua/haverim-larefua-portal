@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
-import { addParcels, assignUserToParcels, searchParcels } from "../../contexts/actions/parcels.action";
+import { addParcels, assignUserToParcels, searchParcels, removeParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
@@ -12,6 +12,7 @@ import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interfac
 import logger from "../../Utils/logger";
 import UsersModal from "../Users/UsersList/UsersModal";
 import UsersList from "../Users/UsersList/UsersList";
+import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
@@ -21,15 +22,36 @@ const Parcels = () => {
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
-
+  const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
+  
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState();
 
+  const [deleteParcelId, setDeleteParcelId] = useState("");
+  const [deleteParcelText, setDeleteParcelText] = useState("");
+  
+
   useEffect(() => {
     dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
   }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
+
+  useEffect(() => {
+    function handleDeleteParcel() {
+      if (deleteParcelId && deleteParcelId !== "") {
+        setShowComfirmDeleteDialog(true);
+      } else {
+        setShowComfirmDeleteDialog(false);
+      }
+    }
+    handleDeleteParcel();
+  }, [deleteParcelId, deleteParcelText])
+
+  const handleDelete = () => {
+    dispatch(removeParcel(deleteParcelId));
+    setDeleteParcelId("");
+  }
 
   const showUsersModal = () => {
     setOpenUsersModal(true);
@@ -48,8 +70,6 @@ const Parcels = () => {
     const parcel = { ...parcelExtendedData.parcels.find(p => p.id === parcelId) };
     parcel.currentUserId = userId;
     parcel.user = userExtendedData.users.find(u => u.id === userId);
-    logger.log("[Parcels] associateUserToOneParcel dispatch", parcel);
-    // dispatch(assignUserToParcel(parcel));
     return parcel;
   };
 
@@ -108,16 +128,42 @@ const Parcels = () => {
     }
   };
 
-  const associateUserToParcelClicked = (e) => {
-    logger.log('[Parcel] associateUserToParcelClicked ', e.currentTarget, e.target);
-    setParcelsToAssociate([e.currentTarget.id]);
-    showUsersModal();
-  }
+  const cellButtonClicked = (idStr, name) => {
+    logger.log('[Parcels] cellButtonClicked on ', idStr, name);
+    const id = parseInt(idStr); 
+    const parcel = parcelExtendedData.parcels.find(prcl => prcl.id === id);
+    if (!parcel) {
+      logger.error('[Parcels] cellButtonClicked user with id ', id, '  not found');
+    }
+    if (name === 'delete') {
+      logger.log('[Parcels] cellButtonClicked delete ', id, parcel.id);
+      let txt = AppConstants.deleteParcelConfirmation;
+      if (parcel.parcels && parcel.parcels.length > 0) {
+        const prcl = parcel.parcels.find(p => p.parcelTrackingStatus === AppConstants.deliveringStatusName);
+        if (prcl && prcl.length > 0) {
+          txt = AppConstants.deleteParcelWarningConfirmation;
+        }
+      }
+      setDeleteParcelText(txt);
+      setDeleteParcelId(parcel.id); // because setState is async - we handle the action in useEffect
+    } else if (name === 'assign') {
+      logger.log('[Parcels] cellButtonClicked assign ', id, parcel.id);
+      setParcelsToAssociate([id]);
+      showUsersModal();
+    } else {
+      logger.warn('[Parcels] cellButtonClicked unkown action for parcel  ', id, parcel.id);
+    }
+  };
 
   const history = useHistory();
   const handleRowClick = (parcel) => {
     history.push(`/parcel/${parcel.id}`);
   }
+
+  const handleClose = () => {
+    hideUsersModal();
+    setDeleteParcelId('');
+  };
 
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
@@ -146,13 +192,17 @@ const Parcels = () => {
       <Table
         data={parcelExtendedData.parcels}
         tableColumns={tableColumns}
+        handleCellButtonClick={cellButtonClicked}
         rowClick={handleRowClick}
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
-        handleCellButtonClick={associateUserToParcelClicked}
         selectableRows
         pointerOnHover
       />
+      {showComfirmDeleteDialog &&
+        <ConfirmDeleteParcel show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
+        text={deleteParcelText} />
+      } 
     </div>
   );
 }
