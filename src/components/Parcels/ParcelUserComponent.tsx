@@ -3,8 +3,6 @@ import ActionButton from "../shared/ActionButton/ActionButton";
 import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
 import { ReactComponent as AssignIcon} from '../../assets/icons/add-volunteer.svg';
 import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
-import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
-import AppConstants from "../../constants/AppConstants";
 import "./ParcelUserComponent.scss";
 
 const uuidv4 = require('uuid/v4');

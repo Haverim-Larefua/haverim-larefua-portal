@@ -1,4 +1,4 @@
-export default class Error {
+export class SystemError {
     title: string;
     code: number;
     text: string;
@@ -10,6 +10,4 @@ export default class Error {
     }
 }
 
-export const defaultError = {
-    title: '', code: 0 , text: ''
-  };
+export const defaultError: SystemError= {title: '', code: 0 , text:''};

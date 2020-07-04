@@ -13,7 +13,6 @@ import logger from "../../Utils/logger";
 import UsersModal from "../Users/UsersList/UsersModal";
 import UsersList from "../Users/UsersList/UsersList";
 import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
-import ErrorDialog from "../shared/ErrorDialog";
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
@@ -24,7 +23,6 @@ const Parcels = () => {
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
-  const [showErrorDialog, setShowErrorDialog] = useState(false);
   
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
@@ -165,7 +163,6 @@ const Parcels = () => {
   const handleClose = () => {
     hideUsersModal();
     setDeleteParcelId('');
-    setShowErrorDialog(false);
   };
 
   const buildToolBar = () => {
@@ -206,10 +203,6 @@ const Parcels = () => {
         <ConfirmDeleteParcel show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
         text={deleteParcelText} />
       } 
-      {showErrorDialog &&
-        <ErrorDialog show={showErrorDialog} handleClose={handleClose} text='dsdf slkdfsdfslkj sdf'/>
-      }  
-
     </div>
   );
 }

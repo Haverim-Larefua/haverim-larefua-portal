@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
@@ -16,13 +16,13 @@ import {PrivateRoute} from "../PrivateRoute/PrivateRoute";
 import Login from "../Login/Login";
 import {AppConstants1} from "../../constants/AppConstants";
 import ErrorContextProvider from "../../contexts/ErrorContext";
+import ErrorDialog from "../ErrorDialog/ErrorDialog";
 
-class App extends Component<any, any> {
-
-  render() {
+const App : React.FC<any> = (): React.ReactElement => {
+  
     const admin = localStorage.getItem('admin');
     AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
-
+   
     return (
         <div className="App" id="wrapper">
                 <ErrorBoundary>
@@ -33,23 +33,27 @@ class App extends Component<any, any> {
                         <PrivateRoute exact path="/" component={Admin} />
                           <PrivateRoute path='/admin' component={Admin} />
                           
-                          <UserContextProvider>
+                          <ErrorContextProvider>
+                            
+                            <UserContextProvider>
                               <CitiesContextProvider>
                                 <PrivateRoute path='/users' component={Users} />
                               </CitiesContextProvider>
-                              <ErrorContextProvider>
                                 <ParcelContextProvider>
                                   <PrivateRoute path='/parcels' component={Parcels} />
                                   <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
                                 </ParcelContextProvider>
-                              </ErrorContextProvider>
-                          </UserContextProvider>
+                            </UserContextProvider>
+
+                            <ErrorDialog />
+                          
+                          </ErrorContextProvider>
+
                       </Switch>
                   </Router>
                 </ErrorBoundary>
         </div>
     );
-  }
-}
+  };
 
 export default App;

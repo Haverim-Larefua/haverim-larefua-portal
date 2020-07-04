@@ -1,6 +1,5 @@
 import React from "react";
 import {Route, Redirect, RouteProps} from "react-router-dom";
-import AuthService from "../../services/authService";
 
 interface PrivateRouteProps extends RouteProps {
     // tslint:disable-next-line:no-any

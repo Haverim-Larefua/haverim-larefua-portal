@@ -1,14 +1,14 @@
 import React, { createContext, useReducer } from "react";
-import errorReducer from "../reducers/errorReducer";
+import { errorReducer } from "../reducers/errorReducer";
 import { defaultError } from "./interfaces/error.interface";
 
 export const errorContext = createContext(defaultError);
 
 const ErrorContextProvider = props => {
-    const [error, dispatchError] = useReducer(errorReducer, defaultError);
+    const [systemError, dispatchError] = useReducer(errorReducer, defaultError);
 
    return (
-    <errorContext.Provider value={[error, dispatchError]}>
+    <errorContext.Provider value={[systemError, dispatchError]}>
       {props.children}
     </errorContext.Provider>
   );
