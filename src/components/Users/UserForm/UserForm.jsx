@@ -60,7 +60,7 @@ const UserForm = ({ handleClose, editUserId }) => {
 
     let formFields = [];
     if (editUserId) {
-      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'deliveryDays', 'notes'];
+      formFields = ['firstName', 'lastName', 'phoneUIName', 'deliveryArea', 'deliveryDays', 'notes'];
     } else {
       formFields = ['firstName', 'lastName', 'phoneUIName', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
     }
