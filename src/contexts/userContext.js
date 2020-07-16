@@ -28,7 +28,7 @@ const UserContextProvider = props => {
     dispatch(loadUsers(response));
 
     // need to look for all areas from all users, not only from the search
-    const areas = await httpService.getUsersAreasDistinct();
+    const areas = (await httpService.getUsersAreasDistinct()).sort();
     logger.log('[UserContextProvider] getAllUsersfromDB dispatching updateUsersAreas  #', areas.length);
     dispatch(updateUsersAreas(areas));
     

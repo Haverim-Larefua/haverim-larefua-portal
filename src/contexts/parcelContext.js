@@ -34,7 +34,7 @@ const ParcelContextProvider = props => {
     dispatch(loadParcels(response));
 
     //need to query all parcels not only the search !
-    const cities = await httpService.getParcelsCitiesDistinct();
+    const cities = (await httpService.getParcelsCitiesDistinct()).sort();
     dispatch(updateParcelsCities(cities));
 
     setSearching(false);
