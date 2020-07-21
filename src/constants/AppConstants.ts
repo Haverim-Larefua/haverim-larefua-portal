@@ -9,7 +9,7 @@
     static readonly cityUIName: string = 'עיר';
     static readonly phoneUIName: string = 'טלפון';
     static readonly nameUIName: string = 'שם';
-    static readonly identifierUIName: string ='מזהה';
+    static readonly identifierUIName: string ='מספר';
     static readonly catalogUIName: string ='מק״ט';
 
     static readonly userUIName: string = 'שליח/ה';
