@@ -10,14 +10,14 @@ const tableColumns  = memoize(clickHandler =>[
     name: AppConstants.catalogUIName,
     selector: 'id',
     maxWidth: '80px',
-    minWidth: '80px',
-    omit: true
+    minWidth: '80px'
   },
   {
    name: AppConstants.identifierUIName,
    selector: 'identity',
    sortable: true,
    maxWidth: '120px',
+   omit: true
    },
    {
    name: AppConstants.statusUIName,
