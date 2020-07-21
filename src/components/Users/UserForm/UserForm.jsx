@@ -157,6 +157,7 @@ const UserForm = ({ handleClose, editUserId }) => {
                 handleAction={e => onSubmit(e)}
                 actionBtnText={editUserId ? AppConstants.edit : AppConstants.add}
                 cancelBtnText={AppConstants.cancel}
+                type={'alert'}
         >
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {

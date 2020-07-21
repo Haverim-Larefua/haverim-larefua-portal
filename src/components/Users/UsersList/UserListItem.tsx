@@ -18,7 +18,7 @@ interface UserListItemProps {
 
 const UserListItem: React.FC<UserListItemProps> = (props:UserListItemProps) => {
 
-    const [showUserDetailsModal, setShowUserDetailsModal] = useState();
+    const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
 
     const onLineClicked = (event: any) => {
         props.onUserCicked(event);

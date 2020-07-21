@@ -49,6 +49,7 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
                handleAction={() => notify()}
                actionBtnText="שליחה"
                cancelBtnText={AppConstants.cancel}
+               type={'alert'}
         >
             <div className='ffh-user-notification'>
                     <Input type='text' name='title' label='כותרת' value={title} required onChange={(e) => setTitle(e.target.value)} />
