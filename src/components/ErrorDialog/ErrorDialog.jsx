@@ -19,7 +19,7 @@ const ErrorDialog = () => {
      }
     }
     handleError();
-  }, [systemError])
+  }, [systemError, dispatchError])
 
   const handleClose = () => {
     setShowErrorDialog(false);

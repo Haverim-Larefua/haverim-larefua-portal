@@ -26,31 +26,29 @@ const App : React.FC<any> = (): React.ReactElement => {
     return (
         <div className="App" id="wrapper">
                 <ErrorBoundary>
+                <ErrorContextProvider>
+                <ErrorDialog />
                   <Router>
                       <Header />
                       <Switch>
                         <Route path="/login" component={Login} />
                         <PrivateRoute exact path="/" component={Admin} />
-                          <PrivateRoute path='/admin' component={Admin} />
-                          
-                          <ErrorContextProvider>
+                        <PrivateRoute path='/admin' component={Admin} />
                             
-                            <UserContextProvider>
-                              <CitiesContextProvider>
-                                <PrivateRoute path='/users' component={Users} />
-                              </CitiesContextProvider>
-                                <ParcelContextProvider>
-                                  <PrivateRoute path='/parcels' component={Parcels} />
-                                  <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
-                                </ParcelContextProvider>
-                            </UserContextProvider>
-
-                            <ErrorDialog />
-                          
-                          </ErrorContextProvider>
-
+                        <UserContextProvider>
+                          <CitiesContextProvider>
+                             <PrivateRoute path='/users' component={Users} />
+                          </CitiesContextProvider>
+                      
+                          <ParcelContextProvider>
+                              <PrivateRoute path='/parcels' component={Parcels} />
+                              <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
+                          </ParcelContextProvider>
+                      
+                        </UserContextProvider>
                       </Switch>
                   </Router>
+                  </ErrorContextProvider>
                 </ErrorBoundary>
         </div>
     );
