@@ -20,4 +20,5 @@ RUN npm rebuild node-sass
 RUN yarn build
 EXPOSE 3000
 RUN chmod 755 ${APP_PATH}/scripts/startService.sh
-ENTRYPOINT ${APP_PATH}/scripts/startService.sh
+# ENTRYPOINT ${APP_PATH}/scripts/startService.sh
+ENTRYPOINT ${APP_PATH}/build.sh
