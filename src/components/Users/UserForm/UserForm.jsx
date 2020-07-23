@@ -60,9 +60,9 @@ const UserForm = ({ handleClose, editUserId }) => {
 
     let formFields = [];
     if (editUserId) {
-      formFields = ['firstName', 'lastName', 'phoneUIName', 'deliveryArea', 'deliveryDays', 'notes'];
+      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'deliveryDays', 'notes'];
     } else {
-      formFields = ['firstName', 'lastName', 'phoneUIName', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
+      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
     }
 
     const handleDaySelection = (e) => {
@@ -106,7 +106,7 @@ const UserForm = ({ handleClose, editUserId }) => {
         let passwordVal = newUserForm ? newUserForm.password : '';
         let userName = newUserForm  ? newUserForm.username  : '';
 
-        if (name === 'phoneUIName') {
+        if (name === 'phone') {
             phoneVal = value;
             passwordVal = String(phoneVal).replace(/\D/g,''); // make sure the pass will be only numbers
             userName = userName === '' ? createUsername() : userName;

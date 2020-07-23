@@ -28,7 +28,7 @@ export default class ParcelsImporterService {
             const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : '';
             const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName] : '';
             const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : '';
-            const phone = data[AppConstants.phoneUIName] ? data[AppConstants.phoneUIName] : '';
+            const phone = data[AppConstants.phone] ? data[AppConstants.phone] : '';
             const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : '';
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : '';
             if (no !== '' && customerName !== '' && city !== '') {

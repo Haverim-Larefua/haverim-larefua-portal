@@ -7,7 +7,7 @@
     static readonly statusUIName: string = 'סטטוס';
     static readonly addressUIName: string = 'כתובת';
     static readonly cityUIName: string = 'עיר';
-    static readonly phoneUIName: string = 'טלפון';
+    static readonly phone: string = 'טלפון';
     static readonly nameUIName: string = 'שם';
     static readonly identifierUIName: string ='מספר';
     static readonly catalogUIName: string ='מזהה';
