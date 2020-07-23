@@ -32,6 +32,10 @@ const tableColumns  = memoize(clickHandler => [
       name: AppConstants.phoneUIName,
       selector: 'phone',
       sortable: true,
+      style: {
+        direction: 'ltr',
+        'justify-content': 'flex-end'
+      },
     },
     {
       name: AppConstants.commentsUIName,
