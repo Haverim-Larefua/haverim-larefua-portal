@@ -106,7 +106,7 @@ node (nodeName) {
 
 
 				### Start the container.
-				// docker start ${dockerName}
+				# docker start ${dockerName}
 			"""
 		}
 	}
