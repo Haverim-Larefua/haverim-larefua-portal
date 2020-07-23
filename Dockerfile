@@ -12,3 +12,4 @@ RUN npm run build
 # Stage #2 - Copy data and run
 FROM nginx
 COPY --from=build /opt/app/hl_fe/build /usr/share/nginx/html
+COPY ./scripts/nginx-custom.conf /etc/nginx/conf.d/default.conf
