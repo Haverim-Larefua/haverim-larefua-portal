@@ -82,7 +82,7 @@ node (nodeName) {
 			
 			// Build the docker image.
 			sh """
-				docker build . -t ${dockerName}:${dockerVersion}
+				docker build . --build-arg BACKEND_URL=${backendUrl} -t ${dockerName}:${dockerVersion}
 			"""
 		}
 		
@@ -102,7 +102,7 @@ node (nodeName) {
 				
 				
 				### Create a container from the image
-				docker create --name ${dockerName} -p 3000:3000 -e REACT_APP_BACKEND_URL=http://${backendUrl}:3001 ${dockerName}:${dockerVersion}
+				docker create --name ${dockerName} -p 80:80 ${dockerName}:${dockerVersion}
 
 
 				### Start the container.
