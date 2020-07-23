@@ -13,7 +13,7 @@
 String dockerName        = "ffh_portal"
 String gitRepoUrl        = "git@github.com:Haverim-Larefua/haverim-larefua-portal.git"
 def    buildServers      = ['Dev': 'master',         'Prod': 'HL-PROD']
-def    backendAddresses  = ['Dev': '40.122.211.186', 'Prod': '40.83.20.23']
+def    backendAddresses  = ['Dev': 'http://40.122.211.186:3001', 'Prod': 'http://40.83.20.23:3001']
 
 
 
