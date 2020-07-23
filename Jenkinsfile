@@ -102,11 +102,7 @@ node (nodeName) {
 				
 				
 				### Create a container from the image
-				docker run -d --name ${dockerName} -p 80:80 ${dockerName}:${dockerVersion}
-
-
-				### Start the container.
-				# docker start ${dockerName}
+				docker run -d --name ${dockerName} -p 3000:80 ${dockerName}:${dockerVersion}
 			"""
 		}
 	}
