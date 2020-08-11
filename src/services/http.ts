@@ -301,6 +301,12 @@ class HttpService {
     return UserUtil.getUsersAreasDistinct(users);
   }
 
+  async downLoadApp() {
+    logger.log("[httpService ] downLoadApp ");
+    return this.sendHttpRequest(Configuration.URLS.DOWNLOAD, HttpMethod.GET, {
+    });
+  }
+
   //////////////////////////////////// Authentication ////////////////////////////////////
   async login(username: string, password: string): Promise<IAuthAdminResponse> {
     return this.sendHttpRequest(Configuration.URLS.LOGIN, HttpMethod.POST, {
