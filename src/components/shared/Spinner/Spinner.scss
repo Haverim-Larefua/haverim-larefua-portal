@@ -1,0 +1,11 @@
+.spinner-icon {
+  height: 7em;
+  width: 6em;
+  margin-top: 2em;
+  animation: spin infinite 1s linear;
+}
+
+@keyframes spin {
+  from { transform: rotate3d(0, 1, 0, 0); }
+  to { transform: rotate3d(0, 1, 0, 1turn); }
+}
