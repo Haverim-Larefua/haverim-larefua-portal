@@ -198,6 +198,7 @@ const Parcels = () => {
         subHeaderComponent={buildToolBar()}
         selectableRows
         pointerOnHover
+        loading={!parcelExtendedData.parcels}
       />
       {showComfirmDeleteDialog &&
         <ConfirmDeleteParcel show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
