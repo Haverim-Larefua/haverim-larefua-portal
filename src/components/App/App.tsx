@@ -17,9 +17,14 @@ import Login from "../Login/Login";
 import {AppConstants1} from "../../constants/AppConstants";
 import ErrorContextProvider from "../../contexts/ErrorContext";
 import ErrorDialog from "../ErrorDialog/ErrorDialog";
+import ApplicationDownloadPage from "../ApplicationDownloadPage/ApplicationDownloadPage";
 
 const App : React.FC<any> = (): React.ReactElement => {
   
+  const exclusionArray = [
+    '/downloadApp'
+  ]
+
     const admin = localStorage.getItem('admin');
     AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
    
@@ -27,7 +32,8 @@ const App : React.FC<any> = (): React.ReactElement => {
         <div className="App" id="wrapper">
                 <ErrorBoundary>
                   <Router>
-                      <Header />
+                      {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />}
+            
                       <Switch>
                         <Route path="/login" component={Login} />
                         <PrivateRoute exact path="/" component={Admin} />
@@ -44,6 +50,7 @@ const App : React.FC<any> = (): React.ReactElement => {
                                   <PrivateRoute path='/parcel/:id' component={ParcelDetails} />
                                 </ParcelContextProvider>
                             </UserContextProvider>
+                           <Route path='/downloadApp' component={ApplicationDownloadPage} />
 
                             <ErrorDialog />
                           
