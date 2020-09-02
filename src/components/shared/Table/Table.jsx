@@ -32,6 +32,7 @@ const Table = (props) => {
       sortIcon = {sortIcon}
       onRowClicked={(props.rowClick)}
       pointerOnHover={props.pointerOnHover}
+      noDataComponent={<div style={{padding: '24px'}}>{props.noDataComponent}</div>}
       progressPending={props.loading}
       progressComponent={<Spinner/>}
       persistTableHead
