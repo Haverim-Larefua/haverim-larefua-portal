@@ -1,5 +1,5 @@
 import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS,
-  IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES} from "../contexts/actions/parcels.action";
+  IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES, PARCELS_ERROR, parcelsError} from "../contexts/actions/parcels.action";
 import Parcel, { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil"
 import logger from "../Utils/logger";
@@ -57,6 +57,11 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
       });
       return { parcels: newStateParcels, action: action, searchParams: state.searchParams, cities: state.cities };
     }
+
+    case PARCELS_ERROR: {
+      return {...state, error: action.error, action: parcelsError(action.error) };
+    }
+    
     default:
       return state;
   }

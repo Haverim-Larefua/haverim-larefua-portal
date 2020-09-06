@@ -198,7 +198,7 @@ const Parcels = () => {
         subHeaderComponent={buildToolBar()}
         selectableRows
         pointerOnHover
-        noDataComponent={'אין חבילות להצגה'}
+        noDataComponent={parcelExtendedData.error ? 'אופס משהו השתבש, פנה אל מנהל המערכת' : 'אין חבילות להצגה'}
         loading={!parcelExtendedData.parcels}
       />
       {showComfirmDeleteDialog &&
