@@ -22,7 +22,7 @@ const ApplicationDownloadPage: React.FC = () => {
           אפליקציית המתנדבים של עמותת חברים לרפואה
       </div>
 
-        <Button className="application-download-page_button" onClick={downloadApp}><Download className="download" /> להורדת האפליקציה</Button>
+        <a  href="http://localhost:3001/download" download><Button className="application-download-page_button"><Download className="download" /> להורדת האפליקציה</Button></a>
       </div>
     </div>
   );
