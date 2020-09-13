@@ -182,6 +182,9 @@ const Parcels = () => {
       />)
   }
 
+  const serverErrorMessage = 'אופס משהו השתבש, פנה אל מנהל המערכת';
+  const noDataMessage = 'אין חבילות להצגה';
+
   return (
     <div>
       {openUsersModal &&
@@ -198,7 +201,7 @@ const Parcels = () => {
         subHeaderComponent={buildToolBar()}
         selectableRows
         pointerOnHover
-        noDataComponent={parcelExtendedData.error ? 'אופס משהו השתבש, פנה אל מנהל המערכת' : 'אין חבילות להצגה'}
+        noDataComponent={parcelExtendedData.error ? serverErrorMessage : noDataMessage}
         loading={!parcelExtendedData.parcels}
       />
       {showComfirmDeleteDialog &&

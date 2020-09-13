@@ -4,7 +4,7 @@ import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
 import { errorReducer } from "../reducers/errorReducer";
 import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, 
-         SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES,
+         SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES, PARCELS_ERROR,
          loadParcels, updateParcelsCities, parcelsError} from "../contexts/actions/parcels.action";
 import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
@@ -114,6 +114,7 @@ const ParcelContextProvider = props => {
         }
         case UPDATE_PARCEL_CITIES:
         case LOAD_PARCELS:
+        case PARCELS_ERROR:
         default:
           logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD, UPDATE_CITIES - no action", parcelExtendedData.action.type );
           break;
