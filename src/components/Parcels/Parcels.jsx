@@ -182,7 +182,6 @@ const Parcels = () => {
       />)
   }
 
-  const serverErrorMessage = 'אופס משהו השתבש, פנה אל מנהל המערכת';
   const noDataMessage = 'אין חבילות להצגה';
 
   return (
@@ -201,7 +200,7 @@ const Parcels = () => {
         subHeaderComponent={buildToolBar()}
         selectableRows
         pointerOnHover
-        noDataComponent={parcelExtendedData.error ? serverErrorMessage : noDataMessage}
+        noDataComponent={parcelExtendedData.error ? AppConstants.serverErrorMessage : noDataMessage}
         loading={!parcelExtendedData.parcels}
       />
       {showComfirmDeleteDialog &&
