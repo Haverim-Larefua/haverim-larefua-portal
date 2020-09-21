@@ -4,13 +4,9 @@ import { ReactComponent as BlueLogo } from "../../assets/icons/login-image-flat.
 import { ReactComponent as Download } from "../../assets/icons/download.svg";
 import './ApplicationDownloadPage.scss';
 import { Button } from "../shared/Button/Button";
-import httpService from "../../services/http";
+import Configuration from "../../configuration/Configuration";
  
 const ApplicationDownloadPage: React.FC = () => {
-
-  const downloadApp = async () => {
-    const response = await httpService.downLoadApp();
-  }
 
   return (
     <div className="application-download-page">
@@ -22,7 +18,7 @@ const ApplicationDownloadPage: React.FC = () => {
           אפליקציית המתנדבים של עמותת חברים לרפואה
       </div>
 
-        <Button className="application-download-page_button" onClick={downloadApp}><Download className="download" /> להורדת האפליקציה</Button>
+        <a href={`${Configuration.URLS.BACKEND_URL}${Configuration.URLS.DOWNLOAD}`}><Button><Download className="download" /> להורדת האפליקציה</Button></a>
       </div>
     </div>
   );
