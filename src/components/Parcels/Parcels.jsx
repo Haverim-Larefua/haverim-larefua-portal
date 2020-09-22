@@ -201,7 +201,7 @@ const Parcels = () => {
         selectableRows
         pointerOnHover
         noDataComponent={parcelExtendedData.error ? AppConstants.serverErrorMessage : noDataMessage}
-        loading={!parcelExtendedData.parcels}
+        loading={!parcelExtendedData.parcels && !parcelExtendedData.error}
       />
       {showComfirmDeleteDialog &&
         <ConfirmDeleteParcel show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
