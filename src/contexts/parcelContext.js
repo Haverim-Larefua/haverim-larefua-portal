@@ -43,6 +43,7 @@ const ParcelContextProvider = props => {
       setRefreshTime(refreshTime + 1);
     } catch(e) {
       logger.log(e);
+      setSearching(false);
       dispatch(parcelsError(e));
     }
   }
