@@ -12,6 +12,8 @@ export interface IDeliveryUser {
 }
 
 const DetailsUserTable:React.FC<DetailsUserTableProps> = (props) => {
+    const deliveryUser: IDeliveryUser = props.deliveryUser ?? {firstName: '', lastName: '', phone: ''};
+
     return(
         <div className="ffh-details__user">
         <div className="ffh-details-cell derivery-icon">
@@ -20,12 +22,12 @@ const DetailsUserTable:React.FC<DetailsUserTableProps> = (props) => {
         <div className="ffh-details-cell derivery-user">
             <div className="ffh-details-cell__label">שם שליח</div>
             <div className="ffh-details-cell__value">
-                {`${props.deliveryUser.firstName} ${props.deliveryUser.lastName}`}
+                {`${deliveryUser.firstName} ${deliveryUser.lastName}`}
             </div>
         </div>
         <div className="ffh-details-cell  derivery-phone">
             <div className="ffh-details-cell__label">טלפון שליח</div>
-            <div className="ffh-details-cell__value">{props.deliveryUser.phone}</div>
+            <div className="ffh-details-cell__value">{deliveryUser.phone}</div>
         </div>
         <div className="ffh-details-cell">
 
