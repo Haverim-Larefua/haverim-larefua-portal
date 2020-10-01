@@ -182,6 +182,8 @@ const Parcels = () => {
       />)
   }
 
+  const noDataMessage = 'אין חבילות להצגה';
+
   return (
     <div>
       {openUsersModal &&
@@ -198,8 +200,8 @@ const Parcels = () => {
         subHeaderComponent={buildToolBar()}
         selectableRows
         pointerOnHover
-        noDataComponent={'אין חבילות להצגה'}
-        loading={!parcelExtendedData.parcels}
+        noDataComponent={parcelExtendedData.error ? AppConstants.serverErrorMessage : noDataMessage}
+        loading={!parcelExtendedData.parcels && !parcelExtendedData.error}
       />
       {showComfirmDeleteDialog &&
         <ConfirmDeleteParcel show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}

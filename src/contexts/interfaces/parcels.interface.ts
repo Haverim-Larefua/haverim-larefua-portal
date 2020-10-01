@@ -27,7 +27,8 @@ export const defaultparcelExtendedData = {
   parcels: [],
   action: loadParcels([]),
   searchParams: {statusFilter: "", cityFilter: "", nameFilter: ""},
-  cities: []
+  cities: [],
+  error: null
 };
 
 export class ParcelExtendedData {
