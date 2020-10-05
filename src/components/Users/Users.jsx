@@ -12,7 +12,6 @@ import ConfirmDeleteUser from "./ConfirmDeleteUser";
 import NotificationForm from "./NotificationForm/NotificationForm";
 import { ParcelUtil } from '../../Utils/Parcel/ParcelUtil';
 import HttpService from "../../services/http"
-import { resolve } from "dns";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
