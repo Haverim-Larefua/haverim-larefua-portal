@@ -1,7 +1,6 @@
 // http.test.ts
 import axios, { AxiosRequestConfig } from 'axios';
 import HttpService from './http';
-import Configuration from '../configuration/Configuration';
 
 
 jest.mock('axios');
