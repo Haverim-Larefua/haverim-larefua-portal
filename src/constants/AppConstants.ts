@@ -42,7 +42,7 @@
 
 
     static readonly deleteUserConfirmation: string = 'הפעולה תמחק את פרטי השליח מהמערכת';
-    static readonly deleteUserWarningConfirmation: string =  ' ? ישנן חבילות משוייכות לשליח זה. האם בכל זאת תרצה/י למחוק ';
+    static readonly deleteUserWarningConfirmation: string =  'ישנן חבילות בחלוקה או בחריגה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ';
 
     static readonly deleteParcelConfirmation: string = 'הפעולה תמחק את החבילה מהמערכת';
     static readonly deleteParcelWarningConfirmation: string =  ' ? ישנו שליח המיועד לאסוף את החבילה. האם בכל זאת תרצה/י למחוק ';

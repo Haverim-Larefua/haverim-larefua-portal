@@ -8,6 +8,7 @@ interface IConfirmDeleteUserProps {
   handleClose: ()=> void;
   handleDelete: ()=> void;
   text: string;
+  isDeleteEnabled: boolean
 }
 
 const ConfirmDeleteUser: React.FC<IConfirmDeleteUserProps> = (props): React.ReactElement =>{
@@ -19,6 +20,7 @@ const ConfirmDeleteUser: React.FC<IConfirmDeleteUserProps> = (props): React.Reac
       actionBtnText={AppConstants.delete}
       handleAction={props.handleDelete}
       type={'alert'}
+      isActionDisabled={!props.isDeleteEnabled}
     >
       <div className='ffh-confirmation-message'>
         {props.text}

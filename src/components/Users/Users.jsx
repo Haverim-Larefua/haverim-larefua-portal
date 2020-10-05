@@ -10,6 +10,9 @@ import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstan
 import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
 import NotificationForm from "./NotificationForm/NotificationForm";
+import { ParcelUtil } from '../../Utils/Parcel/ParcelUtil';
+import HttpService from "../../services/http"
+import { resolve } from "dns";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
@@ -25,6 +28,7 @@ const Users = () => {
   const [deleteUserText, setDeleteUserText] = useState("");
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
   const [showNotificationDialog, setShowNoticationDialog] = useState(false);
+  const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
   // const [searching, setSearching] = useState(false);
   // const [refreshTime, setRefreshTime] = useState(0);
 
@@ -85,6 +89,10 @@ const Users = () => {
     handleNotifyUser();
   }, [notifyUserId])
 
+  useEffect(() => {
+    setIsDeleteEnabled(deleteEnalbed);
+  }, [deleteEnalbed])
+
 
   const daysInitials = delivaryDaysToInitials.values();
   const deliveryAreas = userExtendedData && userExtendedData.deliveryAreas ? userExtendedData.deliveryAreas : [];
@@ -108,7 +116,7 @@ const Users = () => {
     setDeleteUserId("");
   }
 
-  const cellButtonClicked = (id, name) => {
+  const cellButtonClicked = async (id, name) => {
     logger.log('[Users] cellButtonClicked on ', id, name);
     const user = userExtendedData.users.find(usr => usr.phone === id);
     if (!user) {
@@ -128,13 +136,21 @@ const Users = () => {
       }
       case 'delete': {
         logger.log('[Users] cellButtonClicked delete ', id, user.id);
+        const detailedUser = await HttpService.getUserById(user.id);
+        logger.log('[User] detailed user ', detailedUser);
+        let userAllowedTobeDeleted = true; 
         let txt = AppConstants.deleteUserConfirmation;
-        if (user.parcels && user.parcels.length > 0) {
-          const prcl = user.parcels.find(p => p.parcelTrackingStatus === AppConstants.deliveringStatusName);
-          if (prcl && prcl.length > 0) {
+        if (detailedUser.parcels && detailedUser.parcels.length > 0) {         
+          const prcl = detailedUser.parcels.find(p => 
+            ParcelUtil.parcelStatusEnumToUIValue(p.parcelTrackingStatus) === AppConstants.deliveringStatusName ||
+            ParcelUtil.parcelStatusEnumToUIValue(p.parcelTrackingStatus) === AppConstants.exceptionStatusName
+            );
+          if (prcl) {
             txt = AppConstants.deleteUserWarningConfirmation;
+            userAllowedTobeDeleted = false;
           }
         }
+        setIsDeleteEnabled(userAllowedTobeDeleted);
         setDeleteUserText(txt);
         setDeleteUserId(user.id); // because setState is async - we handle the action in useEffect
         break;
@@ -175,11 +191,11 @@ const Users = () => {
         <UserForm showNewUserModal={showNewUserModal} handleClose={handleClose} editUserId={editUserId} />
       }
       {showComfirmDeleteDialog &&
-        <ConfirmDeleteUser show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
+        <ConfirmDeleteUser isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
         text={deleteUserText} />
       }
       {showNotificationDialog &&
-        <NotificationForm show={showNotificationDialog} handleClose={handleClose} userId={notifyUserId} userName={notifyUserName} />
+        <NotificationForm show={showNotificationDialog} handleClose={handleClose} userId={notifyUserId} userName={notifyUserName}  />
       }
 
     </ React.Fragment>
