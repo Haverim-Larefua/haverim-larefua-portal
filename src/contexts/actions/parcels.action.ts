@@ -13,6 +13,7 @@ export const LOAD_PARCELS: string = "LOAD_PARCELS"; //
 export const SEARCH_PARCELS: string = "SEARCH_PARCELS";
 export const UPDATE_PARCEL_CITIES: string = "UPDATE_PARCEL_CITIES"; // first load/edit/remove/add -> recalc cities
 export const ASSIGN_USER_TO_PARCELS: string = "ASSIGN_USER_TO_PARCELS";
+export const PARCELS_ERROR: string = "PARCELS_ERROR";
 
 export function loadParcels(parcels: Parcel[]): ILoadparcelsActionType {
     return {type: LOAD_PARCELS, parcels };
@@ -46,6 +47,10 @@ export function assignUserToParcels(parcels: Parcel[]): IAssigUserToParcelAction
   return {type: ASSIGN_USER_TO_PARCELS, parcels};
 }
 
+export function parcelsError(error: any): IParcelsError {
+  return {type: PARCELS_ERROR, error};
+}
+
 export interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
 export interface ISearchParcelsActionType { type: string , searchParams: ISearchParcelsParams};
 export interface IAddparcelActionType { type: string, parcel: Parcel };
@@ -54,6 +59,7 @@ export interface IEditparcelActionType { type: string, parcel: Parcel };
 export interface IRemoveparcelActionType { type: string, parcelId: number };
 export interface IUpdateparcelCitiesType { type: string, cities: string[] };
 export interface IAssigUserToParcelActionType { type: string, parcels: Parcel[] };
+export interface IParcelsError { type: string, error: any };
 
 export type parcelActions = ILoadparcelsActionType;
 
