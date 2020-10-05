@@ -77,6 +77,18 @@ class AppConstants {
   static readonly thursdayInitial: string = 'ה';
   static readonly fridayInitial: string = 'ו';
 
+   //IOS platform names
+   static readonly iPadSimulator: string = 'iPad Simulator';
+   static readonly iPhoneSimulator: string = 'iPhone Simulator';
+   static readonly iPodSimulator: string = 'iPod Simulator';
+   static readonly iPad: string = 'iPad';
+   static readonly iPhone: string = 'iPhone';
+   static readonly iPod: string = 'iPod';
+   static readonly mac: string = 'Mac';
+
+   static readonly downloadAppInfoText: string = 'אפליקציית המתנדבים של עמותת חברים לרפואה';
+   static readonly downloadAppText: string = ' להורדת האפליקציה';
+
   static readonly allWeekDetailed =
           AppConstants.sundayInitial + ',' +
           AppConstants.mondayInitial + ',' +
