@@ -48,6 +48,10 @@ const tableColumns  = memoize(clickHandler =>[
      selector: 'phone',
      sortable: true,
      maxWidth: '180px',
+     style: {
+      direction: 'ltr',
+      'justify-content': 'flex-end'
+    },
    },
    {
      name: AppConstants.userUIName,

@@ -4,8 +4,8 @@ import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
 import { errorReducer } from "../reducers/errorReducer";
 import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, 
-         SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES,
-         loadParcels, updateParcelsCities} from "../contexts/actions/parcels.action";
+         SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES, PARCELS_ERROR,
+         loadParcels, updateParcelsCities, parcelsError} from "../contexts/actions/parcels.action";
 import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import { addError } from "../contexts/actions/error.action";
@@ -26,19 +26,26 @@ const ParcelContextProvider = props => {
       return;
     }
     setSearching(true);
-    const response = await httpService.searchParcels(
-      parcelExtendedData.searchParams.statusFilter,
-      parcelExtendedData.searchParams.cityFilter,
-      parcelExtendedData.searchParams.nameFilter );
-    logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
-    dispatch(loadParcels(response));
 
-    //need to query all parcels not only the search !
-    const cities = (await httpService.getParcelsCitiesDistinct()).sort();
-    dispatch(updateParcelsCities(cities));
-
-    setSearching(false);
-    setRefreshTime(refreshTime + 1);
+    try {
+      const response = await httpService.searchParcels(
+        parcelExtendedData.searchParams.statusFilter,
+        parcelExtendedData.searchParams.cityFilter,
+        parcelExtendedData.searchParams.nameFilter );
+      logger.log('[ParcelContextProvider] getAllparcelsfromDB response', response);
+      dispatch(loadParcels(response));
+  
+      //need to query all parcels not only the search !
+      const cities = (await httpService.getParcelsCitiesDistinct()).sort();
+      dispatch(updateParcelsCities(cities));
+  
+      setSearching(false);
+      setRefreshTime(refreshTime + 1);
+    } catch(e) {
+      logger.log(e);
+      setSearching(false);
+      dispatch(parcelsError(e));
+    }
   }
 
   //first time call that loads parcels from db
@@ -108,6 +115,7 @@ const ParcelContextProvider = props => {
         }
         case UPDATE_PARCEL_CITIES:
         case LOAD_PARCELS:
+        case PARCELS_ERROR:
         default:
           logger.log( "[ParcelContextProvider] updateParcelsInDB LOAD, UPDATE_CITIES - no action", parcelExtendedData.action.type );
           break;
