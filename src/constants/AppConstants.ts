@@ -1,5 +1,6 @@
- class AppConstants {
+class AppConstants {
 
+  static readonly serverErrorMessage: string = 'אופס משהו השתבש, פנה אל מנהל המערכת';
   static readonly errorUIName: string = 'סליחה תקלה';
   static readonly closeUIName: string = 'סגירה';
 
@@ -76,14 +77,26 @@
   static readonly thursdayInitial: string = 'ה';
   static readonly fridayInitial: string = 'ו';
 
+   //IOS platform names
+   static readonly iPadSimulator: string = 'iPad Simulator';
+   static readonly iPhoneSimulator: string = 'iPhone Simulator';
+   static readonly iPodSimulator: string = 'iPod Simulator';
+   static readonly iPad: string = 'iPad';
+   static readonly iPhone: string = 'iPhone';
+   static readonly iPod: string = 'iPod';
+   static readonly mac: string = 'Mac';
+
+   static readonly downloadAppInfoText: string = 'אפליקציית המתנדבים של עמותת חברים לרפואה';
+   static readonly downloadAppText: string = ' להורדת האפליקציה';
+
   static readonly allWeekDetailed =
-            AppConstants.sundayInitial + ',' +
-            AppConstants.mondayInitial + ',' +
-            AppConstants.tuesdayInitial + ',' +
-            AppConstants.wednesdayInitial + ',' +
-            AppConstants.thursdayInitial + ',' +
-            AppConstants.fridayInitial;
- }
+          AppConstants.sundayInitial + ',' +
+          AppConstants.mondayInitial + ',' +
+          AppConstants.tuesdayInitial + ',' +
+          AppConstants.wednesdayInitial + ',' +
+          AppConstants.thursdayInitial + ',' +
+          AppConstants.fridayInitial;
+}
 
 export const delivaryDaysToInitials = new Map<string, string> ([
   [AppConstants.allWeek, AppConstants.allWeek],
@@ -97,11 +110,11 @@ export const delivaryDaysToInitials = new Map<string, string> ([
 
 //TODO: Rename to AppConstants after move all AppConstants to i18n
 export const AppConstants1 = {
-    admin: {
-        token: '',
-        firstName: '',
-        lastName: ''
-    }
+  admin: {
+    token: '',
+    firstName: '',
+    lastName: ''
+  }
 }
 
 export default AppConstants;
