@@ -220,6 +220,14 @@ class HttpService {
     return UserUtil.prepareUsersForDisplay(users);
   }
 
+  async getUserById(id: number): Promise<User>{
+    const user: User = await this.sendHttpRequest(
+      `${Configuration.URLS.USERS}/${id}`,
+      HttpMethod.GET
+    );
+    return UserUtil.prepareOneUserForDisplay(user);
+  }
+
   async createUser(aUser: User): Promise<{ id: number }> {
     const user = UserUtil.prepareOneUserForDBUpdate(aUser);
     return this.sendHttpRequest(
