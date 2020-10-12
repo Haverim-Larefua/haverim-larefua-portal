@@ -26,7 +26,7 @@ export class ParcelTracking {
 export const defaultparcelExtendedData = {
   parcels: [],
   action: loadParcels([]),
-  searchParams: {statusFilter: "", cityFilter: "", nameFilter: ""},
+  searchParams: {statusFilter: AppConstants.readyStatusName, cityFilter: "", nameFilter: ""},
   cities: [],
   error: null
 };
