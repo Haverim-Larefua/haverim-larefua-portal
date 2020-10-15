@@ -92,7 +92,7 @@ const Parcels = () => {
     associateUserToListOfParcels(parcelsToAssociate, selectedUser);
   }
 
-  const statuses = [AppConstants.all, ...Object.values(parcelStatusesValues)];
+  const statuses = [...Object.values(parcelStatusesValues)];
 
   // ToolbarOptions
   const options = [
