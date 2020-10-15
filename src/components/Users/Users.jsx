@@ -141,8 +141,7 @@ const Users = () => {
         let txt = AppConstants.deleteUserConfirmation;
         if (detailedUser.parcels && detailedUser.parcels.length > 0) {         
           const prcl = detailedUser.parcels.find(p => 
-            ParcelUtil.parcelStatusEnumToUIValue(p.parcelTrackingStatus) === AppConstants.deliveringStatusName ||
-            ParcelUtil.parcelStatusEnumToUIValue(p.parcelTrackingStatus) === AppConstants.exceptionStatusName
+            ParcelUtil.parcelStatusEnumToUIValue(p.parcelTrackingStatus) !== AppConstants.readyStatusName
             );
           if (prcl) {
             txt = AppConstants.deleteUserWarningConfirmation;
