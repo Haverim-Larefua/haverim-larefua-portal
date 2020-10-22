@@ -31,6 +31,7 @@ const Parcels = () => {
 
   const [deleteParcelId, setDeleteParcelId] = useState("");
   const [deleteParcelText, setDeleteParcelText] = useState("");
+  const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
   
 
   useEffect(() => {
@@ -47,6 +48,10 @@ const Parcels = () => {
     }
     handleDeleteParcel();
   }, [deleteParcelId, deleteParcelText])
+
+  useEffect(() => {
+    setIsDeleteEnabled(deleteEnalbed);
+  }, [deleteEnalbed])
 
   const handleDelete = () => {
     dispatch(removeParcel(deleteParcelId));
@@ -133,17 +138,17 @@ const Parcels = () => {
     const id = parseInt(idStr); 
     const parcel = parcelExtendedData.parcels.find(prcl => prcl.id === id);
     if (!parcel) {
-      logger.error('[Parcels] cellButtonClicked user with id ', id, '  not found');
+      logger.error('[Parcels] cellButtonClicked parcel with id ', id, '  not found');
     }
     if (name === 'delete') {
+      let parcelAllowedToBeDeleted = true;
       logger.log('[Parcels] cellButtonClicked delete ', id, parcel.id);
       let txt = AppConstants.deleteParcelConfirmation;
-      if (parcel.parcels && parcel.parcels.length > 0) {
-        const prcl = parcel.parcels.find(p => p.parcelTrackingStatus === AppConstants.deliveringStatusName);
-        if (prcl && prcl.length > 0) {
+      if (parcel.parcelTrackingStatus !== AppConstants.readyStatusName) {
           txt = AppConstants.deleteParcelWarningConfirmation;
-        }
+          parcelAllowedToBeDeleted = false;
       }
+      setIsDeleteEnabled(parcelAllowedToBeDeleted);
       setDeleteParcelText(txt);
       setDeleteParcelId(parcel.id); // because setState is async - we handle the action in useEffect
     } else if (name === 'assign') {
@@ -204,7 +209,7 @@ const Parcels = () => {
         loading={!parcelExtendedData.parcels && !parcelExtendedData.error}
       />
       {showComfirmDeleteDialog &&
-        <ConfirmDeleteParcel show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
+        <ConfirmDeleteParcel isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
         text={deleteParcelText} />
       } 
     </div>
