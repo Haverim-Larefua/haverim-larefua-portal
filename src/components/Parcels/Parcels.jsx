@@ -199,6 +199,8 @@ const Parcels = () => {
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
         selectableRows
+        selectedRowsState={selectedRowsState}
+        selectedRowIdentifierKey="id"
         pointerOnHover
         noDataComponent={parcelExtendedData.error ? AppConstants.serverErrorMessage : noDataMessage}
         loading={!parcelExtendedData.parcels && !parcelExtendedData.error}
