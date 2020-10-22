@@ -46,7 +46,7 @@ class AppConstants {
   static readonly deleteUserWarningConfirmation: string =  'ישנן חבילות בחלוקה או בחריגה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ';
 
   static readonly deleteParcelConfirmation: string = 'הפעולה תמחק את החבילה מהמערכת';
-  static readonly deleteParcelWarningConfirmation: string =  ' ? ישנו שליח המיועד לאסוף את החבילה. האם בכל זאת תרצה/י למחוק ';
+  static readonly deleteParcelWarningConfirmation: string =  'החבילה לא בסטטוס מוכנה לחלוקה. לא ניתן לבצע מחיקה';
 
   static readonly commentsUIName: string = 'הערות';
   static readonly signatureUIName: string = 'חתימה';
