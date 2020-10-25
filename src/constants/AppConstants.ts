@@ -40,6 +40,7 @@ class AppConstants {
   static readonly addFromFileUIName: string = 'הוספה מקובץ';
   static readonly associateUserUIName: string = 'שיוך לשליח/ה';
   static readonly associateParcelToUserUIName: string = 'שיוך חבילות לשליח/ה';
+  static readonly filterUIName: string = 'סינון';
 
 
   static readonly deleteUserConfirmation: string = 'הפעולה תמחק את פרטי השליח מהמערכת';
