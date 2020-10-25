@@ -6,7 +6,18 @@ import './Table.scss';
 import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
 import { Spinner } from '../Spinner/Spinner';
 
+
+
 const Table = (props) => {
+
+  const isRowSelectedByState = (row) => {
+    const key = props.selectedRowIdentifierKey;
+    const selectedRowsArray = props.selectedRowsState.selectedRows;
+    const isCurrentRowSelected = !!selectedRowsArray.find((selectedRow)=> {
+      return row[key] === selectedRow[key]
+    });
+    return isCurrentRowSelected;
+  }
 
   const handleChange = useCallback(state => {
     props.onSelectedRowsChange(state);
@@ -22,6 +33,7 @@ const Table = (props) => {
       columns={props.tableColumns(props.handleCellButtonClick)}
       onSelectedRowsChange={handleChange}
       selectableRows={props.selectableRows}
+      selectableRowSelected={ props.selectedRowsState ? isRowSelectedByState : null}
       highlightOnHover
       customStyles={tableStyles}
       noHeader
