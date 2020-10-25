@@ -85,8 +85,8 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
        <div className="ffh-toolbar__subtitle">
        {this.props.subTitle}
       </div>
-       {searchFragment}
        {optionsFragment}
+       {searchFragment}
        {button}
     </div>);
   }
