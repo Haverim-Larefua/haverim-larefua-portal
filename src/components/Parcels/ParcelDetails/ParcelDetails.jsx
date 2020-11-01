@@ -9,6 +9,7 @@ import DetailsTrackingTable from "./DetailsTrackingTable";
 import { ReactComponent as BackIcon } from '../../../assets/icons/back.svg';
 import Status from '../../shared/Status/Status';
 import User from '../../../contexts/interfaces/users.interface';
+import AppConstants from '../../../constants/AppConstants';
 
 const ParcelDetails = (props) => {
     const history = useHistory();
@@ -45,6 +46,9 @@ const ParcelDetails = (props) => {
                 </h2>
                 <Status status={currentParcel.parcelTrackingStatus} />
 
+                {currentParcel.exception ? (
+                  <Status status={AppConstants.exceptionStatusName} />
+                ) : null}
             </div>
             <DetailsParcelTable currentParcel={currentParcel} />
             {deliveryStage &&
