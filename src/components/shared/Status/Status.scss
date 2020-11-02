@@ -25,7 +25,10 @@
 
     &.exception {
         @extend %status-exception;
-        margin: 0 10px;
+        margin: 0 12px;
+        width: 89px;
+        background-color: #cc3528;
+        color: #ffffff;
     }
 
 }
