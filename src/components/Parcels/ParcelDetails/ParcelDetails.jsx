@@ -13,6 +13,8 @@ import AppConstants from '../../../constants/AppConstants';
 import { parcelStatusesValues } from '../../../contexts/interfaces/parcels.interface';
 import Dropdown from '../../shared/Dropdown/Dropdown';
 
+const statuses = [...Object.values(parcelStatusesValues).filter(status => status !== AppConstants.exceptionStatusName)];
+
 const ParcelDetails = (props) => {
     const [statusFilterTerm, setStatusFilterTerm] = useState("");
     const history = useHistory();
@@ -38,7 +40,6 @@ const ParcelDetails = (props) => {
         }
     }
 
-    const statuses = [...Object.values(parcelStatusesValues).filter(status => status !== AppConstants.exceptionStatusName)];
     const statusFilter = { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true };
 
 
