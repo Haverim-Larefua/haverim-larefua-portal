@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { parcelContext } from "../../../contexts/parcelContext";
 import { userContext } from "../../../contexts/userContext";
@@ -10,8 +10,13 @@ import { ReactComponent as BackIcon } from '../../../assets/icons/back.svg';
 import Status from '../../shared/Status/Status';
 import User from '../../../contexts/interfaces/users.interface';
 import AppConstants from '../../../constants/AppConstants';
+import { parcelStatusesValues } from '../../../contexts/interfaces/parcels.interface';
+import Dropdown from '../../shared/Dropdown/Dropdown';
+
+const statuses = [...Object.values(parcelStatusesValues).filter(status => status !== AppConstants.exceptionStatusName)];
 
 const ParcelDetails = (props) => {
+    const [statusFilterTerm, setStatusFilterTerm] = useState("");
     const history = useHistory();
     const handleNavigateBack = () => {
         history.goBack();
@@ -35,6 +40,7 @@ const ParcelDetails = (props) => {
         }
     }
 
+    const statusFilter = { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true };
 
 
     return currentParcel ? (
@@ -49,6 +55,13 @@ const ParcelDetails = (props) => {
                 {currentParcel.exception ? (
                   <Status status={AppConstants.exceptionStatusName} />
                 ) : null}
+
+                <div className="ffh-toolbar__filters">
+                  <Fragment key={statusFilter.title}>
+                    <label className="ffh-toolbar__label">{statusFilter.title}</label>
+                    <Dropdown options={[...statusFilter.values]} name={statusFilter.name} filter={statusFilter.filter} bullets={statusFilter.bullets} isDisabled={statusFilter.isDisabled}> </Dropdown>
+                  </Fragment>
+                </div>
             </div>
             <DetailsParcelTable currentParcel={currentParcel} />
             {deliveryStage &&
