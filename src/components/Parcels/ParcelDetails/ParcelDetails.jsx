@@ -40,7 +40,7 @@ const ParcelDetails = (props) => {
         }
     }
 
-    const statusFilter = { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true };
+    const statusFilter = { title: AppConstants.changeStatusLabel, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true };
 
 
     return currentParcel ? (
@@ -55,7 +55,7 @@ const ParcelDetails = (props) => {
                 {currentParcel.exception ? (
                   <Status status={AppConstants.exceptionStatusName} />
                 ) : null}
-
+                
                 <div className="ffh-toolbar__filters">
                   <Fragment key={statusFilter.title}>
                     <label className="ffh-toolbar__label">{statusFilter.title}</label>

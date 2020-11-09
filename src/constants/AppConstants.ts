@@ -42,6 +42,8 @@ class AppConstants {
   static readonly associateParcelToUserUIName: string = 'שיוך חבילות לשליח/ה';
   static readonly filterUIName: string = 'סינון';
 
+  static readonly changeStatusLabel: string = 'שינוי סטטוס';
+
 
   static readonly deleteUserConfirmation: string = 'הפעולה תמחק את פרטי השליח מהמערכת';
   static readonly deleteUserWarningConfirmation: string =  'ישנן חבילות בחלוקה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ';
