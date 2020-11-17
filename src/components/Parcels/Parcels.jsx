@@ -13,6 +13,7 @@ import logger from "../../Utils/logger";
 import UsersModal from "../Users/UsersList/UsersModal";
 import UsersList from "../Users/UsersList/UsersList";
 import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
+import './Parcels.scss';
 
 const Parcels = () => {
   const [parcelExtendedData, dispatch] = useContext(parcelContext);
@@ -23,7 +24,7 @@ const Parcels = () => {
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
-  
+
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
 
@@ -32,7 +33,7 @@ const Parcels = () => {
   const [deleteParcelId, setDeleteParcelId] = useState("");
   const [deleteParcelText, setDeleteParcelText] = useState("");
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
-  
+
 
   useEffect(() => {
     dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
@@ -135,7 +136,7 @@ const Parcels = () => {
 
   const cellButtonClicked = (idStr, name) => {
     logger.log('[Parcels] cellButtonClicked on ', idStr, name);
-    const id = parseInt(idStr); 
+    const id = parseInt(idStr);
     const parcel = parcelExtendedData.parcels.find(prcl => prcl.id === id);
     if (!parcel) {
       logger.error('[Parcels] cellButtonClicked parcel with id ', id, '  not found');
@@ -190,7 +191,7 @@ const Parcels = () => {
   const noDataMessage = 'אין חבילות להצגה';
 
   return (
-    <div>
+    <div className="parcels-table-conatiner">
       {openUsersModal &&
       <UsersModal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
         <UsersList updateSelectedUser={updateSelectedUser}/>
@@ -213,7 +214,7 @@ const Parcels = () => {
       {showComfirmDeleteDialog &&
         <ConfirmDeleteParcel isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
         text={deleteParcelText} />
-      } 
+      }
     </div>
   );
 }
