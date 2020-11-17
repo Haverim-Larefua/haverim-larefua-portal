@@ -1,8 +1,6 @@
-
 @import '../../../styles/colors';
 @import '../../../styles/elements';
 // Toolbar
-
 .ffh-toolbar {
     align-items: center;
     display: flex;
@@ -30,6 +28,13 @@
     height: 40px;
     margin-left: 1%;
     width: 25%;
+    position: relative;
+    .ffh-select-filter__input-icon {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+        opacity: 0.4;
+    }
 }
 
 .ffh-toolbar__search-input {
@@ -67,5 +72,4 @@
     width: initial;
     display: flex;
     align-items: center;
-
 }

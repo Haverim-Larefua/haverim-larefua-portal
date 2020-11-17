@@ -4,6 +4,7 @@ import './Toolbar.scss';
 import UploadButton from '../UploadButton/UploadButton';
 import { ReactComponent as AddUserIcon } from '../../../assets/icons/add-volunteer.svg';
 // import logger from '../../../Utils/logger';
+import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
 
 export interface ToolbarOption {
   title: string;
@@ -54,6 +55,9 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
           <div className="ffh-toolbar__search">
             <input className="ffh-toolbar__search-input" type="text" placeholder="חיפוש"
                 onKeyDown={this.handleKeyDown}/>
+
+            <SearchIcon className="ffh-select-filter__input-icon" />
+
           </div>)
     } else {
       searchFragment = '';
