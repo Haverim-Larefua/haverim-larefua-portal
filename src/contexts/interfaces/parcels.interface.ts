@@ -52,6 +52,8 @@ export default class Parcel {
   city: string;
   phone: string;
   comments: string;
+  startDate: Date;
+  startTime: Date;
   parcelTrackingStatus: string; // parcelStatusesValues
   signature: string; // base64
   lastUpdateDate: Date;
@@ -69,7 +71,9 @@ export default class Parcel {
     comments: string,
     parcelTrackingStatus: string,
     lastUpdateDate: Date,
-    signature: string
+    signature: string,
+    startDate: Date,
+    startTime: Date,
   ) {
     this.identity = identity;
     this.customerName = customerName;
@@ -80,5 +84,7 @@ export default class Parcel {
     this.signature = signature;
     this.lastUpdateDate = lastUpdateDate;
     this.phone = phone;
+    this.startDate = startDate;
+    this.startTime = startTime;
   }
 }

@@ -11,7 +11,7 @@ const UploadButton: React.FC<UploadButtonProps> = (props) => {
         <label className="ffh-upload-button">
             <Icon />
             <span>{props.title} </span>
-            <input className="ffh-upload-button__input" onChange={props.action} type="file"></input>
+            <input className="ffh-upload-button__input" onChange={props.action}  onClick={(e)=> e.currentTarget.value = ""} type="file"></input>
         </label>
     )
 }

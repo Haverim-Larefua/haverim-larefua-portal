@@ -2,6 +2,7 @@ import XLSX from 'xlsx';
 import logger  from '../Utils/logger';
 import Parcel from '../contexts/interfaces/parcels.interface';
 import AppConstants from '../constants/AppConstants';
+import StringUtil from "../Utils/Common/StringUtil";
 
 class ImportedData {
     data: any[];
@@ -19,24 +20,49 @@ export default class ParcelsImporterService {
         let o = [], C = XLSX.utils.decode_range(refstr).e.c + 1;
         for(var i = 0; i < C; ++i) o[i] = {name:XLSX.utils.encode_col(i), key:i}
         return o;
-    };
+    }
 
-    static jsonDataToparcels(jsonData: any[], dt: Date) :Parcel[]{
+    static jsonDataToParcels(jsonData: any[], dt: Date) :Parcel[]{
         let parcels: Parcel[] = [];
         jsonData.forEach(async data => {
-            const no = data[AppConstants.identifierUIName] ? data[AppConstants.identifierUIName] : '';
-            const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : '';
-            const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName] : '';
-            const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : '';
-            const phone = data[AppConstants.phone] ? data[AppConstants.phone] : '';
-            const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : '';
-            const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : '';
-            if (no !== '' && customerName !== '' && city !== '') {
-              const aparcel = new Parcel(no, customerName, address, city, phone, comments, AppConstants.readyStatusName, dt, signature);
-              logger.log('[ParcelsImporterService] jsonDataToparcels pushing ', aparcel);
+            const no = data[AppConstants.identifierUIName] ? data[AppConstants.identifierUIName] : StringUtil.EMPTY;
+            const startDate = data[AppConstants.startDate]? data[AppConstants.startDate].toDateString(): null;
+            const startTime = data[AppConstants.startTime] ? data[AppConstants.startTime].toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : null;
+            const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : StringUtil.EMPTY;
+            const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName] : StringUtil.EMPTY;
+            const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : StringUtil.EMPTY;
+            const phone = data[AppConstants.phone] ? data[AppConstants.phone] : StringUtil.EMPTY;
+            const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : StringUtil.EMPTY;
+            const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : StringUtil.EMPTY;
+            if (
+              StringUtil.isNotEmpty(no) &&
+              StringUtil.isNotEmpty(customerName) &&
+              StringUtil.isNotEmpty(city) &&
+              startDate && startTime
+            ) {
+              const aparcel = new Parcel(
+                no,
+                customerName,
+                address,
+                city,
+                phone,
+                comments,
+                AppConstants.readyStatusName,
+                dt,
+                signature,
+                startDate,
+                startTime
+              );
+
+              logger.log(
+                "[ParcelsImporterService] jsonDataToParcels pushing ",
+                aparcel
+              );
               parcels.push(aparcel);
             } else {
-              logger.error('[ParcelsImporterService] jsonDataToparcels: invalid data');
+              logger.error(
+                "[ParcelsImporterService] jsonDataToParcels: invalid data"
+              );
             }
         });
         return parcels;
@@ -52,24 +78,24 @@ export default class ParcelsImporterService {
       reader.onload = (e: any) => {
         /* Parse data */
         const bstr = e.target.result;
-        const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA : true });
+        const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA : true , cellDates:true});
         /* Get first worksheet */
         const wsname = wb.SheetNames[0];
         const ws = wb.Sheets[wsname];
         /* Convert array of arrays */
-        const data = XLSX.utils.sheet_to_json<any>(ws); // any[]
+        const data = XLSX.utils.sheet_to_json<any>(ws, {dateNF:'mm/dd/yyyy;@'}); // any[]
         let result = new ImportedData(data, this.make_cols(ws['!ref']));
         const dt = new Date();
-        let parcels = this.jsonDataToparcels(result.data, dt);
+        let parcels = this.jsonDataToParcels(result.data, dt);
         resolve(parcels);
-        /* 
+        /*
         * This part of the code is for keeping the file with Format name in this format yyy-mm-dd.xls
         * there bug in this code as it should verify if there is already a package with this date and ID - but its not working
         */
-        /* 
+        /*
         const dt = new Date(file.name.split('.')[0]);
         if (dt instanceof Date && (dt.toString() !== "Invalid Date")) {
-          let parcels = this.jsonDataToparcels(result.data, dt);
+          let parcels = this.jsonDataToParcels(result.data, dt);
           resolve(parcels);
         } else {
           logger.error('[ParcelsImporterService] ImportFromExcel: invliad file name - must be of the form yyyy-mm-dd.xls');
@@ -88,4 +114,3 @@ export default class ParcelsImporterService {
     }
 
 }
-
