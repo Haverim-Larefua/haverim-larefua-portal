@@ -11,7 +11,8 @@ import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
 import NotificationForm from "./NotificationForm/NotificationForm";
 import { ParcelUtil } from '../../Utils/Parcel/ParcelUtil';
-import HttpService from "../../services/http"
+import HttpService from "../../services/http";
+import './Users.scss';
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
@@ -137,10 +138,10 @@ const Users = () => {
         logger.log('[Users] cellButtonClicked delete ', id, user.id);
         const detailedUser = await HttpService.getUserById(user.id);
         logger.log('[User] detailed user ', detailedUser);
-        let userAllowedTobeDeleted = true; 
+        let userAllowedTobeDeleted = true;
         let txt = AppConstants.deleteUserConfirmation;
-        if (detailedUser.parcels && detailedUser.parcels.length > 0) {         
-          const prcl = detailedUser.parcels.find(p => 
+        if (detailedUser.parcels && detailedUser.parcels.length > 0) {
+          const prcl = detailedUser.parcels.find(p =>
             ParcelUtil.parcelStatusEnumToUIValue(p.parcelTrackingStatus) === AppConstants.deliveringStatusName
             );
           if (prcl) {
@@ -168,7 +169,7 @@ const Users = () => {
   };
 
   return (
-    <React.Fragment>
+    <div className="users-container">
       <Table
         data={userExtendedData.users}
         tableColumns={tableColumns}
@@ -196,7 +197,7 @@ const Users = () => {
         <NotificationForm show={showNotificationDialog} handleClose={handleClose} userId={notifyUserId} userName={notifyUserName}  />
       }
 
-    </ React.Fragment>
+    </div>
   );
 };
 
