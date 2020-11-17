@@ -23,7 +23,7 @@ const tableColumns = memoize(clickHandler => [{
                 selector: 'startDate',
                 sortable: true,
                 maxWidth: '140px',
-                format: row => new Date(row.startDate).toLocaleDateString('en-US', { year: "2-digit", month: "2-digit", day: "2-digit" }),
+                format: row => row.startDate ? new Date(row.startDate).toLocaleDateString('en-US', { year: "2-digit", month: "2-digit", day: "2-digit" }) : null,
                 center: true,
             },
             {

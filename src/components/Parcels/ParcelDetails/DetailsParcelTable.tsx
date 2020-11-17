@@ -12,6 +12,8 @@ export interface DetailsParcelTableProps {
     id: number;
     phone: string;
     lastUpdateDate: string;
+    startDate: string;
+    startTime: string;
   }
 
 const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
@@ -27,6 +29,18 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
             <div className="ffh-details-cell__label">מזהה</div>
             <div className="ffh-details-cell__value">
                 {props.currentParcel.id}
+            </div>
+        </div>
+        <div className="ffh-details-cell start-date">
+            <div className="ffh-details-cell__label">מועד התחלה</div>
+            <div className="ffh-details-cell__value">
+                {props.currentParcel.startDate ? new Date(props.currentParcel.startDate).toLocaleDateString('en-US', { year: "2-digit", month: "2-digit", day: "2-digit" }) : "-"}
+            </div>
+        </div>
+        <div className="ffh-details-cell start-time">
+            <div className="ffh-details-cell__label">שעת התחלה</div>
+            <div className="ffh-details-cell__value">
+                {props.currentParcel.startTime ? props.currentParcel.startTime: "-"}
             </div>
         </div>
         <div className="ffh-details-cell phone">
