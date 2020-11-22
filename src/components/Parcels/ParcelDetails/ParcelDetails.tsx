@@ -1,7 +1,5 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { parcelContext } from "../../../contexts/parcelContext";
-import { userContext } from "../../../contexts/userContext";
 import './ParcelDetails.scss';
 import DetailsParcelTable from "./DetailsParcelTable";
 import DetailsUserTable from "./DetailsUserTable";
@@ -9,29 +7,30 @@ import DetailsTrackingTable from "./DetailsTrackingTable";
 import { ReactComponent as BackIcon } from '../../../assets/icons/back.svg';
 import Status from '../../shared/Status/Status';
 import AppConstants from '../../../constants/AppConstants';
-import { ParcelState } from '../../../contexts/interfaces/parcels.interface';
 import Dropdown from '../../shared/Dropdown/Dropdown';
-import { IActionBase } from '../../../contexts/actions/parcels.action';
 import {ParcelUtil} from "../../../Utils/Parcel/ParcelUtil";
+import {connect} from "react-redux";
+import Parcel from '../../../models/Parcel';
+import { ParcelState } from '../../../redux/states/parcel/reducers';
+import { AppState } from '../../../redux/rootReducer';
 
 const statuses = AppConstants.parcelStatusOptions.filter(status => status.label !== AppConstants.exceptionStatusName);
 
 interface ParcelDetailsProps {
     match: any;
+    parcels: Parcel[];
 }
 
-const ParcelDetails = ({match} : ParcelDetailsProps) => {
+const ParcelDetails = ({match, parcels} : ParcelDetailsProps) => {
     const [statusFilterTerm, setStatusFilterTerm] = useState("");
     const history = useHistory();
     const handleNavigateBack = () => {
         history.goBack();
     }
-    const { params } = match;
-    const [parcelState, dispatch] : [ParcelState, React.Dispatch<IActionBase>]= useContext(parcelContext);
-    
+    const { params } = match;  
  
 
-    const currentParcel = parcelState.parcels.find(p => p.id === parseInt(params.id));
+    const currentParcel = parcels.find(p => p.id === parseInt(params.id));
     const deliveryStage = (currentParcel && currentParcel.parcelTracking.length > 0)
         ? { status: currentParcel.parcelTracking[0].status, userId: currentParcel.parcelTracking[0].userId }
         : '';
@@ -71,4 +70,15 @@ const ParcelDetails = ({match} : ParcelDetailsProps) => {
         : null
 }
 
-export default withRouter(ParcelDetails);
+function mapStateToProps(appState: AppState) {
+    return {
+      error: appState.parcel.error,
+      parcels: appState.parcel.parcels,
+      cities: appState.parcel.cities,
+      searching: appState.parcel.searching
+    }
+}
+
+  
+export default withRouter(connect(mapStateToProps)(ParcelDetails));
+  

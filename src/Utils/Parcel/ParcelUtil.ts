@@ -1,5 +1,4 @@
 import AppConstants from "../../constants/AppConstants";
-import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import Parcel from "../../models/Parcel";
 import ParcelTracking from "../../models/ParcelTracking";
 import { CollectionUtil } from "../Common/CollectionsUtil";
@@ -18,15 +17,14 @@ export class ParcelUtil {
 
   //sort parcelTracking by their updatedDate
   static sortParcelTracking(parcelTracking: ParcelTracking[]) {
-    return parcelTracking
-      ? parcelTracking.sort(ParcelUtil.compareParcelTracking)
-      : parcelTracking;
+    return parcelTracking ? parcelTracking.sort(ParcelUtil.compareParcelTracking) : parcelTracking;
   }
 
   static parcelsEqual(a: Parcel, b: Parcel): boolean {
     return (
       a.customerId === b.customerId &&
-      a.startDate && new Date(a.startDate).toDateString() === new Date(b.startDate).toDateString() &&
+      a.startDate &&
+      new Date(a.startDate).toDateString() === new Date(b.startDate).toDateString() &&
       JSON.stringify(a.startTime) === JSON.stringify(b.startTime)
     );
   }
@@ -54,13 +52,13 @@ export class ParcelUtil {
   }
 
   static getParcelsCitiesDistinct(parcels: Parcel[]): string[] {
-    const cities = new Set(parcels.map(parcel => parcel.city));
+    const cities = new Set(parcels.map((parcel) => parcel.city));
     return [...cities].sort();
   }
 
   static prepareOneParcelForDisplay(parcel: Parcel): Parcel {
     ParcelUtil.sortParcelTracking(parcel.parcelTracking);
-    parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
+    parcel.userName = parcel.user ? parcel.user.firstName + " " + parcel.user?.lastName : "";
     return parcel;
   }
 
@@ -80,16 +78,16 @@ export class ParcelUtil {
     switch (status) {
       case "ready":
       case "assigned": {
-        return parcelStatusesValues.READY;
+        return AppConstants.readyStatusName;
       }
       case "delivered": {
-        return parcelStatusesValues.DELIVERED;
+        return AppConstants.deliveredStatusName;
       }
       case "distribution": {
-        return parcelStatusesValues.DELIVERING;
+        return AppConstants.deliveringStatusName;
       }
       default: {
-        return parcelStatusesValues.READY;
+        return AppConstants.readyStatusName;
       }
     }
   }
@@ -107,6 +105,6 @@ export class ParcelUtil {
     return {
       ...parcel,
       parcelTracking: [],
-    }
+    };
   }
 }

@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
-import { addParcels, assignUserToParcels, searchParcels, removeParcel } from "../../contexts/actions/parcels.action";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
-import { parcelContext } from "../../contexts/parcelContext";
 import { userContext } from "../../contexts/userContext";
 import AppConstants from "../../constants/AppConstants";
 import logger from "../../Utils/logger";
@@ -13,10 +11,12 @@ import UsersModal from "../Users/UsersList/UsersModal";
 import UsersList from "../Users/UsersList/UsersList";
 import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
 import './Parcels.scss';
+import * as parcelActions from "../../redux/states/parcel/actions";
+import {  connect } from 'react-redux';
+import {bindActionCreators } from "redux";
 
 const MINUTE = 60000;
-const Parcels = () => {
-  const [parcelState, dispatch] = useContext(parcelContext);
+const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [userExtendedData] = useContext(userContext);
 
   const statuses = AppConstants.parcelStatusOptions;
@@ -36,14 +36,13 @@ const Parcels = () => {
   const [deleteParcelText, setDeleteParcelText] = useState("");
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
 
-
   useEffect(() => {
-    dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
+    actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm});
     const timer = setInterval(() => {
-        dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
+      actions.reloadParcels();
     }, MINUTE);
     return () => { clearInterval(timer) };
-  }, [cityFilterTerm, dispatch, nameSearchTerm, statusFilterTerm]);
+  }, [actions, cityFilterTerm, nameSearchTerm, statusFilterTerm]);
 
  
   useEffect(() => {
@@ -62,7 +61,7 @@ const Parcels = () => {
   }, [deleteEnalbed])
 
   const handleDelete = () => {
-    dispatch(removeParcel(deleteParcelId));
+    actions.removeParcel(deleteParcelId);
     setDeleteParcelId("");
   }
 
@@ -80,7 +79,7 @@ const Parcels = () => {
   }
 
   const associateUserToOneParcel = (userId, parcelId) => {
-    const parcel = { ...parcelState.parcels.find(p => p.id === parcelId) };
+    const parcel = { ...parcels.find(p => p.id === parcelId) };
     parcel.currentUserId = userId;
     parcel.user = userExtendedData.users.find(u => u.id === userId);
     return parcel;
@@ -95,7 +94,7 @@ const Parcels = () => {
       parcelsToAssociate.forEach(id => {
         parcels.push(associateUserToOneParcel(uId, parseInt(id)));
       });
-      dispatch(assignUserToParcels(parcels));
+      actions.assignUserToParcels(parcels);
     }
   }
 
@@ -124,7 +123,7 @@ const Parcels = () => {
       const files = e.target.files;
       if (files) {
         const data = await ParcelsImporterService.ImportFromExcel(files[0]);
-        dispatch(addParcels(data));
+        actions.addParcels(data);
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
@@ -136,7 +135,7 @@ const Parcels = () => {
   const cellButtonClicked = (idStr, name) => {
     logger.log('[Parcels] cellButtonClicked on ', idStr, name);
     const id = parseInt(idStr);
-    const parcel = parcelState.parcels.find(prcl => prcl.id === id);
+    const parcel = parcels.find(prcl => prcl.id === id);
     if (!parcel) {
       logger.error('[Parcels] cellButtonClicked parcel with id ', id, '  not found');
     }
@@ -172,7 +171,7 @@ const Parcels = () => {
 
   const options = [
     { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true, showOptionAll: false },
-    { title: AppConstants.cityUIName, name: "cities", values: [...parcelState.cities].map(city => ({label: city, value: city})), filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
+    { title: AppConstants.cityUIName, name: "cities", values: cities.map(city => ({label: city, value: city})), filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
   ];
  
   const buildToolBar = () => {
@@ -202,7 +201,7 @@ const Parcels = () => {
       </UsersModal>
     }
       <Table
-        data={parcelState.parcels}
+        data={parcels}
         tableColumns={tableColumns}
         handleCellButtonClick={cellButtonClicked}
         rowClick={handleRowClick}
@@ -212,8 +211,8 @@ const Parcels = () => {
         selectedRowsState={selectedRowsState}
         selectedRowIdentifierKey="id"
         pointerOnHover
-        noDataComponent={parcelState.error?.length > 0 ? AppConstants.serverErrorMessage : noDataMessage}
-        loading={parcelState.searching && !parcelState.error?.length > 0}
+        noDataComponent={error?.length > 0 ? AppConstants.serverErrorMessage : noDataMessage}
+        loading={searching && !error?.length > 0}
       />
       {showComfirmDeleteDialog &&
         <ConfirmDeleteParcel isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
@@ -223,5 +222,18 @@ const Parcels = () => {
   );
 }
 
+const mapStateToProps =(appState) => {
+  return {
+    error: appState.parcel.error,
+    parcels: appState.parcel.parcels,
+    cities: appState.parcel.cities,
+    searching: appState.parcel.searching
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return { actions: bindActionCreators(parcelActions, dispatch) };
+}
+
 // export default Parcels;
-export default withRouter(Parcels);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Parcels));

@@ -127,7 +127,7 @@ class HttpService {
   }
 
   // TODO: need to send all as bulk to server, for now keeping like this
-  async addParcels(parcels: Parcel[]) {
+  async addParcels(parcels: Parcel[]): Promise<Parcel[]> {
     const promises: any[] = [];
     if (parcels?.length > 0) {
       parcels.forEach((parcel) => {
