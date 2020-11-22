@@ -13,7 +13,7 @@ const Table = (props) => {
   const isRowSelectedByState = (row) => {
     const key = props.selectedRowIdentifierKey;
     const selectedRowsArray = props.selectedRowsState.selectedRows;
-    const isCurrentRowSelected = !!selectedRowsArray.find((selectedRow)=> {
+    const isCurrentRowSelected = selectedRowsArray.some((selectedRow)=> {
       return row[key] === selectedRow[key]
     });
     return isCurrentRowSelected;
@@ -28,9 +28,11 @@ const Table = (props) => {
 
   return (
     <DataTable
-      data={props.data}
-      keyField='no'
-      columns={props.tableColumns(props.handleCellButtonClick)}
+    data={props.data}
+    keyField='no'
+    columns={props.tableColumns(props.handleCellButtonClick)}
+      
+      pagination
       onSelectedRowsChange={handleChange}
       selectableRows={props.selectableRows}
       selectableRowSelected={ props.selectedRowsState ? isRowSelectedByState : null}

@@ -28,7 +28,7 @@ class ParcelUserComponent extends Component<ParcelUserComponentProps> {
     }
   
     render() {
-      const status = ParcelUtil.parcelUIStatusValueToEnum(this.props.status);
+      const status = this.props.status;
       return (
         <div className="name_container" id={`${this.props.itemId}_uuid:${uuidv4()}`}>
           <span className="name_text"> {this.props.name} </span>
@@ -41,7 +41,7 @@ class ParcelUserComponent extends Component<ParcelUserComponentProps> {
                   icon={<AssignIcon/>}
               />
           }
-          {(true || (status ===  'ready' || status === 'exception')) && 
+          {status ===  'ready' &&
             <ActionButton
               name="delete"
               action={this.onButtonClicked}

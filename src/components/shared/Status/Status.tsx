@@ -1,15 +1,15 @@
 import React from 'react';
 import './Status.scss';
-import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
 export interface StatusProps {
-    status: string;
+    label: string;
+    value: string;
   }
 
 const Status: React.FC<StatusProps> = (props) => {
 
   return (
-    <div className={`ffh-status ${ParcelUtil.parcelUIStatusValueToEnum(props.status)}`}>
-        {props.status}
+    <div className={`ffh-status ${props.value}`}>
+        {props.label}
     </div>
   );
 }

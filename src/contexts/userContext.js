@@ -2,18 +2,20 @@ import React, { createContext, useReducer, useEffect, useState } from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { userReducer } from "../reducers/userReducer";
-import { defaultUserExtendedData } from "./interfaces/users.interface";
-import { ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS, SEARCH_USERS, UPDATE_USERS_AREAS, 
-         loadUsers, updateUsersAreas } from "./actions/users.action";
+import { defaultUserState } from "./interfaces/users.interface";
+import {
+  ADD_USER, ADD_USERS, EDIT_USER, REMOVE_USER, LOAD_USERS, SEARCH_USERS, UPDATE_USERS_AREAS,
+  loadUsers, updateUsersAreas
+} from "./actions/users.action";
 // import { UserUtil }  from '../Utils/User/UserUtil';
-export const userContext = createContext(defaultUserExtendedData);
+export const userContext = createContext(defaultUserState);
 
 const UserContextProvider = props => {
-  const [userExtendedData, dispatch] = useReducer(userReducer, defaultUserExtendedData);
+  const [userExtendedData, dispatch] = useReducer(userReducer, defaultUserState);
   const [searching, setSearching] = useState(false);
   const [refreshTime, setRefreshTime] = useState(0);
 
-  
+
   async function getAllUsersfromDB() {
     logger.log('[UserContextProvider] getAllUsersfromDB ');
     if (searching) {
@@ -23,7 +25,7 @@ const UserContextProvider = props => {
     const response = await httpService.searchUsers(
       userExtendedData.searchParams.dayFilter,
       userExtendedData.searchParams.cityFilter,
-      userExtendedData.searchParams.nameFilter );
+      userExtendedData.searchParams.nameFilter);
     logger.log('[UserContextProvider] getAllUsersfromDB dispatching loadUsers  #', response.length);
     dispatch(loadUsers(response));
 
@@ -31,7 +33,7 @@ const UserContextProvider = props => {
     const areas = (await httpService.getUsersAreasDistinct()).sort();
     logger.log('[UserContextProvider] getAllUsersfromDB dispatching updateUsersAreas  #', areas.length);
     dispatch(updateUsersAreas(areas));
-    
+
     setSearching(false);
     setRefreshTime(refreshTime + 1);
   }
@@ -43,7 +45,7 @@ const UserContextProvider = props => {
 
   useEffect(() => {
     const timer = setTimeout(getAllUsersfromDB, 30000);
-    return () => { clearTimeout(timer)}; // component did unnmount
+    return () => { clearTimeout(timer) }; // component did unnmount
   }, [refreshTime]);
 
 
@@ -57,42 +59,42 @@ const UserContextProvider = props => {
       }
       switch (userExtendedData.action.type) {
         case ADD_USER: {
-          const response = await httpService.createUser( userExtendedData.action.user );
-          logger.log("[UserContextProvider] updateUsersInDB ADD_USER", response );
+          const response = await httpService.createUser(userExtendedData.action.user);
+          logger.log("[UserContextProvider] updateUsersInDB ADD_USER", response);
           const getResponse = await getAllUsersfromDB();
-          logger.log("[UserContextProvider] updateUsersInDB ADD_USER getAllUsersfromDB", getResponse );
+          logger.log("[UserContextProvider] updateUsersInDB ADD_USER getAllUsersfromDB", getResponse);
           break;
         }
         case ADD_USERS: {
-          const response = await httpService.addUsers( userExtendedData.action.users );
-          logger.log( "[UserContextProvider] updateUsersInDB ADD_USERS", response);
+          const response = await httpService.addUsers(userExtendedData.action.users);
+          logger.log("[UserContextProvider] updateUsersInDB ADD_USERS", response);
           const getResponse = await getAllUsersfromDB();
-          logger.log("[UserContextProvider] updateUsersInDB ADD_USERS getAllUsersfromDB", getResponse );
+          logger.log("[UserContextProvider] updateUsersInDB ADD_USERS getAllUsersfromDB", getResponse);
           break;
         }
         case EDIT_USER: {
-          const response = await httpService.updateUser( userExtendedData.action.user );
-          logger.log( "[UserContextProvider] updateUsersInDB EDIT_USER", response);
+          const response = await httpService.updateUser(userExtendedData.action.user);
+          logger.log("[UserContextProvider] updateUsersInDB EDIT_USER", response);
           const getResponse = await getAllUsersfromDB();
-          logger.log("[UserContextProvider] updateUsersInDB EDIT_USER getAllUsersfromDB", getResponse );
+          logger.log("[UserContextProvider] updateUsersInDB EDIT_USER getAllUsersfromDB", getResponse);
           break;
         }
         case REMOVE_USER: {
-          const response = await httpService.deleteUser( userExtendedData.action.userId );
-          logger.log( "[UserContextProvider] updateUsersInDB REMOVE_USER",response );
+          const response = await httpService.deleteUser(userExtendedData.action.userId);
+          logger.log("[UserContextProvider] updateUsersInDB REMOVE_USER", response);
           const getResponse = await getAllUsersfromDB();
-          logger.log("[UserContextProvider] updateUsersInDB REMOVE_USER getAllUsersfromDB", getResponse );
+          logger.log("[UserContextProvider] updateUsersInDB REMOVE_USER getAllUsersfromDB", getResponse);
           break;
         }
-        case SEARCH_USERS:  {
+        case SEARCH_USERS: {
           const getResponse = await getAllUsersfromDB();
-          logger.log("[UserContextProvider] updateUsersInDB SEARCH_USERS getAllUsersfromDB", getResponse );
+          logger.log("[UserContextProvider] updateUsersInDB SEARCH_USERS getAllUsersfromDB", getResponse);
           break;
         }
         case UPDATE_USERS_AREAS:
         case LOAD_USERS:
         default:
-          logger.log("[UserContextProvider] updateUsersInDB no action", userExtendedData.action.type );
+          logger.log("[UserContextProvider] updateUsersInDB no action", userExtendedData.action.type);
           break;
       }
     }

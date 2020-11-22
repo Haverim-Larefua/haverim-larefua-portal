@@ -8,18 +8,20 @@ import tableColumns from "./tableColumns";
 import { parcelContext } from "../../contexts/parcelContext";
 import { userContext } from "../../contexts/userContext";
 import AppConstants from "../../constants/AppConstants";
-import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
 import logger from "../../Utils/logger";
 import UsersModal from "../Users/UsersList/UsersModal";
 import UsersList from "../Users/UsersList/UsersList";
 import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
 import './Parcels.scss';
 
+const MINUTE = 60000;
 const Parcels = () => {
-  const [parcelExtendedData, dispatch] = useContext(parcelContext);
+  const [parcelState, dispatch] = useContext(parcelContext);
   const [userExtendedData] = useContext(userContext);
 
-  const [statusFilterTerm, setStatusFilterTerm] = useState("");
+  const statuses = AppConstants.parcelStatusOptions;
+
+  const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
@@ -37,8 +39,13 @@ const Parcels = () => {
 
   useEffect(() => {
     dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
-  }, [statusFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
+    const timer = setInterval(() => {
+        dispatch(searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
+    }, MINUTE);
+    return () => { clearInterval(timer) };
+  }, [cityFilterTerm, dispatch, nameSearchTerm, statusFilterTerm]);
 
+ 
   useEffect(() => {
     function handleDeleteParcel() {
       if (deleteParcelId && deleteParcelId !== "") {
@@ -73,7 +80,7 @@ const Parcels = () => {
   }
 
   const associateUserToOneParcel = (userId, parcelId) => {
-    const parcel = { ...parcelExtendedData.parcels.find(p => p.id === parcelId) };
+    const parcel = { ...parcelState.parcels.find(p => p.id === parcelId) };
     parcel.currentUserId = userId;
     parcel.user = userExtendedData.users.find(u => u.id === userId);
     return parcel;
@@ -97,14 +104,6 @@ const Parcels = () => {
     hideUsersModal();
     associateUserToListOfParcels(parcelsToAssociate, selectedUser);
   }
-
-  const statuses = [...Object.values(parcelStatusesValues)];
-
-  // ToolbarOptions
-  const options = [
-    { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true },
-    { title: AppConstants.cityUIName,   name: "cities", values: [AppConstants.all, ...parcelExtendedData.cities], filter: setCityFilterTerm }
-  ];
 
   //selectedRowsState = { allSelected, selectedCount, selectedRows }
   const onSelectedRowsChanged = selectedRowsState => {
@@ -137,7 +136,7 @@ const Parcels = () => {
   const cellButtonClicked = (idStr, name) => {
     logger.log('[Parcels] cellButtonClicked on ', idStr, name);
     const id = parseInt(idStr);
-    const parcel = parcelExtendedData.parcels.find(prcl => prcl.id === id);
+    const parcel = parcelState.parcels.find(prcl => prcl.id === id);
     if (!parcel) {
       logger.error('[Parcels] cellButtonClicked parcel with id ', id, '  not found');
     }
@@ -171,6 +170,11 @@ const Parcels = () => {
     setDeleteParcelId('');
   };
 
+  const options = [
+    { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true, showOptionAll: false },
+    { title: AppConstants.cityUIName, name: "cities", values: [...parcelState.cities].map(city => ({label: city, value: city})), filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
+  ];
+ 
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
     const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
@@ -198,7 +202,7 @@ const Parcels = () => {
       </UsersModal>
     }
       <Table
-        data={parcelExtendedData.parcels}
+        data={parcelState.parcels}
         tableColumns={tableColumns}
         handleCellButtonClick={cellButtonClicked}
         rowClick={handleRowClick}
@@ -208,8 +212,8 @@ const Parcels = () => {
         selectedRowsState={selectedRowsState}
         selectedRowIdentifierKey="id"
         pointerOnHover
-        noDataComponent={parcelExtendedData.error ? AppConstants.serverErrorMessage : noDataMessage}
-        loading={!parcelExtendedData.parcels && !parcelExtendedData.error}
+        noDataComponent={parcelState.error?.length > 0 ? AppConstants.serverErrorMessage : noDataMessage}
+        loading={parcelState.searching && !parcelState.error?.length > 0}
       />
       {showComfirmDeleteDialog &&
         <ConfirmDeleteParcel isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}

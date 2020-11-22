@@ -7,6 +7,12 @@
     height: 120px;
     padding: 0 5px;
     width: 100%;
+
+    
+.ffh-dropdown, .ffh-select-filter {
+    margin-left: 25px;
+    width: 160px;
+}
 }
 
 .ffh-toolbar__title {
@@ -57,10 +63,6 @@
     margin-left: 10px;
 }
 
-.ffh-dropdown {
-    margin-left: 25px;
-    width: 160px;
-}
 
 .ffh-toolbar__action {
     @extend %ffh-toolbar-button;

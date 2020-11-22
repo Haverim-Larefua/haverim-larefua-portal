@@ -1,4 +1,5 @@
-import Parcel, { ISearchParcelsParams } from "../interfaces/parcels.interface";
+import Parcel from "../../models/Parcel";
+import { ISearchParcelsParams } from "../interfaces/parcels.interface";
 
 export interface IActionBase {
   type: string;
@@ -16,15 +17,15 @@ export const ASSIGN_USER_TO_PARCELS: string = "ASSIGN_USER_TO_PARCELS";
 export const PARCELS_ERROR: string = "PARCELS_ERROR";
 
 export function loadParcels(parcels: Parcel[]): ILoadparcelsActionType {
-    return {type: LOAD_PARCELS, parcels };
+  return { type: LOAD_PARCELS, parcels };
 }
 
 export function searchParcels(params: ISearchParcelsParams): ISearchParcelsActionType {
-  return {type: SEARCH_PARCELS, searchParams: params };
+  return { type: SEARCH_PARCELS, searchParams: params };
 }
 
 export function addParcel(parcel: Parcel): IAddparcelActionType {
-    return { type: ADD_PARCEL, parcel };
+  return { type: ADD_PARCEL, parcel };
 }
 
 export function addParcels(parcels: Parcel[]): IAddparcelsActionType {
@@ -32,27 +33,27 @@ export function addParcels(parcels: Parcel[]): IAddparcelsActionType {
 }
 
 export function editParcel(parcel: Parcel): IEditparcelActionType {
-    return { type: EDIT_PARCEL, parcel };
+  return { type: EDIT_PARCEL, parcel };
 }
 
 export function removeParcel(parcelId: number): IRemoveparcelActionType {
-    return { type: REMOVE_PARCEL, parcelId };
+  return { type: REMOVE_PARCEL, parcelId };
 }
 
-export function updateParcelsCities(cities: string[]) : IUpdateparcelCitiesType {
-   return {type: UPDATE_PARCEL_CITIES, cities};
+export function updateParcelsCities(cities: string[]): IUpdateparcelCitiesType {
+  return { type: UPDATE_PARCEL_CITIES, cities };
 }
 
 export function assignUserToParcels(parcels: Parcel[]): IAssigUserToParcelActionType {
-  return {type: ASSIGN_USER_TO_PARCELS, parcels};
+  return { type: ASSIGN_USER_TO_PARCELS, parcels };
 }
 
 export function parcelsError(error: any): IParcelsError {
-  return {type: PARCELS_ERROR, error};
+  return { type: PARCELS_ERROR, error };
 }
 
-export interface ILoadparcelsActionType { type: string , parcels: Parcel[]};
-export interface ISearchParcelsActionType { type: string , searchParams: ISearchParcelsParams};
+export interface ILoadparcelsActionType { type: string, parcels: Parcel[] };
+export interface ISearchParcelsActionType { type: string, searchParams: ISearchParcelsParams };
 export interface IAddparcelActionType { type: string, parcel: Parcel };
 export interface IAddparcelsActionType { type: string, parcels: Parcel[] };
 export interface IEditparcelActionType { type: string, parcel: Parcel };

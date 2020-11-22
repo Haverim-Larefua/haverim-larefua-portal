@@ -5,14 +5,20 @@ import UploadButton from '../UploadButton/UploadButton';
 import { ReactComponent as AddUserIcon } from '../../../assets/icons/add-volunteer.svg';
 // import logger from '../../../Utils/logger';
 import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
+import {debounce} from 'lodash';
+import SelectFilter from '../SelectFilter/SelectFilter';
+import Option from "../../../models/Option";
 
 export interface ToolbarOption {
+  searchable?: boolean;
+  selectedValue?:string;
   title: string;
   name: string;
-  values: string[];
+  values: Option<any>[];
   filter: (val:string) => {};
   bullets?: boolean;
   isDisabled?: boolean;
+  showOptionAll?: boolean
 }
 export interface IToolbarProps {
   title: string;
@@ -29,17 +35,10 @@ export interface IToolbarState {
 }
 
 class  Toolbar extends Component<IToolbarProps, IToolbarState> {
-
-  state = {
-    searchInputTerm: "",
-  };
-
-  handleKeyDown = (e: any) => {
-    this.setState({ searchInputTerm: e.target.value });
-    if (e.key === "Enter") {
-      this.props.search(e.target.value);
-    }
-  };
+  handleSearch = debounce(value => {
+      this.props.search(value);
+    }, 800);
+  
 
   render() {
     let button;
@@ -54,7 +53,7 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
       searchFragment = (
           <div className="ffh-toolbar__search">
             <input className="ffh-toolbar__search-input" type="text" placeholder="חיפוש"
-                onKeyDown={this.handleKeyDown}/>
+                onChange={(event) => this.handleSearch(event.target.value)}/>
 
             <SearchIcon className="ffh-select-filter__input-icon" />
 
@@ -72,7 +71,9 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
                     return(
                         <Fragment key={opt.title}>
                           <label className="ffh-toolbar__label">{opt.title}</label>
-                          <Dropdown options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}> </Dropdown>
+                          {opt.searchable ?
+                          <SelectFilter showOptionAll={opt.showOptionAll}  onSelect={opt.filter} items={[...opt.values]} selected={opt.selectedValue} height='260px'/> :
+                          <Dropdown showOptionAll={opt.showOptionAll} options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}/>}
                         </Fragment>)
                     })
                   }

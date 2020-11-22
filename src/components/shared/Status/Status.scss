@@ -11,7 +11,7 @@
     justify-content: center;
     width: 120px;
 
-    &.ready {
+    &.ready, &.assigned {
         @extend %status-ready;
     }
 

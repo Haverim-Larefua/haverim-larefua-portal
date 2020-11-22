@@ -1,6 +1,6 @@
 import { IActionBase, loadParcels } from "../actions/parcels.action";
-import User from "./users.interface";
 import AppConstants from "../../constants/AppConstants";
+import Parcel from "../../models/Parcel";
 
 export const parcelStatusesValues = Object.freeze({
   READY: AppConstants.readyStatusName,
@@ -14,28 +14,22 @@ export interface ISearchParcelsParams {
   nameFilter: string
 }
 
-export class ParcelTracking {
-  statusDate: Date = new Date();
-  status: string = ""; //parcelStatusesValues
-  userId: number | undefined = undefined;
-  user: User | undefined = undefined;
-  comments: string = "";
-  signature: string = ""; // base 64 of an image
-}
-
-export const defaultparcelExtendedData = {
+export const defaultParcelsState: ParcelState = {
   parcels: [],
   action: loadParcels([]),
-  searchParams: {statusFilter: AppConstants.readyStatusName, cityFilter: "", nameFilter: ""},
+  searchParams: { statusFilter: AppConstants.readyStatusName, cityFilter: "", nameFilter: "" },
   cities: [],
-  error: null
+  error: null,
+  searching: true
 };
 
-export class ParcelExtendedData {
+export class ParcelState {
   parcels: Parcel[] = []; // current in-memory parcels
   action: IActionBase; // last action performed on in-memory parcels that needs to be performed on DB as well
-  searchParams: ISearchParcelsParams = {statusFilter: "", cityFilter: "", nameFilter: ""};
-  cities: string[] = [] // all (distinct) cities declared in all parcels (in DB)
+  searchParams: ISearchParcelsParams = { statusFilter: "", cityFilter: "", nameFilter: "" };
+  cities: string[] = []; // all (distinct) cities declared in all parcels (in DB)
+  error?: any;
+  searching: boolean
 
   constructor(parcels: Parcel[], action: IActionBase, cities: string[]) {
     this.parcels = [...parcels];
@@ -44,47 +38,10 @@ export class ParcelExtendedData {
   }
 }
 
-export default class Parcel {
-  id: number | undefined;
-  identity: number; // identification of customer
-  customerName: string; // DB: customer name
-  address: string;
-  city: string;
-  phone: string;
-  comments: string;
   startDate: Date;
   startTime: Date;
-  parcelTrackingStatus: string; // parcelStatusesValues
-  signature: string; // base64
-  lastUpdateDate: Date;
-  currentUserId: number | undefined;
-  user: User | undefined;
-  userName: string | undefined;
-  parcelTracking: ParcelTracking[] = [];
-
-  constructor(
-    identity: number,
-    customerName: string,
-    address: string,
-    city: string,
-    phone: string,
-    comments: string,
-    parcelTrackingStatus: string,
-    lastUpdateDate: Date,
     signature: string,
     startDate: Date,
     startTime: Date,
-  ) {
-    this.identity = identity;
-    this.customerName = customerName;
-    this.address = address;
-    this.city = city;
-    this.comments = comments;
-    this.parcelTrackingStatus = parcelTrackingStatus;
-    this.signature = signature;
-    this.lastUpdateDate = lastUpdateDate;
-    this.phone = phone;
     this.startDate = startDate;
     this.startTime = startTime;
-  }
-}

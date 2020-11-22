@@ -1,80 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Dropdown.scss';
+import Option from "../../../models/Option";
 import AppConstants from '../../../constants/AppConstants';
-import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
-
 
 export interface IDropdownProps {
-  options: string[];
+  options: Option<any>[];
   name: string;
-  filter?: (val: string) => {};
+  filter?: (val: string) => void;
   onSelection?: (val: string) => {};
   bullets?: boolean;
   isDisabled?: boolean;
+  showOptionAll? : boolean;
 }
 
-export interface IDropdownState {
-  displayMenu: boolean;
-  [key: string]: any;
-}
-
-class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
-
-  constructor(props: IDropdownProps){
-    super(props);
-
-    this.state = {
-       displayMenu: false,
-       [this.props.name]: this.props.options[0]
-     };
-
-    this.showDropdownMenu = this.showDropdownMenu.bind(this);
-    this.toggleDropDown = this.toggleDropDown.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  };
-
-  toggleDropDown() {
-    this.setState(prevState=>({
-        displayMenu: !prevState.displayMenu
-    }))
+export default function Dropdown({options,onSelection, filter, isDisabled, name, bullets, showOptionAll = true }: IDropdownProps) {
+  const [displayMenu, setDisplayMenu] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+  
+  const toggleDropDown = () => {
+    setDisplayMenu(prevState=>!prevState);
   }
 
-  showDropdownMenu(event: any) {
-    event.preventDefault();
-    this.setState({ displayMenu: true });
+  const handleChange = (option: Option<any>) => {
+    onSelection && onSelection(option.value);
+    setSelectedOption(option);
+    filter && filter(option.value);
+    toggleDropDown();
   }
 
-  handleChange(event: any) {
-    const {name, value} = event.target;
-    this.props.onSelection && this.props.onSelection(event);
-    let newValue: string;
-    value === AppConstants.all ? newValue = '' : newValue = value;
-    this.setState({[name]: newValue});
-    this.props.filter && this.props.filter(newValue);
-    this.toggleDropDown();
-  }
+  const calculatedOptions = showOptionAll ? [{label: AppConstants.all, value: ""}, ...options] : [...options];
 
-  render() {
     return (
-        <div  className={`ffh-dropdown ${this.props.isDisabled ? 'disabled' : ''}`} >
-            { this.state.displayMenu ? (<div  className="ffh-dropdown__screen" onClick={this.toggleDropDown}></div>) : ''}
-         <div className="ffh-dropdown__button" onClick={this.toggleDropDown}>{this.state[this.props.name] ? this.state[this.props.name] : AppConstants.all}</div>
-          { this.state.displayMenu ? (
+        <div  className={`ffh-dropdown ${isDisabled ? 'disabled' : ''}`} >
+            { displayMenu ? (<div  className="ffh-dropdown__screen" onClick={toggleDropDown}></div>) : ''}
+         <div className="ffh-dropdown__button" onClick={toggleDropDown}>{selectedOption.label}</div>
+          { displayMenu ? (
           <div className="ffh-dropdown__items-container">
-              {this.props.options.map(item => {
+              {calculatedOptions.map(item => {
               return (
-              <label className="ffh-dropdown__item" key={item}>
+              <label className="ffh-dropdown__item" key={item.value}>
                  <input
                   type="radio"
-                  name={this.props.name}
-                  value={item}
-                  checked={this.state[this.props.name] === item}
-                  onChange={this.handleChange}
+                  name={name}
+                  value={item.label}
+                  checked={selectedOption.value === item.value}
+                  onChange={() =>handleChange(item)}
 
                  />
               <div className="ffh-dropdown__item-title">
-                {this.props.bullets && <span className={`ffh-dropdown__pointer ${ParcelUtil.parcelUIStatusValueToEnum(item)}`}></span>}
-                {item}
+                {bullets && <span className={`ffh-dropdown__pointer ${item.value}`}></span>}
+                {item.label}
                 </div>
              </label>)
             })}
@@ -85,7 +60,5 @@ class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
        </div>
 
     );
-  }
-}
 
-export default Dropdown;
+}

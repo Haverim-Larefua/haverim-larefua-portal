@@ -1,4 +1,5 @@
-import User, { ISearchUsersParams } from '../interfaces/users.interface';
+import User from '../../models/User';
+import { ISearchUsersParams } from '../interfaces/users.interface';
 
 export interface IActionBase {
   type: string;
@@ -14,45 +15,45 @@ export const SEARCH_USERS: string = "SEARCH_USERS";
 export const UPDATE_USERS_AREAS: string = "UPDATE_USER_AREAS"; // first load/edit/remove/add -> recalc areas
 
 export function loadUsers(users: User[]): ILoadUsersActionType {
-    return {type: LOAD_USERS, users };
+  return { type: LOAD_USERS, users };
 }
 
 export function searchUsers(params: ISearchUsersParams): ISearchUsersActionType {
-  return {type: SEARCH_USERS, searchParams: params };
+  return { type: SEARCH_USERS, searchParams: params };
 }
 
 export function addUser(tmpuser: User): IAddUserActionType {
-    return { type: ADD_USER, user: tmpuser }; 
+  return { type: ADD_USER, user: tmpuser };
 }
 
 export function addUsers(tmpusers: User[]): IAddUsersActionType {
-  return { type: ADD_USERS, users: tmpusers }; 
+  return { type: ADD_USERS, users: tmpusers };
 }
 
 export function editUser(tmpuser: User): IEditUserActionType {
-    return { type: EDIT_USER, user: tmpuser };
+  return { type: EDIT_USER, user: tmpuser };
 }
 
 export function removeUser(userId: number): IRemoveUserActionType {
-    return { type: REMOVE_USER, userId: userId };
+  return { type: REMOVE_USER, userId: userId };
 }
 
-export function updateUsersAreas(areas: string[]) : IUpdateUserAreaActionType {
-  return {type: UPDATE_USERS_AREAS, areas};
+export function updateUsersAreas(areas: string[]): IUpdateUserAreaActionType {
+  return { type: UPDATE_USERS_AREAS, areas };
 }
-interface ILoadUsersActionType { type: string , users: User[]};
-interface ISearchUsersActionType { type: string , searchParams: ISearchUsersParams};
+interface ILoadUsersActionType { type: string, users: User[] };
+interface ISearchUsersActionType { type: string, searchParams: ISearchUsersParams };
 interface IAddUserActionType { type: string, user: User };
 interface IAddUsersActionType { type: string, users: User[] };
 interface IEditUserActionType { type: string, user: User };
 interface IRemoveUserActionType { type: string, userId: number };
 interface IUpdateUserAreaActionType { type: string, areas: string[] };
 
-export type UserActions = ILoadUsersActionType | 
-IAddUserActionType | 
-IAddUsersActionType | 
-IEditUserActionType |
-IRemoveUserActionType |
-IUpdateUserAreaActionType;
+export type UserActions = ILoadUsersActionType |
+  IAddUserActionType |
+  IAddUsersActionType |
+  IEditUserActionType |
+  IRemoveUserActionType |
+  IUpdateUserAreaActionType;
 
 

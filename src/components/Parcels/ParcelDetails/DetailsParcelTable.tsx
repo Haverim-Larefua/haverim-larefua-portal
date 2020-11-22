@@ -11,7 +11,7 @@ export interface DetailsParcelTableProps {
     comments: string;
     id: number;
     phone: string;
-    lastUpdateDate: string;
+    lastUpdateDate: Date;
     startDate: string;
     startTime: string;
   }
@@ -22,7 +22,7 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
         <div className="ffh-details-cell creation-date">
             <div className="ffh-details-cell__label">תאריך יצירה</div>
             <div className="ffh-details-cell__value">
-            {`${formatDate(props.currentParcel.lastUpdateDate).weekday} - ${formatDate(props.currentParcel.lastUpdateDate).date}` }
+            {`${formatDate(props.currentParcel.lastUpdateDate.toString()).weekday} - ${formatDate(props.currentParcel.lastUpdateDate.toString()).date}` }
             </div>
         </div>
         <div className="ffh-details-cell id">

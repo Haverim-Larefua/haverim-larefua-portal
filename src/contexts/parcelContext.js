@@ -1,117 +1,67 @@
-import React, { createContext, useReducer, useEffect, useState } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 import httpService from "../services/http";
 import logger from "../Utils/logger";
 import { parcelReducer } from "../reducers/parcelReducer";
 import { errorReducer } from "../reducers/errorReducer";
 import {
-    ADD_PARCEL,
-    ADD_PARCELS,
-    EDIT_PARCEL,
-    REMOVE_PARCEL,
-    LOAD_PARCELS,
-    SEARCH_PARCELS,
-    ASSIGN_USER_TO_PARCELS,
-    UPDATE_PARCEL_CITIES,
-    PARCELS_ERROR,
-    loadParcels,
-    updateParcelsCities,
-    parcelsError,
+  ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS,
+  SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS, UPDATE_PARCEL_CITIES, PARCELS_ERROR,
+  loadParcels, updateParcelsCities, parcelsError
 } from "../contexts/actions/parcels.action";
-import { defaultparcelExtendedData } from "./interfaces/parcels.interface";
+import { defaultParcelsState } from "./interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import { addError } from "../contexts/actions/error.action";
 import { SystemError } from "../contexts/interfaces/error.interface";
 import { useToasts } from "react-toast-notifications";
 
-export const parcelContext = createContext(defaultparcelExtendedData);
+export const parcelContext = createContext();
 
-const ParcelContextProvider = (props) => {
-    const [parcelExtendedData, dispatch] = useReducer(
-        parcelReducer,
-        defaultparcelExtendedData
-    );
-    const [refreshTime, setRefreshTime] = useState(0);
-    const [searching, setSearching] = useState(false);
-    const [, dispatchError] = useReducer(errorReducer);
+const getAllparcelsfromDB = async (searchParams, dispatch) => {
     const { addToast } = useToasts();
 
     async function getAllparcelsfromDB() {
-        logger.log("[ParcelContextProvider] getAllparcelsfromDB ");
-        if (searching) {
-            return;
-        }
-        setSearching(true);
+  logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
 
-        try {
-            const response = await httpService.searchParcels(
-                parcelExtendedData.searchParams.statusFilter,
-                parcelExtendedData.searchParams.cityFilter,
-                parcelExtendedData.searchParams.nameFilter
+  try {
+    const [parcels, cityOptions] =
+      await Promise.all([httpService.getParcels(
+        searchParams.statusFilter,
+        searchParams.cityFilter,
+        searchParams.nameFilter),
+      httpService.getParcelsCityOptions()]);
+    dispatch(loadParcels(parcels));
+    dispatch(updateParcelsCities(cityOptions));
             );
-            logger.log(
-                "[ParcelContextProvider] getAllparcelsfromDB response",
-                response
-            );
-            dispatch(loadParcels(response));
+  } catch (e) {
+    logger.log(e);
+    dispatch(parcelsError(e));
+  }
+};
 
-            //need to query all parcels not only the search !
-            const cities = (await httpService.getParcelsCitiesDistinct()).sort();
-            dispatch(updateParcelsCities(cities));
+const ParcelContextProvider = props => {
+  const [parcelState, dispatch] = useReducer(parcelReducer, defaultParcelsState);
+  const [, dispatchError] = useReducer(errorReducer);
 
-            setSearching(false);
-            setRefreshTime(refreshTime + 1);
-        } catch (e) {
-            logger.log(e);
-            setSearching(false);
-            dispatch(parcelsError(e));
-        }
-    }
-
-    //first time call that loads parcels from db
-    useEffect(() => {
-        getAllparcelsfromDB();
-    }, []);
-
-    useEffect(() => {
-        const timer = setTimeout(getAllparcelsfromDB, 30000);
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [refreshTime]);
 
     //on every change to parcels
     useEffect(() => {
         async function updateParcelsInDB() {
-            logger.log(
-                "[ParcelContextProvider] updateParcelsInDB ",
-                parcelExtendedData
-            );
-            if (!parcelExtendedData || !parcelExtendedData.action) {
-                logger.log("[ParcelContextProvider] updateParcelsInDB undefined args");
-                return;
-            }
-            switch (parcelExtendedData.action.type) {
-                case ADD_PARCEL:
-                    {
-                        const response = await httpService.createParcel(
-                            ParcelUtil.prepareParcelForDBUpdate(
-                                parcelExtendedData.action.parcel
-                            )
-                        );
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL ",
-                            response
-                        );
-                        const getResponse = await getAllparcelsfromDB();
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB ADD_PARCEL getAllparcelsfromDB",
-                            getResponse
-                        );
-                        break;
-                    }
-                case ADD_PARCELS:
-                    {
-
+      logger.log("[ParcelContextProvider] updateParcelsInDB ", parcelState);
+      if (!parcelState || !parcelState.action) {
+        logger.log("[ParcelContextProvider] updateParcelsInDB undefined args");
+        return;
+      }
+      switch (parcelState.action.type) {
+        case ADD_PARCEL: {
+          const response = await httpService.createParcel(ParcelUtil.prepareParcelForDBUpdate(parcelState.action.parcel));
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCEL ", response);
+          const getResponse = await getAllparcelsfromDB(parcelState.searchParams, dispatch);
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCEL getAllparcelsfromDB", getResponse);
+          break;
+        }
+        case ADD_PARCELS: {
+          const response = await httpService.addParcels(ParcelUtil.prepareParcelsForDBUpdate(parcelState.action.parcels));
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS ", response);
                         if (parcelExtendedData.action.parcels.length === 0) {
                             const message = `כל החבילות מופיעות במערכת - אין חבילות חדשות בקובץ`;
                             addToast(message, { appearance: "success" });
@@ -133,95 +83,57 @@ const ParcelContextProvider = (props) => {
                             addToast(message, { appearance: "error" });
                         }
                         //TODO when addParcels will be batch operation - can retrieve the result and merge with current instead of retrieving all again
-                        const getResponse = await getAllparcelsfromDB();
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB ADD_PARCELS getAllparcelsfromDB",
-                            getResponse
-                        );
-
-                        break;
-                    }
-                case EDIT_PARCEL:
-                    {
-                        const response = await httpService.updateParcel(
-                            ParcelUtil.prepareParcelForDBUpdate(
-                                parcelExtendedData.action.parcel
-                            )
-                        );
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL",
-                            response
-                        );
-                        const getResponse = await getAllparcelsfromDB();
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL getAllparcelsfromDB",
-                            getResponse
-                        );
-                        break;
-                    }
-                case REMOVE_PARCEL:
-                    {
-                        try {
-                            const response = await httpService.deleteParcel(
-                                parcelExtendedData.action.parcelId
-                            );
-                            logger.log(
-                                "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL",
-                                response
-                            );
-                        } catch (e) {
-                            logger.log(e);
-                            const err = new SystemError("Error deleting parcel", 1, e.message);
-                            dispatchError(addError(err));
-                        }
-                        const getResponse = await getAllparcelsfromDB();
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB",
-                            getResponse
-                        );
-                        break;
-                    }
-                case ASSIGN_USER_TO_PARCELS:
-                    {
-                        const parcelIds = parcelExtendedData.action.parcels.map(
-                            (parcel) => parcel.id
-                        );
-                        const response = await httpService.assignUserToParcels(
-                            parcelExtendedData.action.parcels[0].currentUserId,
-                            parcelIds
-                        );
-                        logger.log(
-                            "[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCELS",
-                            response
-                        );
-                        break;
-                    }
-                case SEARCH_PARCELS:
-                    {
-                        const getResponse = await getAllparcelsfromDB();
-                        logger.log(
-                            "[UserContextProvider] updateParcelsInDB SEARCH_PARCELS getAllparcelsfromDB",
-                            getResponse
-                        );
-                        break;
-                    }
-                case UPDATE_PARCEL_CITIES:
-                case LOAD_PARCELS:
-                case PARCELS_ERROR:
-                default:
-                    logger.log(
-                        "[ParcelContextProvider] updateParcelsInDB LOAD, UPDATE_CITIES - no action",
-                        parcelExtendedData.action.type
-                    );
-                    break;
-            }
+          const getResponse = await getAllparcelsfromDB(parcelState.searchParams, dispatch);
+          logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS getAllparcelsfromDB", getResponse);
+          break;
         }
-        updateParcelsInDB();
-    }, [parcelExtendedData]);
+        case EDIT_PARCEL: {
+          const response = await httpService.updateParcel(ParcelUtil.prepareParcelForDBUpdate(parcelState.action.parcel));
+          logger.log("[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL", response);
+          const getResponse = await getAllparcelsfromDB(parcelState.searchParams, dispatch);
+          logger.log("[ParcelContextProvider] updateParcelsInDB EDIT_PARCEL getAllparcelsfromDB", getResponse);
+          break;
+        }
+        case REMOVE_PARCEL: {
+          try {
+            const response = await httpService.deleteParcel(parcelState.action.parcelId);
+            logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL", response);
+          } catch (e) {
+            logger.log(e);
+            const err = new SystemError('Error deleting parcel', 1, e.message);
+            dispatchError(addError(err));
+          }
+          const getResponse = await getAllparcelsfromDB(parcelState.searchParams, dispatch);
+          logger.log("[ParcelContextProvider] updateParcelsInDB REMOVE_PARCEL getAllparcelsfromDB", getResponse);
+          break;
+        }
+        case ASSIGN_USER_TO_PARCELS: {
+          const parcelIds = parcelState.action.parcels.map(parcel => parcel.id);
+          const response = await httpService.assignUserToParcels(parcelState.action.parcels[0].currentUserId, parcelIds);
+          logger.log("[ParcelContextProvider] updateParcelsInDB ASSIGN_USER_TO_PARCELS", response);
+          break;
+        }
+        case SEARCH_PARCELS: {
+          const getResponse = await getAllparcelsfromDB(parcelState.searchParams, dispatch);
+          logger.log("[UserContextProvider] updateParcelsInDB SEARCH_PARCELS getAllparcelsfromDB", getResponse);
+          break;
+        }
+        case UPDATE_PARCEL_CITIES:
+        case LOAD_PARCELS:
+        case PARCELS_ERROR:
+        default:
+          logger.log("[ParcelContextProvider] updateParcelsInDB LOAD, UPDATE_CITIES - no action", parcelState.action.type);
+          break;
+      }
+    }
+    updateParcelsInDB();
+  }, [parcelState]);
 
     return ( <parcelContext.Provider value = {
-        [parcelExtendedData, dispatch]
-    } > { props.children } </parcelContext.Provider>);
+    <parcelContext.Provider value={[parcelState, dispatch]}>
+      {props.children}
+    </parcelContext.Provider>
+  );
 };
 
 export default ParcelContextProvider;

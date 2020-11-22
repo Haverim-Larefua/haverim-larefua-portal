@@ -3,7 +3,7 @@ import React from 'react';
 import memoize from 'memoize-one';
 import Status from '../shared/Status/Status';
 import ParcelUserComponent from './ParcelUserComponent';
-
+import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const tableColumns = memoize(clickHandler => [{
                 name: AppConstants.catalogUIName,
@@ -38,7 +38,7 @@ const tableColumns = memoize(clickHandler => [{
                 selector: 'parcelTrackingStatus',
                 sortable: true,
                 maxWidth: '130px',
-                cell: row => < Status status = { row.parcelTrackingStatus }
+    cell: row => <Status value={row.parcelTrackingStatus} label={ParcelUtil.parcelStatusEnumToUIValue(row.parcelTrackingStatus)} />,
                 />,
             },
             {

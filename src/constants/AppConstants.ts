@@ -1,3 +1,5 @@
+import Option from "../models/Option";
+
 class AppConstants {
   static readonly serverErrorMessage: string =
     "אופס משהו השתבש, פנה אל מנהל המערכת";
@@ -68,6 +70,12 @@ class AppConstants {
   static readonly deliveringStatusName: string = "בחלוקה";
   static readonly exceptionStatusName: string = "בחריגה";
   static readonly deliveredStatusName: string = "נמסרה";
+  static readonly parcelStatusOptions: Option<string>[] = [
+    { label: AppConstants.readyStatusName, value: 'ready' },
+    { label: AppConstants.deliveringStatusName, value: 'distribution' },
+    { label: AppConstants.exceptionStatusName, value: 'exception' },
+    { label: AppConstants.deliveredStatusName, value: 'delivered' },
+  ]
 
   // Delivery days names
   static readonly allWeek: string = "כל השבוע";
@@ -112,7 +120,7 @@ class AppConstants {
     AppConstants.fridayInitial;
 }
 
-export const delivaryDaysToInitials = new Map<string, string> ([
+export const delivaryDaysToInitials = new Map<string, string>([
   [AppConstants.allWeek, AppConstants.allWeek],
   [AppConstants.sunday, AppConstants.sundayInitial],
   [AppConstants.monday, AppConstants.mondayInitial],

@@ -13,6 +13,7 @@ import NotificationForm from "./NotificationForm/NotificationForm";
 import { ParcelUtil } from '../../Utils/Parcel/ParcelUtil';
 import HttpService from "../../services/http";
 import './Users.scss';
+import Option from "../../models/Option";
 
 const Users = () => {
   const [userExtendedData, dispatch] = useContext(userContext);
@@ -53,7 +54,7 @@ const Users = () => {
     logger.log('[Users ] useEffect [filters] refresh data');
     // refreshData();
     dispatch(searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
-  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm]);
+  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
 
   useEffect(() => {
     function handleEditUser() {
@@ -94,22 +95,6 @@ const Users = () => {
   }, [deleteEnalbed])
 
 
-  const daysInitials = delivaryDaysToInitials.values();
-  const deliveryAreas = userExtendedData && userExtendedData.deliveryAreas ? userExtendedData.deliveryAreas : [];
-  const options = [ // ToolbarOptions
-    {
-      title: AppConstants.deliveryArea,
-      name: "cities",
-      values: [AppConstants.all, ...deliveryAreas],
-      filter: setCityFilterTerm
-    },
-    {
-      title: AppConstants.deliveryDays,
-      name: "days",
-      values: [AppConstants.all, ...daysInitials],
-      filter: setDayFilterTerm
-    }
-  ];
 
   const handleDelete = () => {
     dispatch(removeUser(deleteUserId));
@@ -167,6 +152,27 @@ const Users = () => {
     setDeleteUserId('');
     setNotifyUserId('');
   };
+
+  
+  const daysInitials = delivaryDaysToInitials.values();
+  const deliveryAreas = userExtendedData && userExtendedData.deliveryAreas ? userExtendedData.deliveryAreas : [];
+  const options = [ // ToolbarOptions
+    {
+      title: AppConstants.deliveryArea,
+      name: "cities",
+      values: [...deliveryAreas].map(area => new Option(area, area)),
+      filter: setCityFilterTerm,
+      showOptionAll: true,
+      searchable:true
+    },
+    {
+      title: AppConstants.deliveryDays,
+      name: "days",
+      values: [...daysInitials].map(day => new Option(day, day)),
+      filter: setDayFilterTerm,
+      showOptionAll: true
+    }
+  ];
 
   return (
     <div className="users-container">

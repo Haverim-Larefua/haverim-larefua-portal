@@ -1,30 +1,30 @@
 import XLSX from 'xlsx';
-import logger  from '../Utils/logger';
-import Parcel from '../contexts/interfaces/parcels.interface';
+import logger from '../Utils/logger';
 import AppConstants from '../constants/AppConstants';
 import StringUtil from "../Utils/Common/StringUtil";
+import Parcel from '../models/Parcel';
 
 class ImportedData {
-    data: any[];
-    cols: any;
+  data: any[];
+  cols: any;
 
-    constructor(data: any[], cols: any) {
-        this.data = Object.assign([], data);
-        this.cols = cols;
-    }
+  constructor(data: any[], cols: any) {
+    this.data = Object.assign([], data);
+    this.cols = cols;
+  }
 }
 
 export default class ParcelsImporterService {
 
-    static make_cols(refstr: any) {
-        let o = [], C = XLSX.utils.decode_range(refstr).e.c + 1;
-        for(var i = 0; i < C; ++i) o[i] = {name:XLSX.utils.encode_col(i), key:i}
-        return o;
+  static make_cols(refstr: any) {
+    let o = [], C = XLSX.utils.decode_range(refstr).e.c + 1;
+    for (var i = 0; i < C; ++i) o[i] = { name: XLSX.utils.encode_col(i), key: i }
+    return o;
     }
 
     static jsonDataToParcels(jsonData: any[], dt: Date) :Parcel[]{
-        let parcels: Parcel[] = [];
-        jsonData.forEach(async data => {
+    let parcels: Parcel[] = [];
+    jsonData.forEach(async data => {
             const no = data[AppConstants.identifierUIName] ? data[AppConstants.identifierUIName] : StringUtil.EMPTY;
             const startDate = data[AppConstants.startDate]? data[AppConstants.startDate].toDateString(): null;
             const startTime = data[AppConstants.startTime] ? data[AppConstants.startTime].toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : null;

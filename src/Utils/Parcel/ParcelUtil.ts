@@ -1,7 +1,7 @@
-import Parcel, {
-  ParcelTracking,
-  parcelStatusesValues,
-} from "../../contexts/interfaces/parcels.interface";
+import AppConstants from "../../constants/AppConstants";
+import { parcelStatusesValues } from "../../contexts/interfaces/parcels.interface";
+import Parcel from "../../models/Parcel";
+import ParcelTracking from "../../models/ParcelTracking";
 import { CollectionUtil } from "../Common/CollectionsUtil";
 
 export class ParcelUtil {
@@ -57,29 +57,13 @@ export class ParcelUtil {
   }
 
   static getParcelsCitiesDistinct(parcels: Parcel[]): string[] {
-    let areas: string[] = [];
-    if (parcels && parcels.length > 0) {
-      parcels.forEach((item) => {
-        if (!areas.includes(item.city)) {
-          areas.push(item.city);
-        }
-      });
-    }
-    return areas;
+    const cities = new Set(parcels.map(parcel => parcel.city));
+    return [...cities].sort();
   }
 
   static prepareOneParcelForDisplay(parcel: Parcel): Parcel {
     ParcelUtil.sortParcelTracking(parcel.parcelTracking);
-    parcel.userName = parcel.user
-      ? parcel.user.firstName + " " + parcel.user?.lastName
-      : "";
-    parcel.parcelTrackingStatus = ParcelUtil.parcelStatusEnumToUIValue(
-      parcel.parcelTrackingStatus
-    );
-    parcel.parcelTracking.forEach(
-      (track) =>
-        (track.status = ParcelUtil.parcelStatusEnumToUIValue(track.status))
-    );
+    parcel.userName = parcel.user ? parcel.user.firstName + ' ' + parcel.user?.lastName : '';
     return parcel;
   }
 
@@ -93,7 +77,7 @@ export class ParcelUtil {
     return dbParcels;
   }
 
-  // parcelTrackingStatus in DB is defined as @IsEnum(['ready', 'assigned', 'delivered', 'distribution', 'exception'])
+  // parcelTrackingStatus in DB is defined as @IsEnum(['ready', 'assigned', 'delivered', 'distribution'])
   // need to translate from DB value to UI valued ans vice versa
   static parcelStatusEnumToUIValue(status: string) {
     switch (status) {
@@ -107,31 +91,8 @@ export class ParcelUtil {
       case "distribution": {
         return parcelStatusesValues.DELIVERING;
       }
-      case "exception": {
-        return parcelStatusesValues.EXCEPTION;
-      }
       default: {
         return parcelStatusesValues.READY;
-      }
-    }
-  }
-
-  static parcelUIStatusValueToEnum(status: string) {
-    switch (status) {
-      case parcelStatusesValues.READY: {
-        return "ready";
-      }
-      case parcelStatusesValues.DELIVERING: {
-        return "distribution";
-      }
-      case parcelStatusesValues.DELIVERED: {
-        return "delivered";
-      }
-      case parcelStatusesValues.EXCEPTION: {
-        return "exception";
-      }
-      default: {
-        return "ready";
       }
     }
   }
@@ -146,11 +107,10 @@ export class ParcelUtil {
   }
 
   static prepareParcelForDBUpdate(parcel: Parcel): Parcel {
-    const aParcel = { ...parcel };
-    delete aParcel.parcelTracking;
-    aParcel.parcelTrackingStatus = ParcelUtil.parcelUIStatusValueToEnum(
-      aParcel.parcelTrackingStatus
+    return {
+      ...parcel,
+      parcelTracking: [],
+    };
     );
-    return aParcel;
   }
 }

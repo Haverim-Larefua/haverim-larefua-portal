@@ -1,13 +1,13 @@
 import axios, { AxiosRequestConfig } from "axios";
 import logger from "../Utils/logger";
-import Parcel from "../contexts/interfaces/parcels.interface";
 import Configuration from "../configuration/Configuration";
-import User from "../contexts/interfaces/users.interface";
 import AppConstants, { AppConstants1 } from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
 import { UserUtil } from "../Utils/User/UserUtil";
 import AuthService from "./authService";
+import Parcel from "../models/Parcel";
+import User from "../models/User";
 
 enum HttpMethod {
   POST = "post",
@@ -100,9 +100,17 @@ class HttpService {
   // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels(): Promise<Parcel[]> {
+  async getParcels(statusFilterTerm?: string,
+    cityFilterTerm?: string,
+    nameSearchTerm?: string): Promise<Parcel[]> {
+
+    let url = `${Configuration.URLS.PARCELS}?`
+    url += statusFilterTerm ? `statusFilterTerm=${statusFilterTerm}&` : "";
+    url += cityFilterTerm ? `cityFilterTerm=${cityFilterTerm}&` : "";
+    url += nameSearchTerm ? `nameSearchTerm=${nameSearchTerm}&` : "";
+
     const prcls: Parcel[] = await this.sendHttpRequest(
-      Configuration.URLS.PARCELS,
+      url,
       HttpMethod.GET
     );
     return ParcelUtil.prepareParcelsForDisplay(prcls);
@@ -119,7 +127,7 @@ class HttpService {
   // TODO: need to send all as bulk to server, for now keeping like this
   async addParcels(parcels: Parcel[]) {
     const promises: any[] = [];
-    if (parcels && parcels.length > 0) {
+    if (parcels?.length > 0) {
       parcels.forEach((parcel) => {
         promises.push(
           this.sendHttpRequest(
@@ -154,61 +162,11 @@ class HttpService {
     );
   }
 
-  // TODO: this should be a query in DB
-  async searchParcels(
-    statusFilterTerm: string,
-    cityFilterTerm: string,
-    nameSearchTerm: string
-  ) {
-    logger.log("[httpService ] searchParcels ");
-    let parcels: Parcel[] = await this.getParcels();
-
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      nameSearchTerm &&
-      nameSearchTerm !== ""
-    ) {
-      const searchTerm = nameSearchTerm.trim().toLowerCase();
-      parcels = parcels.filter(
-        (item: Parcel) =>
-          (item.customerName &&
-            item.customerName.toLowerCase().indexOf(searchTerm) !== -1) ||
-          (item.address &&
-            item.address.toLowerCase().indexOf(searchTerm) !== -1) ||
-          (item.city && item.city.toLowerCase().indexOf(searchTerm) !== -1)
-      );
-    }
-
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      cityFilterTerm &&
-      cityFilterTerm !== ""
-    ) {
-      const searchTerm = cityFilterTerm.trim().toLowerCase();
-      parcels = parcels.filter((item: Parcel) => item.city === searchTerm);
-    }
-
-    if (
-      parcels &&
-      parcels.length > 0 &&
-      statusFilterTerm &&
-      statusFilterTerm !== ""
-    ) {
-      const searchTerm = statusFilterTerm.trim().toLowerCase();
-      parcels = parcels.filter(
-        (item: Parcel) => item.parcelTrackingStatus === searchTerm
-      );
-    }
-
-    return parcels;
-  }
-
-  async getParcelsCitiesDistinct() {
-    logger.log("[httpService ] getParcelsCitiesDistinct ");
-    let parcels: Parcel[] = await this.getParcels();
-    return ParcelUtil.getParcelsCitiesDistinct(parcels);
+  async getParcelsCityOptions() {
+    return this.sendHttpRequest(
+      `${Configuration.URLS.PARCELS}/cityOptions`,
+      HttpMethod.GET
+    );
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
@@ -220,7 +178,7 @@ class HttpService {
     return UserUtil.prepareUsersForDisplay(users);
   }
 
-  async getUserById(id: number): Promise<User>{
+  async getUserById(id: number): Promise<User> {
     const user: User = await this.sendHttpRequest(
       `${Configuration.URLS.USERS}/${id}`,
       HttpMethod.GET
@@ -275,28 +233,26 @@ class HttpService {
   ) {
     let users = await this.getUsers();
 
-    if (users && users.length > 0 && nameSearchTerm && nameSearchTerm !== "") {
+    if (users?.length > 0 && nameSearchTerm !== "") {
       const searchTerm = nameSearchTerm.trim().toLowerCase();
       users = users.filter(
         (item: User) =>
-          (item.firstName &&
-            item.firstName.toLowerCase().indexOf(searchTerm) !== -1) ||
-          (item.lastName &&
-            item.lastName.toLowerCase().indexOf(searchTerm) !== -1)
+          item.firstName?.toLowerCase().includes(searchTerm) ||
+          item.lastName?.toLowerCase().includes(searchTerm)
       );
     }
 
-    if (users && users.length > 0 && cityFilterTerm && cityFilterTerm !== "") {
+    if (users?.length > 0 && cityFilterTerm !== "") {
       const searchTerm = cityFilterTerm.trim().toLowerCase();
       users = users.filter((item: User) => item.deliveryArea === searchTerm);
     }
 
-    if (users && users.length > 0 && dayFilterTerm && dayFilterTerm !== "") {
+    if (users?.length > 0 && dayFilterTerm !== "") {
       const searchTerm = dayFilterTerm.trim().toLowerCase();
       users = users.filter(
         (item: User) =>
-          item.deliveryDays.indexOf(searchTerm) !== -1 ||
-          item.deliveryDays.indexOf(AppConstants.allWeek) !== -1
+          item.deliveryDays.includes(searchTerm) ||
+          item.deliveryDays.includes(AppConstants.allWeek)
       );
     }
 

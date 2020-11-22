@@ -1,47 +1,50 @@
-import { ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS,
-  IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES, PARCELS_ERROR, parcelsError} from "../contexts/actions/parcels.action";
-import Parcel, { ParcelExtendedData, defaultparcelExtendedData} from "../contexts/interfaces/parcels.interface";
+import {
+  ADD_PARCEL, ADD_PARCELS, EDIT_PARCEL, REMOVE_PARCEL, LOAD_PARCELS, SEARCH_PARCELS, ASSIGN_USER_TO_PARCELS,
+  IActionBase, loadParcels, addParcels, UPDATE_PARCEL_CITIES, PARCELS_ERROR, parcelsError
+} from "../contexts/actions/parcels.action";
+import { defaultParcelsState, ParcelState } from "../contexts/interfaces/parcels.interface";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil"
 import logger from "../Utils/logger";
+import Parcel from "../models/Parcel";
 
-export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtendedData, action: IActionBase) => {
+export const parcelReducer = (state: ParcelState = defaultParcelsState, action: IActionBase): ParcelState => {
   switch (action.type) {
     case LOAD_PARCELS: {
       logger.log('[parcelReducer] LOAD_PARCELS ', action.parcels);
-      return { parcels: action.parcels, action: loadParcels([]), searchParams: state.searchParams, cities: state.cities };
+      return { ...state, parcels: action.parcels, action: loadParcels([]), searching: false };
     }
     case SEARCH_PARCELS: {
       logger.log('[parcelReducer] reduce SEARCH_PARCELS #', state.parcels?.length, action.searchParams);
-      return { users: state.parcels, action: action, searchParams: action.searchParams, cities: state.cities};
+      return { ...state, action, searchParams: action.searchParams, searching: true };
     }
     case ADD_PARCEL: {
-      let tempparcels = [...state.parcels];
-      tempparcels.push(action.parcel);
-      return { parcels: tempparcels, action: action, searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
+      let tempparcels = [...state.parcels, action.parcel];
+      tempparcels.push();
+      return { ...state, action, parcels: tempparcels };
     }
     case ADD_PARCELS: {
       // merge state.parcels with action.parcels according to parcel.identity+parcel.lastUpdateDate
       const [mergedParcels, addedparcels] = ParcelUtil.mergeParcels(state.parcels, action.parcels);
-      return { parcels: mergedParcels, action: addParcels(addedparcels), searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(mergedParcels) };
+      return { ...state, parcels: mergedParcels, action: addParcels(addedparcels) };
     }
     case EDIT_PARCEL: {
-      const foundIndex = state.parcels.findIndex( pack => pack.id === action.parcel.id );
+      const foundIndex = state.parcels.findIndex(pack => pack.id === action.parcel.id);
       if (foundIndex !== -1) {
         let tempparcels = [...state.parcels];
         tempparcels[foundIndex] = ParcelUtil.prepareOneParcelForDisplay(action.parcel);
-        return { parcels: tempparcels, action: action, searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(tempparcels) };
+        return { ...state, parcels: tempparcels, action };
       } else {
         return state;
       }
     }
     case REMOVE_PARCEL: {
-      const tmpparcels = state.parcels.filter( pkg => pkg.id !== action.parcelId );
-      return { parcels: tmpparcels, action: action, searchParams: state.searchParams, cities: ParcelUtil.getParcelsCitiesDistinct(tmpparcels) };
+      const tmpparcels = state.parcels.filter(pkg => pkg.id !== action.parcelId);
+      return { ...state, parcels: tmpparcels, action };
     }
 
-    case UPDATE_PARCEL_CITIES : {
-      logger.log('[parcelReducer] UPDATE_PARCEL_CITIES ', action.parcels);
-      return { parcels: state.parcels, action: action, searchParams: state.searchParams, cities: action.cities};
+    case UPDATE_PARCEL_CITIES: {
+      logger.log('[parcelReducer] UPDATE_PARCEL_CITIES ', action.cities);
+      return { ...state, cities: action.cities };
     }
 
     case ASSIGN_USER_TO_PARCELS: {
@@ -55,13 +58,13 @@ export const parcelReducer = ( state: ParcelExtendedData = defaultparcelExtended
           newStateParcels.push(parcel);
         }
       });
-      return { parcels: newStateParcels, action: action, searchParams: state.searchParams, cities: state.cities };
+      return { ...state, parcels: newStateParcels, action };
     }
 
     case PARCELS_ERROR: {
-      return {...state, error: action.error, action: parcelsError(action.error) };
+      return { ...state, error: action.error, action: parcelsError(action.error) };
     }
-    
+
     default:
       return state;
   }

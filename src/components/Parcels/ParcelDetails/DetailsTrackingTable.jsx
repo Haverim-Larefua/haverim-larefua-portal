@@ -4,6 +4,7 @@ import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
 import Signature from './Signature';
 import AppConstants from '../../../constants/AppConstants';
+import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
 
 
 const DetailsTrackingTable = (props) => {
@@ -46,7 +47,7 @@ const DetailsTrackingTable = (props) => {
                                     <div className="ffh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
                                     <div className="ffh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
                                     <div className="ffh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
-                                    <div className="ffh-details-tracking__cell status"><Status status={track.status} /></div>
+                                    <div className="ffh-details-tracking__cell status"><Status label={ParcelUtil.parcelStatusEnumToUIValue(track.status)} value={track.status} /></div>
                                     <div className="ffh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
                                     <div className="ffh-details-tracking__cell comments"><span>{track.comments}</span>
                                     {console.log('Track Status: ', track.status)}
