@@ -28,6 +28,7 @@ export default class ParcelsImporterService {
             const no = data[AppConstants.identifierUIName] ? data[AppConstants.identifierUIName] : StringUtil.EMPTY;
             const startDate = data[AppConstants.startDate]? data[AppConstants.startDate].toDateString(): null;
             const startTime = data[AppConstants.startTime] ? data[AppConstants.startTime].toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : null;
+            const customerId = data[AppConstants.cardId] ? data[AppConstants.cardId] : StringUtil.EMPTY;
             const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : StringUtil.EMPTY;
             const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName] : StringUtil.EMPTY;
             const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : StringUtil.EMPTY;
@@ -36,18 +37,19 @@ export default class ParcelsImporterService {
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : StringUtil.EMPTY;
             if (
               StringUtil.isNotEmpty(no) &&
-              StringUtil.isNotEmpty(customerName) &&
+              StringUtil.isNotEmpty(customerId) &&
               StringUtil.isNotEmpty(city) &&
               startDate && startTime
             ) {
               const aparcel = new Parcel(
                 no,
                 customerName,
+                customerId,
                 address,
                 city,
                 phone,
                 comments,
-                AppConstants.readyStatusName,
+                'ready',
                 dt,
                 signature,
                 startDate,

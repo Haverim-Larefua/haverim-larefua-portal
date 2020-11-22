@@ -12,6 +12,7 @@ class AppConstants {
   static readonly cityUIName: string = "עיר";
   static readonly phone: string = "טלפון";
   static readonly nameUIName: string = "שם";
+  static readonly idUIName: string = "ת.ז";
   static readonly identifierUIName: string = "מספר";
   static readonly startDate = "מועד התחלה";
   static readonly startTime = "שעת התחלה";
@@ -61,6 +62,7 @@ class AppConstants {
   static readonly commentsUIName: string = "הערות";
   static readonly signatureUIName: string = "חתימה";
 
+  static readonly cardId: string = "תעודת זהות";
   static readonly cardName: string = "שם כרטיס";
   static readonly allocation: string = "שיוך";
 

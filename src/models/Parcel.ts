@@ -8,6 +8,7 @@ export default class Parcel implements ICurrentParcel {
     address: string;
     phone: string;
     customerName: string;
+    customerId: string;
     currentUserId: number;
     parcelTrackingStatus: string;
     comments: string;
@@ -24,6 +25,7 @@ export default class Parcel implements ICurrentParcel {
     constructor(
         identity: number,
         customerName: string,
+        customerId: string,
         address: string,
         city: string,
         phone: string,
@@ -36,6 +38,7 @@ export default class Parcel implements ICurrentParcel {
     ) {
         this.identity = identity;
         this.customerName = customerName;
+        this.customerId = customerId;
         this.address = address;
         this.city = city;
         this.comments = comments;

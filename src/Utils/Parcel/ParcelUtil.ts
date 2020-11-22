@@ -25,12 +25,9 @@ export class ParcelUtil {
 
   static parcelsEqual(a: Parcel, b: Parcel): boolean {
     return (
-      a.customerName === b.customerName &&
+      a.customerId === b.customerId &&
       a.startDate && new Date(a.startDate).toDateString() === new Date(b.startDate).toDateString() &&
-      JSON.stringify(a.startTime) === JSON.stringify(b.startTime) &&
-      a.address === b.address &&
-      a.city === b.city &&
-      a.phone === b.phone
+      JSON.stringify(a.startTime) === JSON.stringify(b.startTime)
     );
   }
 
