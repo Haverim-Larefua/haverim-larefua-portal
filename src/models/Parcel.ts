@@ -18,6 +18,8 @@ export default class Parcel implements ICurrentParcel {
     user: User;
     userName: string;
     identity: number;
+    startDate: Date;
+    startTime: Date;
 
     constructor(
         identity: number,
@@ -28,7 +30,9 @@ export default class Parcel implements ICurrentParcel {
         comments: string,
         parcelTrackingStatus: string,
         lastUpdateDate: Date,
-        signature: string
+        signature: string,
+        startDate: Date,
+        startTime: Date,
     ) {
         this.identity = identity;
         this.customerName = customerName;
@@ -39,5 +43,7 @@ export default class Parcel implements ICurrentParcel {
         this.signature = signature;
         this.lastUpdateDate = lastUpdateDate;
         this.phone = phone;
+        this.startTime = startTime;
+        this.startDate = startDate;
     }
 }

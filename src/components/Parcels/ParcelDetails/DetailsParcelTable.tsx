@@ -12,8 +12,8 @@ export interface DetailsParcelTableProps {
     id: number;
     phone: string;
     lastUpdateDate: Date;
-    startDate: string;
-    startTime: string;
+    startDate: Date;
+    startTime: Date;
   }
 
 const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {

@@ -15,12 +15,8 @@ import { SystemError } from "../contexts/interfaces/error.interface";
 import { useToasts } from "react-toast-notifications";
 
 export const parcelContext = createContext();
-
-const getAllparcelsfromDB = async (searchParams, dispatch) => {
-    const { addToast } = useToasts();
-
-    async function getAllparcelsfromDB() {
-  logger.log('[ParcelContextProvider] getAllparcelsfromDB ',);
+async function getAllparcelsfromDB(searchParams, dispatch) {
+  logger.log('[ParcelContextProvider] getAllparcelsfromDB ');
 
   try {
     const [parcels, cityOptions] =
@@ -31,7 +27,7 @@ const getAllparcelsfromDB = async (searchParams, dispatch) => {
       httpService.getParcelsCityOptions()]);
     dispatch(loadParcels(parcels));
     dispatch(updateParcelsCities(cityOptions));
-            );
+
   } catch (e) {
     logger.log(e);
     dispatch(parcelsError(e));
@@ -39,13 +35,13 @@ const getAllparcelsfromDB = async (searchParams, dispatch) => {
 };
 
 const ParcelContextProvider = props => {
-  const [parcelState, dispatch] = useReducer(parcelReducer, defaultParcelsState);
+  const { addToast } = useToasts();
+
   const [, dispatchError] = useReducer(errorReducer);
-
-
-    //on every change to parcels
-    useEffect(() => {
-        async function updateParcelsInDB() {
+  const [parcelState, dispatch] = useReducer(parcelReducer, defaultParcelsState);
+  //on every change to parcels
+  useEffect(() => {
+    async function updateParcelsInDB() {
       logger.log("[ParcelContextProvider] updateParcelsInDB ", parcelState);
       if (!parcelState || !parcelState.action) {
         logger.log("[ParcelContextProvider] updateParcelsInDB undefined args");
@@ -62,27 +58,27 @@ const ParcelContextProvider = props => {
         case ADD_PARCELS: {
           const response = await httpService.addParcels(ParcelUtil.prepareParcelsForDBUpdate(parcelState.action.parcels));
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS ", response);
-                        if (parcelExtendedData.action.parcels.length === 0) {
-                            const message = `כל החבילות מופיעות במערכת - אין חבילות חדשות בקובץ`;
-                            addToast(message, { appearance: "success" });
-                            return;
-                        }
+          if (parcelState.action.parcels.length === 0) {
+            const message = `כל החבילות מופיעות במערכת - אין חבילות חדשות בקובץ`;
+            addToast(message, { appearance: "success" });
+            return;
+          }
 
-                        try {
-                            const response = await httpService.addParcels(
-                                ParcelUtil.prepareParcelsForDBUpdate(
-                                    parcelExtendedData.action.parcels
-                                )
-                            );
+          try {
+            const response = await httpService.addParcels(
+              ParcelUtil.prepareParcelsForDBUpdate(
+                parcelState.action.parcels
+              )
+            );
 
-                            const message = `חבילות נוספו ${response.length} ,הקובץ נטען בהצלחה`;
-                            addToast(message, { appearance: "success" });
-                        } catch (ex) {
-                            logger.error(ex.message);
-                            const message = `טעינת הקובץ נכשלה - פנה למנהל המערכת`;
-                            addToast(message, { appearance: "error" });
-                        }
-                        //TODO when addParcels will be batch operation - can retrieve the result and merge with current instead of retrieving all again
+            const message = `חבילות נוספו ${response.length} ,הקובץ נטען בהצלחה`;
+            addToast(message, { appearance: "success" });
+          } catch (ex) {
+            logger.error(ex.message);
+            const message = `טעינת הקובץ נכשלה - פנה למנהל המערכת`;
+            addToast(message, { appearance: "error" });
+          }
+          //TODO when addParcels will be batch operation - can retrieve the result and merge with current instead of retrieving all again
           const getResponse = await getAllparcelsfromDB(parcelState.searchParams, dispatch);
           logger.log("[ParcelContextProvider] updateParcelsInDB ADD_PARCELS getAllparcelsfromDB", getResponse);
           break;
@@ -127,13 +123,12 @@ const ParcelContextProvider = props => {
       }
     }
     updateParcelsInDB();
-  }, [parcelState]);
+  }, [addToast, parcelState]);
 
-    return ( <parcelContext.Provider value = {
-    <parcelContext.Provider value={[parcelState, dispatch]}>
-      {props.children}
-    </parcelContext.Provider>
+  return (<parcelContext.Provider value={[parcelState, dispatch]}>
+    {props.children}
+  </parcelContext.Provider>
   );
-};
+}
 
 export default ParcelContextProvider;

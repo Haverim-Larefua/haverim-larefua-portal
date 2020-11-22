@@ -48,7 +48,7 @@ export class ParcelUtil {
     let addedParcels: Parcel[] = [];
     let mergedParcels = ParcelUtil.sortParcels([...a]);
     b.forEach((bParcel: Parcel) => {
-      if (!mergedParcels.some((aParcel: Parcel) =>  ParcelUtil.parcelsEqual(bParcel, aParcel))) {
+      if (!mergedParcels.some((aParcel: Parcel) => ParcelUtil.parcelsEqual(bParcel, aParcel))) {
         addedParcels.push(bParcel);
         mergedParcels.push(bParcel);
       }
@@ -110,7 +110,6 @@ export class ParcelUtil {
     return {
       ...parcel,
       parcelTracking: [],
-    };
-    );
+    }
   }
 }

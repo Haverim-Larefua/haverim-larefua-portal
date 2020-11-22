@@ -37,11 +37,3 @@ export class ParcelState {
     this.cities = cities;
   }
 }
-
-  startDate: Date;
-  startTime: Date;
-    signature: string,
-    startDate: Date,
-    startTime: Date,
-    this.startDate = startDate;
-    this.startTime = startTime;
