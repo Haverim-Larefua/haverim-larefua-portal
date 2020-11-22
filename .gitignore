@@ -9,3 +9,4 @@ chrome-user-data
 *.swp
 *.swo
 build
+/.history/
