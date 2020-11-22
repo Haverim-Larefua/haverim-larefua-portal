@@ -54,9 +54,10 @@
     padding: 11px 15px;
     white-space: nowrap;
     &.creation-date,
-    &.id,
     &.start-date,
     &.start-time,
+    &.customer-name,
+    &.customer-id,
     &.phone,
     &.city,
     &.derivery-icon,
@@ -66,20 +67,23 @@
     &.creation-date {
         width: 14%;
     }
-    &.id {
-        width: 5%;
-    }
     &.start-date {
-        width: 11%;
+        width: 10%;
     }
     &.start-time {
-        width: 11%;
+        width: 10%;
+    }
+    &.customer-name {
+        width: 12%;
+    }
+    &.customer-id {
+        width: 8%;
     }
     &.phone {
         width: 17%;
     }
     &.city {
-        width: 10%;
+        width: 9%;
     }
     &.notes {
         border-top: 1px solid $grey-mid;

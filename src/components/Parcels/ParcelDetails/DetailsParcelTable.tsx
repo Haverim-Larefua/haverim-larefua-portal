@@ -1,4 +1,5 @@
 import React from 'react';
+import StringUtil from '../../../Utils/Common/StringUtil';
 import formatDate from '../../../Utils/dateFormatter';
 
 export interface DetailsParcelTableProps {
@@ -9,11 +10,12 @@ export interface DetailsParcelTableProps {
     address: string;
     city: string;
     comments: string;
-    id: number;
     phone: string;
     lastUpdateDate: Date;
     startDate: Date;
     startTime: Date;
+    customerName: string;
+    customerId: string;
   }
 
 const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
@@ -23,12 +25,6 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
             <div className="ffh-details-cell__label">תאריך יצירה</div>
             <div className="ffh-details-cell__value">
             {`${formatDate(props.currentParcel.lastUpdateDate.toString()).weekday} - ${formatDate(props.currentParcel.lastUpdateDate.toString()).date}` }
-            </div>
-        </div>
-        <div className="ffh-details-cell id">
-            <div className="ffh-details-cell__label">מזהה</div>
-            <div className="ffh-details-cell__value">
-                {props.currentParcel.id}
             </div>
         </div>
         <div className="ffh-details-cell start-date">
@@ -41,6 +37,18 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
             <div className="ffh-details-cell__label">שעת התחלה</div>
             <div className="ffh-details-cell__value">
                 {props.currentParcel.startTime ? props.currentParcel.startTime: "-"}
+            </div>
+        </div>
+        <div className="ffh-details-cell customer-name">
+            <div className="ffh-details-cell__label">שם</div>
+            <div className="ffh-details-cell__value">
+                {props.currentParcel.customerName}
+            </div>
+        </div>
+        <div className="ffh-details-cell customer-id">
+            <div className="ffh-details-cell__label">ת.ז</div>
+            <div className="ffh-details-cell__value">
+                {StringUtil.isNotEmpty(props.currentParcel.customerId) ? props.currentParcel.customerId : "-"}
             </div>
         </div>
         <div className="ffh-details-cell phone">
