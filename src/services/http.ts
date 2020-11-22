@@ -61,7 +61,11 @@ class HttpService {
       try {
         axios(httpRequestOptions)
           .then((response) => {
-            logger.debug(`[http] sendHttpRequest:: response.data: ${JSON.stringify(response.data)}`);
+            logger.debug(
+              `[http] sendHttpRequest:: response.data: ${JSON.stringify(
+                response.data
+              )}`
+            );
             resolve(response.data);
           })
           .catch((error) => {
@@ -100,19 +104,17 @@ class HttpService {
   // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels(statusFilterTerm?: string,
+  async getParcels(
+    statusFilterTerm?: string,
     cityFilterTerm?: string,
-    nameSearchTerm?: string): Promise<Parcel[]> {
-
-    let url = `${Configuration.URLS.PARCELS}?`
+    nameSearchTerm?: string
+  ): Promise<Parcel[]> {
+    let url = `${Configuration.URLS.PARCELS}?`;
     url += statusFilterTerm ? `statusFilterTerm=${statusFilterTerm}&` : "";
     url += cityFilterTerm ? `cityFilterTerm=${cityFilterTerm}&` : "";
     url += nameSearchTerm ? `nameSearchTerm=${nameSearchTerm}&` : "";
 
-    const prcls: Parcel[] = await this.sendHttpRequest(
-      url,
-      HttpMethod.GET
-    );
+    const prcls: Parcel[] = await this.sendHttpRequest(url, HttpMethod.GET);
     return ParcelUtil.prepareParcelsForDisplay(prcls);
   }
 
@@ -151,7 +153,10 @@ class HttpService {
 
   async deleteParcel(pacelId: number) {
     // only mark the parcel as deleted - but do not really delete it
-    return await this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}/1`, HttpMethod.DELETE);
+    return await this.sendHttpRequest(
+      `${Configuration.URLS.PARCELS}/${pacelId}/1`,
+      HttpMethod.DELETE
+    );
   }
 
   async assignUserToParcels(userId: number, parcelsId: number[]) {
@@ -163,7 +168,7 @@ class HttpService {
   }
 
   async getParcelsCityOptions() {
-    return this.sendHttpRequest(
+    return this.sendHttpRequest<string[]>(
       `${Configuration.URLS.PARCELS}/cityOptions`,
       HttpMethod.GET
     );

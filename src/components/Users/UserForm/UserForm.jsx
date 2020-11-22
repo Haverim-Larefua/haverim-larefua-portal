@@ -10,6 +10,7 @@ import DayPicker from './DayPicker';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
 import { UserUtil } from "../../../Utils/User/UserUtil";
+import Option from "../../../models/Option";
 
 const UserForm = ({ handleClose, editUserId }) => {
     const cities = useContext(citiesContext);
@@ -82,8 +83,8 @@ const UserForm = ({ handleClose, editUserId }) => {
         setUserAvailableDays([AppConstants.allWeek]);
     }
 
-    const handleCitySelection = (e) => {
-        setUserDeliveryArea(e.target.innerText);
+    const handleCitySelection = (value) => {
+        setUserDeliveryArea(value);
     }
 
     // const hebCharToEng = (char) => {
@@ -168,7 +169,7 @@ const UserForm = ({ handleClose, editUserId }) => {
                         switch (item) {
                             case 'notes': return <textarea className="notes" rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
-                            case 'deliveryArea': return <SelectFilter onSelect={handleCitySelection} items={cities} selected={userDeliveryArea} height='260px'/>
+                            case 'deliveryArea': return <SelectFilter onSelect={(value) => handleCitySelection(value)} items={cities.map(city => new Option(city, city))} initialSelection = {userDeliveryArea} height='260px' showOptionAll={false}/>
                             default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }

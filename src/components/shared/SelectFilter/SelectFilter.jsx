@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import './SelectFilter.scss';
 import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
 import AppConstants from "../../../constants/AppConstants";
@@ -6,12 +6,19 @@ import ClickOutsideHandler from '../../shared/ClickOutsideHandler/ClickOutsideHa
 
 
 
-const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAll = true, onSelect}) => {
+const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAll = true, onSelect, initialSelection = null}) => {
     const [dropDownVisible, setDropDownVisible] = useState(false);
     const [searchInput, setSearchInput] = useState("");
 
-    const calculatedItems = showOptionAll ? [{label: AppConstants.all, value: ""}, ...items] : items;
-    const [selectedOption, setSelectedOption] = useState(calculatedItems[0]);
+    const calculatedOptions = showOptionAll ? [{label: AppConstants.all, value: ""}, ...items] : items;
+    const [selectedOption, setSelectedOption] = useState(showOptionAll ? calculatedOptions[0] : null);
+
+    useEffect(function updateInitialSelection() {
+        const initialSelectionOption = items?.find(item => item?.value === initialSelection);
+        if (initialSelectionOption){
+            setSelectedOption(initialSelectionOption);
+        }
+    }, [items, initialSelection])
 
     const toggleDropDown = (e) => {
         setDropDownVisible(!dropDownVisible);
@@ -32,7 +39,7 @@ const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAl
     return (
         <ClickOutsideHandler onClickOutside={hideDropDown}>
             <div className="ffh-select-filter">
-                <div className="ffh-select-filter__selected" onClick={toggleDropDown}>{selectedOption ? selectedOption.label:  AppConstants.all}</div>
+                <div className="ffh-select-filter__selected" onClick={toggleDropDown}>{selectedOption?.label}</div>
                 {dropDownVisible &&
                     <div className="ffh-select-filter__dropdown" style={{ height }}>
                         {!hideFilter &&
@@ -42,7 +49,7 @@ const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAl
                             </div>
                         }
                         <div className="ffh-select-filter__options">
-                            {calculatedItems.filter(item=>item.label.includes(searchInput)).map((item, i) => {
+                            {calculatedOptions.filter(item=>item.label.includes(searchInput)).map((item, i) => {
                                 return (
                                     <div className="ffh-select-filter__option" key={i} onClick={() => selectItem(item)}>{item.label}</div>
                                 )

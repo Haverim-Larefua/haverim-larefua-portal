@@ -5,6 +5,7 @@ import createInitials from '../../../Utils/User/InitialsCreator';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import UserListItem from './UserListItem';
 import AppConstants, { delivaryDaysToInitials } from "../../../constants/AppConstants";
+import Option from "../../../models/Option";
 
 const UsersList = (props) => {
   const [userExtendedData] = useContext(userContext);
@@ -96,7 +97,7 @@ const UsersList = (props) => {
           </div>
           <div className="ffh-userlist__filter">
             <div className="ffh-userlist__filter-label">{AppConstants.deliveryDays}</div>
-            <SelectFilter onSelect={handleSelection} items={days} selected={selectedDay} hideFilter showOptionAll/>
+            <SelectFilter onSelect={handleSelection} items={days.map(day => new Option(day, day))} hideFilter showOptionAll/>
           </div>
         </div>
       </div>
