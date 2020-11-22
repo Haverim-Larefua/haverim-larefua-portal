@@ -72,7 +72,7 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
                         <Fragment key={opt.title}>
                           <label className="ffh-toolbar__label">{opt.title}</label>
                           {opt.searchable ?
-                          <SelectFilter showOptionAll={opt.showOptionAll}  onSelect={opt.filter} items={[...opt.values]} selected={opt.selectedValue} height='260px'/> :
+                          <SelectFilter showOptionAll={opt.showOptionAll}  onSelect={opt.filter} items={[...opt.values]} height='260px'/> :
                           <Dropdown showOptionAll={opt.showOptionAll} options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}/>}
                         </Fragment>)
                     })
