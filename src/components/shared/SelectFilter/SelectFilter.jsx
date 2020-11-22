@@ -9,9 +9,9 @@ import ClickOutsideHandler from '../../shared/ClickOutsideHandler/ClickOutsideHa
 const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAll = true, onSelect}) => {
     const [dropDownVisible, setDropDownVisible] = useState(false);
     const [searchInput, setSearchInput] = useState("");
-    const [selectedOption, setSelectedOption] = useState(items[0]);
 
- 
+    const calculatedItems = showOptionAll ? [{label: AppConstants.all, value: ""}, ...items] : items;
+    const [selectedOption, setSelectedOption] = useState(calculatedItems[0]);
 
     const toggleDropDown = (e) => {
         setDropDownVisible(!dropDownVisible);
@@ -28,7 +28,6 @@ const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAl
         onSelect(option.value);
     }
 
-    const calculatedItems = [{label: AppConstants.all, value: ""}, ...items];
 
     return (
         <ClickOutsideHandler onClickOutside={hideDropDown}>
