@@ -1,0 +1,12 @@
+@import "react-redux-toastr/src/styles/index";
+
+//Toast design
+.rrt-title {
+  text-align: center;
+}
+
+.rrt-text {
+  position: relative;
+  right: 10px;
+  text-align: right;
+}

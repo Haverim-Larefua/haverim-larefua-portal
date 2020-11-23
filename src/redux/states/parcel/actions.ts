@@ -1,4 +1,3 @@
-import { useToasts } from "react-toast-notifications";
 import { Dispatch } from "redux";
 import ISearchParcelsParams from "../../../models/ISearchParcelsParams";
 import Parcel from "../../../models/Parcel";
@@ -6,6 +5,7 @@ import httpService from "../../../services/http";
 import logger from "../../../Utils/logger";
 import { ParcelUtil } from "../../../Utils/Parcel/ParcelUtil";
 import { AppState } from "../../rootReducer";
+import { toastr } from "react-redux-toastr";
 
 import {
   LoadParcelsSuccessAction,
@@ -27,7 +27,6 @@ import {
   ASSIGN_USER_TO_PARCELS_OPTIMISTIC,
   SEARCH_PARCELS_SUCCESS,
 } from "./types";
-//const { addToast } = useToasts();
 
 export function loadParcelsSuccess(parcels: Parcel[]): LoadParcelsSuccessAction {
   return { type: LOAD_PARCELS_SUCCESS, parcels };
@@ -69,19 +68,7 @@ export function searchParcelsSuccess(searchParams: ISearchParcelsParams): Search
 export function searchParcels(searchParams: ISearchParcelsParams) {
   return async (dispatch: Dispatch) => {
     dispatch(searchParcelsSuccess(searchParams));
-
-    try {
-      const [parcels, cityOptions] = await Promise.all([
-        httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.nameFilter),
-        httpService.getParcelsCityOptions(),
-      ]);
-
-      dispatch(loadParcelsSuccess(parcels));
-      dispatch(updateParcelsCitiesSuccess(cityOptions));
-    } catch (err) {
-      logger.error(err);
-      dispatch(parcelsError(err));
-    }
+    await loadParcels(searchParams, dispatch);
   };
 }
 
@@ -89,20 +76,24 @@ export function reloadParcels() {
   return async (dispatch: Dispatch, getState: () => AppState) => {
     const state = getState();
     const searchParams = state.parcel.searchParams;
-
-    try {
-      const [parcels, cityOptions] = await Promise.all([
-        httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.nameFilter),
-        httpService.getParcelsCityOptions(),
-      ]);
-
-      dispatch(loadParcelsSuccess(parcels));
-      dispatch(updateParcelsCitiesSuccess(cityOptions));
-    } catch (err) {
-      logger.error(err);
-      dispatch(parcelsError(err));
-    }
+    await loadParcels(searchParams, dispatch);
   };
+}
+
+async function loadParcels(searchParams: ISearchParcelsParams, dispatch: Dispatch) {
+  try {
+    const [parcels, cityOptions] = await Promise.all([
+      httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.nameFilter),
+      httpService.getParcelsCityOptions(),
+    ]);
+
+    dispatch(loadParcelsSuccess(parcels));
+    dispatch(updateParcelsCitiesSuccess(cityOptions));
+  } catch (err) {
+    logger.error(err);
+    dispatch(parcelsError(err));
+    toastr.error("", "טעינת החבילות נכשלה - פנה למנהל המערכת");
+  }
 }
 
 export function addParcel(parcel: Parcel) {
@@ -112,8 +103,10 @@ export function addParcel(parcel: Parcel) {
     try {
       await httpService.createParcel(ParcelUtil.prepareParcelForDBUpdate(parcel));
     } catch (err) {
-      dispatch(reloadParcels());
+      toastr.error("", "הוספת החבילה נכשלה - פנה למנהל המערכת");
       logger.error(err);
+    } finally {
+      dispatch(reloadParcels());
     }
   };
 }
@@ -125,16 +118,17 @@ export function addParcels(parcels: Parcel[]) {
 
       if (addedParcels.length === 0) {
         const message = `כל החבילות מופיעות במערכת - אין חבילות חדשות בקובץ`;
-        //addToast(message, { appearance: "success" });
+        toastr.success("", message);
       } else {
         dispatch(addParcelsSuccess(addedParcels));
         const message = `חבילות נוספו ${addedParcels.length} ,הקובץ נטען בהצלחה`;
-        //addToast(message, { appearance: "success" });
+        toastr.success("", message);
       }
     } catch (err) {
       const message = `טעינת הקובץ נכשלה - פנה למנהל המערכת`;
-      // addToast(message, { appearance: "error" });
+      toastr.error("", message);
       logger.error(err);
+    } finally {
       dispatch(reloadParcels());
     }
   };
@@ -146,7 +140,9 @@ export function editParcel(parcel: Parcel) {
       dispatch(editParcelOptimistic(parcel));
       await httpService.updateParcel(ParcelUtil.prepareParcelForDBUpdate(parcel));
     } catch (err) {
+      toastr.error("", "הוספת החבילה נכשלה - פנה למנהל המערכת");
       logger.error(err);
+    } finally {
       dispatch(reloadParcels());
     }
   };
@@ -160,6 +156,8 @@ export function assignUserToParcels(parcels: Parcel[]) {
       await httpService.assignUserToParcels(parcels[0].currentUserId, parcelIds);
     } catch (err) {
       logger.error(err);
+      toastr.error("", "שיוך החבילה לשליח/ה נכשל - פנה למנהל המערכת");
+    } finally {
       dispatch(reloadParcels());
     }
   };

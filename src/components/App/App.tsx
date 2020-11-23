@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ToastProvider } from "react-toast-notifications";
-
-import "./App.css";
+import "./App.scss";
 
 import Admin from "../Admin/Admin";
 import Parcels from "../Parcels/Parcels";
@@ -20,6 +18,7 @@ import ErrorDialog from "../ErrorDialog/ErrorDialog";
 import ApplicationDownloadPage from "../ApplicationDownloadPage/ApplicationDownloadPage";
 import { Provider } from "react-redux";
 import configureStore from "../../redux/store";
+import ReduxToastr from "react-redux-toastr";
 
 const App: React.FC<any> = (): React.ReactElement => {
   const exclusionArray = ["/downloadApp"];
@@ -27,10 +26,19 @@ const App: React.FC<any> = (): React.ReactElement => {
   const admin = localStorage.getItem("admin");
   AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
   const reduxStore = configureStore();
+  
   return (
     <div className="App" id="wrapper">
-      <Provider store={reduxStore}>
-        <ToastProvider placement="top-left" autoDismiss> 
+      <Provider store={reduxStore}>   
+      <ReduxToastr
+            timeOut={4000}
+            newestOnTop={true}
+            preventDuplicates
+            position="top-left"
+            transitionIn="fadeIn"
+            transitionOut="fadeOut"
+            progressBar
+            closeOnToastrClick/>
           <ErrorBoundary>
             <Router>
               {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />}
@@ -55,12 +63,11 @@ const App: React.FC<any> = (): React.ReactElement => {
                     component={ApplicationDownloadPage}
                   />
                   <ErrorDialog />
+              
                 </ErrorContextProvider>
               </Switch>
             </Router>
           </ErrorBoundary>
-
-        </ToastProvider>
       </Provider>
     </div>
   );
