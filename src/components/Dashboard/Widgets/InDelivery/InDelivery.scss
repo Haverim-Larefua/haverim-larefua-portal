@@ -1,0 +1,26 @@
+@import '../widgets';
+.in-delivery-container {
+    @extend .widget-border;
+    max-width: 360px;
+    height: 300px;
+    padding: 26px;
+    margin-top: 48px;
+    .in-delivery-header {
+        .in-delivery-title {
+            @extend .widget-number-title;
+        }
+        .in-delivery-sub-title {
+            cursor: pointer;
+            display: flex;
+            padding-top: 5px;
+            line-height: 1;
+            .arrow-all-in-delivery {
+                margin-right: 3px;
+                width: 8px;
+                height: 11px;
+                padding: -1px;
+                padding-top: 2px;
+            }
+        }
+    }
+}

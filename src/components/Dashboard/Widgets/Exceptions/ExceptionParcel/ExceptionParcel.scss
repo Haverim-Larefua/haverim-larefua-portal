@@ -1,0 +1,45 @@
+@import '../../widgets';
+.exception-parcel-container {
+    @extend .widget-border;
+    max-width: 212px;
+    max-height: 180px;
+    min-width: 193px;
+    padding: 16px;
+    font-size: 14px;
+    .header-widget-container {
+        display: flex;
+        justify-content: space-between;
+        .parcel-id {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        .parcel-time-container {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            display: flex;
+            .parcel-time {
+                margin-left: 4px;
+            }
+            .clock-icon {
+                width: 16px;
+                height: 16px;
+                margin-top: 5px;
+            }
+        }
+    }
+    .data-container {
+        display: flex;
+        justify-content: space-between;
+        white-space: nowrap;
+        .lables {
+            flex: 1;
+            width: 10%;
+        }
+        .values {
+            flex: 1;
+            text-align: left;
+            width: 90%;
+        }
+    }
+}

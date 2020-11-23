@@ -1,4 +1,5 @@
 import React from 'react';
+import { DateUtil } from '../../../Utils/Common/DateUtil';
 import StringUtil from '../../../Utils/Common/StringUtil';
 import formatDate from '../../../Utils/dateFormatter';
 
@@ -30,7 +31,7 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
         <div className="ffh-details-cell start-date">
             <div className="ffh-details-cell__label">מועד התחלה</div>
             <div className="ffh-details-cell__value">
-                {props.currentParcel.startDate ? new Date(props.currentParcel.startDate).toLocaleDateString('en-US', { year: "2-digit", month: "2-digit", day: "2-digit" }) : "-"}
+                {props.currentParcel.startDate ? DateUtil.getDate2DigitsFormatFromDate(props.currentParcel.startDate) : "-"}
             </div>
         </div>
         <div className="ffh-details-cell start-time">

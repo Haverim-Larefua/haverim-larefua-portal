@@ -1,0 +1,38 @@
+.dashboard-container {
+    height: 100%;
+    width: 100%;
+    padding: 40px;
+    .dashboard-header-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 17px;
+        .title {
+            font-size: 30px;
+        }
+        .date {
+            font-size: 20px;
+            display: flex;
+            height: min-content;
+            .date-str {
+                border-right: 1px solid #dcdeea;
+                padding-right: 7px;
+            }
+            .day {
+                padding-left: 7px;
+            }
+        }
+    }
+    .dashboard-body-container {
+        display: flex;
+        padding-bottom: 20px;
+        .left-side {
+            flex: 2;
+            width: 25%;
+        }
+        .right-side {
+            flex: 8;
+            margin-right: 4%;
+            width: 71%;
+        }
+    }
+}

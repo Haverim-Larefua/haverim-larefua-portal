@@ -1,0 +1,27 @@
+.react-toast-notifications__container.css-1r4mxm9-ToastContainer {
+    padding-top: 67px;
+}
+
+.react-toast-notifications__toast__icon-wrapper.css-3mfg68-Icon {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.thin-scroller {
+    scrollbar-color: #777777 #d8d8d8 !important;
+    scrollbar-width: thin !important;
+    &::-webkit-scrollbar-thumb,
+     ::-webkit-scrollbar-thumb {
+        background: #777777;
+        border-radius: 6px;
+        width: 6px;
+        height: 6px;
+    }
+    &::-webkit-scrollbar,
+     ::-webkit-scrollbar {
+        background: #d8d8d8;
+        border-radius: 6px;
+        width: 6px;
+        height: 6px;
+    }
+}

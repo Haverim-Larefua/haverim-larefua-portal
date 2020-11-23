@@ -1,0 +1,48 @@
+@import '../widgets';
+@import '../../../App/App.scss';
+.exceptions-container {
+    @extend .widget-border;
+    height: 300px;
+    padding-left: 24px;
+    .exceptions-header-container {
+        display: flex;
+        padding: 24px 24px 0px 04px;
+        justify-content: space-between;
+        height: 85px;
+        .error-icon {
+            width: 35px;
+            height: 37px;
+            color: #ed2c44;
+            padding-top: 9px;
+        }
+        .number-exceptions {
+            @extend .widget-number-title;
+        }
+        .btn-navigate-all {
+            width: 252px;
+            height: 48px;
+            padding: 15px 16px 14px 17px;
+            @extend .widget-border;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            .arrow-all-exceptions {
+                margin-top: 3px;
+            }
+        }
+    }
+    .exceptions-body-container {
+        @extend .thin-scroller;
+        overflow-y: hidden;
+        overflow-x: auto;
+        padding: 20px 24px 24px 2px;
+        display: flex;
+        height: 216px;
+        .exception-parcel-container {
+            margin-right: 14px;
+            &:first-child {
+                margin-right: 0px;
+            }
+        }
+    }
+}

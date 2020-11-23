@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 
-import "./App.css";
+import "./App.scss";
 
 import Admin from "../Admin/Admin";
 import Parcels from "../Parcels/Parcels";
@@ -19,6 +19,7 @@ import { AppConstants1 } from "../../constants/AppConstants";
 import ErrorContextProvider from "../../contexts/ErrorContext";
 import ErrorDialog from "../ErrorDialog/ErrorDialog";
 import ApplicationDownloadPage from "../ApplicationDownloadPage/ApplicationDownloadPage";
+import Dashboard from "../Dashboard/Dashboard";
 
 const App: React.FC<any> = (): React.ReactElement => {
   const exclusionArray = ["/downloadApp"];
@@ -36,7 +37,7 @@ const App: React.FC<any> = (): React.ReactElement => {
             <Switch>
               <Route path="/login" component={Login} />
               <PrivateRoute exact path="/" component={Admin} />
-              <PrivateRoute path="/admin" component={Admin} />
+              <PrivateRoute path="/admin" component={Dashboard} />
 
               <ErrorContextProvider>
                 <UserContextProvider>

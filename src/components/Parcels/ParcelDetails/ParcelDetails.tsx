@@ -28,8 +28,8 @@ const ParcelDetails = ({match} : ParcelDetailsProps) => {
     }
     const { params } = match;
     const [parcelState, dispatch] : [ParcelState, React.Dispatch<IActionBase>]= useContext(parcelContext);
-    
- 
+
+
 
     const currentParcel = parcelState.parcels.find(p => p.id === parseInt(params.id));
     const deliveryStage = (currentParcel && currentParcel.parcelTracking.length > 0)
@@ -51,7 +51,7 @@ const ParcelDetails = ({match} : ParcelDetailsProps) => {
                 {currentParcel.exception ? (
                   <Status label={AppConstants.exceptionStatusName} value="exception" />
                 ) : null}
-                
+
                 <div className="ffh-toolbar__filters">
                   <Fragment key={statusFilter.title}>
                     <label className="ffh-toolbar__label">{statusFilter.title}</label>

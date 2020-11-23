@@ -3,7 +3,9 @@ import React from 'react';
 import memoize from 'memoize-one';
 import Status from '../shared/Status/Status';
 import ParcelUserComponent from './ParcelUserComponent';
+import { DateUtil } from "../../Utils/Common/DateUtil";
 import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
+
 
 const tableColumns = memoize(clickHandler => [{
                 name: AppConstants.catalogUIName,
@@ -23,7 +25,7 @@ const tableColumns = memoize(clickHandler => [{
                 selector: 'startDate',
                 sortable: true,
                 maxWidth: '140px',
-                format: row => row.startDate ? new Date(row.startDate).toLocaleDateString('en-US', { year: "2-digit", month: "2-digit", day: "2-digit" }) : null,
+                format: row => row.startDate ? DateUtil.getDate2DigitsFormat(row.startDate) : null,
                 center: true,
             },
             {

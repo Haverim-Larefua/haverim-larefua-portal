@@ -1,0 +1,61 @@
+@import '../widgets';
+.new-parcels-container {
+    @extend .widget-border;
+    max-width: 360px;
+    width: 360px;
+    height: 300px;
+    padding: 26px;
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+    .total {
+        z-index: 1;
+        text-align: center;
+        width: 79%;
+        padding-right: -9%;
+        padding-top: 59px;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: auto;
+        position: absolute;
+        .total-number {
+            @extend .widget-number-title;
+            line-height: 0.6;
+        }
+    }
+    .chart-wrapper {
+        width: 160px;
+        height: 160px;
+        margin: auto;
+    }
+    .chart-map {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 22px;
+        font-size: 16px;
+        line-height: 14px;
+        div {
+            min-width: 45%;
+            max-width: 124px;
+            padding-top: 7px;
+            .number {
+                font-size: 24px;
+            }
+            div {
+                @extend .widget-sub-number-title;
+                cursor: pointer;
+                .arrow {
+                    width: 7px;
+                    height: 10px;
+                    margin-right: 4px;
+                }
+            }
+        }
+        .no-user {
+            border-top: 4px solid#ebdffa;
+        }
+        .deliveried {
+            border-top: 4px solid#9947fd;
+        }
+    }
+}

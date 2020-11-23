@@ -24,6 +24,7 @@
     "react-data-table-component": "^6.11.5",
     "react-dom": "^16.13.1",
     "react-fontawesome": "^1.6.1",
+    "react-minimal-pie-chart": "^8.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-toast-notifications": "^2.4.0",
