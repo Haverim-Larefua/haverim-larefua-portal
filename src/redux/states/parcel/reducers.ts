@@ -98,13 +98,9 @@ export const parcelReducer = (state: ParcelState = INITIAL_STATE, action: Parcel
 
       case ASSIGN_USER_TO_PARCELS_OPTIMISTIC: {
         const updatedParcels: Parcel[] = [];
-        action.parcels.forEach((parcel: Parcel) => {
+        state.parcels.forEach((parcel: Parcel) => {
           const updatedParcel = action.parcels.find((par: Parcel) => par.id === parcel.id);
-          if (updatedParcel) {
-            updatedParcels.push(ParcelUtil.prepareOneParcelForDisplay(updatedParcel));
-          } else {
-            updatedParcels.push(parcel);
-          }
+          updatedParcels.push(updatedParcel ? ParcelUtil.prepareOneParcelForDisplay(updatedParcel) : parcel);
         });
 
         draft.parcels = updatedParcels;

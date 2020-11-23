@@ -31,8 +31,7 @@ const Table = (props) => {
     data={props.data}
     keyField='no'
     columns={props.tableColumns(props.handleCellButtonClick)}
-      
-      pagination
+    
       onSelectedRowsChange={handleChange}
       selectableRows={props.selectableRows}
       selectableRowSelected={ props.selectedRowsState ? isRowSelectedByState : null}
