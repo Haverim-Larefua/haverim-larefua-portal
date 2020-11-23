@@ -1,8 +1,7 @@
 import Option from "../models/Option";
 
 class AppConstants {
-  static readonly serverErrorMessage: string =
-    "אופס משהו השתבש, פנה אל מנהל המערכת";
+  static readonly serverErrorMessage: string = "אופס משהו השתבש, פנה אל מנהל המערכת";
   static readonly errorUIName: string = "סליחה תקלה";
   static readonly closeUIName: string = "סגירה";
 
@@ -49,15 +48,11 @@ class AppConstants {
 
   static readonly changeStatusLabel: string = "שינוי סטטוס";
 
-  static readonly deleteUserConfirmation: string =
-    "הפעולה תמחק את פרטי השליח מהמערכת";
-  static readonly deleteUserWarningConfirmation: string =
-    "ישנן חבילות בחלוקה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ";
+  static readonly deleteUserConfirmation: string = "הפעולה תמחק את פרטי השליח מהמערכת";
+  static readonly deleteUserWarningConfirmation: string = "ישנן חבילות בחלוקה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ";
 
-  static readonly deleteParcelConfirmation: string =
-    "הפעולה תמחק את החבילה מהמערכת";
-  static readonly deleteParcelWarningConfirmation: string =
-    "החבילה לא בסטטוס מוכנה לחלוקה. לא ניתן לבצע מחיקה";
+  static readonly deleteParcelConfirmation: string = "הפעולה תמחק את החבילה מהמערכת";
+  static readonly deleteParcelWarningConfirmation: string = "החבילה לא בסטטוס מוכנה לחלוקה. לא ניתן לבצע מחיקה";
 
   static readonly commentsUIName: string = "הערות";
   static readonly signatureUIName: string = "חתימה";
@@ -73,9 +68,12 @@ class AppConstants {
   static readonly exceptionStatusName: string = "בחריגה";
   static readonly deliveredStatusName: string = "נמסרה";
 
-  // Toast Messages
+  // Toast Messages / Messages
   static readonly parcelStatusChangedSuccessfully = "סטטוס החבילה השתנה בהצלחה";
   static readonly parcelStatusChangedError = "שינוי סטטוס החבילה נכשל";
+  static readonly parcelsUserChangedSuccessfully = "שיוך החבילות לשליח בוצע בהצלחה";
+  static readonly parcelsUserChangedError = "שיוך החבילות לשליח נכשל";
+  static readonly parcelAssignedToUser = "החבילה שויכה לשליח";
 
   static readonly parcelStatusOptions: Option<string>[] = [
     { label: AppConstants.readyStatusName, value: "ready" },
@@ -109,8 +107,7 @@ class AppConstants {
   static readonly iPod: string = "iPod";
   static readonly mac: string = "Mac";
 
-  static readonly downloadAppInfoText: string =
-    "אפליקציית המתנדבים של עמותת חברים לרפואה";
+  static readonly downloadAppInfoText: string = "אפליקציית המתנדבים של עמותת חברים לרפואה";
   static readonly downloadAppText: string = " להורדת האפליקציה";
 
   static readonly allWeekDetailed =

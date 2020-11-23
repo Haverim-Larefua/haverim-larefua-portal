@@ -1,77 +1,77 @@
-@import '../../../styles/colors';
-@import '../../../styles/elements';
+@import "../../../styles/colors";
+@import "../../../styles/elements";
 // Toolbar
 .ffh-toolbar {
-    align-items: center;
-    display: flex;
-    height: 120px;
-    padding: 0 5px;
-    width: 100%;
+  align-items: center;
+  display: flex;
+  height: 120px;
+  padding: 0 5px;
+  width: 100%;
 
-    
-.ffh-dropdown, .ffh-select-filter {
+  .ffh-dropdown,
+  .ffh-select-filter {
     margin-left: 25px;
     width: 160px;
-}
+  }
 }
 
 .ffh-toolbar__title {
-    font-size: 32px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 255px;
+  font-size: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 255px;
 }
 
 .ffh-toolbar__subtitle {
-    font-size: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 20px;
 }
 
 .ffh-toolbar__search {
-    background-color: $grey-light;
-    border-radius: 4px;
-    height: 40px;
-    margin-left: 1%;
-    width: 25%;
-    position: relative;
-    .ffh-select-filter__input-icon {
-        position: absolute;
-        right: 10px;
-        top: 12px;
-        opacity: 0.4;
-    }
+  background-color: $grey-light;
+  border-radius: 4px;
+  height: 40px;
+  margin-left: 1%;
+  width: 25%;
+  position: relative;
+  .ffh-select-filter__input-icon {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    opacity: 0.4;
+  }
 }
 
 .ffh-toolbar__search-input {
-    padding: 0 43px 0 0;
-    font-size: 16px;
-    border: 0;
-    height: 100%;
-    background-color: transparent;
-    width: 100%;
+  padding: 0 43px 0 0;
+  font-size: 16px;
+  border: 0;
+  height: 100%;
+  background-color: transparent;
+  width: 100%;
 }
 
 .ffh-toolbar__filters {
-    align-items: center;
-    display: flex;
+  align-items: center;
+  display: flex;
 }
 
 .ffh-toolbar__label {
-    font-weight: bold;
-    font-size: 16px;
-    margin-left: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 10px;
 }
 
-
 .ffh-toolbar__action {
-    @extend %ffh-toolbar-button;
+  @extend %ffh-toolbar-button;
 }
 
 .ffh-toolbar__immediate_action {
-    @extend %ffh-toolbar-button;
-    margin-right: 0;
-    width: initial;
-    display: flex;
-    align-items: center;
+  @extend %ffh-toolbar-button;
+  margin-right: 0;
+  width: initial;
+  display: flex;
+  align-items: center;
 }
