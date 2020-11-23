@@ -6,6 +6,7 @@ import "./Dashboard.scss";
 import Exceptions from "./Widgets/Exceptions/Exception";
 import InDelivery from "./Widgets/InDelivery/InDelivery";
 import NewParcels from "./Widgets/NewParcels/NewParcels";
+import Today from "./Widgets/Today/Today";
 
 const Dashboard = () => {
   const [allParcels, setAllParcels] = useState<Parcel[]>([]);
@@ -30,6 +31,7 @@ const Dashboard = () => {
         </div>
         <div className="right-side">
           <Exceptions exceptionParcels={allParcels} />
+          <Today parcels={allParcels} />
         </div>
       </div>
     </div>
