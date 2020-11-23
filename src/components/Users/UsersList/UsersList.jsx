@@ -75,14 +75,11 @@ const UsersList = (props) => {
 
   const days = Array.from(delivaryDaysToInitials.values());
 
-  const handleSelection = (e) => {
-    setSelectedDay(e.target.innerText);
-    let filteredUsersList = userExtendedData.users;
-    if (e.target.innerText !== AppConstants.all) {
-      filteredUsersList = userExtendedData.users.filter((user) => {
-        return user.deliveryDays.includes(e.target.innerText);
-      });
-    }
+  const handleSelection = (day) => {
+    setSelectedDay(day);
+    const filteredUsersList = userExtendedData.users.filter((user) => {
+      return user.deliveryDays.includes(day);
+    });
     setUsersList(filteredUsersList);
   }
 
