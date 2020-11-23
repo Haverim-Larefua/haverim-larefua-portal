@@ -26,7 +26,18 @@ import {
   UPDATE_PARCEL_CITIES_SUCCESS,
   ASSIGN_USER_TO_PARCELS_OPTIMISTIC,
   SEARCH_PARCELS_SUCCESS,
+  UPDATE_PARCELS_STATUS_OPTIMISTIC,
+  UpdateParcelsStatusOptimisticAction,
 } from "./types";
+import AppConstants from "../../../constants/AppConstants";
+
+export function updateParcelsStatusOptimistic(
+  userId: number,
+  status: string,
+  parcelIds: number[]
+): UpdateParcelsStatusOptimisticAction {
+  return { type: UPDATE_PARCELS_STATUS_OPTIMISTIC, userId, status, parcelIds };
+}
 
 export function loadParcelsSuccess(parcels: Parcel[]): LoadParcelsSuccessAction {
   return { type: LOAD_PARCELS_SUCCESS, parcels };
@@ -158,6 +169,19 @@ export function assignUserToParcels(parcels: Parcel[]) {
       logger.error(err);
       toastr.error("", "שיוך החבילה לשליח/ה נכשל - פנה למנהל המערכת");
     } finally {
+      dispatch(reloadParcels());
+    }
+  };
+}
+
+export function updateParcelsStatus(userId: number, status: string, parcelIds: number[]) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(updateParcelsStatusOptimistic(userId, status, parcelIds));
+      await httpService.updateParcelsStatus(userId, status, parcelIds);
+      toastr.success("", AppConstants.parcelStatusChangedSuccessfully);
+    } catch {
+      toastr.error("", AppConstants.parcelStatusChangedError);
       dispatch(reloadParcels());
     }
   };

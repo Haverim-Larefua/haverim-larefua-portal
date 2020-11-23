@@ -12,6 +12,7 @@ import {
   REMOVE_PARCEL_OPTIMISTIC,
   SEARCH_PARCELS_SUCCESS,
   UPDATE_PARCELS_ERROR,
+  UPDATE_PARCELS_STATUS_OPTIMISTIC,
   UPDATE_PARCEL_CITIES_SUCCESS,
 } from "./types";
 
@@ -34,11 +35,29 @@ const INITIAL_STATE: ParcelState = {
 export const parcelReducer = (state: ParcelState = INITIAL_STATE, action: ParcelActions): ParcelState =>
   produce(state, (draft: ParcelState) => {
     switch (action.type) {
+      case UPDATE_PARCELS_STATUS_OPTIMISTIC: {
+        draft.parcels.forEach((parcel: Parcel) => {
+          const isParcelToBeUpdatedFound = action.parcelIds.some((id: number) => id === parcel.id);
+          if (isParcelToBeUpdatedFound) {
+            parcel.parcelTracking.push({
+              status: action.status,
+              statusDate: new Date(),
+              userId: action.userId,
+              id: 0,
+              parcelId: parcel.id,
+              comments: "",
+            });
+          }
+        });
+        break;
+      }
+
       case SEARCH_PARCELS_SUCCESS: {
         draft.searchParams = action.searchParams;
         draft.searching = true;
         break;
       }
+
       case LOAD_PARCELS_SUCCESS: {
         draft.parcels = action.parcels;
         draft.searching = false;
