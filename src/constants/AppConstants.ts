@@ -72,12 +72,17 @@ class AppConstants {
   static readonly deliveringStatusName: string = "בחלוקה";
   static readonly exceptionStatusName: string = "בחריגה";
   static readonly deliveredStatusName: string = "נמסרה";
+
+  // Toast Messages
+  static readonly parcelStatusChangedSuccessfully = "סטטוס החבילה השתנה בהצלחה";
+  static readonly parcelStatusChangedError = "שינוי סטטוס החבילה נכשל";
+
   static readonly parcelStatusOptions: Option<string>[] = [
-    { label: AppConstants.readyStatusName, value: 'ready' },
-    { label: AppConstants.deliveringStatusName, value: 'distribution' },
-    { label: AppConstants.exceptionStatusName, value: 'exception' },
-    { label: AppConstants.deliveredStatusName, value: 'delivered' },
-  ]
+    { label: AppConstants.readyStatusName, value: "ready" },
+    { label: AppConstants.deliveringStatusName, value: "distribution" },
+    { label: AppConstants.exceptionStatusName, value: "exception" },
+    { label: AppConstants.deliveredStatusName, value: "delivered" },
+  ];
 
   // Delivery days names
   static readonly allWeek: string = "כל השבוע";
@@ -129,16 +134,16 @@ export const delivaryDaysToInitials = new Map<string, string>([
   [AppConstants.tuesday, AppConstants.tuesdayInitial],
   [AppConstants.wednesday, AppConstants.wednesdayInitial],
   [AppConstants.thursday, AppConstants.thursdayInitial],
-  [AppConstants.friday, AppConstants.fridayInitial]
+  [AppConstants.friday, AppConstants.fridayInitial],
 ]);
 
 //TODO: Rename to AppConstants after move all AppConstants to i18n
 export const AppConstants1 = {
   admin: {
-    token: '',
-    firstName: '',
-    lastName: ''
-  }
-}
+    token: "",
+    firstName: "",
+    lastName: "",
+  },
+};
 
 export default AppConstants;

@@ -127,7 +127,7 @@ class HttpService {
   }
 
   // TODO: need to send all as bulk to server, for now keeping like this
-  async addParcels(parcels: Parcel[]) {
+  async addParcels(parcels: Parcel[]): Promise<Parcel[]> {
     const promises: any[] = [];
     if (parcels?.length > 0) {
       parcels.forEach((parcel) => {
@@ -171,6 +171,18 @@ class HttpService {
     return this.sendHttpRequest<string[]>(
       `${Configuration.URLS.PARCELS}/cityOptions`,
       HttpMethod.GET
+    );
+  }
+
+  async updateParcelsStatus(
+    userId: number,
+    status: string,
+    parcelIds: number[]
+  ) {
+    return this.sendHttpRequest(
+      `${Configuration.URLS.PARCELS}/user/${userId}/${status}`,
+      HttpMethod.PUT,
+      { userId, status, parcelIds }
     );
   }
 

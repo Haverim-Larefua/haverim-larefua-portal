@@ -1,12 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ToastProvider } from "react-toast-notifications";
-
 import "./App.scss";
-
-import Admin from "../Admin/Admin";
 import Parcels from "../Parcels/Parcels";
-import ParcelContextProvider from "../../contexts/parcelContext";
 import UserContextProvider from "../../contexts/userContext";
 import Users from "../Users/Users";
 import Header from "../shared/Header/Header";
@@ -20,48 +15,59 @@ import ErrorContextProvider from "../../contexts/ErrorContext";
 import ErrorDialog from "../ErrorDialog/ErrorDialog";
 import ApplicationDownloadPage from "../ApplicationDownloadPage/ApplicationDownloadPage";
 import Dashboard from "../Dashboard/Dashboard";
+import { Provider } from "react-redux";
+import configureStore from "../../redux/store";
+import ReduxToastr from "react-redux-toastr";
 
 const App: React.FC<any> = (): React.ReactElement => {
   const exclusionArray = ["/downloadApp"];
 
   const admin = localStorage.getItem("admin");
   AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
+  const reduxStore = configureStore();
 
   return (
     <div className="App" id="wrapper">
-      <ToastProvider placement="top-left" autoDismiss>
-        <ErrorBoundary>
-          <Router>
-            {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />}
+      <Provider store={reduxStore}>
+      <ReduxToastr
+            timeOut={4000}
+            newestOnTop={true}
+            preventDuplicates
+            position="top-left"
+            transitionIn="fadeIn"
+            transitionOut="fadeOut"
+            progressBar
+            closeOnToastrClick/>
+          <ErrorBoundary>
+            <Router>
+              {exclusionArray.indexOf(window.location.pathname) < 0 && <Header />}
+              <Switch>
+                <Route path="/login" component={Login} />
+                <PrivateRoute exact path="/" component={Dashboard} />
+                <PrivateRoute path="/admin" component={Dashboard} />
 
-            <Switch>
-              <Route path="/login" component={Login} />
-              <PrivateRoute exact path="/" component={Admin} />
-              <PrivateRoute path="/admin" component={Dashboard} />
+                <ErrorContextProvider>
+                  <UserContextProvider>
+                    <CitiesContextProvider>
+                      <PrivateRoute path="/users" component={Users} />
+                    </CitiesContextProvider>
+                      <PrivateRoute path="/parcels" component={Parcels} />
+                      <PrivateRoute
+                        path="/parcel/:id"
+                        component={ParcelDetails}
+                      />
+                  </UserContextProvider>
+                  <Route
+                    path="/downloadApp"
+                    component={ApplicationDownloadPage}
+                  />
+                  <ErrorDialog />
 
-              <ErrorContextProvider>
-                <UserContextProvider>
-                  <CitiesContextProvider>
-                    <PrivateRoute path="/users" component={Users} />
-                  </CitiesContextProvider>
-                  <ParcelContextProvider>
-                    <PrivateRoute path="/parcels" component={Parcels} />
-                    <PrivateRoute
-                      path="/parcel/:id"
-                      component={ParcelDetails}
-                    />
-                  </ParcelContextProvider>
-                </UserContextProvider>
-                <Route
-                  path="/downloadApp"
-                  component={ApplicationDownloadPage}
-                />
-                <ErrorDialog />
-              </ErrorContextProvider>
-            </Switch>
-          </Router>
-        </ErrorBoundary>
-      </ToastProvider>
+                </ErrorContextProvider>
+              </Switch>
+            </Router>
+          </ErrorBoundary>
+      </Provider>
     </div>
   );
 };

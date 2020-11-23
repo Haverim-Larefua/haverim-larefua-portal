@@ -177,7 +177,7 @@ const Users = () => {
   return (
     <div className="users-container">
       <Table
-        data={userExtendedData.users}
+        data={userExtendedData.users.filter(user => user.active)}
         tableColumns={tableColumns}
         handleCellButtonClick={cellButtonClicked}
         subHeaderComponent={
