@@ -14,6 +14,7 @@ import './Parcels.scss';
 import * as parcelActions from "../../redux/states/parcel/actions";
 import {  connect } from 'react-redux';
 import {bindActionCreators } from "redux";
+import queryString from 'query-string';
 
 const MINUTE = 60000;
 const Parcels = ({error, cities, parcels, searching, actions} ) => {
@@ -37,6 +38,13 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
 
   useEffect(() => {
+    const queryStringParams = queryString.parse(window.location.search);
+    if(queryStringParams?.status) {
+      setStatusFilterTerm(queryStringParams.status);
+    }
+  }, [])
+
+  useEffect(() => {
     actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm});
     const timer = setInterval(() => {
       actions.reloadParcels();
@@ -44,7 +52,6 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     return () => { clearInterval(timer) };
   }, [actions, cityFilterTerm, nameSearchTerm, statusFilterTerm]);
 
- 
   useEffect(() => {
     function handleDeleteParcel() {
       if (deleteParcelId && deleteParcelId !== "") {
@@ -173,7 +180,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true, showOptionAll: false },
     { title: AppConstants.cityUIName, name: "cities", values: cities.map(city => ({label: city, value: city})), filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
   ];
- 
+
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
     const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;

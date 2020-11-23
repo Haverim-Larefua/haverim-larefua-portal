@@ -5,19 +5,23 @@ import { ReactComponent as Fireworks } from "../../../../assets/icons/fiireworks
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import { ReactComponent as Success } from "../../../../assets/icons/success.svg";
 import './Today.scss';
+import httpService from "../../../../services/http";
 
 
-interface TodayProps {
-    parcels: Parcel[];
-  }
-
-  const Today = ({ parcels }: TodayProps) => {
+  const Today = () => {
     const [totalNumber, setTotalNumber] = useState(0);
     const history = useHistory();
 
-    useEffect(() => {
-      setTotalNumber(parcels.length);
-    }, [parcels]);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  async function init() {
+    const data = await httpService.getParcels("delivery", "", "");
+    setTotalNumber(data.length);
+  }
+
 
     const navigateToParcelsPage = () => {
       history.push("/parcels");

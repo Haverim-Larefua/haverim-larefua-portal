@@ -3,28 +3,31 @@ import { PieChart } from "react-minimal-pie-chart";
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import "./NewParcels.scss";
 import { useHistory } from "react-router-dom";
-import Parcel from "../../../../models/Parcel";
+import httpService from "../../../../services/http";
 
-interface NewParcelsProps {
-  readyParcels: Parcel[];
-}
 
-const NewParcels = ({ readyParcels }: NewParcelsProps) => {
+const NewParcels = () => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [noUserNumber, setNoUserNumber] = useState(0);
   const [readyDeliveryNumber, setReadyDeliveryNumber] = useState(0);
   const history = useHistory();
 
   useEffect(() => {
-    setTotalNumber(readyParcels.length);
-    const noUser = readyParcels.filter((parcel) => !parcel.user).length;
+    init();
+  }, []);
+
+  async function init() {
+    const data = await httpService.getParcels("ready", "", "");
+    setTotalNumber(data.length);
+    const noUser = data.filter((parcel) => !parcel.user).length;
     setNoUserNumber(noUser);
-    const noDelivery = readyParcels.length - noUser;
+    const noDelivery = data.length - noUser;
     setReadyDeliveryNumber(noDelivery);
-  }, [readyParcels]);
+  }
+
 
   const navigateToParcelsPage = () => {
-    history.push("/parcels");
+    history.push("/parcels?status=ready");
   }
 
   return (
@@ -38,7 +41,7 @@ const NewParcels = ({ readyParcels }: NewParcelsProps) => {
           lineWidth={20}
           data={[
             { title: "מוכנות לחלוקה", value: readyDeliveryNumber, color: "#9947fd" },
-            { title: "ללא שיוך", value: noUserNumber, color: "#ebdffa" },
+            { title: "ללא שיוך", value: noUserNumber, color: "#ebdffa"  },
           ]}
           totalValue={totalNumber}
         />

@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Parcel from "../../models/Parcel";
-import httpService from "../../services/http";
+import React from "react";
 import { DateUtil } from "../../Utils/Common/DateUtil";
 import "./Dashboard.scss";
 import Exceptions from "./Widgets/Exceptions/Exception";
@@ -9,11 +7,6 @@ import NewParcels from "./Widgets/NewParcels/NewParcels";
 import Today from "./Widgets/Today/Today";
 
 const Dashboard = () => {
-  const [allParcels, setAllParcels] = useState<Parcel[]>([]);
-
-  useEffect(() => {
-    httpService.getParcels().then((data) => setAllParcels(data));
-  }, []);
 
   return (
     <div className="dashboard-container">
@@ -26,12 +19,12 @@ const Dashboard = () => {
       </div>
       <div className="dashboard-body-container">
         <div className="left-side">
-          <NewParcels readyParcels={allParcels} />
-          <InDelivery inDeliveryParcels={allParcels} />
+          <NewParcels/>
+          <InDelivery/>
         </div>
         <div className="right-side">
-          <Exceptions exceptionParcels={allParcels} />
-          <Today parcels={allParcels} />
+          <Exceptions />
+          <Today />
         </div>
       </div>
     </div>

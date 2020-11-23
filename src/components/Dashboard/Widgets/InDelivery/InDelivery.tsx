@@ -1,20 +1,26 @@
 import Parcel from "../../../../models/Parcel";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import httpService from "../../../../services/http";
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import './InDelivery.scss'
 
-interface InDeliveryProps {
-    inDeliveryParcels: Parcel[];
-  }
 
-  const InDelivery = ({ inDeliveryParcels }: InDeliveryProps) => {
+
+  const InDelivery = () => {
+
     const [totalNumber, setTotalNumber] = useState(0);
     const history = useHistory();
 
     useEffect(() => {
+      init();
+    }, []);
+
+    async function init() {
+      const data = await httpService.getParcels("ready", "", "");
+      const inDeliveryParcels = data.filter((parcel: Parcel) => parcel.user);
       setTotalNumber(inDeliveryParcels.length);
-    }, [inDeliveryParcels]);
+    }
 
     const navigateToParcelsPage = () => {
       history.push("/parcels");
