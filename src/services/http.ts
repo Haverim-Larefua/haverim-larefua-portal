@@ -174,6 +174,18 @@ class HttpService {
     );
   }
 
+  async updateParcelsStatus(
+    userId: number,
+    status: string,
+    parcelIds: number[]
+  ) {
+    return this.sendHttpRequest(
+      `${Configuration.URLS.PARCELS}/user/${userId}/${status}`,
+      HttpMethod.PUT,
+      { userId, status, parcelIds }
+    );
+  }
+
   //////////////////////////////////// Users ////////////////////////////////////
   async getUsers(): Promise<User[]> {
     const users: User[] = await this.sendHttpRequest(
