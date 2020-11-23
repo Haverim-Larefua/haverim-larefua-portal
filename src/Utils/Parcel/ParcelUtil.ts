@@ -17,7 +17,7 @@ export class ParcelUtil {
 
   //sort parcelTracking by their updatedDate
   static sortParcelTracking(parcelTracking: ParcelTracking[]) {
-    return parcelTracking ? parcelTracking.sort(ParcelUtil.compareParcelTracking) : parcelTracking;
+    return parcelTracking ? [...parcelTracking].sort(ParcelUtil.compareParcelTracking) : parcelTracking;
   }
 
   static parcelsEqual(a: Parcel, b: Parcel): boolean {
