@@ -1,15 +1,23 @@
 import ISearchParcelsParams from "../../../models/ISearchParcelsParams";
 import Parcel from "../../../models/Parcel";
+
 export const LOAD_PARCELS_SUCCESS = "LOAD_PARCELS_SUCCESS";
 export const ADD_PARCEL_OPTIMISTIC = "ADD_PARCEL_OPTIMISTIC";
 export const ADD_PARCELS_SUCCESS = "ADD_PARCELS_SUCCESS";
 export const EDIT_PARCEL_OPTIMISTIC = "EDIT_PARCEL_OPTIMISTIC";
 export const REMOVE_PARCEL_OPTIMISTIC = "REMOVE_PARCEL_OPTIMISTIC";
 export const UPDATE_PARCEL_CITIES_SUCCESS = "UPDATE_PARCEL_CITIES_SUCCESS";
-export const ASSIGN_USER_TO_PARCELS_OPTIMISTIC =
-  "ASSIGN_USER_TO_PARCELS_OPTIMISTIC";
+export const ASSIGN_USER_TO_PARCELS_OPTIMISTIC = "ASSIGN_USER_TO_PARCELS_OPTIMISTIC";
 export const UPDATE_PARCELS_ERROR = "UPDATE_PARCELS_ERROR";
 export const SEARCH_PARCELS_SUCCESS = "SEARCH_PARCELS_SUCCESS";
+export const UPDATE_PARCELS_STATUS_OPTIMISTIC = "UPDATE_PARCELS_STATUS_OPTIMISTIC";
+
+export interface UpdateParcelsStatusOptimisticAction {
+  type: typeof UPDATE_PARCELS_STATUS_OPTIMISTIC;
+  userId: number;
+  status: string;
+  parcelIds: number[];
+}
 
 export interface LoadParcelsSuccessAction {
   type: typeof LOAD_PARCELS_SUCCESS;
@@ -58,4 +66,5 @@ export type ParcelActions =
   | UpdateParcelCitiesSuccessAction
   | AssignUserToParcelOptimisticAction
   | UpdateParcelsErrorAction
-  | SearchParcelsSuccessAction;
+  | SearchParcelsSuccessAction
+  | UpdateParcelsStatusOptimisticAction;
