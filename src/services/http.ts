@@ -61,11 +61,7 @@ class HttpService {
       try {
         axios(httpRequestOptions)
           .then((response) => {
-            logger.debug(
-              `[http] sendHttpRequest:: response.data: ${JSON.stringify(
-                response.data
-              )}`
-            );
+            logger.debug(`[http] sendHttpRequest:: response.data: ${JSON.stringify(response.data)}`);
             resolve(response.data);
           })
           .catch((error) => {
@@ -85,17 +81,12 @@ class HttpService {
   }
 
   // //////////////////////////////////// Push ////////////////////////////////////
-  async sendPushNotification(
-    userId: string,
-    title: string,
-    subtitle: string,
-    message: string
-  ) {
-    return this.sendHttpRequest(
-      `${Configuration.URLS.PUSH}/push/${userId}`,
-      HttpMethod.PUT,
-      { title, subtitle, message }
-    );
+  async sendPushNotification(userId: string, title: string, subtitle: string, message: string) {
+    return this.sendHttpRequest(`${Configuration.URLS.PUSH}/push/${userId}`, HttpMethod.PUT, {
+      title,
+      subtitle,
+      message,
+    });
   }
 
   // async sendPushSubscription(subscription: PushSubscription, fingerprint: number ) {
@@ -104,11 +95,7 @@ class HttpService {
   // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels(
-    statusFilterTerm?: string,
-    cityFilterTerm?: string,
-    nameSearchTerm?: string
-  ): Promise<Parcel[]> {
+  async getParcels(statusFilterTerm?: string, cityFilterTerm?: string, nameSearchTerm?: string): Promise<Parcel[]> {
     let url = `${Configuration.URLS.PARCELS}?`;
     url += statusFilterTerm ? `statusFilterTerm=${statusFilterTerm}&` : "";
     url += cityFilterTerm ? `cityFilterTerm=${cityFilterTerm}&` : "";
@@ -119,11 +106,7 @@ class HttpService {
   }
 
   async createParcel(aParcel: Parcel) {
-    return this.sendHttpRequest(
-      Configuration.URLS.PARCELS,
-      HttpMethod.POST,
-      aParcel
-    );
+    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, aParcel);
   }
 
   // TODO: need to send all as bulk to server, for now keeping like this
@@ -131,85 +114,51 @@ class HttpService {
     const promises: any[] = [];
     if (parcels?.length > 0) {
       parcels.forEach((parcel) => {
-        promises.push(
-          this.sendHttpRequest(
-            Configuration.URLS.PARCELS,
-            HttpMethod.POST,
-            parcel
-          )
-        );
+        promises.push(this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, parcel));
       });
     }
     return Promise.all(promises);
   }
 
   async updateParcel(aParcel: Parcel) {
-    return this.sendHttpRequest(
-      Configuration.URLS.PARCELS,
-      HttpMethod.PUT,
-      aParcel
-    );
+    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.PUT, aParcel);
   }
 
   async deleteParcel(pacelId: number) {
     // only mark the parcel as deleted - but do not really delete it
-    return await this.sendHttpRequest(
-      `${Configuration.URLS.PARCELS}/${pacelId}/1`,
-      HttpMethod.DELETE
-    );
+    return await this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${pacelId}/1`, HttpMethod.DELETE);
   }
 
   async assignUserToParcels(userId: number, parcelsId: number[]) {
-    return this.sendHttpRequest(
-      `${Configuration.URLS.PARCELS}/assign/${userId}`,
-      HttpMethod.PUT,
-      parcelsId
-    );
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/assign/${userId}`, HttpMethod.PUT, parcelsId);
   }
 
   async getParcelsCityOptions() {
-    return this.sendHttpRequest<string[]>(
-      `${Configuration.URLS.PARCELS}/cityOptions`,
-      HttpMethod.GET
-    );
+    return this.sendHttpRequest<string[]>(`${Configuration.URLS.PARCELS}/cityOptions`, HttpMethod.GET);
   }
 
-  async updateParcelsStatus(
-    userId: number,
-    status: string,
-    parcelIds: number[]
-  ) {
-    return this.sendHttpRequest(
-      `${Configuration.URLS.PARCELS}/user/${userId}/${status}`,
-      HttpMethod.PUT,
-      { userId, status, parcelIds }
-    );
+  async updateParcelsStatus(userId: number, status: string, parcels: number[]) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/user/${userId}/${status}`, HttpMethod.PUT, {
+      userId,
+      status,
+      parcels,
+    });
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
   async getUsers(): Promise<User[]> {
-    const users: User[] = await this.sendHttpRequest(
-      Configuration.URLS.USERS,
-      HttpMethod.GET
-    );
+    const users: User[] = await this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.GET);
     return UserUtil.prepareUsersForDisplay(users);
   }
 
   async getUserById(id: number): Promise<User> {
-    const user: User = await this.sendHttpRequest(
-      `${Configuration.URLS.USERS}/${id}`,
-      HttpMethod.GET
-    );
+    const user: User = await this.sendHttpRequest(`${Configuration.URLS.USERS}/${id}`, HttpMethod.GET);
     return UserUtil.prepareOneUserForDisplay(user);
   }
 
   async createUser(aUser: User): Promise<{ id: number }> {
     const user = UserUtil.prepareOneUserForDBUpdate(aUser);
-    return this.sendHttpRequest(
-      Configuration.URLS.USERS,
-      HttpMethod.POST,
-      user
-    );
+    return this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, user);
   }
 
   // TODO: need to send all as bulk to server, for now keeping like this
@@ -218,9 +167,7 @@ class HttpService {
     if (users && users.length > 0) {
       users.forEach((user) => {
         const dbUsr = UserUtil.prepareOneUserForDBUpdate(user);
-        promises.push(
-          this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, dbUsr)
-        );
+        promises.push(this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.POST, dbUsr));
       });
     }
     return Promise.all(promises);
@@ -228,34 +175,22 @@ class HttpService {
 
   async updateUser(aUser: User) {
     const user = UserUtil.prepareOneUserForDBUpdate(aUser);
-    return this.sendHttpRequest(
-      `${Configuration.URLS.USERS}/${aUser.id}`,
-      HttpMethod.PUT,
-      user
-    );
+    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${aUser.id}`, HttpMethod.PUT, user);
   }
 
   async deleteUser(id: number) {
-    return this.sendHttpRequest(
-      `${Configuration.URLS.USERS}/${id}`,
-      HttpMethod.DELETE
-    );
+    return this.sendHttpRequest(`${Configuration.URLS.USERS}/${id}`, HttpMethod.DELETE);
   }
 
   // TODO: this should be a query in DB
-  async searchUsers(
-    dayFilterTerm: string,
-    cityFilterTerm: string,
-    nameSearchTerm: string
-  ) {
+  async searchUsers(dayFilterTerm: string, cityFilterTerm: string, nameSearchTerm: string) {
     let users = await this.getUsers();
 
     if (users?.length > 0 && nameSearchTerm !== "") {
       const searchTerm = nameSearchTerm.trim().toLowerCase();
       users = users.filter(
         (item: User) =>
-          item.firstName?.toLowerCase().includes(searchTerm) ||
-          item.lastName?.toLowerCase().includes(searchTerm)
+          item.firstName?.toLowerCase().includes(searchTerm) || item.lastName?.toLowerCase().includes(searchTerm)
       );
     }
 
@@ -267,9 +202,7 @@ class HttpService {
     if (users?.length > 0 && dayFilterTerm !== "") {
       const searchTerm = dayFilterTerm.trim().toLowerCase();
       users = users.filter(
-        (item: User) =>
-          item.deliveryDays.includes(searchTerm) ||
-          item.deliveryDays.includes(AppConstants.allWeek)
+        (item: User) => item.deliveryDays.includes(searchTerm) || item.deliveryDays.includes(AppConstants.allWeek)
       );
     }
 
@@ -290,10 +223,7 @@ class HttpService {
     });
   }
 
-  async createAdmin(
-    username: string,
-    password: string
-  ): Promise<IAuthAdminResponse> {
+  async createAdmin(username: string, password: string): Promise<IAuthAdminResponse> {
     return this.sendHttpRequest(Configuration.URLS.ADMIN, HttpMethod.POST, {
       username,
       password,

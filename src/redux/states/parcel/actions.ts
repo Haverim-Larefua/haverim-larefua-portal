@@ -13,7 +13,6 @@ import {
   AddParcelsSuccessAction,
   EditParcelOptimisticAction,
   RemoveParcelOptimisticAction,
-  AssignUserToParcelOptimisticAction,
   UpdateParcelCitiesSuccessAction,
   UPDATE_PARCELS_ERROR,
   UpdateParcelsErrorAction,
@@ -24,7 +23,6 @@ import {
   EDIT_PARCEL_OPTIMISTIC,
   REMOVE_PARCEL_OPTIMISTIC,
   UPDATE_PARCEL_CITIES_SUCCESS,
-  ASSIGN_USER_TO_PARCELS_OPTIMISTIC,
   SEARCH_PARCELS_SUCCESS,
   UPDATE_PARCELS_STATUS_OPTIMISTIC,
   UpdateParcelsStatusOptimisticAction,
@@ -61,10 +59,6 @@ export function removeParcelOptimistic(parcelId: number): RemoveParcelOptimistic
 
 export function updateParcelsCitiesSuccess(cities: string[]): UpdateParcelCitiesSuccessAction {
   return { type: UPDATE_PARCEL_CITIES_SUCCESS, cities };
-}
-
-export function assignUserToParcelsOptimistic(parcels: Parcel[]): AssignUserToParcelOptimisticAction {
-  return { type: ASSIGN_USER_TO_PARCELS_OPTIMISTIC, parcels };
 }
 
 export function parcelsError(error: string): UpdateParcelsErrorAction {
@@ -159,15 +153,14 @@ export function editParcel(parcel: Parcel) {
   };
 }
 
-export function assignUserToParcels(parcels: Parcel[]) {
+export function assignUserToParcels(parcelsToAssociate: number[], userId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(assignUserToParcelsOptimistic(parcels));
-      const parcelIds = parcels.map((parcel) => parcel.id);
-      await httpService.assignUserToParcels(parcels[0].currentUserId, parcelIds);
+      await httpService.assignUserToParcels(userId, parcelsToAssociate);
+      toastr.success("", AppConstants.parcelsUserChangedSuccessfully);
     } catch (err) {
       logger.error(err);
-      toastr.error("", "שיוך החבילה לשליח/ה נכשל - פנה למנהל המערכת");
+      toastr.error("", AppConstants.parcelsUserChangedError);
     } finally {
       dispatch(reloadParcels());
     }

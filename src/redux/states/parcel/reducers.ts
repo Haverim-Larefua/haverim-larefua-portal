@@ -5,7 +5,6 @@ import { ParcelUtil } from "../../../Utils/Parcel/ParcelUtil";
 import {
   ADD_PARCELS_SUCCESS,
   ADD_PARCEL_OPTIMISTIC,
-  ASSIGN_USER_TO_PARCELS_OPTIMISTIC,
   EDIT_PARCEL_OPTIMISTIC,
   LOAD_PARCELS_SUCCESS,
   ParcelActions,
@@ -93,17 +92,6 @@ export const parcelReducer = (state: ParcelState = INITIAL_STATE, action: Parcel
 
       case UPDATE_PARCEL_CITIES_SUCCESS: {
         draft.cities = action.cities;
-        break;
-      }
-
-      case ASSIGN_USER_TO_PARCELS_OPTIMISTIC: {
-        const updatedParcels: Parcel[] = [];
-        state.parcels.forEach((parcel: Parcel) => {
-          const updatedParcel = action.parcels.find((par: Parcel) => par.id === parcel.id);
-          updatedParcels.push(updatedParcel ? ParcelUtil.prepareOneParcelForDisplay(updatedParcel) : parcel);
-        });
-
-        draft.parcels = updatedParcels;
         break;
       }
 

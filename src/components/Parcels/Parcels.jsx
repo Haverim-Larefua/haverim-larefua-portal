@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
-import { userContext } from "../../contexts/userContext";
 import AppConstants from "../../constants/AppConstants";
 import logger from "../../Utils/logger";
-import UsersModal from "../Users/UsersList/UsersModal";
-import UsersList from "../Users/UsersList/UsersList";
+import AssignUserToParcelsModal from "./AssignUserToParcelsModal/AssignUserToParcelsModal";
 import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
 import './Parcels.scss';
 import * as parcelActions from "../../redux/states/parcel/actions";
@@ -18,8 +16,6 @@ import queryString from 'query-string';
 
 const MINUTE = 60000;
 const Parcels = ({error, cities, parcels, searching, actions} ) => {
-  const [userExtendedData] = useContext(userContext);
-
   const statuses = AppConstants.parcelStatusOptions;
 
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
@@ -30,9 +26,6 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
 
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
-
-  const [selectedUser, setSelectedUser] = useState();
-
   const [deleteParcelId, setDeleteParcelId] = useState("");
   const [deleteParcelText, setDeleteParcelText] = useState("");
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
@@ -80,38 +73,6 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     setOpenUsersModal(false);
   };
 
-  const updateSelectedUser= (userId) => {
-    logger.log('[Parcels] updateSelectedUser', userId);
-    setSelectedUser(userId);
-  }
-
-  const associateUserToOneParcel = (userId, parcelId) => {
-    const parcel = { ...parcels.find(p => p.id === parcelId) };
-    parcel.currentUserId = userId;
-    parcel.user = userExtendedData.users.find(u => u.id === userId);
-    return parcel;
-  };
-
-  const associateUserToListOfParcels = (parcelsToAssociate, userId) => {
-    logger.log('[Parcels] associateUserToListOfParcels', parcelsToAssociate, userId);
-
-    const parcels = [];
-    if (parcelsToAssociate && parcelsToAssociate.length > 0 ) {
-      const uId = parseInt(userId);
-      parcelsToAssociate.forEach(id => {
-        parcels.push(associateUserToOneParcel(uId, parseInt(id)));
-      });
-      actions.assignUserToParcels(parcels);
-    }
-  }
-
-  const associateUserToSelectedParcels = () => {
-    logger.log('[Parcels] associateUserToParcels', selectedRowsState, selectedUser);
-    hideUsersModal();
-    associateUserToListOfParcels(parcelsToAssociate, selectedUser);
-  }
-
-  //selectedRowsState = { allSelected, selectedCount, selectedRows }
   const onSelectedRowsChanged = selectedRowsState => {
     logger.log('[Parcels] onSelectedRowsChanged ', selectedRowsState);
     setSelectedRowsState(selectedRowsState);
@@ -203,9 +164,8 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   return (
     <div className="parcels-table-conatiner">
       {openUsersModal &&
-      <UsersModal show={openUsersModal} handleClose={hideUsersModal} handleAction={associateUserToSelectedParcels}>
-        <UsersList updateSelectedUser={updateSelectedUser}/>
-      </UsersModal>
+      <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal} >
+      </AssignUserToParcelsModal>
     }
       <Table
         data={parcels}

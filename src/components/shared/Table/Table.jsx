@@ -39,6 +39,7 @@ const Table = (props) => {
       customStyles={tableStyles}
       noHeader
       subHeader
+      pagination
       subHeaderComponent={props.subHeaderComponent}
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
