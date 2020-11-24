@@ -37,6 +37,7 @@ const ParcelDetails = ({ match, parcels, actions }: ParcelDetailsProps) => {
       ? { status: currentParcel.parcelTracking[0].status, userId: currentParcel.parcelTracking[0].userId }
       : "";
   const deliveryTracking = currentParcel && currentParcel.parcelTracking.length > 0 ? currentParcel.parcelTracking : [];
+  const currentStatus = AppConstants.parcelStatusOptions.find((p) => p.value === currentParcel?.parcelTrackingStatus);
   const statusFilter = {
     title: AppConstants.changeStatusLabel,
     name: "status",
@@ -77,6 +78,7 @@ const ParcelDetails = ({ match, parcels, actions }: ParcelDetailsProps) => {
               showOptionAll={false}
               isDisabled={statusFilter.isDisabled}
               onSelection={updateParcelStatus}
+              defaultValue={currentStatus}
             />
           </Fragment>
         </div>
