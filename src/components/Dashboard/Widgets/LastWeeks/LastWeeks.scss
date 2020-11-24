@@ -1,0 +1,9 @@
+@import '../Widgets';
+.last-weeks-container {
+    @extend .widget-border;
+    max-width: 360px;
+    width: 360px;
+    height: 300px;
+    padding: 26px;
+    margin-right: 20px;
+}

@@ -33,6 +33,11 @@
             flex: 8;
             margin-right: 4%;
             width: 71%;
+            .second-line {
+                margin-top: 48px;
+                display: flex;
+                justify-content: space-between;
+            }
         }
     }
 }

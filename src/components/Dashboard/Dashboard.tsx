@@ -3,6 +3,8 @@ import { DateUtil } from "../../Utils/Common/DateUtil";
 import "./Dashboard.scss";
 import Exceptions from "./Widgets/Exceptions/Exception";
 import InDelivery from "./Widgets/InDelivery/InDelivery";
+import LastWeek from "./Widgets/LastWeek/LastWeek";
+import LastWeeks from "./Widgets/LastWeeks/LastWeeks";
 import NewParcels from "./Widgets/NewParcels/NewParcels";
 import Today from "./Widgets/Today/Today";
 
@@ -24,7 +26,12 @@ const Dashboard = () => {
         </div>
         <div className="right-side">
           <Exceptions />
-          <Today />
+          <div className="second-line">
+              <Today />
+               <LastWeek />
+               <LastWeeks />
+          </div>
+
         </div>
       </div>
     </div>
