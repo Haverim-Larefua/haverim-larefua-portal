@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import { PieChart } from "react-minimal-pie-chart";
+import { PieChart } from "react-minimal-pie-chart";
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import "./NewParcels.scss";
 import { useHistory } from "react-router-dom";
@@ -37,14 +37,14 @@ const NewParcels = () => {
         <div>טרום חלוקה</div>
       </div>
       <div className="chart-wrapper">
-        {/* <PieChart
+        <PieChart
           lineWidth={20}
           data={[
             { title: "מוכנות לחלוקה", value: readyDeliveryNumber, color: "#9947fd" },
             { title: "ללא שיוך", value: noUserNumber, color: "#ebdffa"  },
           ]}
           totalValue={totalNumber}
-        /> */}
+        />
       </div>
       <div className="chart-map">
         <div className="no-user">
