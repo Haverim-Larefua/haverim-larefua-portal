@@ -1,31 +1,27 @@
-import React, { useContext } from 'react';
-import { userContext } from '../../../contexts/userContext';
+import React from 'react';
 import './UserDetails.scss';
 import Initials from '../UsersList/Initials';
 import ClickOutsideHandler from '../../shared/ClickOutsideHandler/ClickOutsideHandler';
+import {connect} from "react-redux";
 
-
-const UserDetails = (props) => {
-
-  const [users] = useContext(userContext);
-
+const UserDetails = ({users, user, initials, onClickOutside, initialsColors, show }) => {
   const getDeliveryUserById = (id) => {
-    if (users.users.length > 0) {
-      const deliveryUser = users.users.find(u => u.id === id);
+    if (users.length > 0) {
+      const deliveryUser = users.find(u => u.id === id);
       return deliveryUser;
     }
   }
 
-  const userDetails = getDeliveryUserById(parseInt(props.user));
+  const userDetails = getDeliveryUserById(parseInt(user));
 
 
-  return props.show ? (
+  return show ? (
 
-    <ClickOutsideHandler onClickOutside={props.onClickOutside}>
+    <ClickOutsideHandler onClickOutside={onClickOutside}>
       <div className="ffh-user-details">
         <div className="ffh-user-details__item ffh-user-details__user">
           <div className="ffh-user-details__user-name">
-            <Initials initialsColors={props.initialsColors} initials={props.initials} />
+            <Initials initialsColors={initialsColors} initials={initials} />
             {userDetails.firstName} {userDetails.lastName}
           </div>
         </div>
@@ -46,4 +42,10 @@ const UserDetails = (props) => {
   ) : <></>;
 }
 
-export default UserDetails;
+const mapStateToProps =(appState) => {
+  return {
+    users: appState.user.users,
+  }
+}
+
+export default connect(mapStateToProps)(UserDetails);

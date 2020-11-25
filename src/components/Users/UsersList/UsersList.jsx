@@ -1,65 +1,55 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import './UsersList.scss';
-import { userContext } from "../../../contexts/userContext";
 import createInitials from '../../../Utils/User/InitialsCreator';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import UserListItem from './UserListItem';
 import AppConstants, { delivaryDaysToInitials } from "../../../constants/AppConstants";
 import Option from "../../../models/Option";
+import {connect} from "react-redux";
 
-const UsersList = (props) => {
-  const [userExtendedData] = useContext(userContext);
+const UsersList = ({users, updateSelectedUser}) => {
   const [options, setOptions] = useState([]);
   const [searchInputTerm, setSearchInputTerm] = useState("");
-  const [usersList, setUsersList] = useState([]);
+  const [filteredUsersList, setFilteredUsersList] = useState([]);
   const [selectedUser, setSelectedUser] = useState();
-  const [selectedDay, setSelectedDay] = useState(AppConstants.all);
 
-  function initializeUserList() {
-    setUsersList(userExtendedData.users);
-  }
-
-  function createUsersUIList() {
-    const opts = [];
-    usersList.forEach(user => {
-      const initials = createInitials(user.firstName, user.lastName)
-      opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}`, deliveryDays: user.deliveryDays, initialsColors: initialsColors() });
-    })
-    setOptions(opts);
-  }
-
-  function searchUsersList() {
-    if (searchInputTerm && searchInputTerm !== '') {
-      if (usersList && usersList.length > 0) {
-        const filteredList = usersList.filter(user => {
-          const flName = user.firstName + user.lastName;
-          const lfName = user.lastName + user.firstName;
-          const initials = user.firstName.charAt(0) + user.lastName.charAt(0);
-          return flName.includes(searchInputTerm) ||
-            lfName.includes(searchInputTerm) ||
-            initials.includes(searchInputTerm);
-        });
-        setUsersList(filteredList);
-      }
-    } else {
-      initializeUserList();
+  useEffect(() => {
+    function createUsersUIList() {
+      const opts = [];
+      filteredUsersList.forEach(user => {
+        const initials = createInitials(user.firstName, user.lastName)
+        opts.push({ value: user.id, initials: `${initials}`, label: `${user.firstName}  ${user.lastName}`, deliveryDays: user.deliveryDays, initialsColors: initialsColors() });
+      })
+      setOptions(opts);
     }
-  }
 
-  useEffect(() => {
-    setUsersList(userExtendedData.users);
-  }, [userExtendedData]);
-
-  useEffect(() => {
     createUsersUIList();
-  }, [usersList]);
+  }, [filteredUsersList]);
 
   useEffect(() => {
+    function searchUsersList() {
+      if (searchInputTerm && searchInputTerm !== '') {
+        if (users?.length > 0) {
+          const filteredList = users.filter(user => {
+            const flName = user.firstName + user.lastName;
+            const lfName = user.lastName + user.firstName;
+            const initials = user.firstName.charAt(0) + user.lastName.charAt(0);
+            return flName.includes(searchInputTerm) ||
+              lfName.includes(searchInputTerm) ||
+              initials.includes(searchInputTerm);
+          });
+          setFilteredUsersList(filteredList);
+        }
+      } else {
+        setFilteredUsersList(users);
+      }
+    }
+    
     searchUsersList();
-  }, [searchInputTerm])
+  }, [searchInputTerm, users])
 
   const onUserCicked = e => {
-    props.updateSelectedUser(e.currentTarget.id);
+    updateSelectedUser(e.currentTarget.id);
     setSelectedUser(e.currentTarget.id);
   };
 
@@ -76,11 +66,10 @@ const UsersList = (props) => {
   const days = Array.from(delivaryDaysToInitials.values());
 
   const handleSelection = (day) => {
-    setSelectedDay(day);
-    const filteredUsersList = userExtendedData.users.filter((user) => {
+    const filteredUsersList = users.filter((user) => {
       return user.deliveryDays.includes(day);
     });
-    setUsersList(filteredUsersList);
+    setFilteredUsersList(filteredUsersList);
   }
 
   return (
@@ -116,4 +105,10 @@ const UsersList = (props) => {
   );
 }
 
-export default UsersList;
+const mapStateToProps =(appState) => {
+  return {
+    users: appState.user.users,
+  }
+}
+
+export default connect(mapStateToProps)(UsersList);

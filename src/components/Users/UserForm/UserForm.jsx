@@ -3,18 +3,18 @@ import React, { useContext, useState, useEffect } from "react";
 import logger from "../../../Utils/logger";
 import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
-import { userContext } from "../../../contexts/userContext";
-import { addUser, editUser } from "../../../contexts/actions/users.action";
 import { delivaryDaysToInitials } from '../../../constants/AppConstants';
 import DayPicker from './DayPicker';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
 import { UserUtil } from "../../../Utils/User/UserUtil";
 import Option from "../../../models/Option";
+import * as userActions from "../../../redux/states/user/actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-const UserForm = ({ handleClose, editUserId }) => {
+const UserForm = ({ handleClose, editUserId, users, actions,  }) => {
     const cities = useContext(citiesContext);
-    const [userExtendedData, dispatch] = useContext(userContext);
     const [userAvailableDays, setUserAvailableDays] = useState([]);
     const [userDeliveryArea, setUserDeliveryArea] = useState('');
     const [newUserForm, setNewUserFormField] = useState({});
@@ -23,7 +23,7 @@ const UserForm = ({ handleClose, editUserId }) => {
         function fetchUser() {
             let user;
             if (editUserId && editUserId !== "") {
-                user = userExtendedData.users.find(usr => usr.id === editUserId);
+                user = users.find(usr => usr.id === editUserId);
                 if (!user) {
                     logger.error('[UserForm] useEffect user with id ', editUserId, '  not found');
                 }
@@ -54,7 +54,7 @@ const UserForm = ({ handleClose, editUserId }) => {
             }
         }
         fetchUser();
-    }, [editUserId]);
+    }, [editUserId, users]);
 
     
                 
@@ -87,13 +87,11 @@ const UserForm = ({ handleClose, editUserId }) => {
         setUserDeliveryArea(value);
     }
 
-    // const hebCharToEng = (char) => {
-    //     return String.fromCharCode((char-1391 > 122) ? 122 : char - 1391); // dif between ascii of א and a;
-    // }
+
 
     // 'haver' + ordinal number
     const createUsername = ()  => {
-        const lastNumber = UserUtil.lastUserNumber(userExtendedData.users);
+        const lastNumber = UserUtil.lastUserNumber(users);
         return 'haver'+(lastNumber+1)
     }
 
@@ -143,10 +141,10 @@ const UserForm = ({ handleClose, editUserId }) => {
         const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), deliveryArea: userDeliveryArea };
         if (editUserId) {
             logger.log('[[UserForm] onSubmit dispathing editUser');
-            dispatch(editUser(newUserData));
+            actions.editUser(newUserData);
         } else {
             logger.log('[[UserForm] onSubmit dispathing addUser');
-            dispatch(addUser(newUserData));
+            actions.addUser(newUserData);
         }
         cleanForm();
         handleClose();
@@ -187,4 +185,16 @@ const UserForm = ({ handleClose, editUserId }) => {
     )
 };
 
-export default UserForm;
+const mapStateToProps =(appState) => {
+    return {
+      users: appState.user.users,
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return { actions: bindActionCreators(userActions, dispatch) };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
+  
+  

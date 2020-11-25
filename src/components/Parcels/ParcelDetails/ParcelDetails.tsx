@@ -37,13 +37,13 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
   };
 
   const initParcel = async (id: number) => {
-    const data  = await httpService.getParcel(id);
+    const data = await httpService.getParcel(id);
     setCurrentParcel(data);
     const s = AppConstants.parcelStatusOptions.find((p) => p.value === data?.parcelTrackingStatus);
     s && setCurrentStatus({ ...s });
     const dt = data ? data.parcelTracking : [];
     setDeliveryTracking([...dt]);
-  }
+  };
 
   useEffect(() => {
     initParcel(match.params.id);
@@ -83,7 +83,7 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
     currentParcel.exception = false;
     setCurrentParcel(currentParcel);
 
-    httpService.updateParcelsStatus(currentParcel.currentUserId, status, [currentParcel.id]).then(() =>{
+    httpService.updateParcelsStatus(currentParcel.currentUserId, status, [currentParcel.id]).then(() => {
       actions.reloadParcels();
     });
   };
@@ -94,11 +94,11 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
         <BackIcon className="ffh-details__back" onClick={handleNavigateBack} />
         <h2 className="ffh-details-header__title">{`חבילה עבור ${currentParcel.customerName}`}</h2>
         <Status
-          label={ParcelUtil.parcelStatusEnumToUIValue(currentStatus? currentStatus.value : currentParcel.parcelTrackingStatus)}
-          value={currentStatus? currentStatus.value : currentParcel.parcelTrackingStatus}
+          label={ParcelUtil.parcelStatusEnumToUIValue(
+            currentStatus ? currentStatus.value : currentParcel.parcelTrackingStatus
+          )}
+          value={currentStatus ? currentStatus.value : currentParcel.parcelTrackingStatus}
         />
-
-        {currentParcel.exception ? <Status label={AppConstants.exceptionStatusName} value="exception" /> : null}
 
         <div className="ffh-toolbar__filters">
           <label className="ffh-toolbar__label">{statusFilter.title}</label>
@@ -119,9 +119,13 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
       {CollectionUtil.isNotEmpty(deliveryTracking) ? (
         <div>
           <DetailsUserTable deliveryUser={currentParcel.user} />
-          <DetailsTrackingTable key={deliveryTracking[deliveryTracking.length-1].id} deliveryTracking={deliveryTracking} signature={currentParcel.signature} />
+          <DetailsTrackingTable
+            key={deliveryTracking[deliveryTracking.length - 1].id}
+            deliveryTracking={deliveryTracking}
+            signature={currentParcel.signature}
+          />
         </div>
-      ): null}
+      ) : null}
     </div>
   ) : null;
 };

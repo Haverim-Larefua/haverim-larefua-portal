@@ -8,6 +8,7 @@ import { UserUtil } from "../Utils/User/UserUtil";
 import AuthService from "./authService";
 import Parcel from "../models/Parcel";
 import User from "../models/User";
+import SerachUsersParams from "../models/SerachUsersParams";
 
 enum HttpMethod {
   POST = "post",
@@ -25,6 +26,7 @@ export interface IAuthAdminResponse {
 }
 
 class HttpService {
+  [x: string]: any;
   // private http: AxiosInstance;
   private baseURL: string;
 
@@ -152,8 +154,21 @@ class HttpService {
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
-  async getUsers(): Promise<User[]> {
-    const users: User[] = await this.sendHttpRequest(Configuration.URLS.USERS, HttpMethod.GET);
+  async getUsers(searchParams: SerachUsersParams): Promise<User[]> {
+    let url = `${Configuration.URLS.USERS}?`;
+    if (searchParams.cityFilter) {
+      url += `&cityFilter=${searchParams.cityFilter}`;
+    }
+
+    if (searchParams.nameFilter) {
+      url += `&nameFilter=${searchParams.nameFilter}`;
+    }
+
+    if (searchParams.dayFilter) {
+      url += `&dayFilter=${searchParams.dayFilter}`;
+    }
+
+    const users: User[] = await this.sendHttpRequest(url, HttpMethod.GET);
     return UserUtil.prepareUsersForDisplay(users);
   }
 
@@ -188,37 +203,8 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.USERS}/${id}`, HttpMethod.DELETE);
   }
 
-  // TODO: this should be a query in DB
-  async searchUsers(dayFilterTerm: string, cityFilterTerm: string, nameSearchTerm: string) {
-    let users = await this.getUsers();
-
-    if (users?.length > 0 && nameSearchTerm !== "") {
-      const searchTerm = nameSearchTerm.trim().toLowerCase();
-      users = users.filter(
-        (item: User) =>
-          item.firstName?.toLowerCase().includes(searchTerm) || item.lastName?.toLowerCase().includes(searchTerm)
-      );
-    }
-
-    if (users?.length > 0 && cityFilterTerm !== "") {
-      const searchTerm = cityFilterTerm.trim().toLowerCase();
-      users = users.filter((item: User) => item.deliveryArea === searchTerm);
-    }
-
-    if (users?.length > 0 && dayFilterTerm !== "") {
-      const searchTerm = dayFilterTerm.trim().toLowerCase();
-      users = users.filter(
-        (item: User) => item.deliveryDays.includes(searchTerm) || item.deliveryDays.includes(AppConstants.allWeek)
-      );
-    }
-
-    return users;
-  }
-
-  async getUsersAreasDistinct() {
-    logger.log("[httpService ] getUsersAreasDistinct ");
-    let users: User[] = await this.getUsers();
-    return UserUtil.getUsersAreasDistinct(users);
+  async getUsersCityOptions() {
+    return this.sendHttpRequest<string[]>(`${Configuration.URLS.USERS}/cityOptions`, HttpMethod.GET);
   }
 
   //////////////////////////////////// Authentication ////////////////////////////////////

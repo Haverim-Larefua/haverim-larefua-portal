@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.scss";
 import Parcels from "../Parcels/Parcels";
-import UserContextProvider from "../../contexts/userContext";
 import Users from "../Users/Users";
 import Header from "../shared/Header/Header";
 import ErrorBoundary from "../shared/ErrorBoundary/ErrorBoundary";
@@ -18,6 +17,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import { Provider } from "react-redux";
 import configureStore from "../../redux/store";
 import ReduxToastr from "react-redux-toastr";
+import { reloadUsers } from "../../redux/states/user/actions";
 
 const App: React.FC<any> = (): React.ReactElement => {
   const exclusionArray = ["/downloadApp"];
@@ -25,7 +25,7 @@ const App: React.FC<any> = (): React.ReactElement => {
   const admin = localStorage.getItem("admin");
   AppConstants1.admin = admin ? JSON.parse(admin) : undefined;
   const reduxStore = configureStore();
-
+  reduxStore.dispatch(reloadUsers() as any);
   return (
     <div className="App" id="wrapper">
       <Provider store={reduxStore}>
@@ -47,7 +47,6 @@ const App: React.FC<any> = (): React.ReactElement => {
                 <PrivateRoute path="/admin" component={Dashboard} />
 
                 <ErrorContextProvider>
-                  <UserContextProvider>
                     <CitiesContextProvider>
                       <PrivateRoute path="/users" component={Users} />
                     </CitiesContextProvider>
@@ -56,7 +55,6 @@ const App: React.FC<any> = (): React.ReactElement => {
                         path="/parcel/:id"
                         component={ParcelDetails}
                       />
-                  </UserContextProvider>
                   <Route
                     path="/downloadApp"
                     component={ApplicationDownloadPage}
