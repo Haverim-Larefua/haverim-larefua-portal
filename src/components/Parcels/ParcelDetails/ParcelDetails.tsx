@@ -78,6 +78,9 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
     const s = AppConstants.parcelStatusOptions.find((p) => p.value === status);
     s && setCurrentStatus({ ...s });
 
+    currentParcel.exception = false;
+    setCurrentParcel(currentParcel);
+
     httpService.updateParcelsStatus(currentParcel.currentUserId, status, [currentParcel.id]).then(() =>{
       actions.reloadParcels();
     });
