@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import "./ParcelDetails.scss";
 import DetailsParcelTable from "./DetailsParcelTable";
@@ -14,29 +14,41 @@ import Parcel from "../../../models/Parcel";
 import { AppState } from "../../../redux/rootReducer";
 import * as parcelActions from "../../../redux/states/parcel/actions";
 import { bindActionCreators, Dispatch } from "redux";
+import Option from "../../../models/Option";
+import ParcelTracking from "../../../models/ParcelTracking";
+import { CollectionUtil } from "../../../Utils/Common/CollectionsUtil";
+import httpService from "../../../services/http";
 
 const statuses = AppConstants.parcelStatusOptions.filter((status) => status.label !== AppConstants.exceptionStatusName);
 
 interface ParcelDetailsProps {
   match: any;
-  parcels: Parcel[];
   actions: any;
 }
 
-const ParcelDetails = ({ match, parcels, actions }: ParcelDetailsProps) => {
+const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
   const [statusFilterTerm, setStatusFilterTerm] = useState("");
+  const [currentParcel, setCurrentParcel] = useState<Parcel>();
+  const [currentStatus, setCurrentStatus] = useState<Option<string>>();
+  const [deliveryTracking, setDeliveryTracking] = useState<ParcelTracking[]>([]);
   const history = useHistory();
   const handleNavigateBack = () => {
     history.goBack();
   };
-  const { params } = match;
 
-  const currentParcel = parcels.find((p) => p.id === parseInt(params.id));
-  const deliveryStage =
-    currentParcel && currentParcel.parcelTracking.length > 0
-      ? { status: currentParcel.parcelTracking[0].status, userId: currentParcel.parcelTracking[0].userId }
-      : "";
-  const deliveryTracking = currentParcel && currentParcel.parcelTracking.length > 0 ? currentParcel.parcelTracking : [];
+  const initParcel = async (id: number) => {
+    const data  = await httpService.getParcel(id);
+    setCurrentParcel(data);
+    const s = AppConstants.parcelStatusOptions.find((p) => p.value === data?.parcelTrackingStatus);
+    s && setCurrentStatus({ ...s });
+    const dt = data ? data.parcelTracking : [];
+    setDeliveryTracking([...dt]);
+  }
+
+  useEffect(() => {
+    initParcel(match.params.id);
+  }, [match.params.id]);
+
   const statusFilter = {
     title: AppConstants.changeStatusLabel,
     name: "status",
@@ -53,7 +65,24 @@ const ParcelDetails = ({ match, parcels, actions }: ParcelDetailsProps) => {
     const { params } = match;
 
 
-    actions.updateParcelsStatus(currentParcel.currentUserId, status, [currentParcel.id]);
+    const dt = [...currentParcel.parcelTracking];
+    dt.push({
+      status: status,
+      statusDate: new Date(),
+      userId: currentParcel.currentUserId,
+      id: 0,
+      parcelId: currentParcel.id,
+      comments: "",
+    });
+
+    setDeliveryTracking(dt);
+
+    const s = AppConstants.parcelStatusOptions.find((p) => p.value === status);
+    s && setCurrentStatus({ ...s });
+
+    httpService.updateParcelsStatus(currentParcel.currentUserId, status, [currentParcel.id]).then(() =>{
+      actions.reloadParcels();
+    });
   };
 
   return currentParcel ? (
@@ -62,34 +91,34 @@ const ParcelDetails = ({ match, parcels, actions }: ParcelDetailsProps) => {
         <BackIcon className="ffh-details__back" onClick={handleNavigateBack} />
         <h2 className="ffh-details-header__title">{`חבילה עבור ${currentParcel.customerName}`}</h2>
         <Status
-          label={ParcelUtil.parcelStatusEnumToUIValue(currentParcel.parcelTrackingStatus)}
-          value={currentParcel.parcelTrackingStatus}
+          label={ParcelUtil.parcelStatusEnumToUIValue(currentStatus? currentStatus.value : currentParcel.parcelTrackingStatus)}
+          value={currentStatus? currentStatus.value : currentParcel.parcelTrackingStatus}
         />
 
         {currentParcel.exception ? <Status label={AppConstants.exceptionStatusName} value="exception" /> : null}
 
         <div className="ffh-toolbar__filters">
-          <Fragment key={statusFilter.title}>
-            <label className="ffh-toolbar__label">{statusFilter.title}</label>
-            <Dropdown
-              options={statuses}
-              name={statusFilter.name}
-              filter={statusFilter.filter}
-              bullets={statusFilter.bullets}
-              showOptionAll={false}
-              isDisabled={statusFilter.isDisabled}
-              onSelection={updateParcelStatus}
-            />
-          </Fragment>
+          <label className="ffh-toolbar__label">{statusFilter.title}</label>
+          <Dropdown
+            key={currentParcel.id}
+            options={statuses}
+            name={statusFilter.name}
+            filter={statusFilter.filter}
+            bullets={statusFilter.bullets}
+            showOptionAll={false}
+            isDisabled={statusFilter.isDisabled}
+            onSelection={updateParcelStatus}
+            defaultValue={currentStatus}
+          />
         </div>
       </div>
       <DetailsParcelTable currentParcel={currentParcel} />
-      {deliveryStage && (
+      {CollectionUtil.isNotEmpty(deliveryTracking) ? (
         <div>
           <DetailsUserTable deliveryUser={currentParcel.user} />
-          <DetailsTrackingTable deliveryTracking={deliveryTracking} signature={currentParcel.signature} />
+          <DetailsTrackingTable key={deliveryTracking[deliveryTracking.length-1].id} deliveryTracking={deliveryTracking} signature={currentParcel.signature} />
         </div>
-      )}
+      ): null}
     </div>
   ) : null;
 };

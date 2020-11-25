@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dropdown.scss';
 import Option from "../../../models/Option";
 import AppConstants from '../../../constants/AppConstants';
@@ -11,12 +11,17 @@ export interface IDropdownProps {
   bullets?: boolean;
   isDisabled?: boolean;
   showOptionAll? : boolean;
+  defaultValue?: Option<any>;
 }
 
-export default function Dropdown({options,onSelection, filter, isDisabled, name, bullets, showOptionAll = true }: IDropdownProps) {
+export default function Dropdown({options,onSelection, filter, isDisabled, name, bullets, showOptionAll = true, defaultValue }: IDropdownProps) {
   const [displayMenu, setDisplayMenu] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
-  
+  const [selectedOption, setSelectedOption] = useState(defaultValue ? defaultValue : options[0]);
+
+  useEffect(() => {
+    setSelectedOption(defaultValue ? defaultValue : options[0])
+  }, [defaultValue, options])
+
   const toggleDropDown = () => {
     setDisplayMenu(prevState=>!prevState);
   }
