@@ -27,7 +27,7 @@ const Dashboard = () => {
         <div className="right-side">
           <Exceptions />
           <div className="second-line">
-              <Today />
+               <Today />
                <LastWeek />
                <LastWeeks />
           </div>

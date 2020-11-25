@@ -6,6 +6,7 @@ import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev
 import { ReactComponent as Success } from "../../../../assets/icons/success.svg";
 import './Today.scss';
 import httpService from "../../../../services/http";
+import ParcelTracking from "../../../../models/ParcelTracking";
 
 
   const Today = () => {
@@ -18,8 +19,14 @@ import httpService from "../../../../services/http";
   }, []);
 
   async function init() {
-    const data = await httpService.getParcels("delivery", "", "");
-    setTotalNumber(data.length);
+    const parcels = await httpService.getParcels("delivered", "", "");
+
+    const toady = new Date().getDate();
+    const todayParcels = parcels.filter(p => {
+      const tracking: ParcelTracking[] = p.parcelTracking;
+      return tracking.filter(t => t.status === "delivered" && new Date(t.statusDate).getDate() === toady).length > 0;
+    });
+    setTotalNumber(todayParcels.length);
   }
 
 
@@ -37,10 +44,7 @@ import httpService from "../../../../services/http";
               <Success className="sucess-icon"/>
                <div className="widget-sub-number-title">נמסרו בהצלחה היום</div>
             <ArrowPrev className="arrow"/>
-
           </div>
-
-
       </div>
     );
   };

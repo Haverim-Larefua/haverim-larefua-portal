@@ -6,4 +6,17 @@
     height: 300px;
     padding: 26px;
     margin-right: 20px;
+    .last-weeks-header {
+        .last-weeks-sub-title {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+            width: max-content;
+            div {
+                padding: 0px 5px 0px 3px;
+            }
+        }
+    }
 }
