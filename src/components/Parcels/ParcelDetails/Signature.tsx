@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as SignatureIcon } from '../../../assets/icons/signature.svg';
 import './Signature.scss';
 
@@ -7,13 +7,14 @@ export interface SignatureProps {
     signature: string;
 }
 
-const Signature:React.FC<SignatureProps> = (props) => {
+const Signature:React.FC<SignatureProps> = ({signature}: SignatureProps) => {
+    const [sign, setSign] = useState(signature);
     return (
         <div className="ffh-signature">
             <SignatureIcon />
-            {props.signature &&
+            {sign &&
                 <div className="ffh-signature__pane">
-                    <img className="ffh-signature__image" src={`data:image/png;base64,${props.signature}`} alt="חתימה" />
+                    <img className="ffh-signature__image" src={`data:image/png;base64,${sign}`} alt="חתימה" />
                 </div>
             }
         </div>

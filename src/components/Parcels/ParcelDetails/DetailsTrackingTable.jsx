@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import formatDate from '../../../Utils/dateFormatter';
 import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
@@ -23,8 +23,6 @@ const DetailsTrackingTable = (props) => {
 
     return (
 
-
-
         <div>
             <h3 className="ffh-details__subtitle">
                 מעקב חבילה
@@ -43,7 +41,7 @@ const DetailsTrackingTable = (props) => {
                     <div className="ffh-details-tracking__body">
                         {props.deliveryTracking.map((track, index) => {
                             return (
-                                <div className="ffh-details-tracking__row" key={index}>
+                                <div className="ffh-details-tracking__row" key={props.deliveryTracking[index].id}>
                                     <div className="ffh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
                                     <div className="ffh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
                                     <div className="ffh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
@@ -51,7 +49,7 @@ const DetailsTrackingTable = (props) => {
                                     <div className="ffh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
                                     <div className="ffh-details-tracking__cell comments"><span>{track.comments}</span>
                                     {console.log('Track Status: ', track.status)}
-                                        {(track.status === AppConstants.deliveredStatusName && props.deliveryTracking.length === index + 1) &&
+                                        {(track.status === "delivered" && props.deliveryTracking.length === index + 1) &&
                                             <Signature signature={props.signature} />
                                         }
                                     </div>

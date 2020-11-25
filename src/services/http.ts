@@ -105,6 +105,12 @@ class HttpService {
     return ParcelUtil.prepareParcelsForDisplay(prcls);
   }
 
+  async getParcel(id: number): Promise<Parcel> {
+    let url = `${Configuration.URLS.PARCELS}\\${id}`;
+    const parcl: Parcel = await this.sendHttpRequest(url, HttpMethod.GET);
+    return ParcelUtil.prepareOneParcelForDisplay(parcl);
+  }
+
   async createParcel(aParcel: Parcel) {
     return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, aParcel);
   }
