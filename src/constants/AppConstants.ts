@@ -98,6 +98,16 @@ class AppConstants {
   static readonly thursdayInitial: string = "ה";
   static readonly fridayInitial: string = "ו";
 
+  static readonly daysOptions: Option<string>[] = [
+    { label: AppConstants.allWeek, value: "1,2,3,4,5,6" },
+    { label: AppConstants.sundayInitial, value: "1" },
+    { label: AppConstants.mondayInitial, value: "2" },
+    { label: AppConstants.tuesdayInitial, value: "3" },
+    { label: AppConstants.wednesdayInitial, value: "4" },
+    { label: AppConstants.thursdayInitial, value: "5" },
+    { label: AppConstants.fridayInitial, value: "6" },
+  ];
+
   //IOS platform names
   static readonly iPadSimulator: string = "iPad Simulator";
   static readonly iPhoneSimulator: string = "iPhone Simulator";

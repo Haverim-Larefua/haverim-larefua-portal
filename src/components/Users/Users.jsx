@@ -4,8 +4,6 @@ import logger from "../../Utils/logger";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
-import { userContext } from "../../contexts/userContext";
-import { removeUser, searchUsers } from "../../contexts/actions/users.action";
 import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstants";
 import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
@@ -14,10 +12,11 @@ import { ParcelUtil } from '../../Utils/Parcel/ParcelUtil';
 import HttpService from "../../services/http";
 import './Users.scss';
 import Option from "../../models/Option";
+import * as userActions from "../../redux/states/user/actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-const Users = () => {
-  const [userExtendedData, dispatch] = useContext(userContext);
-
+const Users = ({users, searching, deliveryAreas, actions}) => {
   const [dayFilterTerm, setDayFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
@@ -30,31 +29,10 @@ const Users = () => {
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
   const [showNotificationDialog, setShowNoticationDialog] = useState(false);
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
-  // const [searching, setSearching] = useState(false);
-  // const [refreshTime, setRefreshTime] = useState(0);
-
-  // const refreshData = async () => {
-  //   logger.log('[Users] refreshData ', searching);
-  //   if (searching) {
-  //     return;
-  //   }
-  //   setSearching(true);
-  //   const response = await httpService.searchUsers(dayFilterTerm, cityFilterTerm, nameSearchTerm);
-  //   dispatch(loadUsers(response));
-  //   setSearching(false);
-  //   setRefreshTime(refreshTime + 1);
-  // }
-
-  // useEffect(() => {
-  //   const timer = setTimeout(refreshData, 30000);
-  //   return () => { clearTimeout(timer)};
-  // }, [refreshTime]);
 
   useEffect(() => {
-    logger.log('[Users ] useEffect [filters] refresh data');
-    // refreshData();
-    dispatch(searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm}));
-  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, dispatch]);
+    actions.searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm});
+  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, actions]);
 
   useEffect(() => {
     function handleEditUser() {
@@ -97,13 +75,13 @@ const Users = () => {
 
 
   const handleDelete = () => {
-    dispatch(removeUser(deleteUserId));
+    actions.removeUser(deleteUserId);
     setDeleteUserId("");
   }
 
   const cellButtonClicked = async (id, name) => {
     logger.log('[Users] cellButtonClicked on ', id, name);
-    const user = userExtendedData.users.find(usr => usr.phone === id);
+    const user = users.find(usr => usr.phone === id);
     if (!user) {
       logger.error('[Users] cellButtonClicked user with phone ', id, '  not found');
     }
@@ -154,8 +132,6 @@ const Users = () => {
   };
 
   
-  const daysInitials = delivaryDaysToInitials.values();
-  const deliveryAreas = userExtendedData && userExtendedData.deliveryAreas ? userExtendedData.deliveryAreas : [];
   const options = [ // ToolbarOptions
     {
       title: AppConstants.deliveryArea,
@@ -168,7 +144,7 @@ const Users = () => {
     {
       title: AppConstants.deliveryDays,
       name: "days",
-      values: [...daysInitials].map(day => new Option(day, day)),
+      values: [...AppConstants.daysOptions].map(({label, value}) => new Option(label, value)),
       filter: setDayFilterTerm,
       showOptionAll: true
     }
@@ -177,7 +153,7 @@ const Users = () => {
   return (
     <div className="users-container">
       <Table
-        data={userExtendedData.users.filter(user => user.active)}
+        data={users.filter(user => user.active)}
         tableColumns={tableColumns}
         handleCellButtonClick={cellButtonClicked}
         subHeaderComponent={
@@ -207,4 +183,20 @@ const Users = () => {
   );
 };
 
-export default Users;
+
+
+
+const mapStateToProps =(appState) => {
+  return {
+    users: appState.user.users,
+    deliveryAreas: appState.user.deliveryAreas,
+    searching: appState.user.searching
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return { actions: bindActionCreators(userActions, dispatch) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
+

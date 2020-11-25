@@ -1,19 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import formatDate from '../../../Utils/dateFormatter';
-import { userContext } from "../../../contexts/userContext";
 import Status from '../../shared/Status/Status';
 import Signature from './Signature';
-import AppConstants from '../../../constants/AppConstants';
 import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
+import {connect} from "react-redux";
 
-
-const DetailsTrackingTable = (props) => {
-    const [users] = useContext(userContext);
+const DetailsTrackingTable = ({users, deliveryTracking, signature}) => {
 
 
     const getUserFullNameById = (id) => {
-        if (users.users.length > 0) {
-            const user = users.users.find((u) => u.id === id);
+        if (users.length > 0) {
+            const user = users.find((u) => u.id === id);
             if (!user) {
                 return '';
             }
@@ -39,9 +36,9 @@ const DetailsTrackingTable = (props) => {
                         <div className="ffh-details-tracking__cell comments">הערות</div>
                     </div>
                     <div className="ffh-details-tracking__body">
-                        {props.deliveryTracking.map((track, index) => {
+                        {deliveryTracking.map((track, index) => {
                             return (
-                                <div className="ffh-details-tracking__row" key={props.deliveryTracking[index].id}>
+                                <div className="ffh-details-tracking__row" key={deliveryTracking[index].id}>
                                     <div className="ffh-details-tracking__cell date">{formatDate(track.statusDate).date}</div>
                                     <div className="ffh-details-tracking__cell day">{formatDate(track.statusDate).weekday}</div>
                                     <div className="ffh-details-tracking__cell hour">{formatDate(track.statusDate).hour}</div>
@@ -49,8 +46,8 @@ const DetailsTrackingTable = (props) => {
                                     <div className="ffh-details-tracking__cell user">{getUserFullNameById(track.userId)}</div>
                                     <div className="ffh-details-tracking__cell comments"><span>{track.comments}</span>
                                     {console.log('Track Status: ', track.status)}
-                                        {(track.status === "delivered" && props.deliveryTracking.length === index + 1) &&
-                                            <Signature signature={props.signature} />
+                                        {(track.status === "delivered" && deliveryTracking.length === index + 1) &&
+                                            <Signature signature={signature} />
                                         }
                                     </div>
                                 </div>
@@ -63,4 +60,11 @@ const DetailsTrackingTable = (props) => {
     )
 }
 
-export default DetailsTrackingTable;
+const mapStateToProps =(appState) => {
+    return {
+      users: appState.user.users,
+    }
+  }
+  
+  export default connect(mapStateToProps)(DetailsTrackingTable);
+  
