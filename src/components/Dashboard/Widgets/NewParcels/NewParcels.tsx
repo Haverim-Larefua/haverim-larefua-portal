@@ -19,7 +19,7 @@ const NewParcels = () => {
   async function init() {
     const data = await httpService.getParcels("ready", "", "");
     setTotalNumber(data.length);
-    const noUser = data.filter((parcel) => !parcel.user).length;
+    const noUser = data.filter((parcel) => !parcel.currentUserId).length;
     setNoUserNumber(noUser);
     const noDelivery = data.length - noUser;
     setReadyDeliveryNumber(noDelivery);

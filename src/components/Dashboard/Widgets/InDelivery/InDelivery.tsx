@@ -18,7 +18,7 @@ const InDelivery = () => {
 
   async function init() {
     const data = await httpService.getParcels("ready", "", "");
-    const inDeliveryParcels = data.filter((parcel: Parcel) => parcel.user);
+    const inDeliveryParcels = data.filter((parcel: Parcel) => parcel.currentUserId);
     setTotalNumber(inDeliveryParcels.length);
 
     const groupedByCity = _.mapValues(_.groupBy(inDeliveryParcels, "user.deliveryArea"), (clist) =>

@@ -23,7 +23,7 @@ import ParcelTracking from "../../../../models/ParcelTracking";
     const toady = new Date().getDate();
     const todayParcels = parcels.filter(p => {
       const tracking: ParcelTracking[] = p.parcelTracking;
-      return tracking.filter(t => t.status === "delivered" && new Date(t.statusDate).getDate() === toady).length > 0;
+      return tracking && tracking.filter(t => t.status === "delivered" && new Date(t.statusDate).getDate() === toady).length > 0;
     });
     setTotalNumber(todayParcels.length);
   }

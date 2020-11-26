@@ -94,7 +94,7 @@ function getParcelsFromTheLastWeek(parcels: Parcel[]):  Parcel[]{
   const parcelsByDate = parcels.filter((p) => {
     const tracking: ParcelTracking[] = p.parcelTracking;
     return (
-      tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() > new Date(day).getDate())
+      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() > new Date(day).getDate())
         .length > 0
     );
   });
