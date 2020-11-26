@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import logger from "../../Utils/logger";
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns";
-import AppConstants, { delivaryDaysToInitials } from "../../constants/AppConstants";
+import AppConstants from "../../constants/AppConstants";
 import UserForm from "./UserForm/UserForm";
 import ConfirmDeleteUser from "./ConfirmDeleteUser";
 import NotificationForm from "./NotificationForm/NotificationForm";
@@ -16,7 +16,7 @@ import * as userActions from "../../redux/states/user/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
-const Users = ({users, searching, deliveryAreas, actions}) => {
+const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
   const [dayFilterTerm, setDayFilterTerm] = useState("");
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [nameSearchTerm, setNameSearchTerm] = useState("");
@@ -81,7 +81,7 @@ const Users = ({users, searching, deliveryAreas, actions}) => {
 
   const cellButtonClicked = async (id, name) => {
     logger.log('[Users] cellButtonClicked on ', id, name);
-    const user = users.find(usr => usr.phone === id);
+    const user = filteredUsers.find(usr => usr.phone === id);
     if (!user) {
       logger.error('[Users] cellButtonClicked user with phone ', id, '  not found');
     }
@@ -153,8 +153,9 @@ const Users = ({users, searching, deliveryAreas, actions}) => {
   return (
     <div className="users-container">
       <Table
-        data={users.filter(user => user.active)}
+        data={filteredUsers.filter(user => user.active)}
         tableColumns={tableColumns}
+        
         handleCellButtonClick={cellButtonClicked}
         subHeaderComponent={
           <Toolbar
@@ -165,6 +166,8 @@ const Users = ({users, searching, deliveryAreas, actions}) => {
             options={options}
             withSearch
             search={setNameSearchTerm}
+            searchPlaceholder={"חיפוש לפי שם או טלפון"}
+            loading = {searching}
           />
         }
       />
@@ -188,7 +191,7 @@ const Users = ({users, searching, deliveryAreas, actions}) => {
 
 const mapStateToProps =(appState) => {
   return {
-    users: appState.user.users,
+    filteredUsers: appState.user.filteredUsers,
     deliveryAreas: appState.user.deliveryAreas,
     searching: appState.user.searching
   }

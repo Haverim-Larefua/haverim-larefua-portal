@@ -77,16 +77,16 @@ const tableColumns = memoize(clickHandler => [{
             },
             {
                 name: AppConstants.userUIName,
-                selector: 'userName',
+                selector: 'currentUserId',
                 sortable: true,
                 minWidth: '350px',
-                cell: row => ( < ParcelUserComponent name = { row.userName }
+                cell: row => ( < ParcelUserComponent userId = { row.currentUserId }
                     itemId = { row.id }
                     status = { row.parcelTrackingStatus }
                     action = { clickHandler }
                     />),
-                    ignoreRowClick: row => (row.userName ? false : true),
-                    allowOverflow: row => (row.userName ? false : true),
+                    ignoreRowClick: row => (row.currentUserId ? false : true),
+                    allowOverflow: row => (row.currentUserId ? false : true),
                 }
             ]);
 

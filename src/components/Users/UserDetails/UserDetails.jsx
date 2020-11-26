@@ -4,16 +4,9 @@ import Initials from '../UsersList/Initials';
 import ClickOutsideHandler from '../../shared/ClickOutsideHandler/ClickOutsideHandler';
 import {connect} from "react-redux";
 
-const UserDetails = ({users, user, initials, onClickOutside, initialsColors, show }) => {
-  const getDeliveryUserById = (id) => {
-    if (users.length > 0) {
-      const deliveryUser = users.find(u => u.id === id);
-      return deliveryUser;
-    }
-  }
-
-  const userDetails = getDeliveryUserById(parseInt(user));
-
+const UserDetails = ({allUsersById, user, initials, onClickOutside, initialsColors, show }) => {
+ 
+  const userDetails = allUsersById[user];
 
   return show ? (
 
@@ -44,7 +37,7 @@ const UserDetails = ({users, user, initials, onClickOutside, initialsColors, sho
 
 const mapStateToProps =(appState) => {
   return {
-    users: appState.user.users,
+    allUsersById: appState.user.allUsersById,
   }
 }
 

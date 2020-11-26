@@ -97,11 +97,11 @@ class HttpService {
   // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels(statusFilterTerm?: string, cityFilterTerm?: string, nameSearchTerm?: string): Promise<Parcel[]> {
+  async getParcels(statusFilterTerm?: string, cityFilterTerm?: string, searchTerm?: string): Promise<Parcel[]> {
     let url = `${Configuration.URLS.PARCELS}?`;
     url += statusFilterTerm ? `statusFilterTerm=${statusFilterTerm}&` : "";
     url += cityFilterTerm ? `cityFilterTerm=${cityFilterTerm}&` : "";
-    url += nameSearchTerm ? `nameSearchTerm=${nameSearchTerm}&` : "";
+    url += searchTerm ? `searchTerm=${searchTerm}&` : "";
 
     const prcls: Parcel[] = await this.sendHttpRequest(url, HttpMethod.GET);
     return ParcelUtil.prepareParcelsForDisplay(prcls);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
 import Table from "../shared/Table/Table";
@@ -19,7 +19,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
 
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
   const [cityFilterTerm, setCityFilterTerm] = useState("");
-  const [nameSearchTerm, setNameSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
 
@@ -30,12 +30,12 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
 
   useEffect(() => {
-    actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm});
+    actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, searchTerm});
     const timer = setInterval(() => {
       actions.reloadParcels();
     }, MINUTE);
     return () => { clearInterval(timer) };
-  }, [actions, cityFilterTerm, nameSearchTerm, statusFilterTerm]);
+  }, [actions, cityFilterTerm, searchTerm, statusFilterTerm]);
 
  
   useEffect(() => {
@@ -130,9 +130,10 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     setDeleteParcelId('');
   };
 
+  const citiesOptions = useMemo(() => cities.map(city => ({ label: city, value: city })), [cities]);
   const options = [
     { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true, showOptionAll: false },
-    { title: AppConstants.cityUIName, name: "cities", values: cities.map(city => ({label: city, value: city})), filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
+    { title: AppConstants.cityUIName, name: "cities", values: citiesOptions, filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
   ];
  
   const buildToolBar = () => {
@@ -146,9 +147,10 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
         action={handleAction}
         withOptions = {withOptionsAndSearch}
         options={options}
-        search={setNameSearchTerm}
+        search={setSearchTerm}
         withSearch = {withOptionsAndSearch}
         uploadButton = {withOptionsAndSearch}
+        searchPlaceholder={"חיפוש לפי שם, תעודת זהות וטלפון"}
       />)
   }
 

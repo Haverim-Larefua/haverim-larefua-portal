@@ -18,17 +18,13 @@ export default function Dropdown({options,onSelection, filter, isDisabled, name,
   const [displayMenu, setDisplayMenu] = useState(false);
   const [selectedOption, setSelectedOption] = useState(defaultValue ? defaultValue : options[0]);
 
-  useEffect(() => {
-    setSelectedOption(defaultValue ? defaultValue : options[0])
-  }, [defaultValue, options])
-
   const toggleDropDown = () => {
     setDisplayMenu(prevState=>!prevState);
   }
 
   const handleChange = (option: Option<any>) => {
-    onSelection && onSelection(option.value);
     setSelectedOption(option);
+    onSelection && onSelection(option.value);
     filter && filter(option.value);
     toggleDropDown();
   }

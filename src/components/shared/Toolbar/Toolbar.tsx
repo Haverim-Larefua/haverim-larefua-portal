@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import './Toolbar.scss';
 import UploadButton from '../UploadButton/UploadButton';
@@ -29,45 +29,40 @@ export interface IToolbarProps {
   action: () => {};
   withSearch: boolean;
   search: (searchTerm: string) => {};
+  searchPlaceholder?: string;
   uploadButton: boolean;
 }
-export interface IToolbarState {
-}
 
-class  Toolbar extends Component<IToolbarProps, IToolbarState> {
-  handleSearch = debounce(value => {
-      this.props.search(value);
+
+const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchPlaceholder = "חיפוש", withOptions, options, subTitle, title}:IToolbarProps) => {
+  const handleSearch = debounce(value => {
+      search(value);
     }, 800);
   
 
-  render() {
     let button;
-    if (this.props.uploadButton === true) {
-      button = <UploadButton title={this.props.actionTitle} action={this.props.action}></UploadButton>;
+    if (uploadButton === true) {
+      button = <UploadButton title={actionTitle} action={action}></UploadButton>;
     } else {
-      button = <button className="ffh-toolbar__immediate_action" onClick={this.props.action}><AddUserIcon /> {this.props.actionTitle} </button>
+      button = <button className="ffh-toolbar__immediate_action" onClick={action}><AddUserIcon /> {actionTitle} </button>
     }
 
     let searchFragment;
-    if (this.props.withSearch) {
+    if (withSearch) {
       searchFragment = (
           <div className="ffh-toolbar__search">
-            <input className="ffh-toolbar__search-input" type="text" placeholder="חיפוש"
-                onChange={(event) => this.handleSearch(event.target.value)}/>
-
+            <input className="ffh-toolbar__search-input" type="text" placeholder={searchPlaceholder}
+                onChange={(event) => handleSearch(event.target.value)}/>
             <SearchIcon className="ffh-select-filter__input-icon" />
-
           </div>)
-    } else {
-      searchFragment = '';
     }
 
     let optionsFragment;
-    if (this.props.withOptions) {
+    if (withOptions) {
       optionsFragment = (
                 <div className="ffh-toolbar__filters">
                   {
-                    this.props.options.map((opt) => {
+                    options.map((opt) => {
                     return(
                         <Fragment key={opt.title}>
                           <label className="ffh-toolbar__label">{opt.title}</label>
@@ -78,23 +73,21 @@ class  Toolbar extends Component<IToolbarProps, IToolbarState> {
                     })
                   }
                 </div>)
-    } else {
-      optionsFragment = '';
     }
 
   return (
     <div className="ffh-toolbar">
       <div className="ffh-toolbar__title">
-       {this.props.title}
+       {title}
        </div>
        <div className="ffh-toolbar__subtitle">
-       {this.props.subTitle}
+       {subTitle}
       </div>
        {optionsFragment}
        {searchFragment}
        {button}
     </div>);
   }
-}
+
 
 export default Toolbar;
