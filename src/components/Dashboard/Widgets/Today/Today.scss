@@ -1,11 +1,11 @@
 @import '../Widgets';
 .today-container {
     @extend .widget-border;
-    max-width: 340px;
     height: 300px;
     padding: 26px;
     min-width: 287px;
     position: relative;
+    flex: 1;
     .fireworks-container {
         position: relative;
         height: 211px;

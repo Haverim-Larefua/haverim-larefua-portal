@@ -1,11 +1,10 @@
 @import '../Widgets';
 .last-week-container {
     @extend .widget-border;
-    max-width: 360px;
-    width: 360px;
     height: 300px;
     padding: 26px;
     margin-right: 20px;
+    flex: 2;
     .last-week-header {
         .last-week-sub-title {
             cursor: pointer;
@@ -19,5 +18,17 @@
             }
         }
     }
-    .last-week-body-container {}
+    .last-week-body-container {
+        width: fit-content;
+        .date-chart-container {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            color: #525461;
+            font-size: 12px;
+            margin-top: -9px;
+            padding-right: 7px;
+            padding-left: 7px;
+        }
+    }
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Parcel from '../../../../models/Parcel';
 import { ReactComponent as Fireworks } from "../../../../assets/icons/fiireworks.svg";
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import { ReactComponent as Success } from "../../../../assets/icons/success.svg";

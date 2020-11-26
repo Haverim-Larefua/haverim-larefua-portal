@@ -3,8 +3,11 @@
     @extend .widget-border;
     max-width: 360px;
     height: 300px;
+    min-width: 248px;
     padding: 26px;
     margin-top: 48px;
+    padding-left: 0px;
+    padding-bottom: 0px;
     .in-delivery-header {
         .in-delivery-title {
             @extend .widget-number-title;
@@ -21,6 +24,21 @@
                 padding: -1px;
                 padding-top: 2px;
             }
+        }
+    }
+    .in-delivery-body {
+        @extend .widget-sub-number-title;
+        @extend .thin-scroller;
+        margin-top: 15px;
+        overflow: auto;
+        height: 200px;
+        padding-left: 36px;
+        padding-bottom: 26px;
+        .city-value {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 17px;
+            border-bottom: 3px solid #d5f0fa;
         }
     }
 }

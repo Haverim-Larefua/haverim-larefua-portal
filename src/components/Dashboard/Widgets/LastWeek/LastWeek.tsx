@@ -4,9 +4,10 @@ import "./LastWeek.scss";
 import { useHistory } from "react-router-dom";
 import httpService from "../../../../services/http";
 import { ReactComponent as Success } from "../../../../assets/icons/success.svg";
-import { Bar, BarChart, XAxis, LabelList } from "recharts";
+import { Bar, BarChart, XAxis } from "recharts";
 import ParcelTracking from "../../../../models/ParcelTracking";
 import Parcel from "../../../../models/Parcel";
+import { DateUtil } from "../../../../Utils/Common/DateUtil";
 
 const LastWeek = () => {
   const [totalNumber, setTotalNumber] = useState(0);
@@ -18,24 +19,18 @@ const LastWeek = () => {
   }, []);
 
   async function init() {
-    const parcels = await httpService.getParcels("delivered", "", "");
-
-
-    // const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-    // const lastWeekParcels = parcels.filter(p => {
-    //   const tracking: ParcelTracking[] = p.parcelTracking;
-    //   return tracking.filter(t => t.statusDate > lastWeek).length > 0;
-    // });
-    setTotalNumber( parcels.length);
-
+    let parcels = await httpService.getParcels("delivered", "", "");
+    parcels = getParcelsFromTheLastWeek(parcels);
+    setTotalNumber(parcels.length);
 
     const data = [
-      { name:  getDay(5) , amount: getAmount(parcels, 0) },
-      { name:  getDay(4), amount:  getAmount(parcels, 1) },
-      { name:  getDay(3), amount:  getAmount(parcels, 2) },
-      { name:  getDay(2), amount:  getAmount(parcels, 3) },
-      { name:  getDay(1), amount:  getAmount(parcels, 4) },
-      { name:  getDay(0), amount:  getAmount(parcels, 5) },
+      { name: getDay(0), amount: getAmount(parcels, 0) },
+      { name: getDay(1), amount: getAmount(parcels, 1) },
+      { name: getDay(2), amount: getAmount(parcels, 2) },
+      { name: getDay(3), amount: getAmount(parcels, 3) },
+      { name: getDay(4), amount: getAmount(parcels, 4) },
+      { name: getDay(5), amount: getAmount(parcels, 5) },
+      { name: getDay(6), amount: getAmount(parcels, 6) },
     ];
     setChartData(data);
   }
@@ -43,8 +38,6 @@ const LastWeek = () => {
   const navigateToParcelsPage = () => {
     history.push("/parcels?status=ready");
   };
-
-
 
   return (
     <div className="last-week-container">
@@ -58,11 +51,14 @@ const LastWeek = () => {
       </div>
       <div className="last-week-body-container">
         <BarChart width={300} height={200} data={chartData} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
-          <XAxis dataKey="name" tickLine={false} tickMargin={1}>
-          <LabelList dataKey="name" position="insideTop"   />
-            </XAxis>
+          <XAxis dataKey="name" tickLine={false} tickMargin={1}></XAxis>
           <Bar dataKey="amount" fill="#d2f1d4" label={{ position: "top" }} />
         </BarChart>
+        <div className="date-chart-container">
+          {getLastWeekDates().map((day) => (
+            <div key={day}>{day}</div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -70,23 +66,50 @@ const LastWeek = () => {
 
 export default LastWeek;
 
-
 function getDay(index: number) {
   const today = new Date();
-  const days = ['ו','ה','ד','ג','ב','א', ''];
+  const days = ["א","ב", "ג", "ד", "ה", "ו", "ז"];
   let indexDay = today.getDay() - index;
-  if(indexDay < 1) {
-    indexDay = days.length - index;
+  if (indexDay < 0) {
+    indexDay = days.length + indexDay;
   }
   return days[indexDay];
 }
 
 function getAmount(parcels: Parcel[], index: number): number {
-  const day = new Date().setDate(new Date().getDate()- index);
-  const parcelsByDate = parcels.filter(p => {
+  const day = new Date().setDate(new Date().getDate() - index);
+  const parcelsByDate = parcels.filter((p) => {
     const tracking: ParcelTracking[] = p.parcelTracking;
-    return tracking.filter(t => t.status === "delivered" && new Date(t.statusDate).getDate() === new Date(day).getDate()).length > 0;
+    return (
+      tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() === new Date(day).getDate())
+        .length > 0
+    );
   });
 
   return parcelsByDate.length;
+}
+
+function getParcelsFromTheLastWeek(parcels: Parcel[]):  Parcel[]{
+  const day = new Date().setDate(new Date().getDate() - 7);
+  const parcelsByDate = parcels.filter((p) => {
+    const tracking: ParcelTracking[] = p.parcelTracking;
+    return (
+      tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() > new Date(day).getDate())
+        .length > 0
+    );
+  });
+
+return parcelsByDate;
+}
+
+function getLastWeekDates(): string[] {
+  const result: string[] = [];
+  let i = 0;
+  while (i < 7) {
+    let day = new Date(new Date().setDate(new Date().getDate() - i));
+    result.push(DateUtil.getDate2DigitsFormatFromDateOnltDate(day));
+    i++;
+  }
+
+  return result;
 }
