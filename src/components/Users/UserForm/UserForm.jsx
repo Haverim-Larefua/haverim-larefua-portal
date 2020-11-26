@@ -91,7 +91,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
 
     // 'haver' + ordinal number
     const createUsername = ()  => {
-        const lastNumber = UserUtil.lastUserNumber(allUsersById);
+        const lastNumber = UserUtil.lastUserNumber(Object.values(allUsersById));
         return 'haver'+(lastNumber+1)
     }
 
