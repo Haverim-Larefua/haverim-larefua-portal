@@ -11,6 +11,7 @@ const tableColumns = memoize(clickHandler => [{
                 name: AppConstants.catalogUIName,
                 selector: 'id',
                 maxWidth: '80px',
+                sortable: true,
                 minWidth: '80px'
             },
             {

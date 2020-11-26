@@ -13,6 +13,7 @@ import * as parcelActions from "../../redux/states/parcel/actions";
 import {  connect } from 'react-redux';
 import {bindActionCreators } from "redux";
 import queryString from 'query-string';
+import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const MINUTE = 60000;
 const Parcels = ({error, cities, parcels, searching, actions} ) => {
@@ -91,7 +92,8 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       const files = e.target.files;
       if (files) {
         const data = await ParcelsImporterService.ImportFromExcel(files[0]);
-        actions.addParcels(data);
+        const [mergedParcels, addedParcels] = ParcelUtil.mergeParcels(parcels, data);
+        actions.addParcels(addedParcels);
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
