@@ -1,6 +1,8 @@
 import produce from "immer";
 import SerachUsersParams from "../../../models/SerachUsersParams";
 import User from "../../../models/User";
+import { CollectionUtil } from "../../../Utils/Common/CollectionsUtil";
+import StringUtil from "../../../Utils/Common/StringUtil";
 import { UserUtil } from "../../../Utils/User/UserUtil";
 import {
   ADD_USERS_OPTIMISTIC,
@@ -14,14 +16,18 @@ import {
 } from "./types";
 
 export const INITIAL_STATE: UserState = {
-  users: [],
+  allUsers: [],
+  allUsersById: {},
+  filteredUsers: [],
   searchParams: { dayFilter: "", cityFilter: "", nameFilter: "" },
   deliveryAreas: [],
   searching: false,
 };
 
 export interface UserState {
-  users: User[];
+  allUsers: User[];
+  allUsersById: { [id in number]: User };
+  filteredUsers: User[];
   searchParams: SerachUsersParams;
   deliveryAreas: string[];
   searching: boolean;
@@ -31,7 +37,12 @@ export const userReducer = (state: UserState = INITIAL_STATE, action: UserAction
   produce(state, (draft: UserState) => {
     switch (action.type) {
       case LOAD_USERS_SUCCESS: {
-        draft.users = action.users;
+        const { cityFilter, nameFilter, dayFilter } = state.searchParams;
+        if (StringUtil.isEmpty(cityFilter) && StringUtil.isEmpty(nameFilter) && StringUtil.isEmpty(dayFilter)) {
+          draft.allUsers = action.users;
+          draft.allUsersById = CollectionUtil.mapById(action.users);
+        }
+        draft.filteredUsers = action.users;
         draft.searching = false;
         break;
       }
@@ -43,26 +54,26 @@ export const userReducer = (state: UserState = INITIAL_STATE, action: UserAction
       }
 
       case ADD_USER_OPTIMISTIC: {
-        draft.users = [...state.users, action.user];
-        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.users);
+        draft.filteredUsers = [...state.filteredUsers, action.user];
+        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.filteredUsers);
         break;
       }
 
       case ADD_USERS_OPTIMISTIC: {
-        draft.users = [...state.users, ...action.users];
-        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.users);
+        draft.filteredUsers = [...state.filteredUsers, ...action.users];
+        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.filteredUsers);
         break;
       }
 
       case EDIT_USER_OPTIMISTIC: {
-        draft.users = state.users.map((user) => (user.id === action.user.id ? action.user : user));
-        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.users);
+        draft.filteredUsers = state.filteredUsers.map((user) => (user.id === action.user.id ? action.user : user));
+        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.filteredUsers);
         break;
       }
 
       case REMOVE_USER_OPTIMISTIC: {
-        draft.users = state.users.filter((usr) => usr.id !== action.userId);
-        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.users);
+        draft.filteredUsers = state.filteredUsers.filter((usr) => usr.id !== action.userId);
+        draft.deliveryAreas = UserUtil.getUsersAreasDistinct(draft.filteredUsers);
         break;
       }
       case UPDATE_USERS_AREAS_SUCCESS: {

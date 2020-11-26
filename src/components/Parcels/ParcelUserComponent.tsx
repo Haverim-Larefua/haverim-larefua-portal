@@ -1,51 +1,49 @@
-import React, { Component } from "react";
+import React, { Component, useMemo } from "react";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
 import { ReactComponent as AssignIcon} from '../../assets/icons/add-volunteer.svg';
 import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
+import {connect} from "react-redux";
 import "./ParcelUserComponent.scss";
+import { AppState } from "../../redux/rootReducer";
+import User from "../../models/User";
 
 const uuidv4 = require('uuid/v4');
 
 export interface ParcelUserComponentProps {
-    name: string;
+    allUsersById: { [id in number]: User };
+    userId: number;
     itemId: string;
     status: string;
     action: (id: number, name: string) => void;
   }
 
-class ParcelUserComponent extends Component<ParcelUserComponentProps> {
-
-    constructor(props: ParcelUserComponentProps) {
-      super(props);
-      this.onButtonClicked = this.onButtonClicked.bind(this)
-  ;  }
+const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:ParcelUserComponentProps) => {
+   const userDetails = allUsersById[userId];
   
-    public onButtonClicked(e: any): void {
+    function onButtonClicked(e: any): void {
       //take out the _uuid from e.currentTarget.id
       const id =  e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_uuid:'));
-      this.props.action(id, e.currentTarget.name);
+      action(id, e.currentTarget.name);
     }
   
-    render() {
-      const status = this.props.status;
       return (
-        <div className="name_container" id={`${this.props.itemId}_uuid:${uuidv4()}`}>
-          <span className="name_text"> {this.props.name} </span>
+        <div className="name_container" id={`${itemId}_uuid:${uuidv4()}`}>
+          <span className="name_text"> {`${userDetails?.firstName} ${userDetails?.lastName}`} </span>
           <div className="buttons_container">
-          {!this.props.name && 
+          {!userId && 
               <ActionButton
                   name="assign"
-                  action={this.onButtonClicked}
-                  itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
+                  action={onButtonClicked}
+                  itemIdentifier={`${itemId}_uuid:${uuidv4()}`}
                   icon={<AssignIcon/>}
               />
           }
           {status ===  'ready' &&
             <ActionButton
               name="delete"
-              action={this.onButtonClicked}
-              itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
+              action={onButtonClicked}
+              itemIdentifier={`${itemId}_uuid:${uuidv4()}`}
               icon={<DeleteIcon />}
             />
           }
@@ -53,6 +51,11 @@ class ParcelUserComponent extends Component<ParcelUserComponentProps> {
         </div>
       );
     }
-  }
   
-  export default ParcelUserComponent;
+  
+  const mapPropsToState = (appState: AppState) => (
+    {
+      allUsersById: appState.user.allUsersById
+    }
+  )
+  export default connect(mapPropsToState)(ParcelUserComponent);

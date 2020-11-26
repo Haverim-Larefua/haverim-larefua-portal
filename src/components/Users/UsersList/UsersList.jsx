@@ -7,7 +7,7 @@ import AppConstants, { delivaryDaysToInitials } from "../../../constants/AppCons
 import Option from "../../../models/Option";
 import {connect} from "react-redux";
 
-const UsersList = ({users, updateSelectedUser}) => {
+const UsersList = ({allUsers, updateSelectedUser}) => {
   const [options, setOptions] = useState([]);
   const [searchInputTerm, setSearchInputTerm] = useState("");
   const [filteredUsersList, setFilteredUsersList] = useState([]);
@@ -29,8 +29,8 @@ const UsersList = ({users, updateSelectedUser}) => {
   useEffect(() => {
     function searchUsersList() {
       if (searchInputTerm && searchInputTerm !== '') {
-        if (users?.length > 0) {
-          const filteredList = users.filter(user => {
+        if (allUsers?.length > 0) {
+          const filteredList = allUsers.filter(user => {
             const flName = user.firstName + user.lastName;
             const lfName = user.lastName + user.firstName;
             const initials = user.firstName.charAt(0) + user.lastName.charAt(0);
@@ -41,12 +41,12 @@ const UsersList = ({users, updateSelectedUser}) => {
           setFilteredUsersList(filteredList);
         }
       } else {
-        setFilteredUsersList(users);
+        setFilteredUsersList(allUsers);
       }
     }
     
     searchUsersList();
-  }, [searchInputTerm, users])
+  }, [searchInputTerm, allUsers])
 
   const onUserCicked = e => {
     updateSelectedUser(e.currentTarget.id);
@@ -66,7 +66,7 @@ const UsersList = ({users, updateSelectedUser}) => {
   const days = Array.from(delivaryDaysToInitials.values());
 
   const handleSelection = (day) => {
-    const filteredUsersList = users.filter((user) => {
+    const filteredUsersList = allUsers.filter((user) => {
       return user.deliveryDays.includes(day);
     });
     setFilteredUsersList(filteredUsersList);
@@ -107,7 +107,7 @@ const UsersList = ({users, updateSelectedUser}) => {
 
 const mapStateToProps =(appState) => {
   return {
-    users: appState.user.users,
+    allUsers: appState.user.allUsers,
   }
 }
 

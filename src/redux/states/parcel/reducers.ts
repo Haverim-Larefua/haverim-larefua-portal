@@ -25,7 +25,7 @@ export interface ParcelState {
 
 const INITIAL_STATE: ParcelState = {
   parcels: [],
-  searchParams: { statusFilter: "", cityFilter: "", nameFilter: "" },
+  searchParams: { statusFilter: "", cityFilter: "", searchTerm: "" },
   cities: [],
   error: "",
   searching: false,

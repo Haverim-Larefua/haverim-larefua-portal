@@ -58,7 +58,6 @@ export class ParcelUtil {
 
   static prepareOneParcelForDisplay(parcel: Parcel): Parcel {
     ParcelUtil.sortParcelTracking(parcel.parcelTracking);
-    parcel.userName = parcel.user ? parcel.user.firstName + " " + parcel.user?.lastName : "";
     return parcel;
   }
 

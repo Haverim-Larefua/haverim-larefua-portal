@@ -5,17 +5,15 @@ import Signature from './Signature';
 import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
 import {connect} from "react-redux";
 
-const DetailsTrackingTable = ({users, deliveryTracking, signature}) => {
+const DetailsTrackingTable = ({allUsersById, deliveryTracking, signature}) => {
 
 
     const getUserFullNameById = (id) => {
-        if (users.length > 0) {
-            const user = users.find((u) => u.id === id);
-            if (!user) {
-                return '';
-            }
-            return `${user.firstName} ${user.lastName}`;
+        const user = allUsersById[id];
+        if (!user) {
+            return '';
         }
+        return `${user.firstName} ${user.lastName}`;
     };
 
     return (
@@ -62,7 +60,7 @@ const DetailsTrackingTable = ({users, deliveryTracking, signature}) => {
 
 const mapStateToProps =(appState) => {
     return {
-      users: appState.user.users,
+        allUsersById: appState.user.allUsersById,
     }
   }
   

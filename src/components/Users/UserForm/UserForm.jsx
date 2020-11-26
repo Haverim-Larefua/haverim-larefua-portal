@@ -13,7 +13,7 @@ import * as userActions from "../../../redux/states/user/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
-const UserForm = ({ handleClose, editUserId, users, actions,  }) => {
+const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
     const cities = useContext(citiesContext);
     const [userAvailableDays, setUserAvailableDays] = useState([]);
     const [userDeliveryArea, setUserDeliveryArea] = useState('');
@@ -23,7 +23,7 @@ const UserForm = ({ handleClose, editUserId, users, actions,  }) => {
         function fetchUser() {
             let user;
             if (editUserId && editUserId !== "") {
-                user = users.find(usr => usr.id === editUserId);
+                user = allUsersById[editUserId];
                 if (!user) {
                     logger.error('[UserForm] useEffect user with id ', editUserId, '  not found');
                 }
@@ -54,7 +54,7 @@ const UserForm = ({ handleClose, editUserId, users, actions,  }) => {
             }
         }
         fetchUser();
-    }, [editUserId, users]);
+    }, [editUserId, allUsersById]);
 
     
                 
@@ -91,7 +91,7 @@ const UserForm = ({ handleClose, editUserId, users, actions,  }) => {
 
     // 'haver' + ordinal number
     const createUsername = ()  => {
-        const lastNumber = UserUtil.lastUserNumber(users);
+        const lastNumber = UserUtil.lastUserNumber(Object.values(allUsersById));
         return 'haver'+(lastNumber+1)
     }
 
@@ -187,7 +187,7 @@ const UserForm = ({ handleClose, editUserId, users, actions,  }) => {
 
 const mapStateToProps =(appState) => {
     return {
-      users: appState.user.users,
+        allUsersById: appState.user.allUsersById,
     }
   }
   
