@@ -12,6 +12,7 @@ import './Parcels.scss';
 import * as parcelActions from "../../redux/states/parcel/actions";
 import {  connect } from 'react-redux';
 import {bindActionCreators } from "redux";
+import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const MINUTE = 60000;
 const Parcels = ({error, cities, parcels, searching, actions} ) => {
@@ -37,7 +38,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     return () => { clearInterval(timer) };
   }, [actions, cityFilterTerm, searchTerm, statusFilterTerm]);
 
- 
+
   useEffect(() => {
     function handleDeleteParcel() {
       if (deleteParcelId && deleteParcelId !== "") {
@@ -84,7 +85,8 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       const files = e.target.files;
       if (files) {
         const data = await ParcelsImporterService.ImportFromExcel(files[0]);
-        actions.addParcels(data);
+        const [mergedParcels, addedParcels] = ParcelUtil.mergeParcels(parcels, data);
+        actions.addParcels(addedParcels);
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
@@ -135,7 +137,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true, showOptionAll: false },
     { title: AppConstants.cityUIName, name: "cities", values: citiesOptions, filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
   ];
- 
+
   const buildToolBar = () => {
     const withOptionsAndSearch = isWithOptionsAnSearch();
     const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
