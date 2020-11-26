@@ -20,39 +20,41 @@ export interface ParcelUserComponentProps {
 
 const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:ParcelUserComponentProps) => {
    const userDetails = allUsersById[userId];
-  
+
     function onButtonClicked(e: any): void {
       //take out the _uuid from e.currentTarget.id
       const id =  e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_uuid:'));
       action(id, e.currentTarget.name);
     }
-  
+
       return (
-        <div className="name_container" id={`${itemId}_uuid:${uuidv4()}`}>
-          <span className="name_text"> {`${userDetails?.firstName} ${userDetails?.lastName}`} </span>
-          <div className="buttons_container">
-          {!userId && 
-              <ActionButton
-                  name="assign"
-                  action={onButtonClicked}
-                  itemIdentifier={`${itemId}_uuid:${uuidv4()}`}
-                  icon={<AssignIcon/>}
-              />
-          }
-          {status ===  'ready' &&
+        <> {userId ? ( <div className="name_container" id={`${itemId}_uuid:${uuidv4()}`}>
+        <span className="name_text"> {`${userDetails?.firstName} ${userDetails?.lastName}`} </span>
+        <div className="buttons_container">
+        {!userId &&
             <ActionButton
-              name="delete"
-              action={onButtonClicked}
-              itemIdentifier={`${itemId}_uuid:${uuidv4()}`}
-              icon={<DeleteIcon />}
+                name="assign"
+                action={onButtonClicked}
+                itemIdentifier={`${itemId}_uuid:${uuidv4()}`}
+                icon={<AssignIcon/>}
             />
-          }
-          </div>
+        }
+        {status ===  'ready' &&
+          <ActionButton
+            name="delete"
+            action={onButtonClicked}
+            itemIdentifier={`${itemId}_uuid:${uuidv4()}`}
+            icon={<DeleteIcon />}
+          />
+        }
         </div>
+      </div>): null}
+
+        </>
       );
     }
-  
-  
+
+
   const mapPropsToState = (appState: AppState) => (
     {
       allUsersById: appState.user.allUsersById
