@@ -78,7 +78,6 @@ const UsersList = ({updateSelectedUser, filteredUsers, deliveryAreas, searchUser
               initialsColors={item.initialsColors}
               label={item.label}
               selected={item.value === selectedUser}
-              showUserDetails={selectedUser}
               onUserCicked={onUserCicked} />
           );
         })}
