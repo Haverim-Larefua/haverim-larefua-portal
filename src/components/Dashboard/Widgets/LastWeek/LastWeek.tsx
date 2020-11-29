@@ -8,6 +8,7 @@ import { Bar, BarChart, XAxis } from "recharts";
 import ParcelTracking from "../../../../models/ParcelTracking";
 import Parcel from "../../../../models/Parcel";
 import { DateUtil } from "../../../../Utils/Common/DateUtil";
+import widgetsService from "../Widgets.service";
 
 const LastWeek = () => {
   const [totalNumber, setTotalNumber] = useState(0);
@@ -77,17 +78,12 @@ function getDay(index: number) {
 }
 
 function getAmount(parcels: Parcel[], index: number): number {
-  const day = new Date().setDate(new Date().getDate() - index);
-  const parcelsByDate = parcels.filter((p) => {
-    const tracking: ParcelTracking[] = p.parcelTracking;
-    return (
-      tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() === new Date(day).getDate())
-        .length > 0
-    );
-  });
+  const date = new Date().setDate(new Date().getDate() - index);
+  const parcelsByDate = widgetsService.getParcelsByDateDelivered(parcels, date);
 
   return parcelsByDate.length;
 }
+
 
 function getParcelsFromTheLastWeek(parcels: Parcel[]):  Parcel[]{
   const day = new Date().setDate(new Date().getDate() - 7);

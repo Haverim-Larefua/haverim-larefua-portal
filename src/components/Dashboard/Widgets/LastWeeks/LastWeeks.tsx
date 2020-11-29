@@ -4,9 +4,10 @@ import { ReactComponent as Success } from "../../../../assets/icons/success.svg"
 import "./LastWeeks.scss";
 import { useHistory } from "react-router-dom";
 import httpService from "../../../../services/http";
-import { Area, Line, Tooltip, ComposedChart, XAxis } from "recharts";
+import { Area, Line, ComposedChart, XAxis } from "recharts";
 import Parcel from "../../../../models/Parcel";
 import ParcelTracking from "../../../../models/ParcelTracking";
+import widgetsService from "../Widgets.service";
 
 const LastWeeks = () => {
   const [totalNumber, setTotalNumber] = useState(0);
@@ -22,21 +23,36 @@ const LastWeeks = () => {
     parcels = getParcelsFromThe4LastWeeks(parcels);
     setTotalNumber(parcels.length);
 
-    const data = [
-      { name: "", amt: 1400 },
-      { name: "", amt: 1400 },
-      { name: "", amt: 1400 },
-      { name: "", amt: 1400 },
-      { name: "", amt: 50 },
-      { name: "", amt: 60 },
-      { name: "", amt: 1400 },
-    ];
+    const data = getDataForTeLast4Weeks(parcels)
 
     setChartData(data);
   }
 
   const navigateToParcelsPage = () => {
     history.push("/parcels?status=ready");
+  };
+
+  const renderQuarterTick = (tickProps: any) => {
+    const { x, y, payload } = tickProps;
+    const { value, offset } = payload;
+    const date = new Date(value);
+    const month = date.getMonth();
+    debugger;
+    const quarterNo = Math.floor(month / 3) + 1;
+    const isMidMonth = month % 3 === 1;
+
+    if (month % 3 === 1) {
+      return <text x={x + offset} y={y - 4} textAnchor="middle">{`Q${quarterNo}`}</text>;
+    }
+
+    const isLast = month === 11;
+
+    if (month % 3 === 0 || isLast) {
+      const pathX = Math.floor(isLast ? x + offset * 2 : x) + 0.5;
+
+      return <path d={`M${pathX},${y - 4}v${-35}`} stroke="red" />;
+    }
+    return null;
   };
 
   return (
@@ -50,9 +66,11 @@ const LastWeeks = () => {
         </div>
       </div>
       <div>
-        <ComposedChart width={300} height={200} data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <ComposedChart width={400} height={200} data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <Area type="monotone" dataKey="amt" fill="#def5d9" />
           <Line type="monotone" dataKey="amt" stroke="#def5d9" />
+          <XAxis dataKey="amt" axisLine={true} tickLine={false} interval={0} tick={renderQuarterTick} height={1} scale="band"/>
+
         </ComposedChart>
       </div>
     </div>
@@ -73,4 +91,17 @@ function getParcelsFromThe4LastWeeks(parcels: Parcel[]):  Parcel[]{
   });
 
 return parcelsByDate;
+}
+
+
+function getDataForTeLast4Weeks(parcels: Parcel[]) {
+  const result: any[]= [];
+
+  for(let i =0; i< 28; i ++) {
+    const date = new Date().setDate(new Date().getDate() - i);
+    const parcelsByDate = widgetsService.getParcelsByDateDelivered(parcels, date);
+       result.push({name: date, amt: parcelsByDate.length});
+  }
+
+  return result;
 }
