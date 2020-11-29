@@ -1,63 +1,66 @@
-@import '../../../styles//colors';
-@import '../../../styles/elements';
-
+@import "../../../styles//colors";
+@import "../../../styles/elements";
 
 .ffh-userlist {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .ffh-userlist__head {
-    border: 1px solid $grey-mid;
-    box-shadow: 0 2px 3px 0 rgba(224, 224, 224, 0.5);
-    padding: 16px 23px;
+  border: 1px solid $grey-mid;
+  box-shadow: 0 2px 3px 0 rgba(224, 224, 224, 0.5);
+  padding: 16px 23px;
 }
 
 .ffh-userlist__title {
-    font-size: 21px;
-    font-weight: bold;
-    line-height: 1.5;
-    margin-bottom: 12px;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
-
 
 .ffh-userlist__control {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
+.ffh-userlist__filter,
 .ffh-userlist__search {
-    background-color: $grey-light;
-    border-radius: 4px;
-    height: 40px;
+  margin-right: 15px;
 }
+.ffh-userlist__search {
+  background-color: $grey-light;
+  border-radius: 4px;
+  height: 40px;
 
-.ffh-userlist__filter {
-    align-items: center;
-    display: flex;
-    white-space: nowrap;
-    width: 48%;
-}
-
-.ffh-userlist__filter-label {
-    font-weight: bold;
-    font-size: 16px;
-    margin-left: 8px;
-}
-
-.ffh-userlist__search-input {
+  .ffh-userlist__search-input {
     background-color: transparent;
     border: 0;
     font-size: 16px;
     height: 100%;
-    padding: 0 43px 0 0;
+    padding: 0 20px 0 0;
+    width: 170px;
+  }
 }
 
-.ffh-userlist__items{
-    box-shadow: inset 0px -4px 3px -3px rgba(224, 224, 224, 0.5);
-    list-style-type: none;
-    margin: 0;
-    max-height: 382px;
-    overflow: auto;
-    padding: 0;
+.ffh-userlist__filter {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+  width: 48%;
+}
+
+.ffh-userlist__filter-label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.ffh-userlist__items {
+  box-shadow: inset 0px -4px 3px -3px rgba(224, 224, 224, 0.5);
+  list-style-type: none;
+  margin: 0;
+  max-height: 382px;
+  overflow: auto;
+  padding: 0;
 }
