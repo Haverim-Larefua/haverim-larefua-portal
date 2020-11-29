@@ -1,8 +1,7 @@
-import React, { Component, useMemo } from "react";
+import React from "react";
 import ActionButton from "../shared/ActionButton/ActionButton";
 import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
 import { ReactComponent as AssignIcon} from '../../assets/icons/add-volunteer.svg';
-import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 import {connect} from "react-redux";
 import "./ParcelUserComponent.scss";
 import { AppState } from "../../redux/rootReducer";
@@ -22,14 +21,13 @@ const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:Parc
    const userDetails = allUsersById[userId];
 
     function onButtonClicked(e: any): void {
-      //take out the _uuid from e.currentTarget.id
       const id =  e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_uuid:'));
       action(id, e.currentTarget.name);
     }
 
       return (
-        <> {userId ? ( <div className="name_container" id={`${itemId}_uuid:${uuidv4()}`}>
-        <span className="name_text"> {`${userDetails?.firstName} ${userDetails?.lastName}`} </span>
+        <div className="name_container" id={`${itemId}_uuid:${uuidv4()}`}>
+        <span className="name_text"> {`${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""}`} </span>
         <div className="buttons_container">
         {!userId &&
             <ActionButton
@@ -48,9 +46,7 @@ const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:Parc
           />
         }
         </div>
-      </div>): null}
-
-        </>
+        </div>
       );
     }
 
