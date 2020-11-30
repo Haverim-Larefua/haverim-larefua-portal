@@ -5,7 +5,6 @@ import httpService from "../../../../services/http";
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import "./InDelivery.scss";
 import _ from "lodash";
-import { CollectionUtil } from "../../../../Utils/Common/CollectionsUtil";
 
 const InDelivery = () => {
   const [totalNumber, setTotalNumber] = useState(0);
@@ -29,7 +28,7 @@ const InDelivery = () => {
   }
 
   const navigateToParcelsPage = () => {
-    history.push("/parcels");
+    history.push("/parcels?status=distribution");
   };
 
   return (

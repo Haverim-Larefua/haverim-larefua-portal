@@ -35,7 +35,10 @@ const LastWeeks = () => {
   }
 
   const navigateToParcelsPage = () => {
-    history.push("/parcels?status=ready");
+    const numOfDay = 28 + new Date().getDay() + 1;
+    const lastWeekDay = new Date(DateUtil.addDaysToDate(new Date(), -numOfDay)).toISOString().split('T')[0] + " 00:00:00";
+    history.push(`/parcels?status=delivered&freeCondition=parcelTracking.status = 'delivered' and parcelTracking.status_date > '${lastWeekDay}'`);
+
   };
 
 
@@ -68,7 +71,7 @@ function getParcelsFromThe4LastWeeks(parcels: Parcel[]): Parcel[] {
   const parcelsByDate = parcels.filter((p) => {
     const tracking: ParcelTracking[] = p.parcelTracking;
     return (
-      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate) > new Date(day))
+      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate) >= new Date(day))
         .length > 0
     );
   });

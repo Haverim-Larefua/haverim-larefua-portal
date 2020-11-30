@@ -37,7 +37,9 @@ const LastWeek = () => {
   }
 
   const navigateToParcelsPage = () => {
-    history.push("/parcels?status=ready");
+    const lastWeekDay = new Date(DateUtil.addDaysToDate(new Date(), -7)).toISOString().split('T')[0] + " 00:00:00";
+    history.push(`/parcels?status=delivered&freeCondition=parcelTracking.status = 'delivered' and parcelTracking.status_date > '${lastWeekDay}'`);
+
   };
 
   return (

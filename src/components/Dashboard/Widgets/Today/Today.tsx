@@ -6,6 +6,7 @@ import { ReactComponent as Success } from "../../../../assets/icons/success.svg"
 import './Today.scss';
 import httpService from "../../../../services/http";
 import ParcelTracking from "../../../../models/ParcelTracking";
+import { DateUtil } from "../../../../Utils/Common/DateUtil";
 
 
   const Today = () => {
@@ -18,7 +19,7 @@ import ParcelTracking from "../../../../models/ParcelTracking";
   }, []);
 
   async function init() {
-    const parcels = await httpService.getParcels("delivered", "", "");
+    const parcels = await httpService.getParcels("delivered", "", "", "");
 
     const toady = new Date().getDate();
     const todayParcels = parcels.filter(p => {
@@ -30,7 +31,8 @@ import ParcelTracking from "../../../../models/ParcelTracking";
 
 
     const navigateToParcelsPage = () => {
-      history.push("/parcels");
+      const toady = new Date().toISOString().split('T')[0] + " 00:00:00";
+      history.push(`/parcels?status=delivered&freeCondition=parcelTracking.status = 'delivered' and parcelTracking.status_date > '${toady}'`);
     }
 
     return (

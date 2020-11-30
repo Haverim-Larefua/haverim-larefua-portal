@@ -26,8 +26,8 @@ const NewParcels = () => {
   }
 
 
-  const navigateToParcelsPage = () => {
-    history.push("/parcels?status=ready&freeCondition=parcel.currentUserId is null");
+  const navigateToParcelsPage = (freeCondition: string) => {
+    history.push(`/parcels?status=ready&freeCondition=${freeCondition}`);
   }
 
   return (
@@ -49,13 +49,13 @@ const NewParcels = () => {
       <div className="chart-map">
         <div className="no-user">
           <div className="number">{noUserNumber}</div>
-          <div onClick={navigateToParcelsPage}>ללא שיוך
+          <div onClick={() => navigateToParcelsPage("currentUserId is null")}>ללא שיוך
           <ArrowPrev className="arrow"/>
           </div>
         </div>
         <div className="deliveried">
           <div className="number">{readyDeliveryNumber}</div>
-          <div onClick={navigateToParcelsPage}>מוכנות לחלוקה
+          <div onClick={() => navigateToParcelsPage("currentUserId is not null")}>מוכנות לחלוקה
             <ArrowPrev className="arrow"/>
            </div>
         </div>
