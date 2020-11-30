@@ -3,11 +3,13 @@
     @extend .widget-border;
     height: 300px;
     padding: 26px;
+    padding-bottom: 0px;
     margin-right: 20px;
     flex: 3;
     overflow-y: hidden;
     overflow-x: auto;
     @extend .thin-scroller;
+    position: relative;
     .last-weeks-header {
         .last-weeks-sub-title {
             cursor: pointer;
@@ -20,5 +22,9 @@
                 padding: 0px 5px 0px 3px;
             }
         }
+    }
+    .last-weeks-chart {
+        position: relative;
+        margin-top: 49px;
     }
 }

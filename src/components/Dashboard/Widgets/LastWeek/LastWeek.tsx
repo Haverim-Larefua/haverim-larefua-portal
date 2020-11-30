@@ -52,7 +52,7 @@ const LastWeek = () => {
       </div>
       <div className="last-week-body-container">
         <BarChart width={300} height={200} data={chartData} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
-          <XAxis dataKey="name" tickLine={false} tickMargin={1}></XAxis>
+          <XAxis dataKey="name" tickLine={false} tickMargin={1}  axisLine={false}></XAxis>
           <Bar dataKey="amount" fill="#d2f1d4" label={{ position: "top" }} />
         </BarChart>
         <div className="date-chart-container">
@@ -90,7 +90,7 @@ function getParcelsFromTheLastWeek(parcels: Parcel[]):  Parcel[]{
   const parcelsByDate = parcels.filter((p) => {
     const tracking: ParcelTracking[] = p.parcelTracking;
     return (
-      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() > new Date(day).getDate())
+      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate) > new Date(day))
         .length > 0
     );
   });
@@ -103,7 +103,7 @@ function getLastWeekDates(): string[] {
   let i = 0;
   while (i < 7) {
     let day = new Date(new Date().setDate(new Date().getDate() - i));
-    result.push(DateUtil.getDate2DigitsFormatFromDateOnltDate(day));
+    result.push(DateUtil.getDate2DigitsFormatFromDateOnlyDate(day));
     i++;
   }
 

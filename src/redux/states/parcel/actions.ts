@@ -88,7 +88,7 @@ export function reloadParcels() {
 async function loadParcels(searchParams: ISearchParcelsParams, dispatch: Dispatch) {
   try {
     const [parcels, cityOptions] = await Promise.all([
-      httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.searchTerm),
+      httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.searchTerm, searchParams.freeCondition),
       httpService.getParcelsCityOptions(),
     ]);
 

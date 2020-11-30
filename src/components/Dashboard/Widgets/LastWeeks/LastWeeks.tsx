@@ -8,10 +8,17 @@ import { Area, Line, ComposedChart, XAxis } from "recharts";
 import Parcel from "../../../../models/Parcel";
 import ParcelTracking from "../../../../models/ParcelTracking";
 import widgetsService from "../Widgets.service";
+import { DateUtil } from "../../../../Utils/Common/DateUtil";
+import { CollectionUtil } from "../../../../Utils/Common/CollectionsUtil";
+
+interface ChartData {
+  date: number;
+  amount: number;
+}
 
 const LastWeeks = () => {
   const [totalNumber, setTotalNumber] = useState(0);
-  const [chartData, setChartData] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -23,8 +30,7 @@ const LastWeeks = () => {
     parcels = getParcelsFromThe4LastWeeks(parcels);
     setTotalNumber(parcels.length);
 
-    const data = getDataForTeLast4Weeks(parcels)
-
+    const data = getChartData(parcels);
     setChartData(data);
   }
 
@@ -32,28 +38,6 @@ const LastWeeks = () => {
     history.push("/parcels?status=ready");
   };
 
-  const renderQuarterTick = (tickProps: any) => {
-    const { x, y, payload } = tickProps;
-    const { value, offset } = payload;
-    const date = new Date(value);
-    const month = date.getMonth();
-    debugger;
-    const quarterNo = Math.floor(month / 3) + 1;
-    const isMidMonth = month % 3 === 1;
-
-    if (month % 3 === 1) {
-      return <text x={x + offset} y={y - 4} textAnchor="middle">{`Q${quarterNo}`}</text>;
-    }
-
-    const isLast = month === 11;
-
-    if (month % 3 === 0 || isLast) {
-      const pathX = Math.floor(isLast ? x + offset * 2 : x) + 0.5;
-
-      return <path d={`M${pathX},${y - 4}v${-35}`} stroke="red" />;
-    }
-    return null;
-  };
 
   return (
     <div className="last-weeks-container">
@@ -65,12 +49,11 @@ const LastWeeks = () => {
           <ArrowPrev className="arrow" />
         </div>
       </div>
-      <div>
-        <ComposedChart width={400} height={200} data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <Area type="monotone" dataKey="amt" fill="#def5d9" />
-          <Line type="monotone" dataKey="amt" stroke="#def5d9" />
-          <XAxis dataKey="amt" axisLine={true} tickLine={false} interval={0} tick={renderQuarterTick} height={1} scale="band"/>
-
+      <div className="last-weeks-chart">
+        <ComposedChart width={500} height={150} data={chartData} margin={{ top: 30, right: 0, left: 20, bottom: 0 }}>
+          <Area type="monotone" dataKey="amount" fill="#def5d9" />
+          <Line type="monotone" dataKey="amount" stroke="#def5d9" fill="#def5d9" />
+          <XAxis dataKey="date" axisLine={false} tickLine={false} interval={0} tick={(tickProps) => renderQuarterTick(tickProps, chartData)} />
         </ComposedChart>
       </div>
     </div>
@@ -79,29 +62,79 @@ const LastWeeks = () => {
 
 export default LastWeeks;
 
-
-function getParcelsFromThe4LastWeeks(parcels: Parcel[]):  Parcel[]{
-  const day = new Date().setDate(new Date().getDate() - 28);
+function getParcelsFromThe4LastWeeks(parcels: Parcel[]): Parcel[] {
+  const numOfDay = 28 + new Date().getDay() + 1;
+  const day = DateUtil.addDaysToDate(new Date(), -numOfDay);
   const parcelsByDate = parcels.filter((p) => {
     const tracking: ParcelTracking[] = p.parcelTracking;
     return (
-      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate).getDate() > new Date(day).getDate())
+      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate) > new Date(day))
         .length > 0
     );
   });
 
-return parcelsByDate;
+  return parcelsByDate;
 }
 
+function getChartData(parcels: Parcel[]): ChartData[] {
+  const result: ChartData[] = [];
 
-function getDataForTeLast4Weeks(parcels: Parcel[]) {
-  const result: any[]= [];
+  const numOfDay = 28 + new Date().getDay() + 1;
 
-  for(let i =0; i< 28; i ++) {
-    const date = new Date().setDate(new Date().getDate() - i);
+  for (let i = 0; i < numOfDay; i++) {
+    const date =  DateUtil.addDaysToDate(new Date(), -i);
     const parcelsByDate = widgetsService.getParcelsByDateDelivered(parcels, date);
-       result.push({name: date, amt: parcelsByDate.length});
+    result.push({ date: date, amount: parcelsByDate.length });
   }
 
   return result;
+}
+
+function getTheEndOfWeek(beginDate: Date): Date {
+  const  d = DateUtil.addDaysToDate(beginDate, 6);
+  return new Date(d);
+}
+
+function getAmountByWeek(date: number, chartData: ChartData[]): number {
+   let result = 0;
+
+  for(let i =0; i< 7; i++) {
+    const day = DateUtil.addDaysToDateNumber(date, i);
+    const specificDate = chartData.filter(d => DateUtil.getDate2DigitsFormatFromNumber(d.date) === DateUtil.getDate2DigitsFormatFromNumber(day));
+    result +=  CollectionUtil.isNotEmpty(specificDate) ? specificDate[0].amount : 0;
+  }
+  return result;
+}
+
+function renderQuarterTick(tickProps: any, chartData: ChartData[]) {
+  const { x, y, payload } = tickProps;
+  const { value, offset } = payload;
+  const date = new Date(value);
+  if (date.getDay() === 6) {
+    const pathX = Math.floor(x) + 0.5;
+    return <path d={`M${pathX},${200}v${-200}`} stroke="#d2f1d4" />;
+  }
+
+  if (date.getDay() === 0) {
+    return (
+      <text
+        x={x + offset - 55}
+        y={140}
+        textAnchor="middle"
+        fontSize="12px"
+        color="#525461"
+      >{`${DateUtil.getDate2DigitsFormatFromDateOnlyDate(date)} - ${DateUtil.getDate2DigitsFormatFromDateOnlyDate(
+        getTheEndOfWeek(date)
+      )}`}</text>
+    );
+  }
+
+  if (date.getDay() === 1) {
+    return (
+      <text x={x + offset - 37} y={50} textAnchor="middle" fontSize="12px" color="#525461">
+        {getAmountByWeek(DateUtil.addDaysToDate(date, -1), chartData)}
+      </text>
+    );
+  }
+  return null;
 }

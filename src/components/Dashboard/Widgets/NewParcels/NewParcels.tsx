@@ -27,7 +27,7 @@ const NewParcels = () => {
 
 
   const navigateToParcelsPage = () => {
-    history.push("/parcels?status=ready");
+    history.push("/parcels?status=ready&freeCondition=parcel.currentUserId is null");
   }
 
   return (

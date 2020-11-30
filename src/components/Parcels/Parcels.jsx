@@ -22,6 +22,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [freeCondition, setFreCondition] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
   const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
 
@@ -36,15 +37,18 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     if(queryStringParams?.status) {
       setStatusFilterTerm(queryStringParams.status);
     }
+    if(queryStringParams?.freeCondition) {
+      setFreCondition(queryStringParams.freeCondition);
+    }
   }, [])
 
   useEffect(() => {
-    actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, searchTerm});
+    actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, searchTerm, freeCondition});
     const timer = setInterval(() => {
       actions.reloadParcels();
     }, MINUTE);
     return () => { clearInterval(timer) };
-  }, [actions, cityFilterTerm, searchTerm, statusFilterTerm]);
+  }, [actions, cityFilterTerm, searchTerm, statusFilterTerm, freeCondition]);
 
   useEffect(() => {
     function handleDeleteParcel() {
