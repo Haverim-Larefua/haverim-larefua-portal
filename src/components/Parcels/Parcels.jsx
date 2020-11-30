@@ -76,6 +76,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
 
   const hideUsersModal = () => {
     setOpenUsersModal(false);
+    setSelectedRowsState({allSelected:false, selectedCount:0, selectedRows: [] });
   };
 
   const onSelectedRowsChanged = selectedRowsState => {

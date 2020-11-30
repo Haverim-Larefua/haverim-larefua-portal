@@ -15,22 +15,23 @@ export interface ToolbarOption {
   title: string;
   name: string;
   values: Option<any>[];
-  filter: (val:string) => {};
+  filter: (val:string) => void;
   bullets?: boolean;
   isDisabled?: boolean;
   showOptionAll?: boolean
 }
 export interface IToolbarProps {
   title: string;
-  subTitle: string;
+  subTitle?: string;
   withOptions: boolean;
   options: ToolbarOption[];
-  actionTitle: string;
-  action: () => {};
+  actionTitle?: string;
+  action?: () => any;
   withSearch: boolean;
-  search: (searchTerm: string) => {};
+  search: (searchTerm: string) => void;
   searchPlaceholder?: string;
-  uploadButton: boolean;
+  uploadButton?: boolean;
+  loading: boolean;
 }
 
 
@@ -41,12 +42,11 @@ const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchP
   
 
     let button;
-    if (uploadButton === true) {
-      button = <UploadButton title={actionTitle} action={action}></UploadButton>;
-    } else {
-      button = <button className="ffh-toolbar__immediate_action" onClick={action}><AddUserIcon /> {actionTitle} </button>
+    if (actionTitle && action) {
+      button = uploadButton 
+      ? <UploadButton title={actionTitle} action={action}></UploadButton> 
+      : <button className="ffh-toolbar__immediate_action" onClick={action}><AddUserIcon /> {actionTitle} </button>;
     }
-
     let searchFragment;
     if (withSearch) {
       searchFragment = (
