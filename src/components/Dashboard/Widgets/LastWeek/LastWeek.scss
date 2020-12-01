@@ -19,8 +19,17 @@
         }
     }
     .last-week-body-container {
-        width: fit-content;
+        width: 100%;
+        .recharts-wrapper {
+            margin: auto;
+        }
         .date-chart-container {
+            position: relative;
+            cursor: default;
+            width: 300px;
+            text-align: center;
+            align-items: center;
+            margin: auto;
             display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;

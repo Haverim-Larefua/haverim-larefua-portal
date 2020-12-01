@@ -11,6 +11,7 @@
     @extend .thin-scroller;
     position: relative;
     .last-weeks-header {
+        position: absolute;
         .last-weeks-sub-title {
             cursor: pointer;
             display: flex;
@@ -24,7 +25,10 @@
         }
     }
     .last-weeks-chart {
-        position: relative;
-        margin-top: 49px;
+        display: flex;
+        justify-content: center;
+        margin-top: 80px;
+        position: absolute;
+        width: 100%;
     }
 }
