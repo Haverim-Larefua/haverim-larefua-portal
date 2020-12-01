@@ -25,7 +25,7 @@ export class DateUtil {
     }
 
     public static addDaysToDate(date: Date, numDay: number): number {
-        return new Date().setDate(date.getDate() + numDay);
+        return new Date(date).setDate(date.getDate() + numDay);
       }
 
       public static addDaysToDateNumber(date: number, numDay: number): number {

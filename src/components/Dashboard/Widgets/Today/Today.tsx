@@ -5,34 +5,27 @@ import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev
 import { ReactComponent as Success } from "../../../../assets/icons/success.svg";
 import './Today.scss';
 import httpService from "../../../../services/http";
-import ParcelTracking from "../../../../models/ParcelTracking";
-import { DateUtil } from "../../../../Utils/Common/DateUtil";
 
 
   const Today = () => {
     const [totalNumber, setTotalNumber] = useState(0);
     const history = useHistory();
 
+    const toady = new Date().toISOString().split('T')[0] + " 00:00:00";
+    const todayCondition= `parcelTracking.status = 'delivered' and parcelTracking.status_date > '${toady}'`;
 
   useEffect(() => {
     init();
   }, []);
 
   async function init() {
-    const parcels = await httpService.getParcels("delivered", "", "", "");
-
-    const toady = new Date().getDate();
-    const todayParcels = parcels.filter(p => {
-      const tracking: ParcelTracking[] = p.parcelTracking;
-      return tracking && tracking.filter(t => t.status === "delivered" && new Date(t.statusDate).getDate() === toady).length > 0;
-    });
+    const todayParcels = await httpService.getParcels("delivered", "", "", todayCondition);
     setTotalNumber(todayParcels.length);
   }
 
 
     const navigateToParcelsPage = () => {
-      const toady = new Date().toISOString().split('T')[0] + " 00:00:00";
-      history.push(`/parcels?status=delivered&freeCondition=parcelTracking.status = 'delivered' and parcelTracking.status_date > '${toady}'`);
+      history.push(`/parcels?status=delivered&freeCondition=${todayCondition}`);
     }
 
     return (

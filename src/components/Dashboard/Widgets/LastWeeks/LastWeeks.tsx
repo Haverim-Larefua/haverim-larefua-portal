@@ -21,13 +21,17 @@ const LastWeeks = () => {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const history = useHistory();
 
+  const numOfDay = 28 + new Date().getDay() + 1;
+  const lastWeekDay = new Date(DateUtil.addDaysToDate(new Date(), -numOfDay)).toISOString().split('T')[0] + " 00:00:00";
+  const lastWeeksCondition=`parcelTracking.status = 'delivered' and parcelTracking.status_date > '${lastWeekDay}'`;
+
+
   useEffect(() => {
     init();
   }, []);
 
   async function init() {
-    let parcels = await httpService.getParcels("delivered", "", "");
-    parcels = getParcelsFromThe4LastWeeks(parcels);
+    let parcels = await httpService.getParcels("delivered", "", "", lastWeeksCondition);
     setTotalNumber(parcels.length);
 
     const data = getChartData(parcels);
@@ -35,10 +39,7 @@ const LastWeeks = () => {
   }
 
   const navigateToParcelsPage = () => {
-    const numOfDay = 28 + new Date().getDay() + 1;
-    const lastWeekDay = new Date(DateUtil.addDaysToDate(new Date(), -numOfDay)).toISOString().split('T')[0] + " 00:00:00";
-    history.push(`/parcels?status=delivered&freeCondition=parcelTracking.status = 'delivered' and parcelTracking.status_date > '${lastWeekDay}'`);
-
+    history.push(`/parcels?status=delivered&freeCondition=${lastWeeksCondition}`);
   };
 
 
@@ -65,20 +66,6 @@ const LastWeeks = () => {
 
 export default LastWeeks;
 
-function getParcelsFromThe4LastWeeks(parcels: Parcel[]): Parcel[] {
-  const numOfDay = 28 + new Date().getDay() + 1;
-  const day = DateUtil.addDaysToDate(new Date(), -numOfDay);
-  const parcelsByDate = parcels.filter((p) => {
-    const tracking: ParcelTracking[] = p.parcelTracking;
-    return (
-      tracking && tracking.filter((t) => t.status === "delivered" && new Date(t.statusDate) >= new Date(day))
-        .length > 0
-    );
-  });
-
-  return parcelsByDate;
-}
-
 function getChartData(parcels: Parcel[]): ChartData[] {
   const result: ChartData[] = [];
 
@@ -103,7 +90,8 @@ function getAmountByWeek(date: number, chartData: ChartData[]): number {
 
   for(let i =0; i< 7; i++) {
     const day = DateUtil.addDaysToDateNumber(date, i);
-    const specificDate = chartData.filter(d => DateUtil.getDate2DigitsFormatFromNumber(d.date) === DateUtil.getDate2DigitsFormatFromNumber(day));
+    const dayStr = DateUtil.getDate2DigitsFormatFromNumber(day);
+    const specificDate = chartData.filter(d => DateUtil.getDate2DigitsFormatFromNumber(d.date) === dayStr);
     result +=  CollectionUtil.isNotEmpty(specificDate) ? specificDate[0].amount : 0;
   }
   return result;
