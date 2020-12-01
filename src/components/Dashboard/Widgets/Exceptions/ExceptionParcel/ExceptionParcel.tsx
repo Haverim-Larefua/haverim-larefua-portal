@@ -31,7 +31,7 @@ const ExceptionParcel = ({ parcel }: ExceptionParcelProps) => {
           <p>
             {parcel.startDate ? DateUtil.getDate2DigitsFormat(new Date(parcel.startDate).toDateString()) : "-"}
           </p>
-          <p>{parcel.user?.firstName + " " + parcel.user?.lastName}</p>
+          <p>{parcel.user? parcel.user.firstName + " " + parcel.user?.lastName: ""}</p>
           <p>{parcel.user?.phone}</p>
         </div>
       </div>
