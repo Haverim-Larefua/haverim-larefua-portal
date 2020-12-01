@@ -53,7 +53,7 @@ const LastWeek = () => {
         </div>
       </div>
       <div className="last-week-body-container">
-        <BarChart width={300} height={200} data={chartData} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
+        <BarChart width={300} height={180} data={chartData} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
           <XAxis dataKey="name" tickLine={false} tickMargin={1}  axisLine={false}></XAxis>
           <Bar dataKey="amount" fill="#d2f1d4" label={{ position: "top" }} />
         </BarChart>
