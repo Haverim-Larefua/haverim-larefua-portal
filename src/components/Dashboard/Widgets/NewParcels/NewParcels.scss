@@ -5,14 +5,15 @@
     width: 360px;
     min-width: 248px;
     height: 300px;
-    padding: 26px;
+    padding-top: 26px;
+    padding-bottom: 26px;
     display: table-cell;
     vertical-align: middle;
     position: relative;
     .total {
         z-index: 1;
         text-align: center;
-        width: 79%;
+        width: 100%;
         padding-right: -9%;
         padding-top: 59px;
         font-size: 16px;
@@ -34,6 +35,8 @@
         margin-top: 22px;
         font-size: 16px;
         line-height: 14px;
+        padding-right: 26px;
+        padding-left: 26px;
         div {
             min-width: 45%;
             max-width: 124px;
