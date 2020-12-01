@@ -64,12 +64,12 @@ const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchP
                   {
                     options.map((opt) => {
                     return(
-                        <Fragment key={opt.title}>
+                        <span className={`ffh-toolbar__filter-container ${opt.name}-filter`} key={opt.name}>
                           <label className="ffh-toolbar__label">{opt.title}</label>
                           {opt.searchable ?
                           <SelectFilter showOptionAll={opt.showOptionAll}  onSelect={opt.filter} items={[...opt.values]} height='260px'/> :
                           <Dropdown showOptionAll={opt.showOptionAll} options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}/>}
-                        </Fragment>)
+                        </span>)
                     })
                   }
                 </div>)

@@ -16,7 +16,8 @@ export interface IDropdownProps {
 
 export default function Dropdown({options,onSelection, filter, isDisabled, name, bullets, showOptionAll = true, defaultValue }: IDropdownProps) {
   const [displayMenu, setDisplayMenu] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(defaultValue ? defaultValue : options[0]);
+  const calculatedOptions = showOptionAll ? [{label: AppConstants.all, value: ""}, ...options] : [...options];
+  const [selectedOption, setSelectedOption] = useState(defaultValue ? defaultValue : calculatedOptions[0]);
 
   const toggleDropDown = () => {
     setDisplayMenu(prevState=>!prevState);
@@ -29,7 +30,6 @@ export default function Dropdown({options,onSelection, filter, isDisabled, name,
     toggleDropDown();
   }
 
-  const calculatedOptions = showOptionAll ? [{label: AppConstants.all, value: ""}, ...options] : [...options];
 
     return (
         <div  className={`ffh-dropdown ${isDisabled ? 'disabled' : ''}`} >
