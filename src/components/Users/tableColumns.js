@@ -48,7 +48,7 @@ const tableColumns  = memoize(clickHandler => [
       selector: 'notes',
       sortable: true,
       minWidth: '350px',
-      cell: row => (<UserNoteComponent note={row.notes} itemId={row.phone} action={clickHandler}/>),
+      cell: row => (<UserNoteComponent note={row.notes} itemId={row.id} action={clickHandler}/>),
       ignoreRowClick: row  =>(row.userName ? false : true),
       allowOverflow: row  => (row.userName ? false : true),
     }

@@ -10,7 +10,7 @@ const uuidv4 = require('uuid/v4');
 
 export interface UserNoteComponentProps {
   note: string;
-  itemId: string;
+  itemId: number;
   action: (id: number, name: string) => void;
 }
 
@@ -18,14 +18,9 @@ class UserNoteComponent extends Component<UserNoteComponentProps> {
 
   constructor(props: UserNoteComponentProps) {
     super(props);
-    this.onButtonClicked = this.onButtonClicked.bind(this)
 ;  }
 
-  public onButtonClicked(e: any): void {
-    //take out the _uuid from e.currentTarget.id
-    const id =  e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_uuid:'));
-    this.props.action(id, e.currentTarget.name);
-  }
+
 
   render() {
     return (
@@ -34,19 +29,19 @@ class UserNoteComponent extends Component<UserNoteComponentProps> {
         <div className="buttons_container">
           <ActionButton
             name="notify"
-            action={this.onButtonClicked}
+            action={() => this.props.action(this.props.itemId, "notify")}
             itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
             icon={<NotifyIcon />}
           />
           <ActionButton
             name="delete"
-            action={this.onButtonClicked}
+            action={() => this.props.action(this.props.itemId, "delete")}
             itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
             icon={<DeleteIcon />}
           />
           <ActionButton
             name="edit"
-            action={this.onButtonClicked}
+            action={() => this.props.action(this.props.itemId, "edit")}
             itemIdentifier={`${this.props.itemId}_uuid:${uuidv4()}`}
             icon={<EditIcon />}
           />

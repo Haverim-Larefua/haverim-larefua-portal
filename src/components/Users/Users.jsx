@@ -81,9 +81,9 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
 
   const cellButtonClicked = async (id, name) => {
     logger.log('[Users] cellButtonClicked on ', id, name);
-    const user = filteredUsers.find(usr => usr.phone === id);
+    const user = filteredUsers.find(usr => usr.id === id);
     if (!user) {
-      logger.error('[Users] cellButtonClicked user with phone ', id, '  not found');
+      logger.error('[Users] cellButtonClicked user with id ', id, '  not found');
     }
     switch (name) {
       case 'notify': {
