@@ -177,6 +177,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       </AssignUserToParcelsModal>
     }
       <Table
+        id="users"
         data={parcels}
         tableColumns={tableColumns}
         handleCellButtonClick={cellButtonClicked}

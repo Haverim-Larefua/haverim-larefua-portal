@@ -29,9 +29,10 @@ const Table = (props) => {
   return (
     <DataTable
     data={props.data}
-    keyField='no'
+    keyField={props.keyField}
     columns={props.tableColumns(props.handleCellButtonClick)}
-    
+      id={props.id}
+      name={props.name}
       onSelectedRowsChange={handleChange}
       selectableRows={props.selectableRows}
       selectableRowSelected={ props.selectedRowsState ? isRowSelectedByState : null}

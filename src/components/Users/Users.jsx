@@ -155,7 +155,8 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
       <Table
         data={filteredUsers.filter(user => user.active)}
         tableColumns={tableColumns}
-        
+        name="users"
+        keyField="username"
         handleCellButtonClick={cellButtonClicked}
         subHeaderComponent={
           <Toolbar
