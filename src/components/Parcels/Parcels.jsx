@@ -20,6 +20,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const statuses = AppConstants.parcelStatusOptions;
 
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
+  const [userUpdateStatus, setUserUpdateStatus] = useState(false);
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [freeCondition, setFreCondition] = useState("");
@@ -32,23 +33,17 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [deleteParcelText, setDeleteParcelText] = useState("");
   const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
 
-  useEffect(() => {
-    const queryStringParams = queryString.parse(window.location.search);
-    if(queryStringParams?.status) {
-      setStatusFilterTerm(queryStringParams.status);
-    }
-    if(queryStringParams?.freeCondition) {
-      setFreCondition(queryStringParams.freeCondition);
-    }
-  }, [])
 
   useEffect(() => {
-    actions.searchParcels({statusFilter: statusFilterTerm, cityFilter: cityFilterTerm, searchTerm, freeCondition});
+    const queryStringParams = queryString.parse(window.location.search);
+    const statusCond = queryStringParams.status && !userUpdateStatus ? queryStringParams.status : statusFilterTerm;
+    const freeCond = queryStringParams.freeCondition && !userUpdateStatus ? queryStringParams.freeCondition : freeCondition;
+    actions.searchParcels({statusFilter: statusCond, cityFilter: cityFilterTerm, searchTerm, freeCondition: freeCond});
     const timer = setInterval(() => {
       actions.reloadParcels();
     }, MINUTE);
     return () => { clearInterval(timer) };
-  }, [actions, cityFilterTerm, searchTerm, statusFilterTerm, freeCondition]);
+  }, [actions, cityFilterTerm, searchTerm, statusFilterTerm, freeCondition, userUpdateStatus]);
 
   useEffect(() => {
     function handleDeleteParcel() {
@@ -144,9 +139,13 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     setDeleteParcelId('');
   };
 
+  const updateStatusTerm = (value) => {
+    setStatusFilterTerm(value);
+    setUserUpdateStatus(true);
+  }
   const citiesOptions = useMemo(() => cities.map(city => ({ label: city, value: city })), [cities]);
   const options = [
-    { title: AppConstants.filterUIName, name: "status", values: statuses, filter: setStatusFilterTerm, bullets: true, showOptionAll: false },
+    { title: AppConstants.filterUIName, name: "status", values: statuses, filter: updateStatusTerm, bullets: true, showOptionAll: false },
     { title: AppConstants.cityUIName, name: "cities", values: citiesOptions, filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
   ];
 
