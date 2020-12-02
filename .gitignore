@@ -10,3 +10,7 @@ chrome-user-data
 *.swo
 build
 /.history/
+coverage/
+.nyc_output
+cypress/videos
+cypress/screenshots

@@ -1,9 +1,14 @@
 {
-    "baseUrl": "http://localhost:3000/",
     "env": {
         "user": "admin",
-        "password": "Aa987654321"
+        "password": "Aa987654321",
+        "codeCoverage": {
+            "url": "http://localhost:3001/__coverage__"
+        }
+          
     },
     "viewportWidth": 1920,
-    "viewportHeight": 1080
+    "viewportHeight": 1080,
+    "baseUrl": "http://localhost:3000/"
+
 }
