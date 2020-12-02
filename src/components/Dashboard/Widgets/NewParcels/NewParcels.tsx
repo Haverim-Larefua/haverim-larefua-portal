@@ -5,8 +5,11 @@ import "./NewParcels.scss";
 import { useHistory } from "react-router-dom";
 import httpService from "../../../../services/http";
 
+interface NewParcelsProps {
+  onLoad: () => void;
+}
 
-const NewParcels = () => {
+const NewParcels = ({onLoad}: NewParcelsProps) => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [noUserNumber, setNoUserNumber] = useState(0);
   const [readyDeliveryNumber, setReadyDeliveryNumber] = useState(0);
@@ -23,6 +26,7 @@ const NewParcels = () => {
     setNoUserNumber(noUser);
     const noDelivery = data.length - noUser;
     setReadyDeliveryNumber(noDelivery);
+    onLoad();
   }
 
 

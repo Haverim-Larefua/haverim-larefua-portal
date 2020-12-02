@@ -7,7 +7,11 @@ import httpService from "../../../../services/http";
 import "./Exception.scss";
 import Parcel from "../../../../models/Parcel";
 
-const Exceptions = () => {
+interface ExceptionsProps {
+  onLoad: () => void;
+}
+
+const Exceptions = ({onLoad}: ExceptionsProps) => {
   const [exceptionParcels, setExceptionParcels] = useState<Parcel[]>([]);
   const [firstParcels, setFirstParcels] = useState<Parcel[]>([]);
   const history = useHistory();
@@ -20,6 +24,7 @@ const Exceptions = () => {
     const data = await httpService.getParcels("exception", "", "");
     setExceptionParcels(data);
     setFirstParcels(data.slice(0, 5));
+    onLoad();
   }
 
   const navigateToParcelsPage = () => {

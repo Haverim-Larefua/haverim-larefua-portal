@@ -16,7 +16,11 @@ interface ChartData {
   amount: number;
 }
 
-const LastWeeks = () => {
+interface LastWeeksProps {
+  onLoad: () => void;
+}
+
+const LastWeeks = ({onLoad}: LastWeeksProps ) => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const history = useHistory();
@@ -36,6 +40,7 @@ const LastWeeks = () => {
 
     const data = getChartData(parcels);
     setChartData(data);
+    onLoad();
   }
 
   const navigateToParcelsPage = () => {

@@ -22,6 +22,13 @@
             }
         }
     }
+    .spiner-container {
+        display: flex;
+        justify-content: center;
+    }
+    .hidden-dashboard-body {
+        display: none;
+    }
     .dashboard-body-container {
         display: flex;
         padding-bottom: 20px;

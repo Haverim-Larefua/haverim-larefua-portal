@@ -10,7 +10,11 @@ import Parcel from "../../../../models/Parcel";
 import { DateUtil } from "../../../../Utils/Common/DateUtil";
 import widgetsService from "../Widgets.service";
 
-const LastWeek = () => {
+interface LastWeekProps {
+  onLoad: () => void;
+}
+
+const LastWeek = ({onLoad}: LastWeekProps) => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
   const history = useHistory();
@@ -34,6 +38,7 @@ const LastWeek = () => {
       { name: getDay(6), amount: getAmount(parcels, 6) },
     ];
     setChartData(data);
+    onLoad();
   }
 
   const navigateToParcelsPage = () => {

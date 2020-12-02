@@ -6,8 +6,11 @@ import { ReactComponent as Success } from "../../../../assets/icons/success.svg"
 import './Today.scss';
 import httpService from "../../../../services/http";
 
+interface TodayProps {
+  onLoad: () => void;
+}
 
-  const Today = () => {
+  const Today = ({onLoad}: TodayProps) => {
     const [totalNumber, setTotalNumber] = useState(0);
     const history = useHistory();
 
@@ -21,6 +24,7 @@ import httpService from "../../../../services/http";
   async function init() {
     const todayParcels = await httpService.getParcels("delivered", "", "", todayCondition);
     setTotalNumber(todayParcels.length);
+    onLoad();
   }
 
 

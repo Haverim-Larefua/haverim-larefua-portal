@@ -6,7 +6,11 @@ import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev
 import "./InDelivery.scss";
 import _ from "lodash";
 
-const InDelivery = () => {
+interface InDeliveryProps {
+  onLoad: () => void;
+}
+
+const InDelivery = ({onLoad}: InDeliveryProps) => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [parcelsByCity, setParcelsByCity] = useState<any>();
   const history = useHistory();
@@ -25,6 +29,7 @@ const InDelivery = () => {
     );
 
     setParcelsByCity(groupedByCity);
+    onLoad();
   }
 
   const navigateToParcelsPage = () => {
