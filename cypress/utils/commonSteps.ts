@@ -19,9 +19,9 @@ export function selectOptionInSelectFilter(containerClass: string, optionLabel: 
 }
 
 export function clearSearchFilter(selector: string) {
-  return cy.get(selector).clear().wait(1000);
+  return cy.get(selector).clear();
 }
 
 export function clearAndTypeInSearchFilter(selector: string, searchTerm: string) {
-  return cy.get(selector).clear().type(searchTerm).wait(1000);
+  return cy.get(selector).clear().type(searchTerm);
 }

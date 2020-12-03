@@ -10,6 +10,7 @@ import { logIn } from "../../utils/loginUtils";
 const DELIVERED_STATUS = "נמסרה";
 const READY_ASSIGNED_STATUS = "מוכנה לחלוקה";
 const USER_NAME = "כהן יוסי";
+
 context("Parcels Page Tests", () => {
   before(() => {
     logIn();
@@ -63,7 +64,10 @@ context("Parcels Page Tests", () => {
 
   it("Check the filtered results by name and phone", () => {
     selectOptionInSelectFilter(".cities-filter", "הכל");
+
+    cy.intercept("GET", "/parcels").as("searchParcels");
     clearAndTypeInSearchFilter(".ffh-toolbar__search-input", "אבי בן עמי 052-7421407");
+    cy.wait("@searchParcels");
     cy.get(".rdt_TableRow").first().should("contain.text", "052-7421407");
   });
 
@@ -100,10 +104,8 @@ context("Parcels Page Tests", () => {
   it("Assign 1 parcel to user by name filter", () => {
     cy.get('[name="select-row-2"]').check();
     cy.get(".ffh-toolbar__immediate_action").click();
-    clearAndTypeInSearchFilter(".ffh-userlist__search-input", "ציפי בר")
-      .get(".ffh-userlist-item__name")
-      .contains("ציפי בראל")
-      .click();
+    clearAndTypeInSearchFilter(".ffh-userlist__search-input", "ציפי בר");
+    cy.get(".ffh-userlist-item__name").first().should("contain.text", "ציפי").click();
 
     cy.get(".ffh-users-modal-button").click();
     assertToastMessageDisplayed("שיוך החבילות לשליח בוצע בהצלחה");

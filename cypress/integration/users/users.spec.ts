@@ -99,7 +99,6 @@ context("Users Page Tests", () => {
 
   it("Search the user by first name and phone number", () => {
     cy.get(`.ffh-toolbar__search`).click().type(`${NEW_USER_FIRST_NAME} ${NEW_USER_PHONE_NUMBER}`);
-    cy.wait(1000); //wait for debounce
     cy.get(".rdt_TableRow").should("have.length", 1).should("have.id", `row-${newUsername}`);
   });
 
