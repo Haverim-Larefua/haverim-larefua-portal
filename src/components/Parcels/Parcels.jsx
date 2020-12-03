@@ -186,6 +186,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
         selectableRows
         selectedRowsState={selectedRowsState}
         selectedRowIdentifierKey="id"
+        keyField="id"
         pointerOnHover
         noDataComponent={error?.length > 0 ? AppConstants.serverErrorMessage : noDataMessage}
         loading={searching && !error?.length > 0}

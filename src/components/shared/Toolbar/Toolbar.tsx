@@ -8,6 +8,7 @@ import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
 import {debounce} from 'lodash';
 import SelectFilter from '../SelectFilter/SelectFilter';
 import Option from "../../../models/Option";
+import AppConstants from '../../../constants/AppConstants';
 
 export interface ToolbarOption {
   searchable?: boolean;
@@ -38,7 +39,7 @@ export interface IToolbarProps {
 const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchPlaceholder = "חיפוש", withOptions, options, subTitle, title}:IToolbarProps) => {
   const handleSearch = debounce(value => {
       search(value);
-    }, 800);
+    }, AppConstants.searchDebounceTime);
   
 
     let button;

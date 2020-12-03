@@ -75,6 +75,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "customize-cra": "^1.0.0",
     "cypress": "^6.0.0",
+    "cypress-file-upload": "^4.1.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-immutable-state-invariant": "^2.1.0",
     "start-server-and-test": "^1.11.6"

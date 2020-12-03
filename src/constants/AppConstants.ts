@@ -108,6 +108,7 @@ class AppConstants {
     { label: AppConstants.fridayInitial, value: "6" },
   ];
 
+  static readonly searchDebounceTime = 400;
   //IOS platform names
   static readonly iPadSimulator: string = "iPad Simulator";
   static readonly iPhoneSimulator: string = "iPhone Simulator";

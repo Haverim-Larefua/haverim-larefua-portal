@@ -11,6 +11,7 @@ import * as userActions from "../../../redux/states/user/actions";
 import User from "../../../models/User";
 import SerachUsersParams from "../../../models/SerachUsersParams";
 import { AppState } from "../../../redux/rootReducer";
+import { debounce } from "lodash";
 
 export interface UsersListProps {
   updateSelectedUser: (userId: number) => void;
@@ -49,22 +50,26 @@ const UsersList = ({updateSelectedUser, filteredUsers, deliveryAreas, searchUser
     setSelectedUser(userId);
   };
 
+  const handleSearch = debounce(value => {
+    setSearchInputTerm(value);
+  }, AppConstants.searchDebounceTime);
+
   return (
     <div className="ffh-userlist">
       <div className="ffh-userlist__head">
         <div className="ffh-userlist__title">{AppConstants.associateParcelToUserUIName}</div>
         <div className="ffh-userlist__control">
-        <div className="ffh-userlist__filter">
+        <div className="ffh-userlist__filter cities-filter">
           <div className="ffh-userlist__filter-label">{AppConstants.deliveryArea}</div>
           <SelectFilter onSelect={setSelectedCity} items={deliveryAreas.map(city => new Option(city, city))} showOptionAll/>
         </div>
-        <div className="ffh-userlist__filter">
+        <div className="ffh-userlist__filter days-filter">
           <div className="ffh-userlist__filter-label">{AppConstants.deliveryDays}</div>
           <SelectFilter onSelect={setSelectedDay} items={AppConstants.daysOptions} hideFilter showOptionAll/>
         </div>
-        <div className="ffh-userlist__search">
+        <div className="ffh-userlist__search name-filter">
           <input className="ffh-userlist__search-input" type="text" placeholder={AppConstants.searchUIName}
-            onChange={e =>  setSearchInputTerm(e.target.value)} />
+            onChange={ e => handleSearch(e.target.value)} />
         </div>
     
         </div>

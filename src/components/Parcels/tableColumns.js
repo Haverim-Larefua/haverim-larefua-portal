@@ -64,6 +64,7 @@ const tableColumns = memoize(clickHandler => [{
             },
             {
                 name: AppConstants.cityUIName,
+                id: 'city',
                 selector: 'city',
                 sortable: true,
                 maxWidth: '130px',
