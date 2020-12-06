@@ -100,6 +100,8 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
           value={currentStatus ? currentStatus.value : currentParcel.parcelTrackingStatus}
         />
 
+         {currentParcel.exception ? <Status label={AppConstants.exceptionStatusName} value="exception" /> : null}
+
         <div className="ffh-toolbar__filters">
           <label className="ffh-toolbar__label">{statusFilter.title}</label>
           <Dropdown
