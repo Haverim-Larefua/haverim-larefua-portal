@@ -28,6 +28,7 @@ import {
   UpdateParcelsStatusOptimisticAction,
 } from "./types";
 import AppConstants from "../../../constants/AppConstants";
+import _ from "lodash";
 
 export function updateParcelsStatusOptimistic(
   userId: number,
@@ -119,7 +120,8 @@ export function addParcel(parcel: Parcel) {
 export function addParcels(parcels: Parcel[]) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const addedParcels = await httpService.addParcels(ParcelUtil.prepareParcelsForDBUpdate(parcels));
+      let addedParcels = await httpService.addParcels(ParcelUtil.prepareParcelsForDBUpdate(parcels));
+      addedParcels = addedParcels.filter(p => p!= null);
 
       if (addedParcels.length === 0) {
         const message = `כל החבילות מופיעות במערכת - אין חבילות חדשות בקובץ`;

@@ -92,8 +92,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       const files = e.target.files;
       if (files) {
         const data = await ParcelsImporterService.ImportFromExcel(files[0]);
-        const [mergedParcels, addedParcels] = ParcelUtil.mergeParcels(parcels, data);
-        actions.addParcels(addedParcels);
+        actions.addParcels(data);
       }
     } else { // associate user to parcels
       logger.log('[Parcel] handleAction associate user to parcel' );
