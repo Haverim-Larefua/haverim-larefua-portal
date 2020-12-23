@@ -1,5 +1,5 @@
 import produce from "immer";
-import SerachUsersParams from "../../../models/SerachUsersParams";
+import SearchUsersParams from "../../../models/SearchUsersParams";
 import User from "../../../models/User";
 import { CollectionUtil } from "../../../Utils/Common/CollectionsUtil";
 import StringUtil from "../../../Utils/Common/StringUtil";
@@ -28,7 +28,7 @@ export interface UserState {
   allUsers: User[];
   allUsersById: { [id in number]: User };
   filteredUsers: User[];
-  searchParams: SerachUsersParams;
+  searchParams: SearchUsersParams;
   deliveryAreas: string[];
   searching: boolean;
 }

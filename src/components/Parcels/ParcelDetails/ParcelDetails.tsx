@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import "./ParcelDetails.scss";
 import DetailsParcelTable from "./DetailsParcelTable";
@@ -18,6 +18,11 @@ import Option from "../../../models/Option";
 import ParcelTracking from "../../../models/ParcelTracking";
 import { CollectionUtil } from "../../../Utils/Common/CollectionsUtil";
 import httpService from "../../../services/http";
+import { ReactComponent as SwitchUserIcon } from "../../../assets/icons/switch.svg";
+import { ReactComponent as RemoveUserIcon } from "../../../assets/icons/remove.svg";
+
+import AssignUserToParcelsModal from "../AssignUserToParcelsModal/AssignUserToParcelsModal";
+
 
 const statuses = AppConstants.parcelStatusOptions.filter((status) => status.label !== AppConstants.exceptionStatusName);
 
@@ -31,23 +36,41 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
   const [currentParcel, setCurrentParcel] = useState<Parcel>();
   const [currentStatus, setCurrentStatus] = useState<Option<string>>();
   const [deliveryTracking, setDeliveryTracking] = useState<ParcelTracking[]>([]);
+  const [openUsersModal, setOpenUsersModal] = useState(false);
+  const [parcelsToAssociate, setParcelsToAssociate] = useState<number[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number>(0);
+
   const history = useHistory();
   const handleNavigateBack = () => {
     history.goBack();
   };
 
-  const initParcel = async (id: number) => {
-    const data = await httpService.getParcel(id);
-    setCurrentParcel(data);
-    const s = AppConstants.parcelStatusOptions.find((p) => p.value === data?.parcelTrackingStatus);
-    s && setCurrentStatus({ ...s });
-    const dt = data ? data.parcelTracking : [];
-    setDeliveryTracking([...dt]);
-  };
+  useEffect(() => {
+    const initParcel = async (id: number) => {
+      const parcelData = await httpService.getParcel(id);
+      setCurrentParcel(parcelData);
+      const parcelStatus = AppConstants.parcelStatusOptions.find((option) => option.value === parcelData?.parcelTrackingStatus);
+      parcelStatus && setCurrentStatus({ ...parcelStatus });
+      const parcelTracking = parcelData?.parcelTracking || [];
+      setDeliveryTracking([...parcelTracking]);
+      setParcelsToAssociate([id]);
+    };
+    initParcel(match.params.id);
+
+  }, [match.params.id]);
 
   useEffect(() => {
-    initParcel(match.params.id);
-  }, [match.params.id]);
+    const getParcel = async () => {
+      if (currentParcel) {
+        const parcelData = await httpService.getParcel(currentParcel.id);
+        setCurrentParcel(parcelData);
+        setCurrentUserId(parcelData.currentUserId);
+      }
+    };
+    getParcel();
+
+  }, [currentUserId]);
+
 
   const statusFilter = {
     title: AppConstants.changeStatusLabel,
@@ -65,8 +88,8 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
     const { params } = match;
 
 
-    const dt = [...currentParcel.parcelTracking];
-    dt.push({
+    const parcelTracking = [...currentParcel.parcelTracking];
+    parcelTracking.push({
       status: status,
       statusDate: new Date(),
       userId: currentParcel.currentUserId,
@@ -75,10 +98,10 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
       comments: "",
     });
 
-    setDeliveryTracking(dt);
+    setDeliveryTracking(parcelTracking);
 
-    const s = AppConstants.parcelStatusOptions.find((p) => p.value === status);
-    s && setCurrentStatus({ ...s });
+    const parcelStatus = AppConstants.parcelStatusOptions.find((option) => option.value === status);
+    parcelStatus && setCurrentStatus({ ...parcelStatus });
 
     currentParcel.exception = false;
     setCurrentParcel(currentParcel);
@@ -88,9 +111,21 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
     });
   };
 
+  const hideUsersModal = (userId?: number) => {
+    setOpenUsersModal(false);
+    if (userId && userId !== currentUserId) {
+      setCurrentUserId(userId);
+    }
+  };
+
+  const showUsersModal = () => {
+    setOpenUsersModal(true);
+  };
   return currentParcel ? (
     <div className="ffh-details">
       <div className="ffh-details-header">
+        {openUsersModal &&
+          <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal} initUserId ={currentParcel.currentUserId} />}
         <BackIcon className="ffh-details__back" onClick={handleNavigateBack} />
         <h2 className="ffh-details-header__title">{`חבילה עבור ${currentParcel.customerName}`}</h2>
         <Status
@@ -100,9 +135,11 @@ const ParcelDetails = ({ match, actions }: ParcelDetailsProps) => {
           value={currentStatus ? currentStatus.value : currentParcel.parcelTrackingStatus}
         />
 
-         {currentParcel.exception ? <Status label={AppConstants.exceptionStatusName} value="exception" /> : null}
+        {currentParcel.exception ? <Status label={AppConstants.exceptionStatusName} value="exception" /> : null}
 
-        <div className="ffh-toolbar__filters">
+        <div className="ffh-details-header__actions">
+          {currentParcel.user ? <button ><RemoveUserIcon /> {AppConstants.disassociateUserUIName} </button> : null}
+          <button onClick={showUsersModal}><SwitchUserIcon /> {currentParcel.user ? AppConstants.changeParcelUser : AppConstants.associateUserUIName} </button>;
           <label className="ffh-toolbar__label">{statusFilter.title}</label>
           <Dropdown
             key={currentParcel.id}

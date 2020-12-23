@@ -1,4 +1,4 @@
-import SerachUsersParams from "../../../models/SerachUsersParams";
+import SearchUsersParams from "../../../models/SearchUsersParams";
 import User from "../../../models/User";
 
 export const ADD_USER_OPTIMISTIC = "ADD_USER_OPTIMISTIC";
@@ -15,7 +15,7 @@ export interface LoadUsersSuccessAction {
 }
 export interface SearchUsersSuccessAction {
   type: typeof SEARCH_USERS_SUCCESS;
-  searchParams: SerachUsersParams;
+  searchParams: SearchUsersParams;
 }
 export interface AddUserOptimisticAction {
   type: typeof ADD_USER_OPTIMISTIC;

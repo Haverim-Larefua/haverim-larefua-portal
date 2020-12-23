@@ -1,14 +1,14 @@
 import axios, { AxiosRequestConfig } from "axios";
 import logger from "../Utils/logger";
 import Configuration from "../configuration/Configuration";
-import AppConstants, { AppConstants1 } from "../constants/AppConstants";
+import { AppConstants1 } from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
 import { UserUtil } from "../Utils/User/UserUtil";
 import AuthService from "./authService";
 import Parcel from "../models/Parcel";
 import User from "../models/User";
-import SerachUsersParams from "../models/SerachUsersParams";
+import SearchUsersParams from "../models/SearchUsersParams";
 
 enum HttpMethod {
   POST = "post",
@@ -155,7 +155,7 @@ class HttpService {
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
-  async getUsers(searchParams: SerachUsersParams): Promise<User[]> {
+  async getUsers(searchParams: SearchUsersParams): Promise<User[]> {
     let url = `${Configuration.URLS.USERS}?`;
     if (searchParams.cityFilter) {
       url += `&cityFilter=${searchParams.cityFilter}`;

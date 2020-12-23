@@ -1,159 +1,173 @@
-@import '../../../styles/colors';
+@import "../../../styles/colors";
+@import "../../../styles/elements";
+
 .ffh-details {
-    overflow: auto;
+  overflow: auto;
 }
 
 .ffh-details-header {
-    display: flex;
-    height: 114px;
-    align-items: center;
-    padding: 0 48px;
+  display: flex;
+  height: 114px;
+  align-items: center;
+  padding: 0 48px;
 }
 
 .ffh-details-header__title {
-    color: $dark;
-    font-weight: unset;
-    margin: 0 24px;
+  color: $dark;
+  font-weight: unset;
+  margin: 0 24px;
 }
 
-.ffh-toolbar__filters {
-    margin: 0 auto 0 15px;
+.ffh-details-header__actions {
+  align-items: center;
+  display: flex;
+  margin: 0 auto 0 15px;
+
+  > *:not(:last-child) {
+    margin-left: 10px;
+  }
+  >button{
+    @extend %ffh-toolbar-button;
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
 }
 
 .ffh-details__subtitle {
-    margin: 0 88px 36px 88px;
+  margin: 0 88px 36px 88px;
 }
 
 .ffh-details__parcel,
 .ffh-details__user {
-    border: 1px solid $grey-mid;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 88px 36px 88px;
-    width: calc(100%-166px);
+  border: 1px solid $grey-mid;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 88px 36px 88px;
+  width: calc(100%-166px);
 }
 
 .ffh-details-cell__label {
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.5;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
 }
 
 .ffh-details-cell__value {
-    font-size: 16px;
-    line-height: 1.5;
-    direction: ltr;
-    text-align: right;
+  font-size: 16px;
+  line-height: 1.5;
+  direction: ltr;
+  text-align: right;
 }
 
 .ffh-details-cell {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-    padding: 11px 15px;
-    white-space: nowrap;
-    &.creation-date,
-    &.start-date,
-    &.start-time,
-    &.customer-name,
-    &.customer-id,
-    &.phone,
-    &.city,
-    &.derivery-icon,
-    &.derivery-user {
-        border-left: 1px solid $grey-mid;
-    }
-    &.creation-date {
-        width: 14%;
-    }
-    &.start-date {
-        width: 10%;
-    }
-    &.start-time {
-        width: 10%;
-    }
-    &.customer-name {
-        width: 12%;
-    }
-    &.customer-id {
-        width: 8%;
-    }
-    &.phone {
-        width: 17%;
-    }
-    &.city {
-        width: 9%;
-    }
-    &.notes {
-        border-top: 1px solid $grey-mid;
-        flex-shrink: 0;
-        width: 100%;
-    }
-    &.derivery-user {
-        width: 17%;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 11px 15px;
+  white-space: nowrap;
+  &.creation-date,
+  &.start-date,
+  &.start-time,
+  &.customer-name,
+  &.customer-id,
+  &.phone,
+  &.city,
+  &.derivery-icon,
+  &.derivery-user {
+    border-left: 1px solid $grey-mid;
+  }
+  &.creation-date {
+    width: 14%;
+  }
+  &.start-date {
+    width: 10%;
+  }
+  &.start-time {
+    width: 10%;
+  }
+  &.customer-name {
+    width: 12%;
+  }
+  &.customer-id {
+    width: 8%;
+  }
+  &.phone {
+    width: 17%;
+  }
+  &.city {
+    width: 9%;
+  }
+  &.notes {
+    border-top: 1px solid $grey-mid;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  &.derivery-user {
+    width: 17%;
+  }
 }
 
 .ffh-details__back {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .ffh-details-tracking__table {
-    border: 1px solid $grey-mid;
-    display: flex;
-    flex-direction: column;
-    margin: 0 88px 36px 88px;
-    width: calc(100%-166px);
+  border: 1px solid $grey-mid;
+  display: flex;
+  flex-direction: column;
+  margin: 0 88px 36px 88px;
+  width: calc(100%-166px);
 }
 
 .ffh-details-tracking__head,
 .ffh-details-tracking__row {
-    display: flex;
+  display: flex;
 }
 
 .ffh-details-tracking__head {
-    border-bottom: 1px solid $grey-mid;
-    box-shadow: 0 1px 2px $shadow;
-    font-weight: bold;
+  border-bottom: 1px solid $grey-mid;
+  box-shadow: 0 1px 2px $shadow;
+  font-weight: bold;
 }
 
 .ffh-details-tracking__row {
-    &:not(:last-child) {
-        border-bottom: 1px solid $grey-mid;
-    }
+  &:not(:last-child) {
+    border-bottom: 1px solid $grey-mid;
+  }
 }
 
 .ffh-details-tracking__cell {
-    display: flex;
-    flex-direction: column;
-    height: 60px;
-    justify-content: center;
-    overflow: hidden;
-    padding: 11px 15px;
-    width: 100%;
-    &:not(:last-child) {
-        border-left: 1px solid $grey-mid;
-    }
-    &.date {
-        max-width: 200px;
-    }
-    &.day {
-        max-width: 140px;
-    }
-    &.hour {
-        max-width: 140px;
-    }
-    &.status {
-        max-width: 160px;
-    }
-    &.user {
-        max-width: 200px;
-    }
-    &.comments {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        overflow: initial;
-    }
+  display: flex;
+  flex-direction: column;
+  height: 60px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 11px 15px;
+  width: 100%;
+  &:not(:last-child) {
+    border-left: 1px solid $grey-mid;
+  }
+  &.date {
+    max-width: 200px;
+  }
+  &.day {
+    max-width: 140px;
+  }
+  &.hour {
+    max-width: 140px;
+  }
+  &.status {
+    max-width: 160px;
+  }
+  &.user {
+    max-width: 200px;
+  }
+  &.comments {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow: initial;
+  }
 }

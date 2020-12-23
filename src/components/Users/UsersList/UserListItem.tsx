@@ -9,14 +9,14 @@ interface UserListItemProps {
     initials: string;
     initialsColors: string;
     selected: boolean;
-    onUserCicked: (id: number) => void;
+    onUserClicked: (id: number) => void;
     onDetailsClickOutside?: (event: any) => void;
 }
 
 
 const UserListItem: React.FC<UserListItemProps> = (props:UserListItemProps) => {
     const onLineClicked = ()=> {
-        props.onUserCicked(props.identifier);
+        props.onUserClicked(props.identifier);
     }
 
     return (

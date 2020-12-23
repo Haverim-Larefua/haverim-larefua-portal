@@ -1,4 +1,4 @@
-export default interface SerachUsersParams {
+export default interface SearchUsersParams {
   dayFilter: string;
   cityFilter: string;
   nameFilter: string;

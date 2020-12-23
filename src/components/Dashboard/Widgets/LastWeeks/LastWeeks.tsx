@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import httpService from "../../../../services/http";
 import { Area, Line, ComposedChart, XAxis } from "recharts";
 import Parcel from "../../../../models/Parcel";
-import ParcelTracking from "../../../../models/ParcelTracking";
 import widgetsService from "../Widgets.service";
 import { DateUtil } from "../../../../Utils/Common/DateUtil";
 import { CollectionUtil } from "../../../../Utils/Common/CollectionsUtil";
@@ -103,7 +102,7 @@ function getAmountByWeek(date: number, chartData: ChartData[]): number {
 }
 
 function renderQuarterTick(tickProps: any, chartData: ChartData[]) {
-  const { x, y, payload } = tickProps;
+  const { x, payload } = tickProps;
   const { value, offset } = payload;
   const date = new Date(value);
   if (date.getDay() === 6) {

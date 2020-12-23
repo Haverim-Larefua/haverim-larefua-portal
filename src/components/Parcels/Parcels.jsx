@@ -13,7 +13,6 @@ import * as parcelActions from "../../redux/states/parcel/actions";
 import {  connect } from 'react-redux';
 import {bindActionCreators } from "redux";
 import queryString from 'query-string';
-import { ParcelUtil } from "../../Utils/Parcel/ParcelUtil";
 
 const MINUTE = 60000;
 const Parcels = ({error, cities, parcels, searching, actions} ) => {
@@ -23,15 +22,15 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [userUpdateStatus, setUserUpdateStatus] = useState(false);
   const [cityFilterTerm, setCityFilterTerm] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [freeCondition, setFreCondition] = useState("");
+  const [freeCondition] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
-  const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
 
   const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
   const [deleteParcelId, setDeleteParcelId] = useState("");
   const [deleteParcelText, setDeleteParcelText] = useState("");
-  const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
+  const [deleteEnabled, setIsDeleteEnabled] = useState(true);
 
 
   useEffect(() => {
@@ -48,17 +47,17 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   useEffect(() => {
     function handleDeleteParcel() {
       if (deleteParcelId && deleteParcelId !== "") {
-        setShowComfirmDeleteDialog(true);
+        setShowConfirmDeleteDialog(true);
       } else {
-        setShowComfirmDeleteDialog(false);
+        setShowConfirmDeleteDialog(false);
       }
     }
     handleDeleteParcel();
   }, [deleteParcelId, deleteParcelText])
 
   useEffect(() => {
-    setIsDeleteEnabled(deleteEnalbed);
-  }, [deleteEnalbed])
+    setIsDeleteEnabled(deleteEnabled);
+  }, [deleteEnabled])
 
   const handleDelete = () => {
     actions.removeParcel(deleteParcelId);
@@ -190,8 +189,8 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
         noDataComponent={error?.length > 0 ? AppConstants.serverErrorMessage : noDataMessage}
         loading={searching && !error?.length > 0}
       />
-      {showComfirmDeleteDialog &&
-        <ConfirmDeleteParcel isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
+      {showConfirmDeleteDialog &&
+        <ConfirmDeleteParcel isDeleteEnabled={deleteEnabled} show={showConfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
         text={deleteParcelText} />
       }
     </div>

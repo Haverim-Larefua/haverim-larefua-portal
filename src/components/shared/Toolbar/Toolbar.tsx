@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Dropdown from '../Dropdown/Dropdown';
 import './Toolbar.scss';
 import UploadButton from '../UploadButton/UploadButton';
