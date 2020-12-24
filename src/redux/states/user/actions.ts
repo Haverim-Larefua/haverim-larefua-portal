@@ -1,6 +1,6 @@
 import { toastr } from "react-redux-toastr";
 import { Dispatch } from "redux";
-import SerachUsersParams from "../../../models/SerachUsersParams";
+import SearchUsersParams from "../../../models/SearchUsersParams";
 import User from "../../../models/User";
 import httpService from "../../../services/http";
 import logger from "../../../Utils/logger";
@@ -26,7 +26,7 @@ export function loadUsersSuccess(users: User[]): LoadUsersSuccessAction {
   return { type: LOAD_USERS_SUCCESS, users };
 }
 
-export function searchUsersSuccess(searchParams: SerachUsersParams): SearchUsersSuccessAction {
+export function searchUsersSuccess(searchParams: SearchUsersParams): SearchUsersSuccessAction {
   return { type: SEARCH_USERS_SUCCESS, searchParams };
 }
 
@@ -52,7 +52,7 @@ export function updateUsersAreasSuccess(areas: string[]): UpdateUsersAreaSuccess
 
 /////Redxu Thunk Actions/////
 
-export function searchUsers(searchParams: SerachUsersParams) {
+export function searchUsers(searchParams: SearchUsersParams) {
   return async (dispatch: Dispatch) => {
     dispatch(searchUsersSuccess(searchParams));
     await loadUsers(searchParams, dispatch);
@@ -67,7 +67,7 @@ export function reloadUsers() {
   };
 }
 
-async function loadUsers(searchParams: SerachUsersParams, dispatch: Dispatch) {
+async function loadUsers(searchParams: SearchUsersParams, dispatch: Dispatch) {
   try {
     const [users, areaOptions] = await Promise.all([
       httpService.getUsers(searchParams),

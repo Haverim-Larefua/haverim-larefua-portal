@@ -65,7 +65,7 @@ export class ParcelUtil {
   static prepareParcelsForDisplay(dbParcels: Parcel[]): Parcel[] {
     if (dbParcels && dbParcels.length > 0) {
       dbParcels.forEach((parcel: Parcel) => {
-        parcel = ParcelUtil.prepareOneParcelForDisplay(parcel);
+        ParcelUtil.prepareOneParcelForDisplay(parcel);
       });
     }
     return dbParcels;
@@ -74,27 +74,12 @@ export class ParcelUtil {
   // parcelTrackingStatus in DB is defined as @IsEnum(['ready', 'assigned', 'delivered', 'distribution', 'exception'])
   // need to translate from DB value to UI valued ans vice versa
   static parcelStatusEnumToUIValue(status: string) {
-    switch (status) {
-      case "assigned": {
-        return AppConstants.readyStatusName;
-      }
-      case "delivered": {
-        return AppConstants.deliveredStatusName;
-      }
-      case "distribution": {
-        return AppConstants.deliveringStatusName;
-      }
-      case "exception": {
-        return AppConstants.exceptionStatusName;
-      }
-      default: {
-        return AppConstants.readyStatusName;
-      }
-    }
+    const statusOption = AppConstants.parcelStatusOptions.find(option => option.value === status);
+    return statusOption?.label || AppConstants.readyStatusName;
   }
 
   static prepareParcelsForDBUpdate(parcels: Parcel[]): Parcel[] {
-    if (parcels && parcels.length > 0) {
+    if (parcels?.length > 0) {
       return parcels.map((parcel: Parcel) => {
         return ParcelUtil.prepareParcelForDBUpdate(parcel);
       });

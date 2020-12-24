@@ -169,6 +169,19 @@ export function assignUserToParcels(parcelsToAssociate: number[], userId: number
   };
 }
 
+export function unAssignUserToParcel(parcel: number) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      await httpService.unassignParcel(parcel);
+      toastr.success("", AppConstants.parcelsUnassignUserSuccessfully);
+    } catch (err) {
+      logger.error(err);
+      toastr.error("", AppConstants.parcelsUserChangedError);
+    } finally {
+      dispatch(reloadParcels());
+    }
+  };
+}
 export function updateParcelsStatus(userId: number, status: string, parcelIds: number[]) {
   return async (dispatch: Dispatch<any>) => {
     try {

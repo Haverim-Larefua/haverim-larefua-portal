@@ -1,14 +1,14 @@
 import axios, { AxiosRequestConfig } from "axios";
 import logger from "../Utils/logger";
 import Configuration from "../configuration/Configuration";
-import AppConstants, { AppConstants1 } from "../constants/AppConstants";
+import { AppConstants1 } from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
 import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
 import { UserUtil } from "../Utils/User/UserUtil";
 import AuthService from "./authService";
 import Parcel from "../models/Parcel";
 import User from "../models/User";
-import SerachUsersParams from "../models/SerachUsersParams";
+import SearchUsersParams from "../models/SearchUsersParams";
 
 enum HttpMethod {
   POST = "post",
@@ -110,8 +110,8 @@ class HttpService {
 
   async getParcel(id: number): Promise<Parcel> {
     let url = `${Configuration.URLS.PARCELS}\\${id}`;
-    const parcl: Parcel = await this.sendHttpRequest(url, HttpMethod.GET);
-    return ParcelUtil.prepareOneParcelForDisplay(parcl);
+    const parcel: Parcel = await this.sendHttpRequest(url, HttpMethod.GET);
+    return ParcelUtil.prepareOneParcelForDisplay(parcel);
   }
 
   async createParcel(aParcel: Parcel) {
@@ -142,6 +142,9 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/assign/${userId}`, HttpMethod.PUT, parcelsId);
   }
 
+  async unassignParcel(parcelsId: number) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${parcelsId}/unassign`, HttpMethod.PUT);
+  }
   async getParcelsCityOptions() {
     return this.sendHttpRequest<string[]>(`${Configuration.URLS.PARCELS}/cityOptions`, HttpMethod.GET);
   }
@@ -155,7 +158,7 @@ class HttpService {
   }
 
   //////////////////////////////////// Users ////////////////////////////////////
-  async getUsers(searchParams: SerachUsersParams): Promise<User[]> {
+  async getUsers(searchParams: SearchUsersParams): Promise<User[]> {
     let url = `${Configuration.URLS.USERS}?`;
     if (searchParams.cityFilter) {
       url += `&cityFilter=${searchParams.cityFilter}`;
