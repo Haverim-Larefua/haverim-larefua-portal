@@ -110,8 +110,8 @@ class HttpService {
 
   async getParcel(id: number): Promise<Parcel> {
     let url = `${Configuration.URLS.PARCELS}\\${id}`;
-    const parcl: Parcel = await this.sendHttpRequest(url, HttpMethod.GET);
-    return ParcelUtil.prepareOneParcelForDisplay(parcl);
+    const parcel: Parcel = await this.sendHttpRequest(url, HttpMethod.GET);
+    return ParcelUtil.prepareOneParcelForDisplay(parcel);
   }
 
   async createParcel(aParcel: Parcel) {
@@ -142,6 +142,9 @@ class HttpService {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/assign/${userId}`, HttpMethod.PUT, parcelsId);
   }
 
+  async unassignParcel(parcelsId: number) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${parcelsId}/unassign`, HttpMethod.PUT);
+  }
   async getParcelsCityOptions() {
     return this.sendHttpRequest<string[]>(`${Configuration.URLS.PARCELS}/cityOptions`, HttpMethod.GET);
   }

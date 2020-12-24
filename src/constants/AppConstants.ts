@@ -76,6 +76,8 @@ class AppConstants {
   static readonly parcelStatusChangedSuccessfully = "סטטוס החבילה השתנה בהצלחה";
   static readonly parcelStatusChangedError = "שינוי סטטוס החבילה נכשל";
   static readonly parcelsUserChangedSuccessfully = "שיוך החבילות לשליח בוצע בהצלחה";
+  static readonly parcelsUnassignUserSuccessfully = "הסרת שיוך החבילה מהשליח בוצע בהצלחה";
+
   static readonly parcelsUserChangedError = "שיוך החבילות לשליח נכשל";
   static readonly parcelAssignedToUser = "החבילה שויכה לשליח";
 
