@@ -28,7 +28,7 @@ class AppConstants {
   static readonly username: string = " שם משתמש/ת ( תצוגה בלבד)";
   static readonly notes: string = "הערות";
   static readonly parcelsUIName: string = "חבילות";
-
+  static readonly chosenParcelsUIName: string = "חבילות נבחרו";
   static readonly addUserUIName: string = "הוספת שליח/ה";
   static readonly add: string = "הוספה";
   static readonly editUserUIName: string = "עריכת שליח/ה";
@@ -43,6 +43,8 @@ class AppConstants {
 
   static readonly addFromFileUIName: string = "הוספה מקובץ";
   static readonly associateUserUIName: string = "שיוך לשליח/ה";
+  static readonly pushUserUIName: string = "קריאה לשליחים";
+
   static readonly disassociateUserUIName: string = "הסרת שליח/ה";
 
   static readonly associateParcelToUserUIName: string = "שיוך חבילות לשליח/ה";

@@ -1,4 +1,4 @@
-import { ICurrentParcel } from "../components/Parcels/ParcelDetails/DetailsParcelTable";
+import { ICurrentParcel } from "../components/Parcels/ParcelDetails/DetailsParcelTable/DetailsParcelTable";
 import ParcelTracking from "./ParcelTracking";
 import User from "./User";
 

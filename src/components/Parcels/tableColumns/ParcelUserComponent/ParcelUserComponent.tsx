@@ -1,11 +1,11 @@
 import React from "react";
-import ActionButton from "../shared/ActionButton/ActionButton";
-import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
-import { ReactComponent as AssignIcon} from '../../assets/icons/add-volunteer.svg';
+import ActionButton from "../../../shared/ActionButton/ActionButton";
+import { ReactComponent as DeleteIcon } from "../../../../assets/icons/delete.svg";
+import { ReactComponent as AssignIcon} from '../../../../assets/icons/add-volunteer.svg';
 import {connect} from "react-redux";
 import "./ParcelUserComponent.scss";
-import { AppState } from "../../redux/rootReducer";
-import User from "../../models/User";
+import { AppState } from "../../../../redux/rootReducer";
+import User from "../../../../models/User";
 
 const uuidv4 = require('uuid/v4');
 

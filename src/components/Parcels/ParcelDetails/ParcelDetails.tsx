@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import "./ParcelDetails.scss";
-import DetailsParcelTable from "./DetailsParcelTable";
-import DetailsUserTable from "./DetailsUserTable";
-import DetailsTrackingTable from "./DetailsTrackingTable";
+import DetailsParcelTable from "./DetailsParcelTable/DetailsParcelTable";
+import DetailsTrackingTable from "./DetailsTrackingTable/DetailsTrackingTable";
 import { ReactComponent as BackIcon } from "../../../assets/icons/back.svg";
 import Status from "../../shared/Status/Status";
 import AppConstants from "../../../constants/AppConstants";
@@ -22,6 +21,7 @@ import { ReactComponent as SwitchUserIcon } from "../../../assets/icons/switch.s
 import { ReactComponent as RemoveUserIcon } from "../../../assets/icons/remove.svg";
 
 import AssignUserToParcelsModal from "../AssignUserToParcelsModal/AssignUserToParcelsModal";
+import DetailsUserTable from "./DetailsUserTable/DetailsUserTable";
 
 const statuses = AppConstants.parcelStatusOptions.filter((status) => status.label !== AppConstants.exceptionStatusName);
 

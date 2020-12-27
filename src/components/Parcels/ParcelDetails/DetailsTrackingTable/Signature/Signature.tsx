@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ReactComponent as SignatureIcon } from '../../../assets/icons/signature.svg';
+import { ReactComponent as SignatureIcon } from '../../../../../assets/icons/signature.svg';
 import './Signature.scss';
 
 

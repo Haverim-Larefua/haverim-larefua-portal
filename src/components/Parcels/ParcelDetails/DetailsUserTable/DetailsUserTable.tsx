@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactComponent as UserIcon } from '../../../assets/icons/delivery-boy.svg';
+import { ReactComponent as UserIcon } from '../../../../assets/icons/delivery-boy.svg';
 
 export interface DetailsUserTableProps {
     deliveryUser: IDeliveryUser;

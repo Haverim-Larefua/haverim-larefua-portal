@@ -3,19 +3,23 @@ import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
-import tableColumns from "./tableColumns";
+import tableColumns from "./tableColumns/tableColumns";
 import AppConstants from "../../constants/AppConstants";
 import logger from "../../Utils/logger";
 import AssignUserToParcelsModal from "./AssignUserToParcelsModal/AssignUserToParcelsModal";
-import ConfirmDeleteParcel from "./ConfirmDeleteParcel";
+import ConfirmDeleteParcel from "./ConfirmDeleteParcel/ConfirmDeleteParcel";
 import './Parcels.scss';
 import * as parcelActions from "../../redux/states/parcel/actions";
-import {  connect } from 'react-redux';
-import {bindActionCreators } from "redux";
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import queryString from 'query-string';
+import ParcelsToolbar from "./ParcelsToolbar/ParcelsToolbar";
+import ParcelsActionsToolbar from "./ParcelsActionsToolbar/ParcelsActionsToolbar";
 
 const MINUTE = 60000;
-const Parcels = ({error, cities, parcels, searching, actions} ) => {
+
+
+const Parcels = ({ error, cities, parcels, searching, actions }) => {
   const statuses = AppConstants.parcelStatusOptions;
 
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
@@ -26,7 +30,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const [openUsersModal, setOpenUsersModal] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
 
-  const [selectedRowsState, setSelectedRowsState] = useState({allSelected: false, selectedCount: 0, selectedRows: []});
+  const [selectedRowsState, setSelectedRowsState] = useState({ allSelected: false, selectedCount: 0, selectedRows: [] });
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
   const [deleteParcelId, setDeleteParcelId] = useState("");
   const [deleteParcelText, setDeleteParcelText] = useState("");
@@ -37,7 +41,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
     const queryStringParams = queryString.parse(window.location.search);
     const statusCond = queryStringParams.status && !userUpdateStatus ? queryStringParams.status : statusFilterTerm;
     const freeCond = queryStringParams.freeCondition && !userUpdateStatus ? queryStringParams.freeCondition : freeCondition;
-    actions.searchParcels({statusFilter: statusCond, cityFilter: cityFilterTerm, searchTerm, freeCondition: freeCond});
+    actions.searchParcels({ statusFilter: statusCond, cityFilter: cityFilterTerm, searchTerm, freeCondition: freeCond });
     const timer = setInterval(() => {
       actions.reloadParcels();
     }, MINUTE);
@@ -70,7 +74,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
 
   const hideUsersModal = () => {
     setOpenUsersModal(false);
-    setSelectedRowsState({allSelected:false, selectedCount:0, selectedRows: [] });
+    setSelectedRowsState({ allSelected: false, selectedCount: 0, selectedRows: [] });
   };
 
   const onSelectedRowsChanged = selectedRowsState => {
@@ -79,25 +83,36 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   }
 
   const buildSubTitle = () => {
-    return (selectedRowsState.selectedCount > 0 ? `${selectedRowsState.selectedCount} חבילות נבחרו` : '' );
+    return (selectedRowsState.selectedCount > 0 ? `${selectedRowsState.selectedCount} חבילות נבחרו` : '');
   }
 
-  const isWithOptionsAnSearch = () => {
+  const isNoRowSelected = () => {
     return selectedRowsState.selectedCount === 0
   }
 
   const handleAction = async (e) => {
-    if (isWithOptionsAnSearch()) { // load from file
+    if (isNoRowSelected()) { // load from file
       const files = e.target.files;
       if (files) {
         const data = await ParcelsImporterService.ImportFromExcel(files[0]);
         actions.addParcels(data);
       }
     } else { // associate user to parcels
-      logger.log('[Parcel] handleAction associate user to parcel' );
+      logger.log('[Parcel] handleAction associate user to parcel');
       setParcelsToAssociate(selectedRowsState.selectedRows.map(row => row.id));
       showUsersModal();
     }
+  };
+
+  const handleAssociateUserClick = async (e) => {
+    logger.log('[Parcel] handleAssociateUserClick- associate user to parcel');
+    setParcelsToAssociate(selectedRowsState.selectedRows.map(row => row.id));
+    showUsersModal();
+  };
+
+  const handlePushUsersClick = async (e) => {
+    logger.log('[Parcel] handlePushUsersClick- push to users');
+
   };
 
   const cellButtonClicked = (idStr, name) => {
@@ -112,8 +127,8 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       logger.log('[Parcels] cellButtonClicked delete ', id, parcel.id);
       let txt = AppConstants.deleteParcelConfirmation;
       if (parcel.parcelTrackingStatus !== AppConstants.readyStatusName) {
-          txt = AppConstants.deleteParcelWarningConfirmation;
-          parcelAllowedToBeDeleted = false;
+        txt = AppConstants.deleteParcelWarningConfirmation;
+        parcelAllowedToBeDeleted = false;
       }
       setIsDeleteEnabled(parcelAllowedToBeDeleted);
       setDeleteParcelText(txt);
@@ -123,7 +138,7 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       setParcelsToAssociate([id]);
       showUsersModal();
     } else {
-      logger.warn('[Parcels] cellButtonClicked unkown action for parcel  ', id, parcel.id);
+      logger.warn('[Parcels] cellButtonClicked unknown action for parcel  ', id, parcel.id);
     }
   };
 
@@ -144,25 +159,32 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   const citiesOptions = useMemo(() => cities.map(city => ({ label: city, value: city })), [cities]);
   const options = [
     { title: AppConstants.filterUIName, name: "status", values: statuses, filter: updateStatusTerm, bullets: true, showOptionAll: false },
-    { title: AppConstants.cityUIName, name: "cities", values: citiesOptions, filter: setCityFilterTerm, searchable:true, selectedValue: cityFilterTerm}
+    { title: AppConstants.cityUIName, name: "cities", values: citiesOptions, filter: setCityFilterTerm, searchable: true, selectedValue: cityFilterTerm }
   ];
 
   const buildToolBar = () => {
-    const withOptionsAndSearch = isWithOptionsAnSearch();
-    const actionTitle = withOptionsAndSearch ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
+    const displayToolBarTable = isNoRowSelected();
+    const actionTitle = displayToolBarTable ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
     return (
-      <Toolbar
-        title={AppConstants.parcelsUIName}
-        subTitle={buildSubTitle()}
-        actionTitle={actionTitle}
-        action={handleAction}
-        withOptions = {withOptionsAndSearch}
-        options={options}
-        search={setSearchTerm}
-        withSearch = {withOptionsAndSearch}
-        uploadButton = {withOptionsAndSearch}
-        searchPlaceholder={"חיפוש לפי שם, תעודת זהות וטלפון"}
-      />)
+      displayToolBarTable ?
+        <ParcelsToolbar
+          title={AppConstants.parcelsUIName}
+          subTitle={buildSubTitle()}
+          actionTitle={actionTitle}
+          action={handleAction}
+          withOptions={displayToolBarTable}
+          options={options}
+          search={setSearchTerm}
+          withSearch={displayToolBarTable}
+          uploadButton={displayToolBarTable}
+          searchPlaceholder={"חיפוש לפי שם, תעודת זהות וטלפון"}
+        />
+        :
+        <ParcelsActionsToolbar
+          rowsCount={selectedRowsState.selectedCount}
+          associateUserClick={handleAssociateUserClick}
+          pushUsersClick={handlePushUsersClick}
+        />)
   }
 
   const noDataMessage = 'אין חבילות להצגה';
@@ -170,9 +192,9 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
   return (
     <div className="parcels-table-conatiner">
       {openUsersModal &&
-      <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal} >
-      </AssignUserToParcelsModal>
-    }
+        <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal} >
+        </AssignUserToParcelsModal>
+      }
       <Table
         id="users"
         data={parcels}
@@ -191,13 +213,13 @@ const Parcels = ({error, cities, parcels, searching, actions} ) => {
       />
       {showConfirmDeleteDialog &&
         <ConfirmDeleteParcel isDeleteEnabled={deleteEnabled} show={showConfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
-        text={deleteParcelText} />
+          text={deleteParcelText} />
       }
     </div>
   );
 }
 
-const mapStateToProps =(appState) => {
+const mapStateToProps = (appState) => {
   return {
     error: appState.parcel.error,
     parcels: appState.parcel.parcels,
