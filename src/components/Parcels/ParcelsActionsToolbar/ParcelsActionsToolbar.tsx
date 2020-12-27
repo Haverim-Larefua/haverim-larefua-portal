@@ -14,19 +14,16 @@ export interface IParcelsActionsToolbarToolbarProps {
 }
 
 const ParcelsActionsToolbar = ({ rowsCount, associateUserClick, pushUsersClick }: IParcelsActionsToolbarToolbarProps) => {
-  const associateUserButton = <button className="ffh-toolbar__immediate_action" onClick={associateUserClick}><AddUserIcon /> {AppConstants.associateUserUIName} </button>;
-  const pushUserButton = <button className="ffh-toolbar__immediate_action" onClick={pushUsersClick}><PushUserIcon /> {AppConstants.pushUserUIName} </button>;
+  const associateUserButton = <button className="ffh-toolbar-associate-user-action" onClick={associateUserClick}><AddUserIcon /> {AppConstants.associateUserUIName} </button>;
+  const pushUserButton = <button className="ffh-toolbar-push-user-action" onClick={pushUsersClick}><PushUserIcon /> {AppConstants.pushUserUIName} </button>;
   const title = `${rowsCount} ${AppConstants.chosenParcelsUIName}`;
   return (
     <div className="ffh-toolbar">
-      <div className="ffh-toolbar__title">
-        {AppConstants.parcelsUIName}
-      </div>
-      <div className="ffh-toolbar__subtitle">
-        {title}
-      </div>
+      <div className="ffh-toolbar__title">{AppConstants.parcelsUIName}</div>
+      <div className="ffh-toolbar__subtitle">{title}</div>
       {associateUserButton}
       {pushUserButton}
-    </div>);
+    </div>
+  );
 }
 export default ParcelsActionsToolbar;

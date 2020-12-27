@@ -29,7 +29,6 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
   const [freeCondition] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
-
   const [selectedRowsState, setSelectedRowsState] = useState({ allSelected: false, selectedCount: 0, selectedRows: [] });
   const [parcelsToAssociate, setParcelsToAssociate] = useState([]);
   const [deleteParcelId, setDeleteParcelId] = useState("");
@@ -77,32 +76,18 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
     setSelectedRowsState({ allSelected: false, selectedCount: 0, selectedRows: [] });
   };
 
-  const onSelectedRowsChanged = selectedRowsState => {
-    logger.log('[Parcels] onSelectedRowsChanged ', selectedRowsState);
-    setSelectedRowsState(selectedRowsState);
+  const onSelectedRowsChanged = selectedRows => {
+    logger.log('[Parcels] onSelectedRowsChanged ', selectedRows);
+    setSelectedRowsState(selectedRows);
   }
 
-  const buildSubTitle = () => {
-    return (selectedRowsState.selectedCount > 0 ? `${selectedRowsState.selectedCount} חבילות נבחרו` : '');
-  }
-
-  const isNoRowSelected = () => {
-    return selectedRowsState.selectedCount === 0
-  }
-
-  const handleAction = async (e) => {
-    if (isNoRowSelected()) { // load from file
-      const files = e.target.files;
-      if (files) {
-        const data = await ParcelsImporterService.ImportFromExcel(files[0]);
-        actions.addParcels(data);
-      }
-    } else { // associate user to parcels
-      logger.log('[Parcel] handleAction associate user to parcel');
-      setParcelsToAssociate(selectedRowsState.selectedRows.map(row => row.id));
-      showUsersModal();
+  const handleImportFromFile = async (e) => {
+    const files = e.target.files;
+    if (files) {
+      const data = await ParcelsImporterService.ImportFromExcel(files[0]);
+      actions.addParcels(data);
     }
-  };
+  }
 
   const handleAssociateUserClick = async (e) => {
     logger.log('[Parcel] handleAssociateUserClick- associate user to parcel');
@@ -112,13 +97,12 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
 
   const handlePushUsersClick = async (e) => {
     logger.log('[Parcel] handlePushUsersClick- push to users');
-
   };
 
   const cellButtonClicked = (idStr, name) => {
     logger.log('[Parcels] cellButtonClicked on ', idStr, name);
     const id = parseInt(idStr);
-    const parcel = parcels.find(prcl => prcl.id === id);
+    const parcel = parcels.find(p => p.id === id);
     if (!parcel) {
       logger.error('[Parcels] cellButtonClicked parcel with id ', id, '  not found');
     }
@@ -163,23 +147,14 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
   ];
 
   const buildToolBar = () => {
-    const displayToolBarTable = isNoRowSelected();
-    const actionTitle = displayToolBarTable ? AppConstants.addFromFileUIName : AppConstants.associateUserUIName;
+    const displayToolBarTable = selectedRowsState.selectedCount === 0;
     return (
       displayToolBarTable ?
         <ParcelsToolbar
-          title={AppConstants.parcelsUIName}
-          subTitle={buildSubTitle()}
-          actionTitle={actionTitle}
-          action={handleAction}
-          withOptions={displayToolBarTable}
+          importFromFileClick={handleImportFromFile}
           options={options}
           search={setSearchTerm}
-          withSearch={displayToolBarTable}
-          uploadButton={displayToolBarTable}
-          searchPlaceholder={"חיפוש לפי שם, תעודת זהות וטלפון"}
-        />
-        :
+        /> :
         <ParcelsActionsToolbar
           rowsCount={selectedRowsState.selectedCount}
           associateUserClick={handleAssociateUserClick}
@@ -190,10 +165,9 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
   const noDataMessage = 'אין חבילות להצגה';
 
   return (
-    <div className="parcels-table-conatiner">
+    <div className="parcels-table-container">
       {openUsersModal &&
-        <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal} >
-        </AssignUserToParcelsModal>
+        <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal}> </AssignUserToParcelsModal>
       }
       <Table
         id="users"
