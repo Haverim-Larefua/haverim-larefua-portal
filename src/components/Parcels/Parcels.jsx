@@ -15,13 +15,13 @@ import { bindActionCreators } from "redux";
 import queryString from 'query-string';
 import ParcelsToolbar from "./ParcelsToolbar/ParcelsToolbar";
 import ParcelsActionsToolbar from "./ParcelsActionsToolbar/ParcelsActionsToolbar";
+import PushToUsersModal from "./PushToUsersModal/PushToUsersModal";
 
 const MINUTE = 60000;
 
 
 const Parcels = ({ error, cities, parcels, searching, actions }) => {
   const statuses = AppConstants.parcelStatusOptions;
-
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
   const [userUpdateStatus, setUserUpdateStatus] = useState(false);
   const [cityFilterTerm, setCityFilterTerm] = useState("");
@@ -34,7 +34,7 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
   const [deleteParcelId, setDeleteParcelId] = useState("");
   const [deleteParcelText, setDeleteParcelText] = useState("");
   const [deleteEnabled, setIsDeleteEnabled] = useState(true);
-
+  const [openPushToUsersModal, setPushToUsersModal] = useState(false);
 
   useEffect(() => {
     const queryStringParams = queryString.parse(window.location.search);
@@ -76,6 +76,10 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
     setSelectedRowsState({ allSelected: false, selectedCount: 0, selectedRows: [] });
   };
 
+  const hidePushToUsersModal = () => {
+    setPushToUsersModal(false);
+  };
+
   const onSelectedRowsChanged = selectedRows => {
     logger.log('[Parcels] onSelectedRowsChanged ', selectedRows);
     setSelectedRowsState(selectedRows);
@@ -89,14 +93,15 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
     }
   }
 
-  const handleAssociateUserClick = async (e) => {
+  const handleAssociateUserClicked = async (e) => {
     logger.log('[Parcel] handleAssociateUserClick- associate user to parcel');
     setParcelsToAssociate(selectedRowsState.selectedRows.map(row => row.id));
     showUsersModal();
   };
 
-  const handlePushUsersClick = async (e) => {
+  const handlePushUsersClicked = async (e) => {
     logger.log('[Parcel] handlePushUsersClick- push to users');
+    setPushToUsersModal(true);
   };
 
   const cellButtonClicked = (idStr, name) => {
@@ -127,7 +132,7 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
   };
 
   const history = useHistory();
-  const handleRowClick = (parcel) => {
+  const handleRowClicked = (parcel) => {
     history.push(`/parcel/${parcel.id}`);
   }
 
@@ -157,8 +162,8 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
         /> :
         <ParcelsActionsToolbar
           rowsCount={selectedRowsState.selectedCount}
-          associateUserClick={handleAssociateUserClick}
-          pushUsersClick={handlePushUsersClick}
+          associateUserClick={handleAssociateUserClicked}
+          pushUsersClick={handlePushUsersClicked}
         />)
   }
 
@@ -166,6 +171,9 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
 
   return (
     <div className="parcels-table-container">
+      {openPushToUsersModal &&
+        <PushToUsersModal parcels={selectedRowsState.selectedRows} handleClose={hidePushToUsersModal}> </PushToUsersModal>
+      }
       {openUsersModal &&
         <AssignUserToParcelsModal parcelsToAssociate={parcelsToAssociate} handleClose={hideUsersModal}> </AssignUserToParcelsModal>
       }
@@ -174,7 +182,7 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
         data={parcels}
         tableColumns={tableColumns}
         handleCellButtonClick={cellButtonClicked}
-        rowClick={handleRowClick}
+        rowClick={handleRowClicked}
         onSelectedRowsChange={onSelectedRowsChanged}
         subHeaderComponent={buildToolBar()}
         selectableRows

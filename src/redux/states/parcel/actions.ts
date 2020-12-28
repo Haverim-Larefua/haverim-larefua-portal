@@ -194,3 +194,14 @@ export function updateParcelsStatus(userId: number, status: string, parcelIds: n
     }
   };
 }
+
+export function sendPushNotificationToUsers(parcelIds: number[]) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      await httpService.sendPushNotificationToUsers( parcelIds);
+      toastr.success("", AppConstants.sendPushNotificationToUsersSuccessfully);
+    } catch {
+      toastr.error("", AppConstants.sendPushNotificationToUsersError);
+    }
+  };
+}
