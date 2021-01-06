@@ -1,7 +1,7 @@
 import React from 'react';
-import { DateUtil } from '../../../Utils/Common/DateUtil';
-import StringUtil from '../../../Utils/Common/StringUtil';
-import formatDate from '../../../Utils/dateFormatter';
+import { DateUtil } from '../../../../Utils/Common/DateUtil';
+import StringUtil from '../../../../Utils/Common/StringUtil';
+import formatDate from '../../../../Utils/dateFormatter';
 
 export interface DetailsParcelTableProps {
     currentParcel: ICurrentParcel;

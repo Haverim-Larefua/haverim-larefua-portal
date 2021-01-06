@@ -26,9 +26,9 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
   const [notifyUserName, setNotifyUserName] = useState("");
   const [deleteUserId, setDeleteUserId] = useState("");
   const [deleteUserText, setDeleteUserText] = useState("");
-  const [showComfirmDeleteDialog, setShowComfirmDeleteDialog] = useState(false);
-  const [showNotificationDialog, setShowNoticationDialog] = useState(false);
-  const [deleteEnalbed, setIsDeleteEnabled] = useState(true);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [deleteEnabled, setIsDeleteEnabled] = useState(true);
 
   useEffect(() => {
     actions.searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm});
@@ -48,9 +48,9 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
   useEffect(() => {
     function handleDeleteUser() {
       if (deleteUserId && deleteUserId !== "") {
-        setShowComfirmDeleteDialog(true);
+        setShowConfirmDeleteDialog(true);
       } else {
-        setShowComfirmDeleteDialog(false);
+        setShowConfirmDeleteDialog(false);
       }
     }
     handleDeleteUser();
@@ -60,17 +60,17 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
   useEffect(() => {
     function handleNotifyUser() {
       if (notifyUserId && notifyUserId !== "") {
-        setShowNoticationDialog(true);
+        setShowNotificationDialog(true);
       } else {
-        setShowNoticationDialog(false);
+        setShowNotificationDialog(false);
       }
     }
     handleNotifyUser();
   }, [notifyUserId])
 
   useEffect(() => {
-    setIsDeleteEnabled(deleteEnalbed);
-  }, [deleteEnalbed])
+    setIsDeleteEnabled(deleteEnabled);
+  }, [deleteEnabled])
 
 
 
@@ -101,7 +101,7 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
         logger.log('[Users] cellButtonClicked delete ', id, user.id);
         const detailedUser = await HttpService.getUserById(user.id);
         logger.log('[User] detailed user ', detailedUser);
-        let userAllowedTobeDeleted = true;
+        let userAllowedToBeDeleted = true;
         let txt = AppConstants.deleteUserConfirmation;
         if (detailedUser.parcels && detailedUser.parcels.length > 0) {
           const prcl = detailedUser.parcels.find(p =>
@@ -109,16 +109,16 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
             );
           if (prcl) {
             txt = AppConstants.deleteUserWarningConfirmation;
-            userAllowedTobeDeleted = false;
+            userAllowedToBeDeleted = false;
           }
         }
-        setIsDeleteEnabled(userAllowedTobeDeleted);
+        setIsDeleteEnabled(userAllowedToBeDeleted);
         setDeleteUserText(txt);
         setDeleteUserId(user.id); // because setState is async - we handle the action in useEffect
         break;
       }
       default: {
-        logger.warn('[Users] cellButtonClicked unkown action for user  ', id, user.id);
+        logger.warn('[Users] cellButtonClicked unknown action for user  ', id, user.id);
         break;
       }
     }
@@ -175,8 +175,8 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
       {showNewUserModal &&
         <UserForm showNewUserModal={showNewUserModal} handleClose={handleClose} editUserId={editUserId} />
       }
-      {showComfirmDeleteDialog &&
-        <ConfirmDeleteUser isDeleteEnabled={deleteEnalbed} show={showComfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
+      {showConfirmDeleteDialog &&
+        <ConfirmDeleteUser isDeleteEnabled={deleteEnabled} show={showConfirmDeleteDialog} handleClose={handleClose} handleDelete={handleDelete}
         text={deleteUserText} />
       }
       {showNotificationDialog &&

@@ -1,8 +1,8 @@
 import React from 'react';
-import formatDate from '../../../Utils/dateFormatter';
-import Status from '../../shared/Status/Status';
-import Signature from './Signature';
-import { ParcelUtil } from '../../../Utils/Parcel/ParcelUtil';
+import formatDate from '../../../../Utils/dateFormatter';
+import Status from '../../../shared/Status/Status';
+import Signature from './Signature/Signature';
+import { ParcelUtil } from '../../../../Utils/Parcel/ParcelUtil';
 import {connect} from "react-redux";
 
 const DetailsTrackingTable = ({allUsersById, deliveryTracking, signature}) => {

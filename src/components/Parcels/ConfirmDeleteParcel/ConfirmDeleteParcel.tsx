@@ -1,6 +1,6 @@
 import React from "react";
-import Modal from "../shared/Modal/Modal";
-import AppConstants from "../../constants/AppConstants";
+import Modal from "../../shared/Modal/Modal";
+import AppConstants from "../../../constants/AppConstants";
 import './ConfirmDeleteParcel.scss';
 
 interface IConfirmDeleteParcelProps {

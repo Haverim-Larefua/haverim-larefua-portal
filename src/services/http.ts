@@ -91,6 +91,12 @@ class HttpService {
     });
   }
 
+  async sendPushNotificationToUsers(parcelIds: number[]) {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/push`, HttpMethod.POST, {
+      parcelIds,
+    });
+  }
+
   // async sendPushSubscription(subscription: PushSubscription, fingerprint: number ) {
   //   const response = await this.http.post( `${this.config.PUSH_SUBSCRIBE_POSTFIX}`, { subscription, fingerprint, id: 2 });
   //   return response.data;

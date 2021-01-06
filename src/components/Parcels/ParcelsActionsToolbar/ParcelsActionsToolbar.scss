@@ -1,0 +1,14 @@
+@import "../../../styles/colors";
+@import "../../../styles/elements";
+
+.ffh-toolbar-associate-user-action,
+.ffh-toolbar-push-user-action {
+  @extend %ffh-toolbar-button;
+  margin-right: 0;
+  width: initial;
+  display: flex;
+  align-items: center;
+}
+.ffh-toolbar-associate-user-action {
+  margin-left: 14px;
+}

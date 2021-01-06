@@ -44,7 +44,7 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
     }
 
     return (
-        <Modal title= {`${AppConstants.notify}${props.userName}` }
+        <Modal title= {`${AppConstants.notifyToUser}${props.userName}` }
                handleClose={handleClose}
                handleAction={() => notify()}
                actionBtnText="שליחה"
@@ -58,7 +58,6 @@ const NotificationForm: React.FC<INotificationProps> = (props): React.ReactEleme
                     <textarea rows={5} name="message"  className="ffh-form-textarea" value={message} required onChange={e => setMessage(e.target.value)} />
                         <div className='error-message'>{notificationErrorMessage}</div>
             </div>
-
         </Modal>
     )
 

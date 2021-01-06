@@ -28,21 +28,25 @@ class AppConstants {
   static readonly username: string = " שם משתמש/ת ( תצוגה בלבד)";
   static readonly notes: string = "הערות";
   static readonly parcelsUIName: string = "חבילות";
-
+  static readonly chosenParcelsUIName: string = "חבילות נבחרו";
   static readonly addUserUIName: string = "הוספת שליח/ה";
   static readonly add: string = "הוספה";
   static readonly editUserUIName: string = "עריכת שליח/ה";
   static readonly edit: string = "שמירה";
+  static readonly notify: string = "שליחה";
   static readonly cancel: string = "ביטול";
   static readonly deleteUserUIName: string = "מחיקת פרטי שליח/ה";
   static readonly deleteParcelUIName: string = "מחיקת חבילה";
   static readonly delete: string = "מחיקה";
   static readonly searchUIName: string = "חיפוש";
-
-  static readonly notify: string = "שליחת הודעה ל";
+  static readonly notifyToUser: string = "שליחת הודעה ל";
 
   static readonly addFromFileUIName: string = "הוספה מקובץ";
   static readonly associateUserUIName: string = "שיוך לשליח/ה";
+  static readonly pushUserUIName: string = "קריאה לשליחים";
+  static readonly pushUsersUIName: string = "קריאה לאיסוף וחלוקת חבילות";
+
+
   static readonly disassociateUserUIName: string = "הסרת שליח/ה";
 
   static readonly associateParcelToUserUIName: string = "שיוך חבילות לשליח/ה";
@@ -51,7 +55,9 @@ class AppConstants {
   static readonly filterUIName: string = "סינון";
 
   static readonly changeStatusLabel: string = "שינוי סטטוס";
-
+  static readonly pushToUsersModalSubHeader: string = "הודעה בדבר איסוף חלוקת החבילות שנבחרו תשלח לשליחים באזור המיועד.";
+  static readonly pushToUsersModalMessage: string = "חבילות ששליחים יאשרו, ישויכו אליהם. \nהודעה על השיוך תופיע בתיבת ההודעות בסרגל הניווט משמאל.";
+  
   static readonly deleteUserConfirmation: string = "הפעולה תמחק את פרטי השליח מהמערכת";
   static readonly deleteUserWarningConfirmation: string = "ישנן חבילות בחלוקה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ";
 
@@ -80,6 +86,9 @@ class AppConstants {
 
   static readonly parcelsUserChangedError = "שיוך החבילות לשליח נכשל";
   static readonly parcelAssignedToUser = "החבילה שויכה לשליח";
+
+  static readonly sendPushNotificationToUsersSuccessfully = "קריאה לאיסוף וחלוקת חבילות בוצעה בהצלחה";
+  static readonly sendPushNotificationToUsersError = "קריאה לאיסוף וחלוקת חבילות נכשלה";
 
   static readonly parcelStatusOptions: Option<string>[] = [
     { label: AppConstants.readyStatusName, value: "ready" },
