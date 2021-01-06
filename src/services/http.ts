@@ -92,7 +92,7 @@ class HttpService {
   }
 
   async sendPushNotificationToUsers(parcelIds: number[]) {
-    return this.sendHttpRequest(`${Configuration.URLS.PUSH}/push`, HttpMethod.PUT, {
+    return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/push`, HttpMethod.POST, {
       parcelIds,
     });
   }
