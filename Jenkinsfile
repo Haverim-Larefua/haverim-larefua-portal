@@ -66,7 +66,7 @@ node (nodeName) {
 			
 			banner (env.STAGE_NAME)
 			
-			git credentialsId: 'ffh_prod', url: gitRepoUrl
+			git credentialsId: 'ffh_user', url: gitRepoUrl
 		}
 		
 		
