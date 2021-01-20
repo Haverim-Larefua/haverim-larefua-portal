@@ -12,8 +12,8 @@
 //      +-----------------------------
 String dockerName        = "ffh_portal"
 String gitRepoUrl        = "git@github.com:Haverim-Larefua/haverim-larefua-portal.git"
-def    buildServers      = ['Dev': 'master',         'Prod': 'HL-PROD']
-def    backendAddresses  = ['Dev': 'http://40.122.211.186:3001', 'Prod': 'http://40.83.20.23:3001']
+def    buildServers      = ['Dev': 'Dev', 'Prod': 'Prod']
+def    backendAddresses  = ['Dev': 'http://40.123.217.231:3001', 'Prod': 'http://40.123.209.114:3001']
 
 
 
@@ -66,7 +66,7 @@ node (nodeName) {
 			
 			banner (env.STAGE_NAME)
 			
-			git credentialsId: 'HL_Aadmin', url: gitRepoUrl
+			git credentialsId: 'ffh_prod', url: gitRepoUrl
 		}
 		
 		
