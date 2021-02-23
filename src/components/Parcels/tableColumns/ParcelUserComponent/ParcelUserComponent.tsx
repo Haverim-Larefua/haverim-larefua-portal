@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import "./ParcelUserComponent.scss";
 import { AppState } from "../../../../redux/rootReducer";
 import User from "../../../../models/User";
+import Note from "../../../shared/Note/Note";
 
 const uuidv4 = require('uuid/v4');
 
@@ -14,10 +15,11 @@ export interface ParcelUserComponentProps {
     userId: number;
     itemId: string;
     status: string;
-    action: (id: number, name: string) => void;
+     action: (id: number, name: string) => void;
+     comments: string;
   }
 
-const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:ParcelUserComponentProps) => {
+const ParcelUserComponent = ({allUsersById, userId, itemId, status, action, comments}:ParcelUserComponentProps) => {
    const userDetails = allUsersById[userId];
 
     function onButtonClicked(e: any): void {
@@ -28,6 +30,7 @@ const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:Parc
       return (
         <div className="name_container" id={`${itemId}_uuid:${uuidv4()}`}>
         <span className="name_text"> {`${userDetails?.firstName ?? ""} ${userDetails?.lastName ?? ""}`} </span>
+        <div className="buttons-note-container">
         <div className="buttons_container">
         {!userId &&
             <ActionButton
@@ -46,6 +49,9 @@ const ParcelUserComponent = ({allUsersById, userId, itemId, status, action}:Parc
           />
         }
         </div>
+        <div className="note">
+        < Note text = { comments } type = "MESSAGE" / >
+        </div></div>
         </div>
       );
     }

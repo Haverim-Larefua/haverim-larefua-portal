@@ -4,31 +4,36 @@
     white-space: nowrap;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .name_text {
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }
-  
-  .buttons_container {
+}
+
+.name_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.buttons-note-container {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    visibility: hidden;
-  }
-  
-  .rdt_TableRow {
+    .buttons_container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        visibility: hidden;
+    }
+    .note {
+        margin-top: 5px;
+    }
+}
+
+.rdt_TableRow {
     &:hover {
-      .buttons_container {
-        visibility: visible;
-      }
+        .buttons_container {
+            visibility: visible;
+        }
     }
-  }
-  
-  .rdt_TableCell {
+}
+
+.rdt_TableCell {
     .name_container {
-      white-space: pre-wrap;
+        white-space: pre-wrap;
     }
-  }
-  
+}

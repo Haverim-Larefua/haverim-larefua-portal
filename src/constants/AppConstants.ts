@@ -57,7 +57,7 @@ class AppConstants {
   static readonly changeStatusLabel: string = "שינוי סטטוס";
   static readonly pushToUsersModalSubHeader: string = "הודעה בדבר איסוף חלוקת החבילות שנבחרו תשלח לשליחים באזור המיועד.";
   static readonly pushToUsersModalMessage: string = "חבילות ששליחים יאשרו, ישויכו אליהם. \nהודעה על השיוך תופיע בתיבת ההודעות בסרגל הניווט משמאל.";
-  
+
   static readonly deleteUserConfirmation: string = "הפעולה תמחק את פרטי השליח מהמערכת";
   static readonly deleteUserWarningConfirmation: string = "ישנן חבילות בחלוקה המשוייכות לשליח זה. לא ניתן לבצע מחיקה. ";
 
