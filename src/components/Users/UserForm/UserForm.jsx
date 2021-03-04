@@ -12,6 +12,7 @@ import Option from "../../../models/Option";
 import * as userActions from "../../../redux/states/user/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import MultiSelectFilter from "../../shared/MultiSelectFilter/MultiSelectFilter";
 
 const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
     const cities = useContext(citiesContext);
@@ -56,8 +57,8 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         fetchUser();
     }, [editUserId, allUsersById]);
 
-    
-                
+
+
 
     let formFields = [];
     if (editUserId) {
@@ -110,23 +111,23 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
             passwordVal = String(phoneVal).replace(/\D/g,''); // make sure the pass will be only numbers
             userName = userName === '' ? createUsername() : userName;
         }
-        
+
         if (name === 'firstName' ) {
             fnameVal = value;
         }
-        
+
         if (name === 'lastName') {
             lnameVal = value;
         }
-        
-        setNewUserFormField({ ...newUserForm, 
-            'phone' : phoneVal, 
-            'firstName': fnameVal, 
-            'lastName': lnameVal, 
-            'password': passwordVal, 
-            'username': userName, 
+
+        setNewUserFormField({ ...newUserForm,
+            'phone' : phoneVal,
+            'firstName': fnameVal,
+            'lastName': lnameVal,
+            'password': passwordVal,
+            'username': userName,
             [name]: value });
-        
+
     };
 
     const cleanForm = () => {
@@ -134,7 +135,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         setUserDeliveryArea("");
         setNewUserFormField({});
     }
- 
+
     const onSubmit = (e) => {
         e.preventDefault();
         const convertedDays = userAvailableDays ? userAvailableDays.map(val => delivaryDaysToInitials.get(val)) : '';
@@ -167,7 +168,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
                         switch (item) {
                             case 'notes': return <textarea className="notes" rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
-                            case 'deliveryArea': return <SelectFilter onSelect={(value) => handleCitySelection(value)} items={cities.map(city => new Option(city, city))} initialSelection = {userDeliveryArea} height='260px' showOptionAll={false}/>
+                            case 'deliveryArea': return <MultiSelectFilter onSelect={(value) => handleCitySelection(value)} items={cities.map(city => new Option(city, city))} initialSelection = {userDeliveryArea} height='260px' showOptionAll={false}/>
                             default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }
@@ -190,11 +191,9 @@ const mapStateToProps =(appState) => {
         allUsersById: appState.user.allUsersById,
     }
   }
-  
+
   const mapDispatchToProps = (dispatch) => {
     return { actions: bindActionCreators(userActions, dispatch) };
   }
-  
+
   export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
-  
-  
