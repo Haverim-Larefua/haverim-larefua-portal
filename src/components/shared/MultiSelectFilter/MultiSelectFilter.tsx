@@ -15,16 +15,19 @@ const multiItemsData = {
         title: "אזור מרכז",
         id: 1,
         collapse: false,
+        checked: false,
         data: [ {
             type: "CITY",
             title: "פתח תקוה",
             id: 2,
             collapse: false,
+            checked: false,
             data: [ {
                 type: "SUB_CITY",
                 title: "מגשימים ",
                 id: 4,
                 collapse: false,
+                checked: false,
               }
             ]
         }, {
@@ -32,6 +35,7 @@ const multiItemsData = {
             title:  "בני ברק",
             id: 3,
             collapse: false,
+            checked: false,
         }
         ],
     }],
@@ -44,7 +48,7 @@ const MultiSelectFilter = ({
   showOptionAll = true,
   onSelect,
   initialSelection = null,
-}) => {
+}: any) => {
   const [dropDownVisible, setDropDownVisible] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [multiItems, setMultiItems] = useState(multiItemsData)
@@ -54,7 +58,7 @@ const MultiSelectFilter = ({
 
   useEffect(
     function updateInitialSelection() {
-      const initialSelectionOption = items?.find((item) => item?.value === initialSelection);
+      const initialSelectionOption = items?.find((item: any) => item?.value === initialSelection);
       if (initialSelectionOption) {
         setSelectedOption(initialSelectionOption);
       }
@@ -62,7 +66,7 @@ const MultiSelectFilter = ({
     [items, initialSelection]
   );
 
-  const toggleDropDown = (e) => {
+  const toggleDropDown = (e: any) => {
     setDropDownVisible(!dropDownVisible);
   };
 
@@ -71,22 +75,40 @@ const MultiSelectFilter = ({
     setDropDownVisible(false);
   };
 
-  const selectItem = (option) => {
+  const selectItem = (option: any) => {
     hideDropDown();
     setSelectedOption(option);
     onSelect(option.value);
   };
 
-  const collapse = (parent, item) => {
+  const collapse = (parent: any, item: any) => {
     item.collapse = !item.collapse;
   //  setMultiItems(parent);
   }
 
-  const dropDownOneLevel = (parent, items, level) => (<div className="ffh-select-filter__options">
-            {items.map((item, i) => (
+  function setChecked(data: any[], checkedOnOf: boolean): void {
+    if(!data || data.length === 0) {
+      return;
+    }
+
+
+    data.forEach(element => {
+      element.checked = checkedOnOf;
+      setChecked(element.data, checkedOnOf);
+    });
+
+  }
+
+  const checked = (item: any, checkedOnOf:boolean) => {
+     item.checked = checkedOnOf;
+     setChecked(item.data, checkedOnOf)
+  }
+
+  const dropDownOneLevel = (parent: any, items: any, level: any) => (<div className="ffh-select-filter__options">
+            {items.map((item: any, i: boolean) => (
                 <>
               <div className="ffh-select-filter__option" key={level + " " + i} onClick={() => selectItem(item)}>
-                <div><CheckBoxOff></CheckBoxOff></div>
+                <div>{item.checked ? <CheckBoxOn onClick={() => checked(item, false)}></CheckBoxOn>: <CheckBoxOff onClick={() => checked(item, true)}></CheckBoxOff>}</div>
                 <div>{item.title}</div>
                 <div><CollapseDefault onClick={() => collapse(parent, item)} className={item.collapse ? "rotate": ""}></CollapseDefault></div>
               </div>
