@@ -83,7 +83,7 @@ const MultiSelectFilter = ({
 
   const collapse = (parent: any, item: any) => {
     item.collapse = !item.collapse;
-  //  setMultiItems(parent);
+    setMultiItems(prev => ( {...prev , parent}));
   }
 
   function setChecked(data: any[], checkedOnOf: boolean): void {
@@ -99,16 +99,17 @@ const MultiSelectFilter = ({
 
   }
 
-  const checked = (item: any, checkedOnOf:boolean) => {
+  const checked = (parent: any, item: any, checkedOnOf:boolean) => {
      item.checked = checkedOnOf;
      setChecked(item.data, checkedOnOf)
+     setMultiItems(prev => ( {...prev , parent}));
   }
 
   const dropDownOneLevel = (parent: any, items: any, level: any) => (<div className="ffh-select-filter__options">
             {items.map((item: any, i: boolean) => (
                 <>
               <div className="ffh-select-filter__option" key={level + " " + i} onClick={() => selectItem(item)}>
-                <div>{item.checked ? <CheckBoxOn onClick={() => checked(item, false)}></CheckBoxOn>: <CheckBoxOff onClick={() => checked(item, true)}></CheckBoxOff>}</div>
+                <div>{item.checked ? <CheckBoxOn onClick={() => checked(parent, item, false)}></CheckBoxOn>: <CheckBoxOff onClick={() => checked(parent, item, true)}></CheckBoxOff>}</div>
                 <div>{item.title}</div>
                 <div><CollapseDefault onClick={() => collapse(parent, item)} className={item.collapse ? "rotate": ""}></CollapseDefault></div>
               </div>
