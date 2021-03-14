@@ -108,12 +108,15 @@ const MultiSelectFilter = ({
   const dropDownOneLevel = (parent: any, items: any, level: any) => (<div className="ffh-select-filter__options">
             {items.map((item: any, i: boolean) => (
                 <>
-              <div className="ffh-select-filter__option" key={level + " " + i} onClick={() => selectItem(item)}>
-                <div>{item.checked ? <CheckBoxOn onClick={() => checked(parent, item, false)}></CheckBoxOn>: <CheckBoxOff onClick={() => checked(parent, item, true)}></CheckBoxOff>}</div>
+              <div className={level === 0 ? "ffh-select-filter__option first_level": "ffh-select-filter__option"}  key={level + " " + i} onClick={() => selectItem(item)}>
+                <div className="select-title">
+                     <div>{item.checked ? <CheckBoxOn onClick={() => checked(parent, item, false)}></CheckBoxOn>: <CheckBoxOff onClick={() => checked(parent, item, true)}></CheckBoxOff>}</div>
                 <div>{item.title}</div>
+                </div>
+
                 <div><CollapseDefault onClick={() => collapse(parent, item)} className={item.collapse ? "rotate": ""}></CollapseDefault></div>
               </div>
-              <div>
+              <div className="netest-data">
                {item.data && item.collapse? dropDownOneLevel(parent, item.data, level + 1) : null}
               </div>
               </>

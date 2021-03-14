@@ -60,20 +60,33 @@
 .ffh-select-filter__options {
     height: 100%;
     overflow: auto;
+    .netest-data {
+        padding-right: 30px;
+    }
+}
+
+.first_level {
+    font-weight: bold;
 }
 
 .ffh-select-filter__option {
     cursor: pointer;
     font-size: 16px;
-    padding: 5px 5.5%;
+    padding: 5px 8px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     &:hover {
         background-color: $blue;
         color: $white;
     }
+    .select-title {
+        display: flex;
+        div {
+            padding-right: 8px;
+        }
+    }
 }
 
 .rotate {
-    transform: rotate( 1deg);
+    transform: rotate( 180deg);
 }
