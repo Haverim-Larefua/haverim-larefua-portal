@@ -55,38 +55,51 @@
     top: 40px;
     width: 100%;
     z-index: 2;
-}
-
-.ffh-select-filter__options {
-    height: 100%;
-    overflow: auto;
-    .netest-data {
-        padding-right: 30px;
-    }
-}
-
-.first_level {
-    font-weight: bold;
-}
-
-.ffh-select-filter__option {
-    cursor: pointer;
-    font-size: 16px;
-    padding: 5px 8px;
-    display: flex;
-    justify-content: space-between;
-    &:hover {
-        background-color: $blue;
-        color: $white;
-    }
-    .select-title {
+    .buttom_actions {
+        font-weight: bold;
         display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #dcdeea;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        padding: 9px;
+        z-index: 3;
         div {
-            padding-right: 8px;
+            cursor: pointer;
+        }
+        .choose_action {
+            color: #0d25be;
         }
     }
-}
-
-.rotate {
-    transform: rotate( 180deg);
+    .ffh-select-filter__options {
+        height: 100%;
+        overflow: auto;
+        .netest-data {
+            padding-right: 30px;
+        }
+    }
+    .first_level {
+        font-weight: bold;
+    }
+    .ffh-select-filter__option {
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px 8px;
+        display: flex;
+        justify-content: space-between;
+        &:hover {
+            background-color: $blue;
+            color: $white;
+        }
+        .select-title {
+            display: flex;
+            div {
+                padding-right: 8px;
+            }
+        }
+    }
+    .rotate {
+        transform: rotate( 180deg);
+    }
 }
