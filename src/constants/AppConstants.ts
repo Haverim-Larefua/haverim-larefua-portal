@@ -99,7 +99,7 @@ class AppConstants {
 
   static readonly parcelStatusOptions: Option<string>[] = [
     { label: AppConstants.readyStatusName, value: ParcelStatus.Ready },
-    { label: AppConstants.deliveringStatusName, value: ParcelStatus.Delivered },
+    { label: AppConstants.deliveringStatusName, value: ParcelStatus.Distribution },
     { label: AppConstants.exceptionStatusName, value: ParcelStatus.Exception },
     { label: AppConstants.deliveredStatusName, value: ParcelStatus.Delivered },
   ];
