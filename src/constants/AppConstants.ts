@@ -1,5 +1,12 @@
 import Option from "../models/Option";
 
+export  enum ParcelStatus {
+  Ready = "ready",
+  Assign = "assign",
+  Distribution = "distribution",
+  Delivered = "delivered",
+  Exception = "exception",
+}
 class AppConstants {
   static readonly serverErrorMessage: string = "אופס משהו השתבש, פנה אל מנהל המערכת";
   static readonly errorUIName: string = "סליחה תקלה";
@@ -91,10 +98,10 @@ class AppConstants {
   static readonly sendPushNotificationToUsersError = "קריאה לאיסוף וחלוקת חבילות נכשלה";
 
   static readonly parcelStatusOptions: Option<string>[] = [
-    { label: AppConstants.readyStatusName, value: "ready" },
-    { label: AppConstants.deliveringStatusName, value: "distribution" },
-    { label: AppConstants.exceptionStatusName, value: "exception" },
-    { label: AppConstants.deliveredStatusName, value: "delivered" },
+    { label: AppConstants.readyStatusName, value: ParcelStatus.Ready },
+    { label: AppConstants.deliveringStatusName, value: ParcelStatus.Delivered },
+    { label: AppConstants.exceptionStatusName, value: ParcelStatus.Exception },
+    { label: AppConstants.deliveredStatusName, value: ParcelStatus.Delivered },
   ];
 
   // Delivery days names

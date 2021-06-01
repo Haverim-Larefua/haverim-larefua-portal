@@ -4,7 +4,7 @@ import { withRouter, useHistory } from 'react-router-dom';
 import Table from "../shared/Table/Table";
 import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns/tableColumns";
-import AppConstants from "../../constants/AppConstants";
+import AppConstants, { ParcelStatus } from "../../constants/AppConstants";
 import logger from "../../Utils/logger";
 import AssignUserToParcelsModal from "./AssignUserToParcelsModal/AssignUserToParcelsModal";
 import ConfirmDeleteParcel from "./ConfirmDeleteParcel/ConfirmDeleteParcel";
@@ -115,7 +115,7 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
       let parcelAllowedToBeDeleted = true;
       logger.log('[Parcels] cellButtonClicked delete ', id, parcel.id);
       let txt = AppConstants.deleteParcelConfirmation;
-      if (parcel.parcelTrackingStatus !== AppConstants.readyStatusName) {
+      if (parcel.parcelTrackingStatus !== ParcelStatus.Ready) {
         txt = AppConstants.deleteParcelWarningConfirmation;
         parcelAllowedToBeDeleted = false;
       }

@@ -7,6 +7,7 @@ import "./ParcelUserComponent.scss";
 import { AppState } from "../../../../redux/rootReducer";
 import User from "../../../../models/User";
 import Note from "../../../shared/Note/Note";
+import { ParcelStatus } from "../../../../constants/AppConstants";
 
 const uuidv4 = require('uuid/v4');
 
@@ -40,7 +41,7 @@ const ParcelUserComponent = ({allUsersById, userId, itemId, status, action, comm
                 icon={<AssignIcon/>}
             />
         }
-        {status ===  'ready' &&
+        {status ===  ParcelStatus.Ready &&
           <ActionButton
             name="delete"
             action={onButtonClicked}

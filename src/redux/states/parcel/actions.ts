@@ -155,6 +155,20 @@ export function editParcel(parcel: Parcel) {
   };
 }
 
+export function removeParcel(parcelId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(removeParcelOptimistic(parcelId));
+      await httpService.deleteParcel(parcelId);
+    } catch (err) {
+      toastr.error("", "מחיקת החבילה נכשלה - פנה למנהל המערכת");
+      logger.error(err);
+    } finally {
+      dispatch(reloadParcels());
+    }
+  };
+}
+
 export function assignUserToParcels(parcelsToAssociate: number[], userId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
