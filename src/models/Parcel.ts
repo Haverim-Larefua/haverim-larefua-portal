@@ -7,6 +7,7 @@ export default class Parcel implements ICurrentParcel {
     city: string;
     address: string;
     phone: string;
+    phone2: string;
     customerName: string;
     customerId: string;
     currentUserId: number;
@@ -29,6 +30,7 @@ export default class Parcel implements ICurrentParcel {
         address: string,
         city: string,
         phone: string,
+        phone2: string,
         comments: string,
         parcelTrackingStatus: string,
         lastUpdateDate: Date,
@@ -46,6 +48,7 @@ export default class Parcel implements ICurrentParcel {
         this.signature = signature;
         this.lastUpdateDate = lastUpdateDate;
         this.phone = phone;
+        this.phone2 = phone2;
         this.startTime = startTime;
         this.startDate = startDate;
     }
