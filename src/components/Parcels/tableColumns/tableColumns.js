@@ -6,6 +6,7 @@ import ParcelUserComponent from './ParcelUserComponent/ParcelUserComponent';
 import { DateUtil } from "../../../Utils/Common/DateUtil";
 import { ParcelUtil } from "../../../Utils/Parcel/ParcelUtil";
 import Note from "../../shared/Note/Note";
+import formatDate from "../../../Utils/dateFormatter";
 
 
 const tableColumns = memoize(clickHandler => [{
@@ -81,16 +82,31 @@ const tableColumns = memoize(clickHandler => [{
                 },
             },
             {
+              name: AppConstants.phone2,
+              selector: 'phone2',
+              sortable: true,
+              maxWidth: '180px',
+              style: {
+                direction: 'ltr',
+                'justify-content': 'flex-end'
+              },
+            },
+            {
                 name: AppConstants.userUIName,
                 selector: 'currentUserId',
                 sortable: true,
                 minWidth: '350px',
-                cell: row => ( < ParcelUserComponent userId = { row.currentUserId }
-                    itemId = { row.id }
-                    status = { row.parcelTrackingStatus }
-                    action = { clickHandler }
-                    comments = { row.comments }
-                    />),
+                cell: row => {
+                  const comment = row.parcelTracking[row.parcelTracking.length - 1]?.comments
+                    ? '[' + formatDate(row.parcelTracking[row.parcelTracking.length - 1]?.statusDate).date + '] ' + row.parcelTracking[row.parcelTracking.length - 1]?.comments
+                    : undefined ;
+                  return (< ParcelUserComponent userId={row.currentUserId}
+                                         itemId={row.id}
+                                         status={row.parcelTrackingStatus}
+                                         action={clickHandler}
+                                         comments={comment}
+                  />)
+                },
                     ignoreRowClick: row => (row.currentUserId ? false : true),
                     allowOverflow: row => (row.currentUserId ? false : true),
                 },

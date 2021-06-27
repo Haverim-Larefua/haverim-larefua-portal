@@ -12,6 +12,7 @@ export interface DetailsParcelTableProps {
     city: string;
     comments: string;
     phone: string;
+    phone2: string;
     lastUpdateDate: Date;
     startDate: Date;
     startTime: Date;
@@ -56,6 +57,12 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
             <div className="ffh-details-cell__label">טלפון</div>
             <div className="ffh-details-cell__value">
                 {props.currentParcel.phone}
+            </div>
+        </div>
+        <div className="ffh-details-cell phone">
+            <div className="ffh-details-cell__label">טלפון</div>
+            <div className="ffh-details-cell__value">
+                {props.currentParcel.phone2}
             </div>
         </div>
         <div className="ffh-details-cell city">

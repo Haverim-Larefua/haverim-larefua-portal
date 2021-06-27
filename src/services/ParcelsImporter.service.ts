@@ -30,9 +30,11 @@ export default class ParcelsImporterService {
             const startTime = data[AppConstants.startTime] ? data[AppConstants.startTime].toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : null;
             const customerId = data[AppConstants.cardId] ? data[AppConstants.cardId] : StringUtil.EMPTY;
             const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : StringUtil.EMPTY;
-            const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName] : StringUtil.EMPTY;
+            const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName].replace(/\d{5,}/gm,'') : StringUtil.EMPTY;
             const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : StringUtil.EMPTY;
-            const phone = data[AppConstants.phone] ? data[AppConstants.phone] : StringUtil.EMPTY;
+            const phones = data[AppConstants.phone] ? data[AppConstants.phone].split(',') : [];
+            const phone = phones[0] ? phones[0] : StringUtil.EMPTY;
+            const phone2 = phones[1] ? phones[1] : StringUtil.EMPTY;
             const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : StringUtil.EMPTY;
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : StringUtil.EMPTY;
             if (
@@ -48,6 +50,7 @@ export default class ParcelsImporterService {
                 address,
                 city,
                 phone,
+                phone2,
                 comments,
                 'ready',
                 dt,

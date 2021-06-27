@@ -17,6 +17,7 @@ class AppConstants {
   static readonly addressUIName: string = "כתובת";
   static readonly cityUIName: string = "עיר";
   static readonly phone: string = "טלפון";
+  static readonly phone2: string = "טלפון 2";
   static readonly nameUIName: string = "שם";
   static readonly idUIName: string = "ת.ז";
   static readonly identifierUIName: string = "מספר";
