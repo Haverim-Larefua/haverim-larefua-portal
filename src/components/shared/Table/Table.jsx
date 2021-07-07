@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 // import logger from "../../../Utils/logger";
 import tableStyles from './tableStyles';
 import DataTable from 'react-data-table-component';
@@ -9,6 +9,8 @@ import { Spinner } from '../Spinner/Spinner';
 
 
 const Table = (props) => {
+
+  const [pageNum, setPageNum] = useState(1);
 
   const isRowSelectedByState = (row) => {
     const key = props.selectedRowIdentifierKey;
@@ -26,7 +28,12 @@ const Table = (props) => {
   const tableHeight = 'calc(100vh - 245px)';
   const sortIcon = <SortIcon />
 
+  const handlePageChange = page => {
+   setPageNum(page);
+  };
+
   return (
+    <>
     <DataTable
     data={props.data}
     keyField={props.keyField}
@@ -42,6 +49,7 @@ const Table = (props) => {
       subHeader
       pagination
       paginationComponentOptions={{ rowsPerPageText: "שורות בעמוד:", rangeSeparatorText: 'מתוך', noRowsPerPage: false, selectAllRowsItem: false, selectAllRowsItemText: 'All' }}
+      onChangePage={handlePageChange}
       subHeaderComponent={props.subHeaderComponent}
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
@@ -53,6 +61,8 @@ const Table = (props) => {
       progressComponent={<Spinner/>}
       persistTableHead
     />
+    <div className="custom-num-of-page">{pageNum} :מספר עמוד </div>
+    </>
   );
 };
 
