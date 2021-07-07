@@ -41,6 +41,7 @@ const Table = (props) => {
       noHeader
       subHeader
       pagination
+      paginationComponentOptions={{ rowsPerPageText: "שורות בעמוד:", rangeSeparatorText: 'מתוך', noRowsPerPage: false, selectAllRowsItem: false, selectAllRowsItemText: 'All' }}
       subHeaderComponent={props.subHeaderComponent}
       fixedHeader
       fixedHeaderScrollHeight={tableHeight}
