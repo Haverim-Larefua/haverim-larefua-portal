@@ -32,18 +32,13 @@ export default class ParcelsImporterService {
             const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : StringUtil.EMPTY;
             const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName].replace(/\d{5,}/gm,'') : StringUtil.EMPTY;
             const city = data[AppConstants.cityUIName] ? data[AppConstants.cityUIName] : StringUtil.EMPTY;
-            const phones = data[AppConstants.phone] ? data[AppConstants.phone].split(',') : [];
+            const phones = data[AppConstants.phone] ? data[AppConstants.phone].toString().split(',') : [];
             const phone = phones[0] ? phones[0] : StringUtil.EMPTY;
             const phone2 = phones[1] ? phones[1] : StringUtil.EMPTY;
             const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : StringUtil.EMPTY;
             const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : StringUtil.EMPTY;
-            if (
-              StringUtil.isNotEmpty(no) &&
-              StringUtil.isNotEmpty(customerId) &&
-              StringUtil.isNotEmpty(city) &&
-              startDate && startTime
-            ) {
-              const aparcel = new Parcel(
+          
+              const parcel = new Parcel(
                 no,
                 customerName,
                 customerId,
@@ -61,14 +56,10 @@ export default class ParcelsImporterService {
 
               logger.log(
                 "[ParcelsImporterService] jsonDataToParcels pushing ",
-                aparcel
+                parcel
               );
-              parcels.push(aparcel);
-            } else {
-              logger.error(
-                "[ParcelsImporterService] jsonDataToParcels: invalid data"
-              );
-            }
+              parcels.push(parcel);
+
         });
         return parcels;
     }
