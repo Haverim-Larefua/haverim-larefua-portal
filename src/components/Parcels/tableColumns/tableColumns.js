@@ -24,18 +24,12 @@ const tableColumns = memoize(clickHandler => [{
                 omit: true
             },
             {
-                name: AppConstants.startDate,
-                selector: 'startDate',
+                name: AppConstants.creationDateTime,
+                selector: 'lastUpdateDate',
                 sortable: true,
-                maxWidth: '140px',
-                format: row => row.startDate ? DateUtil.getDate2DigitsFormat(row.startDate) : null,
-                center: true,
-            },
-            {
-                name: AppConstants.startTime,
-                selector: 'startTime',
-                sortable: true,
-                maxWidth: '140px',
+                maxWidth: '150px',
+                minWidth: '150px',
+                format: row => row.lastUpdateDate ? DateUtil.getDateHEDate(new Date(row.lastUpdateDate)) : null,
                 center: true,
             },
             {

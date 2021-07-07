@@ -23,6 +23,7 @@ class AppConstants {
   static readonly identifierUIName: string = "מספר";
   static readonly startDate = "מועד התחלה";
   static readonly startTime = "שעת התחלה";
+  static readonly creationDateTime = "תאריך יצירה";
   static readonly catalogUIName: string = "מזהה";
 
   static readonly userUIName: string = "שליח/ה";
