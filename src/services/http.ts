@@ -9,6 +9,7 @@ import AuthService from "./authService";
 import Parcel from "../models/Parcel";
 import User from "../models/User";
 import SearchUsersParams from "../models/SearchUsersParams";
+import { IParcelResult } from "../redux/states/parcel/actions";
 
 enum HttpMethod {
   POST = "post",
@@ -120,19 +121,9 @@ class HttpService {
     return ParcelUtil.prepareOneParcelForDisplay(parcel);
   }
 
-  async createParcel(aParcel: Parcel) {
-    return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, aParcel);
-  }
 
-  // TODO: need to send all as bulk to server, for now keeping like this
-  async addParcels(parcels: Parcel[]): Promise<Parcel[]> {
-    const promises: any[] = [];
-    if (parcels?.length > 0) {
-      parcels.forEach((parcel) => {
-        promises.push(this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, parcel));
-      });
-    }
-    return Promise.all(promises);
+  async createParcels(parcels: Parcel[]): Promise<IParcelResult> {
+      return this.sendHttpRequest(Configuration.URLS.PARCELS, HttpMethod.POST, parcels);
   }
 
   async updateParcel(aParcel: Parcel) {
