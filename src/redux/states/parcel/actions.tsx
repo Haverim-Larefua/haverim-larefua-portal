@@ -5,7 +5,7 @@ import httpService from "../../../services/http";
 import logger from "../../../Utils/logger";
 import { ParcelUtil } from "../../../Utils/Parcel/ParcelUtil";
 import { AppState } from "../../rootReducer";
-import { toastr } from "react-redux-toastr";
+import { BasicToastrOptions, toastr } from "react-redux-toastr";
 
 import {
   LoadParcelsSuccessAction,
@@ -29,6 +29,7 @@ import {
 } from "./types";
 import AppConstants from "../../../constants/AppConstants";
 import _ from "lodash";
+import React from "react";
 
 export function updateParcelsStatusOptimistic(
   userId: number,
@@ -102,35 +103,45 @@ async function loadParcels(searchParams: ISearchParcelsParams, dispatch: Dispatc
   }
 }
 
-export function addParcel(parcel: Parcel) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(addParcelOptimistic(parcel));
-
-    try {
-      await httpService.createParcel(ParcelUtil.prepareParcelForDBUpdate(parcel));
-    } catch (err) {
-      toastr.error("", "הוספת החבילה נכשלה - פנה למנהל המערכת");
-      logger.error(err);
-    } finally {
-      dispatch(reloadParcels());
-    }
-  };
+export interface IParcelResult {
+  added: Parcel[];
+  errors: string[],
 }
+
 
 export function addParcels(parcels: Parcel[]) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      let addedParcels = await httpService.addParcels(ParcelUtil.prepareParcelsForDBUpdate(parcels));
-      addedParcels = addedParcels.filter(p => p!= null);
+      const parcelsForAdded = ParcelUtil.prepareParcelsForDBUpdate(parcels);
+      const response = await httpService.createParcels(parcelsForAdded);
+      const addedParcels = response?.added;
 
-      if (addedParcels.length === 0) {
-        const message = `כל החבילות מופיעות במערכת - אין חבילות חדשות בקובץ`;
-        toastr.success("", message);
-      } else {
-        dispatch(addParcelsSuccess(addedParcels));
+      if(addedParcels.length > 0) {
+        dispatch(addParcelsSuccess(addedParcels))
+      }
+
+      if (parcelsForAdded.length === addedParcels.length) {
         const message = `חבילות נוספו ${addedParcels.length} ,הקובץ נטען בהצלחה`;
         toastr.success("", message);
+      } else {
+        const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + response.errors.join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const toastrOptions = {
+          timeOut: 0,
+          component: ( 
+            <>
+              <div style={{padding: '3px'}} >{response.added.length} חבילות נטענו</div> 
+              <a href={encodedUri} download="errors.csv">הורד רשימת שגיאות</a>
+              </>
+            ),
+            closeOnToastrClick: false,
+        }
+ 
+        toastr.warning("", "", toastrOptions);
+
       }
+
+
     } catch (err) {
       const message = `טעינת הקובץ נכשלה - פנה למנהל המערכת`;
       toastr.error("", message);
@@ -140,6 +151,7 @@ export function addParcels(parcels: Parcel[]) {
     }
   };
 }
+
 
 export function editParcel(parcel: Parcel) {
   return async (dispatch: Dispatch<any>) => {
