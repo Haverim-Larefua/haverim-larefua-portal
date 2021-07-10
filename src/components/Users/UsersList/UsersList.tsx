@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, {useState, useEffect, useMemo, useContext} from "react";
 import './UsersList.scss';
 import createInitials from '../../../Utils/User/InitialsCreator';
 import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import UserListItem from './UserListItem';
 import AppConstants from "../../../constants/AppConstants";
-import Option from "../../../models/Option";
 import { connect } from "react-redux";
 import * as userActions from "../../../redux/states/user/actions";
 
@@ -12,20 +11,22 @@ import User from "../../../models/User";
 import SearchUsersParams from "../../../models/SearchUsersParams";
 import { AppState } from "../../../redux/rootReducer";
 import { debounce } from "lodash";
+import AreaSelect from "../UserForm/AreaSelect/AreaSelect";
+import {citiesContext} from "../../../contexts/citiesContext";
 
 export interface UsersListProps {
   updateSelectedUser: (userId: number) => void;
   filteredUsers: User[];
   searchUsers: (searchParams: SearchUsersParams) => void;
-  deliveryAreas: string[];
   initUserId: number;
 
 }
-const UsersList = ({ updateSelectedUser, filteredUsers, deliveryAreas, searchUsers, initUserId = 0 }: UsersListProps) => {
+const UsersList = ({ updateSelectedUser, filteredUsers, searchUsers, initUserId = 0 }: UsersListProps) => {
+  const districts = useContext(citiesContext);
   const [searchInputTerm, setSearchInputTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState(initUserId);
   const [selectedDay, setSelectedDay] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCities, setSelectedCities] = useState([]);
 
 
   const filteredUsersUiFormat = useMemo(() => {
@@ -43,8 +44,8 @@ const UsersList = ({ updateSelectedUser, filteredUsers, deliveryAreas, searchUse
     , [filteredUsers]);
 
   useEffect(() => {
-    searchUsers({ dayFilter: selectedDay, nameFilter: searchInputTerm, cityFilter: selectedCity });
-  }, [searchInputTerm, searchUsers, selectedCity, selectedDay])
+    searchUsers({ dayFilter: selectedDay, nameFilter: searchInputTerm, cityFilter: selectedCities });
+  }, [searchInputTerm, searchUsers, selectedCities, selectedDay])
 
   const onUserClicked = (userId: number) => {
     updateSelectedUser(userId);
@@ -61,8 +62,8 @@ const UsersList = ({ updateSelectedUser, filteredUsers, deliveryAreas, searchUse
         <div className="ffh-userlist__title">{initUserId ? AppConstants.changeParcelUser : AppConstants.associateParcelToUserUIName}</div>
         <div className="ffh-userlist__control">
           <div className="ffh-userlist__filter cities-filter">
-            <div className="ffh-userlist__filter-label">{AppConstants.deliveryArea}</div>
-            <SelectFilter onSelect={setSelectedCity} items={deliveryAreas.map(city => new Option(city, city))} showOptionAll />
+            <div className="ffh-userlist__filter-label">{AppConstants.deliveryAreas}</div>
+            <AreaSelect districts={districts} onSave={setSelectedCities}/>
           </div>
           <div className="ffh-userlist__filter days-filter">
             <div className="ffh-userlist__filter-label">{AppConstants.deliveryDays}</div>
@@ -98,8 +99,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (appState: AppState) => {
   return {
-    filteredUsers: appState.user.filteredUsers,
-    deliveryAreas: appState.user.deliveryAreas
+    filteredUsers: appState.user.filteredUsers
   }
 }
 

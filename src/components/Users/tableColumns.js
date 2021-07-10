@@ -2,6 +2,7 @@ import React from 'react';
 import AppConstants from '../../constants/AppConstants';
 import memoize from 'memoize-one';
 import UserNoteComponent from './UserNoteComponent';
+import UserDeliveryAreasComponent from "./UserDeliveryAreasComponent";
 
 const tableColumns  = memoize(clickHandler => [
     {
@@ -19,11 +20,12 @@ const tableColumns  = memoize(clickHandler => [
       maxWidth: '200px',
     },
     {
-      id: 'deliveryArea',
-      name: AppConstants.deliveryArea,
-      selector: 'deliveryArea',
+      id: 'deliveryAreas',
+      name: AppConstants.deliveryAreas,
+      selector: 'deliveryAreas',
       sortable: true,
       maxWidth: '250px',
+      cell: row => (<UserDeliveryAreasComponent cities={row.deliveryAreas}></UserDeliveryAreasComponent>),
     },
     {
       id: 'deliveryDays',

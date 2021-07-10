@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 
 import logger from "../../Utils/logger";
 import Table from "../shared/Table/Table";
@@ -15,10 +15,13 @@ import Option from "../../models/Option";
 import * as userActions from "../../redux/states/user/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import AreaSelect from "./UserForm/AreaSelect/AreaSelect";
+import {citiesContext} from "../../contexts/citiesContext";
 
-const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
+const Users = ({filteredUsers, searching, actions}) => {
+  const districts = useContext(citiesContext);
   const [dayFilterTerm, setDayFilterTerm] = useState("");
-  const [cityFilterTerm, setCityFilterTerm] = useState("");
+  const [citiesFilterTerm, setCitiesFilterTerm] = useState([]);
   const [nameSearchTerm, setNameSearchTerm] = useState("");
   const [showNewUserModal, setShowNewUserModal] = useState(false);
   const [editUserId, setEditUserId] = useState("");
@@ -31,8 +34,8 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
   const [deleteEnabled, setIsDeleteEnabled] = useState(true);
 
   useEffect(() => {
-    actions.searchUsers({dayFilter: dayFilterTerm, cityFilter: cityFilterTerm, nameFilter: nameSearchTerm});
-  }, [dayFilterTerm, cityFilterTerm, nameSearchTerm, actions]);
+    actions.searchUsers({dayFilter: dayFilterTerm, cityFilter: citiesFilterTerm, nameFilter: nameSearchTerm});
+  }, [dayFilterTerm, citiesFilterTerm, nameSearchTerm, actions]);
 
   useEffect(() => {
     function handleEditUser() {
@@ -54,7 +57,7 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
       }
     }
     handleDeleteUser();
-  }, [deleteUserId, deleteUserText])
+  }, [deleteUserId, deleteUserText]);
 
 
   useEffect(() => {
@@ -134,10 +137,9 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
   
   const options = [ // ToolbarOptions
     {
-      title: AppConstants.deliveryArea,
+      title: AppConstants.deliveryAreas,
       name: "cities",
-      values: [...deliveryAreas].map(area => new Option(area, area)),
-      filter: setCityFilterTerm,
+      filter: setCitiesFilterTerm,
       showOptionAll: true,
       searchable:true
     },
@@ -169,6 +171,7 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
             search={setNameSearchTerm}
             searchPlaceholder={"חיפוש לפי שם או טלפון"}
             loading = {searching}
+            searchComponent={<AreaSelect districts={districts} onSave={(cities) => setCitiesFilterTerm(cities)}/>}
           />
         }
       />
@@ -193,7 +196,6 @@ const Users = ({filteredUsers, searching, deliveryAreas, actions}) => {
 const mapStateToProps =(appState) => {
   return {
     filteredUsers: appState.user.filteredUsers,
-    deliveryAreas: appState.user.deliveryAreas,
     searching: appState.user.searching
   }
 }

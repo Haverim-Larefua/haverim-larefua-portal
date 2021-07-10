@@ -49,8 +49,8 @@ const App: React.FC<any> = (): React.ReactElement => {
                 <ErrorContextProvider>
                     <CitiesContextProvider>
                       <PrivateRoute path="/users" component={Users} />
-                    </CitiesContextProvider>
                       <PrivateRoute path="/parcels" component={Parcels} />
+                    </CitiesContextProvider>
                       <PrivateRoute
                         path="/parcel/:id"
                         component={ParcelDetails}

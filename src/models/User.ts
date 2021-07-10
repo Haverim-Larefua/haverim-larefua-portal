@@ -1,11 +1,12 @@
 import Parcel from "./Parcel";
+import City from "./City";
 
 export default class User {
   id: number;
   firstName: string;
   lastName: string;
   address: string;
-  deliveryArea: string;
+  deliveryAreas: City[] = [];
   deliveryDays: string;
   phone: string;
   notes: string;
@@ -18,7 +19,7 @@ export default class User {
     firstName: string,
     lastName: string,
     address: string,
-    deliveryArea: string,
+    deliveryAreas: City[],
     deliveryDays: string,
     phone: string,
     notes: string,
@@ -28,7 +29,7 @@ export default class User {
     this.firstName = firstName;
     this.lastName = lastName;
     this.address = address;
-    this.deliveryArea = deliveryArea;
+    this.deliveryAreas = deliveryAreas;
     this.deliveryDays = deliveryDays;
     this.notes = notes;
     this.username = userName;

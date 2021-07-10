@@ -12,7 +12,8 @@ class AppConstants {
   static readonly errorUIName: string = "סליחה תקלה";
   static readonly closeUIName: string = "סגירה";
 
-  static readonly chooseOne: string = "בחירה";
+  static readonly choose: string = "בחירה";
+  static readonly clear: string = "נקה";
   static readonly statusUIName: string = "סטטוס";
   static readonly addressUIName: string = "כתובת";
   static readonly cityUIName: string = "עיר";
@@ -30,7 +31,7 @@ class AppConstants {
   static readonly usersUIName: string = "שליחים/ות";
   static readonly firstName: string = "שם פרטי";
   static readonly lastName: string = "שם משפחה";
-  static readonly deliveryArea: string = "עיר חלוקה";
+  static readonly deliveryAreas: string = "אזורי חלוקה";
   static readonly deliveryDays: string = "ימי חלוקה";
   static readonly email: string = "אימייל";
   static readonly password: string = " סיסמא ( תצוגה בלבד) ";
