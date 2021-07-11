@@ -69,7 +69,7 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
         <div className="ffh-details-cell city">
             <div className="ffh-details-cell__label">עיר</div>
             <div className="ffh-details-cell__value">
-                {props.currentParcel.city}
+                {props.currentParcel.city?.name}
             </div>
         </div>
         <div className="ffh-details-cell address">
