@@ -24,10 +24,9 @@ const InDelivery = ({onLoad}: InDeliveryProps) => {
     const inDeliveryParcels = data.filter((parcel: Parcel) => parcel.currentUserId);
     setTotalNumber(inDeliveryParcels.length);
 
-    const groupedByCity = _.mapValues(_.groupBy(inDeliveryParcels, "user.deliveryAreas"), (clist) =>
-      clist.map((parcel) => _.omit(parcel, "user.deliveryAreas")).length
-    );
-
+   const groupedByCity = _.mapValues(_.groupBy(inDeliveryParcels, "city.name"), (clist) =>
+     clist.map((parcel) => _.omit(parcel, "city.name")).length
+   );
     setParcelsByCity(groupedByCity);
     onLoad();
   }
