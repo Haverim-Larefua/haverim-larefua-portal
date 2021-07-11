@@ -16,6 +16,7 @@ import queryString from 'query-string';
 import ParcelsToolbar from "./ParcelsToolbar/ParcelsToolbar";
 import ParcelsActionsToolbar from "./ParcelsActionsToolbar/ParcelsActionsToolbar";
 import PushToUsersModal from "./PushToUsersModal/PushToUsersModal";
+import httpService from '../../services/http';
 
 const MINUTE = 60000;
 
@@ -88,7 +89,8 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
   const handleImportFromFile = async (e) => {
     const files = e.target.files;
     if (files) {
-      const data = await ParcelsImporterService.ImportFromExcel(files[0]);
+      const allCities = await httpService.getCities();
+      const data = await ParcelsImporterService.ImportFromExcel(files[0], allCities);
       actions.addParcels(data);
     }
   }

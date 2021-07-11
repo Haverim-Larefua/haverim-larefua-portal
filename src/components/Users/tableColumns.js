@@ -25,7 +25,7 @@ const tableColumns  = memoize(clickHandler => [
       selector: 'deliveryAreas',
       sortable: true,
       maxWidth: '250px',
-      cell: row => (<UserDeliveryAreasComponent cities={row.deliveryAreas}></UserDeliveryAreasComponent>),
+      cell: row => (<UserDeliveryAreasComponent cities={row.cities}></UserDeliveryAreasComponent>),
     },
     {
       id: 'deliveryDays',

@@ -17,7 +17,7 @@ export class AreaUtil {
             if (correctDistrict) {
                 correctDistrict.subdistricts.forEach(sub => {
                     const subCities = sub.cities.map(c => c.name);
-                    cities = [...cities, ...subCities];
+                    cities = cities ? [...cities, ...subCities] : [];
                 });
             }
         }
@@ -46,7 +46,7 @@ export class AreaUtil {
         const selectedCities:City[] = [];
         let selectedSub:string[] = [];
         const selectedDis:string[] = [];
-        let clonedCities:City[] = [...cities];
+        let clonedCities:City[] = cities ? [...cities] : [];
         const citiesSubdistricts = this.getCitiesSubdistrictsSet(clonedCities);
         const citiesDistricts = this.getCitiesDistrictsSet(clonedCities);
 
