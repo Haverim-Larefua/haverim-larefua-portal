@@ -16,8 +16,4 @@ export default class City {
         this.district = district;
         this.subdistrict = subdistrict;
     }
-
-    public print():string {
-        return `${this.name} (${this.district.name}, ${this.subdistrict.name})`;
-    }
 }

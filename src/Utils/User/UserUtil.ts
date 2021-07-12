@@ -15,7 +15,7 @@ export class UserUtil {
 
   static getUsersAreasDistinct(users: User[]): string[] {
     let areas: string[] = [];
-    const usersDeliveryAreas = users? [...new Set(users.flatMap(user => user.deliveryAreas.map(da => da.name)))] : [];
+    const usersDeliveryAreas = users? [...new Set(users.flatMap(user => user.cities.map(da => da.name)))] : [];
     usersDeliveryAreas.forEach(deliveryArea => {
       if (!areas.includes(deliveryArea)) {
         areas.push(deliveryArea);

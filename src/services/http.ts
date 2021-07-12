@@ -176,7 +176,9 @@ class HttpService {
 
     let url = `${Configuration.URLS.USERS}?`;
     if (searchParams.cityFilter) {
-      url += `&cityFilter=${searchParams.cityFilter}`;
+      searchParams.cityFilter.forEach(city => {
+        url += `&cityFilter=${city}`;
+      });
     }
 
     if (searchParams.nameFilter) {

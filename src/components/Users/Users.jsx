@@ -171,7 +171,7 @@ const Users = ({filteredUsers, searching, actions}) => {
             search={setNameSearchTerm}
             searchPlaceholder={"חיפוש לפי שם או טלפון"}
             loading = {searching}
-            searchComponent={<AreaSelect districts={districts} onSave={(cities) => setCitiesFilterTerm(cities)}/>}
+            searchComponent={<AreaSelect districts={districts} onSave={(cities) => setCitiesFilterTerm(cities.map(city => city.id))}/>}
           />
         }
       />

@@ -13,6 +13,7 @@ import { AppState } from "../../../redux/rootReducer";
 import { debounce } from "lodash";
 import AreaSelect from "../UserForm/AreaSelect/AreaSelect";
 import {citiesContext} from "../../../contexts/citiesContext";
+import City from "../../../models/City";
 
 export interface UsersListProps {
   updateSelectedUser: (userId: number) => void;
@@ -26,7 +27,7 @@ const UsersList = ({ updateSelectedUser, filteredUsers, searchUsers, initUserId 
   const [searchInputTerm, setSearchInputTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState(initUserId);
   const [selectedDay, setSelectedDay] = useState("");
-  const [selectedCities, setSelectedCities] = useState([]);
+  const [selectedCities, setSelectedCities] = useState<City[]>([]);
 
 
   const filteredUsersUiFormat = useMemo(() => {
@@ -44,7 +45,7 @@ const UsersList = ({ updateSelectedUser, filteredUsers, searchUsers, initUserId 
     , [filteredUsers]);
 
   useEffect(() => {
-    searchUsers({ dayFilter: selectedDay, nameFilter: searchInputTerm, cityFilter: selectedCities });
+    searchUsers({ dayFilter: selectedDay, nameFilter: searchInputTerm, cityFilter: selectedCities.map(city => city.id) });
   }, [searchInputTerm, searchUsers, selectedCities, selectedDay])
 
   const onUserClicked = (userId: number) => {

@@ -37,8 +37,34 @@ export class AreaUtil {
         return [...new Set(cities.flatMap(city => city.district.name))];
     }
 
+    static addOrRemoveIfExists(list:any[], element:any, keepIfExists:boolean = false){
+        if (!list) {
+            list = [];
+        }
+        if (list.includes(element)) {
+            return keepIfExists ? list : list.filter(el => el !== element);
+        }
+        return [...list, element];
+    }
+
+    static removeListFromList(list:any[], elements:any[]){
+        return list.filter(el => !elements.includes(el));
+    }
+
+    static isExpanded(areaLevel:AreaLevel, name:string, searchInput:string, districts:District[]):boolean {
+        if (searchInput !== "") {
+            const searchedCity = AreaUtil.getCities(districts, areaLevel, name)?.find(city => city.includes(searchInput));
+            return searchedCity? true : false;
+        }
+        return false;
+    }
+
     static getAnchorDistrict(districts:District[], sub:string) {
         return districts.find(dis => dis.subdistricts.map(s => s.name).includes(sub))?.name;
+    }
+
+    static printCity(city:City):string {
+        return `${city.name} (${city.district.name}, ${city.subdistrict.name})`;
     }
 
     static getTopAreasSelected(districts:District[], cities:City[]) {
@@ -70,7 +96,7 @@ export class AreaUtil {
             }
         });
 
-        const citiesStr = selectedCities.length > 0 ? `${selectedCities.map(city => city.print()).join(', ')}. ` : "";
+        const citiesStr = selectedCities.length > 0 ? `${selectedCities.map(city => this.printCity(city)).join(', ')}. ` : "";
         const subStr = selectedSub.length > 0 ? `${selectedSub.join(', ')}. ` : "";
         const disStr = selectedDis.length > 0 ? `${selectedDis.join(', ')}. ` : "";
         return `${citiesStr}${subStr}${disStr}`;

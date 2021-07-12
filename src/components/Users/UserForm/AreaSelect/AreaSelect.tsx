@@ -28,7 +28,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
     const [subdistrictsExpanded,  setSubdistrictsExpanded] = React.useState<string[]>([]);
     const [dropDownVisible, setDropDownVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
-    const [searchInput, setSearchInput] = useState("");
+    const [searchInput, setSearchInput] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         setSelectedOption(calculateSelectedOption());
@@ -36,7 +36,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
 
     useEffect(() => {
         districts.forEach(district => {
-            if (isAllDistrictSubSelected(district.name)) {
+            if (isAllDistrictSubSelected(district.name) && !districtsSelected.includes(district.name)) {
                 setDistrictsSelected([...districtsSelected, district.name]);
             }
         });
@@ -44,7 +44,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
 
     useEffect(() => {
         districts.flatMap(district => district.subdistricts).forEach(sub => {
-            if (isAllSubdistrictCitiesSelected(sub.name)) {
+            if (isAllSubdistrictCitiesSelected(sub.name) && !subdistrictsSelected.includes(sub.name)) {
                 setSubdistrictsSelected([...subdistrictsSelected, sub.name])
             }
         });
@@ -77,18 +77,10 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
     const onExpand = (areaName:string, areaLevel:AreaLevel, keepExpanded:boolean = false) => {
         switch (areaLevel) {
             case AreaLevel.SUBDISTRICT:
-                if (subdistrictsExpanded?.includes(areaName)) {
-                    setSubdistrictsExpanded(subdistrictsExpanded?.filter(sub => sub !== areaName));
-                } else {
-                    setSubdistrictsExpanded([...subdistrictsExpanded, areaName]);
-                }
+                setSubdistrictsExpanded(AreaUtil.addOrRemoveIfExists(subdistrictsExpanded, areaName, keepExpanded));
                 break;
             case AreaLevel.DISTRICT:
-                if (districtsExpanded?.includes(areaName)) {
-                    setDistrictsExpanded(districtsExpanded?.filter(dis => dis !== areaName));
-                } else {
-                    setDistrictsExpanded([...districtsExpanded, areaName]);
-                }
+                setDistrictsExpanded(AreaUtil.addOrRemoveIfExists(districtsExpanded, areaName, keepExpanded));
         }
     };
 
@@ -96,31 +88,26 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         const cities = AreaUtil.getCities(districts, areaLevel, areaName);
         switch (areaLevel) {
             case AreaLevel.CITY:
-                if (citiesSelected?.includes(areaName)) {
-                    setCitiesSelected(citiesSelected?.filter(city => city !== areaName));
-                } else {
-                    setCitiesSelected([...citiesSelected, areaName]);
-                }
+                setCitiesSelected(AreaUtil.addOrRemoveIfExists(citiesSelected, areaName));
                 break;
             case AreaLevel.SUBDISTRICT:
-                if (subdistrictsSelected?.includes(areaName)) {
-                    setSubdistrictsSelected(subdistrictsSelected?.filter(sub => sub !== areaName));
-                    setCitiesSelected(citiesSelected.filter(city => !cities?.includes(city)));
-                } else {
-                    setSubdistrictsSelected([...subdistrictsSelected, areaName]);
+                const newSubSelected = AreaUtil.addOrRemoveIfExists(subdistrictsSelected, areaName);
+                if (newSubSelected.includes(areaName)) {
                     setCitiesSelected([...citiesSelected, ...cities]);
+                } else {
+                    setCitiesSelected(AreaUtil.removeListFromList(citiesSelected, cities));
                 }
+                setSubdistrictsSelected(newSubSelected);
                 break;
             case AreaLevel.DISTRICT: {
                 const subdistricts = AreaUtil.getSubDistricts(districts, areaName);
-                if (districtsSelected?.includes(areaName)) {
-                    setDistrictsSelected(districtsSelected?.filter(dis => dis !== areaName));
-                    setSubdistrictsSelected(subdistrictsSelected.filter(sub => !subdistricts.includes(sub)));
-                    setCitiesSelected(citiesSelected.filter(city => !cities?.includes(city)));
-                } else {
-                    setDistrictsSelected([...districtsSelected, areaName]);
+                const newDistricts = AreaUtil.addOrRemoveIfExists(districts, areaName);
+                if (newDistricts.includes(areaName)) {
                     setSubdistrictsSelected([...subdistrictsSelected, ...subdistricts]);
                     setCitiesSelected([...citiesSelected, ...cities]);
+                } else {
+                    setSubdistrictsSelected(AreaUtil.removeListFromList(subdistrictsSelected, subdistricts));
+                    setDistrictsSelected(AreaUtil.removeListFromList(citiesSelected, cities));
                 }
             }
         }
@@ -137,7 +124,9 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         setDistrictsSelected([]);
         setSubdistrictsSelected([]);
         setCitiesSelected([]);
-        setSearchInput("");
+        setDistrictsExpanded([]);
+        setSubdistrictsExpanded([]);
+        setSearchInput(undefined);
     };
     const hideDropDown = () => {
         if (citiesSelected.length === 0) {
@@ -159,26 +148,26 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         return cities ? cities.length > 0 && cities.filter(city => citiesSelected.includes(city)).length === cities.length : false;
     }, [citiesSelected]);
 
-    const isExpanded = React.useCallback((areaLevel:AreaLevel, name:string):boolean => {
-        if (searchInput !== "") {
-            const searchedCity = AreaUtil.getCities(districts, areaLevel, name)?.find(city => city.includes(searchInput));
-            return searchedCity? true : false;
-        }
-        return false;
-    }, [searchInput, districts]);
-
     useEffect(() => {
-        districts.forEach(district => {
-            if (isExpanded(AreaLevel.DISTRICT, district.name)) {
-                onExpand(district.name, AreaLevel.DISTRICT);
-            }
-        });
-        districts.flatMap(dis => dis.subdistricts).forEach(sub => {
-            if (isExpanded(AreaLevel.SUBDISTRICT, sub.name)) {
-                onExpand(sub.name, AreaLevel.SUBDISTRICT);
-            }
-        })
-    }, [searchInput, isExpanded, districts]);
+        if (searchInput === undefined) {
+            return;
+        }
+        if (searchInput === "") {
+            setSubdistrictsExpanded([]);
+            setDistrictsExpanded([]);
+        } else {
+            districts.forEach(district => {
+                if (AreaUtil.isExpanded(AreaLevel.DISTRICT, district.name, searchInput, districts)) {
+                    onExpand(district.name, AreaLevel.DISTRICT, true);
+                }
+            });
+            districts.flatMap(dis => dis.subdistricts).forEach(sub => {
+                if (AreaUtil.isExpanded(AreaLevel.SUBDISTRICT, sub.name, searchInput, districts)) {
+                    onExpand(sub.name, AreaLevel.SUBDISTRICT, true);
+                }
+            });
+        }
+    }, [searchInput, districts/*, subdistrictsExpanded, districtsExpanded*/]);
 
     return (
         <ClickOutsideHandler onClickOutside={hideDropDown}>
@@ -187,12 +176,12 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                 {dropDownVisible &&
                 <div className="ffh-area-select__dropdown">
                     <div className="ffh-area-select__dropdown_areas">
-                        <SearchFilter onSearch={(value:string) => setSearchInput(value)}/>
+                        <SearchFilter value={searchInput || ""} onSearch={(value:string) => setSearchInput(value)}/>
                         {districts.map((district, i) => {
                             return (
                                 <>
                                     <SelectRow name={district.name} isChecked={districtsSelected.includes(district.name) || isAllDistrictSubSelected(district.name)}
-                                               isExpanded={isExpanded(AreaLevel.DISTRICT, district.name)}
+                                               isExpanded={districtsExpanded.includes(district.name)}
                                                onSelected={() => onSelected(district.name, AreaLevel.DISTRICT)}
                                                onExpand={() => onExpand(district.name, AreaLevel.DISTRICT)} className={"ffh-district-selection__title"}/>
                                     {districtsExpanded?.includes(district.name) &&
@@ -201,12 +190,12 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                                             return (
                                                 <>
                                                     <SelectRow name={sub.name} isChecked={subdistrictsSelected.includes(sub.name) || isAllSubdistrictCitiesSelected(sub.name)}
-                                                               isExpanded={isExpanded(AreaLevel.SUBDISTRICT, sub.name)}
+                                                               isExpanded={subdistrictsExpanded.includes(sub.name)}
                                                                onSelected={() => onSelected(sub.name, AreaLevel.SUBDISTRICT)}
                                                                onExpand={() => onExpand(sub.name, AreaLevel.SUBDISTRICT)} className={"ffh-subdistrict-selection__title"}/>
                                                     {subdistrictsExpanded?.includes(sub.name) &&
                                                     <label className="ffh-city-selection__city" key={sub.name}>
-                                                        {sub.cities.filter(city => city.name.includes(searchInput)).map((city) => {
+                                                        {sub.cities.filter(city => city.name.includes(searchInput || "")).map((city) => {
                                                             return (
 
                                                                 <SelectRow name={city.name} isChecked={citiesSelected.includes(city.name)}

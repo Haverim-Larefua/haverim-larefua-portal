@@ -1,5 +1,5 @@
 export default interface SearchUsersParams {
   dayFilter: string;
-  cityFilter: string[];
+  cityFilter: number[];
   nameFilter: string;
 }
