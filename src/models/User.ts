@@ -6,7 +6,7 @@ export default class User {
   firstName: string;
   lastName: string;
   address: string;
-  deliveryAreas: City[] = [];
+  cities: City[] = [];
   deliveryDays: string;
   phone: string;
   notes: string;
@@ -19,7 +19,7 @@ export default class User {
     firstName: string,
     lastName: string,
     address: string,
-    deliveryAreas: City[],
+    cities: City[],
     deliveryDays: string,
     phone: string,
     notes: string,
@@ -29,7 +29,7 @@ export default class User {
     this.firstName = firstName;
     this.lastName = lastName;
     this.address = address;
-    this.deliveryAreas = deliveryAreas;
+    this.cities = cities;
     this.deliveryDays = deliveryDays;
     this.notes = notes;
     this.username = userName;

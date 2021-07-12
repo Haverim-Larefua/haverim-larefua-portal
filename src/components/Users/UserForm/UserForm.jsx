@@ -137,7 +137,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
     const onSubmit = (e) => {
         e.preventDefault();
         const convertedDays = userAvailableDays ? userAvailableDays.map(val => delivaryDaysToInitials.get(val)) : '';
-        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), deliveryAreas: userDeliveryAreas };
+        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), cities: userDeliveryAreas };
         if (editUserId) {
             logger.log('[[UserForm] onSubmit dispathing editUser');
             actions.editUser(newUserData);
