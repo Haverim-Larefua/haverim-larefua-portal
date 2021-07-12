@@ -6,10 +6,11 @@ import District from '../../../../models/District';
 import {AreaUtil} from "../../../../Utils/Areas/AreaUtils";
 import SearchFilter from "./SearchFilter";
 import AppConstants from "../../../../constants/AppConstants";
+import City from "../../../../models/City";
 
 interface IAreaSelectProps {
     districts: District[];
-    userDeliveryAreas?: string[];
+    userDeliveryAreas?: City[];
     onSave: Function;
 }
 
@@ -23,7 +24,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
 
     const [districtsSelected, setDistrictsSelected] = React.useState<string[]>([]);
     const [subdistrictsSelected,  setSubdistrictsSelected] = React.useState<string[]>([]);
-    const [citiesSelected, setCitiesSelected]  = React.useState<string[]>(userDeliveryAreas);
+    const [citiesSelected, setCitiesSelected]  = React.useState<City[]>(userDeliveryAreas);
     const [districtsExpanded, setDistrictsExpanded] = React.useState<string[]>([]);
     const [subdistrictsExpanded,  setSubdistrictsExpanded] = React.useState<string[]>([]);
     const [dropDownVisible, setDropDownVisible] = useState(false);
@@ -48,6 +49,14 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                 setSubdistrictsSelected([...subdistrictsSelected, sub.name])
             }
         });
+        citiesSelected.forEach(city => {
+            if (!subdistrictsExpanded.includes(city.subdistrict.name)) {
+                setSubdistrictsExpanded([...subdistrictsExpanded, city.subdistrict.name]);
+            }
+            if (!districtsExpanded.includes(city.district.name)) {
+                setDistrictsExpanded([...districtsExpanded, city.district.name]);
+            }
+        })
     }, [districts, citiesSelected]);
 
 
@@ -68,7 +77,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
             if (citiesSelected.length === 0) {
                 return "";
             } else if (citiesSelected.length === 1) {
-                return citiesSelected[0];
+                return citiesSelected[0].name;
             }
         }
         return "בחירה מרובה";
@@ -115,9 +124,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
 
     const save = () => {
         setDropDownVisible(false);
-        const cities = districts.flatMap(dis => dis.subdistricts).flatMap(sub => sub.cities);
-        const selectedCitiesObjects = cities.filter(city => citiesSelected.includes(city.name))
-        onSave(selectedCitiesObjects);
+        onSave(citiesSelected);
     };
 
     const clearSelection = () => {
@@ -145,7 +152,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
 
     const isAllSubdistrictCitiesSelected = React.useCallback((sub:string) => {
         const cities = AreaUtil.getCities(districts, AreaLevel.SUBDISTRICT, sub);
-        return cities ? cities.length > 0 && cities.filter(city => citiesSelected.includes(city)).length === cities.length : false;
+        return cities ? cities.length > 0 && cities.filter(city => citiesSelected.map(c=>c.name).includes(city.name)).length === cities.length : false;
     }, [citiesSelected]);
 
     useEffect(() => {
@@ -198,7 +205,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                                                         {sub.cities.filter(city => city.name.includes(searchInput || "")).map((city) => {
                                                             return (
 
-                                                                <SelectRow name={city.name} isChecked={citiesSelected.includes(city.name)}
+                                                                <SelectRow name={city.name} isChecked={citiesSelected.map(c=>c.name).includes(city.name)}
                                                                            onSelected={() => onSelected(city.name, AreaLevel.CITY)}
                                                                            expendable={false} className={"ffh-city-selection__title"}/>
                                                             )

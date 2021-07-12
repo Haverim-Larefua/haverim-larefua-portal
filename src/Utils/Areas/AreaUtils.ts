@@ -4,20 +4,19 @@ import City from "../../models/City";
 
 export class AreaUtil {
 
-    static getCities(districts:District[], areaLevel:AreaLevel, areaName:string) {
-        let cities:string[] | undefined = [];
+    static getCities(districts:District[], areaLevel:AreaLevel, areaName:string):City[] {
+        let cities:City[] | undefined = [];
         if (areaLevel === AreaLevel.SUBDISTRICT) {
             const correctDistrict = districts.find(dis => dis.subdistricts.find(sub => sub.name === areaName));
             if (correctDistrict) {
                 cities = correctDistrict.subdistricts.find(sub => sub.name === areaName)
-                    ?.cities.map((c) => c.name);
+                    ?.cities;
             }
         } else if (areaLevel === AreaLevel.DISTRICT) {
             const correctDistrict = districts.find(dis => dis.name === areaName);
             if (correctDistrict) {
                 correctDistrict.subdistricts.forEach(sub => {
-                    const subCities = sub.cities.map(c => c.name);
-                    cities = cities ? [...cities, ...subCities] : [];
+                    cities = cities ? [...cities, ...sub.cities] : [];
                 });
             }
         }
@@ -53,7 +52,7 @@ export class AreaUtil {
 
     static isExpanded(areaLevel:AreaLevel, name:string, searchInput:string, districts:District[]):boolean {
         if (searchInput !== "") {
-            const searchedCity = AreaUtil.getCities(districts, areaLevel, name)?.find(city => city.includes(searchInput));
+            const searchedCity = AreaUtil.getCities(districts, areaLevel, name)?.find(city => city.name.includes(searchInput));
             return searchedCity? true : false;
         }
         return false;
@@ -78,13 +77,13 @@ export class AreaUtil {
 
         citiesSubdistricts.forEach(sub => {
             const subCities = this.getCities(districts, AreaLevel.SUBDISTRICT, sub);
-            const filteredCities = clonedCities.filter(city => subCities.includes(city.name));
+            const filteredCities = clonedCities.filter(city => subCities.map(c=>c.id).includes(city.id));
             if (filteredCities.length === subCities.length) {
                 selectedSub.push(sub);
             } else {
                 selectedCities.push(...filteredCities);
             }
-            clonedCities = clonedCities.filter(city => !subCities.includes(city.name));
+            clonedCities = clonedCities.filter(city => !subCities.map(c=>c.id).includes(city.id));
         });
 
         citiesDistricts.forEach(dis => {

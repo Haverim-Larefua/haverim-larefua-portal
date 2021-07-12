@@ -43,8 +43,8 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
                 setUserAvailableDays(convertedDays);
             }
 
-            if (user && user.deliveryAreas) {
-                setUserDeliveryAreas(user.deliveryAreas);
+            if (user && user.cities) {
+                setUserDeliveryAreas(user.cities);
             }
 
             // password is always phone - and cannot be changed
@@ -55,6 +55,13 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         fetchUser();
     }, [editUserId, allUsersById]);
 
+    const getUserDeliveryAreas = React.useCallback(() => {
+        if (editUserId) {
+            const user = allUsersById[editUserId];
+            return user.cities;
+        }
+        return [];
+    },[editUserId, allUsersById]);
     
                 
 
@@ -166,7 +173,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
                         switch (item) {
                             case 'notes': return <textarea className="notes" rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
-                            case 'deliveryAreas': return <AreaSelect districts={districts} onSave={handleCitiesSelection} userDeliveryAreas={userDeliveryAreas}/>
+                            case 'deliveryAreas': return <AreaSelect districts={districts} onSave={handleCitiesSelection} userDeliveryAreas={getUserDeliveryAreas()}/>
                             default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }
