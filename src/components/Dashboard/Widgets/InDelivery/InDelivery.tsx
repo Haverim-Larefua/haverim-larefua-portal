@@ -20,7 +20,7 @@ const InDelivery = ({onLoad}: InDeliveryProps) => {
   }, []);
 
   async function init() {
-    const data = await httpService.getParcels("distribution", "", "");
+    const data = await httpService.getParcels("distribution", [], "");
     const inDeliveryParcels = data.filter((parcel: Parcel) => parcel.currentUserId);
     setTotalNumber(inDeliveryParcels.length);
 

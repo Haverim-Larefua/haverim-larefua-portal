@@ -91,7 +91,7 @@ export class AreaUtil {
             const filteredSubs = selectedSub.filter(sub => this.getAnchorDistrict(districts, sub) === dis);
             if (districtsSubs.length === filteredSubs.length) {
                 selectedDis.push(dis);
-                selectedSub = selectedSub.filter(sub => filteredSubs.includes(sub));
+                selectedSub = selectedSub.filter(sub => !filteredSubs.includes(sub));
             }
         });
 

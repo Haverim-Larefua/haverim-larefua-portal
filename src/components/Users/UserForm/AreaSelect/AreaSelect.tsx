@@ -57,7 +57,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                 setDistrictsExpanded([...districtsExpanded, city.district.name]);
             }
         })
-    }, [districts, citiesSelected]);
+    }, [districts, subdistrictsSelected, citiesSelected]);
 
 
     const calculateSelectedOption = ():string => {
@@ -110,14 +110,15 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                 break;
             case AreaLevel.DISTRICT: {
                 const subdistricts = AreaUtil.getSubDistricts(districts, areaName);
-                const newDistricts = AreaUtil.addOrRemoveIfExists(districts, areaName);
+                const newDistricts = AreaUtil.addOrRemoveIfExists(districtsSelected, areaName);
                 if (newDistricts.includes(areaName)) {
                     setSubdistrictsSelected([...subdistrictsSelected, ...subdistricts]);
                     setCitiesSelected([...citiesSelected, ...cities]);
                 } else {
                     setSubdistrictsSelected(AreaUtil.removeListFromList(subdistrictsSelected, subdistricts));
-                    setDistrictsSelected(AreaUtil.removeListFromList(citiesSelected, cities));
+                    setCitiesSelected(citiesSelected.filter(c => !cities.map(c=>c.name).includes(c.name)));
                 }
+                setDistrictsSelected(newDistricts);
             }
         }
     }, [citiesSelected, subdistrictsSelected, districtsSelected]);

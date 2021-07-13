@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, {useState, useEffect, useContext} from "react";
 import ParcelsImporterService from "../../services/ParcelsImporter.service";
 import { withRouter, useHistory } from 'react-router-dom';
 import Table from "../shared/Table/Table";
-import Toolbar from "../shared/Toolbar/Toolbar";
 import tableColumns from "./tableColumns/tableColumns";
 import AppConstants, { ParcelStatus } from "../../constants/AppConstants";
 import logger from "../../Utils/logger";
@@ -17,15 +16,18 @@ import ParcelsToolbar from "./ParcelsToolbar/ParcelsToolbar";
 import ParcelsActionsToolbar from "./ParcelsActionsToolbar/ParcelsActionsToolbar";
 import PushToUsersModal from "./PushToUsersModal/PushToUsersModal";
 import httpService from '../../services/http';
+import AreaSelect from "../Users/UserForm/AreaSelect/AreaSelect";
+import {citiesContext} from "../../contexts/citiesContext";
 
 const MINUTE = 60000;
 
 
-const Parcels = ({ error, cities, parcels, searching, actions }) => {
+const Parcels = ({ error, parcels, searching, actions }) => {
+  const districts = useContext(citiesContext);
   const statuses = AppConstants.parcelStatusOptions;
   const [statusFilterTerm, setStatusFilterTerm] = useState(statuses[0].value);
   const [userUpdateStatus, setUserUpdateStatus] = useState(false);
-  const [cityFilterTerm, setCityFilterTerm] = useState("");
+  const [citiesFilterTerm, setCitiesFilterTerm] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [freeCondition] = useState("");
   const [openUsersModal, setOpenUsersModal] = useState(false);
@@ -41,12 +43,12 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
     const queryStringParams = queryString.parse(window.location.search);
     const statusCond = queryStringParams.status && !userUpdateStatus ? queryStringParams.status : statusFilterTerm;
     const freeCond = queryStringParams.freeCondition && !userUpdateStatus ? queryStringParams.freeCondition : freeCondition;
-    actions.searchParcels({ statusFilter: statusCond, cityFilter: cityFilterTerm, searchTerm, freeCondition: freeCond });
+    actions.searchParcels({ statusFilter: statusCond, cityFilter: citiesFilterTerm, searchTerm, freeCondition: freeCond });
     const timer = setInterval(() => {
       actions.reloadParcels();
     }, MINUTE);
     return () => { clearInterval(timer) };
-  }, [actions, cityFilterTerm, searchTerm, statusFilterTerm, freeCondition, userUpdateStatus]);
+  }, [actions, citiesFilterTerm, searchTerm, statusFilterTerm, freeCondition, userUpdateStatus]);
 
   useEffect(() => {
     function handleDeleteParcel() {
@@ -57,16 +59,16 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
       }
     }
     handleDeleteParcel();
-  }, [deleteParcelId, deleteParcelText])
+  }, [deleteParcelId, deleteParcelText]);
 
   useEffect(() => {
     setIsDeleteEnabled(deleteEnabled);
-  }, [deleteEnabled])
+  }, [deleteEnabled]);
 
   const handleDelete = () => {
     actions.removeParcel(deleteParcelId);
     setDeleteParcelId("");
-  }
+  };
 
   const showUsersModal = () => {
     setOpenUsersModal(true);
@@ -147,10 +149,9 @@ const Parcels = ({ error, cities, parcels, searching, actions }) => {
     setStatusFilterTerm(value);
     setUserUpdateStatus(true);
   }
-  const citiesOptions = useMemo(() => cities.map(city => ({ label: city, value: city })), [cities]);
   const options = [
     { title: AppConstants.filterUIName, name: "status", values: statuses, filter: updateStatusTerm, bullets: true, showOptionAll: false },
-    { title: AppConstants.cityUIName, name: "cities", values: citiesOptions, filter: setCityFilterTerm, searchable: true, selectedValue: cityFilterTerm }
+    { title: AppConstants.cityUIName, name: "cities", searchable: true , searchComponent: <AreaSelect districts={districts} onSave={(cities) => setCitiesFilterTerm(cities.map(city => city.id))}/>}
   ];
 
   const buildToolBar = () => {
@@ -207,7 +208,6 @@ const mapStateToProps = (appState) => {
   return {
     error: appState.parcel.error,
     parcels: appState.parcel.parcels,
-    cities: appState.parcel.cities,
     searching: appState.parcel.searching
   }
 }

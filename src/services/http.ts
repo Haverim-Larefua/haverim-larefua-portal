@@ -102,10 +102,14 @@ class HttpService {
   // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels(statusFilterTerm?: string, cityFilterTerm?: string, searchTerm?: string, freeCondition?: string): Promise<Parcel[]> {
+  async getParcels(statusFilterTerm?: string, cityFilterTerm?: number[], searchTerm?: string, freeCondition?: string): Promise<Parcel[]> {
     let url = `${Configuration.URLS.PARCELS}?`;
     url += statusFilterTerm ? `statusFilterTerm=${statusFilterTerm}&` : "";
-    url += cityFilterTerm ? `cityFilterTerm=${cityFilterTerm}&` : "";
+    if (cityFilterTerm) {
+      cityFilterTerm.forEach(city => {
+        url += `cityFilterTerm=${city}&`;
+      });
+    }
     url += searchTerm ? `searchTerm=${searchTerm}&` : "";
     url += freeCondition ? `freeCondition=${freeCondition}&` : "";
 
@@ -139,9 +143,6 @@ class HttpService {
 
   async unassignParcel(parcelsId: number) {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${parcelsId}/unassign`, HttpMethod.PUT);
-  }
-  async getParcelsCityOptions() {
-    return this.sendHttpRequest<string[]>(`${Configuration.URLS.PARCELS}/cityOptions`, HttpMethod.GET);
   }
 
   async updateParcelsStatus(userId: number, status: string, parcels: number[]) {

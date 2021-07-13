@@ -12,21 +12,18 @@ import {
   SEARCH_PARCELS_SUCCESS,
   UPDATE_PARCELS_ERROR,
   UPDATE_PARCELS_STATUS_OPTIMISTIC,
-  UPDATE_PARCEL_CITIES_SUCCESS,
 } from "./types";
 
 export interface ParcelState {
   parcels: Parcel[];
   searchParams: ISearchParcelsParams;
-  cities: string[];
   error?: any;
   searching: boolean;
 }
 
 const INITIAL_STATE: ParcelState = {
   parcels: [],
-  searchParams: { statusFilter: "", cityFilter: "", searchTerm: "", freeCondition: "" },
-  cities: [],
+  searchParams: { statusFilter: "", cityFilter: [], searchTerm: "", freeCondition: "" },
   error: "",
   searching: false,
 };
@@ -87,11 +84,6 @@ export const parcelReducer = (state: ParcelState = INITIAL_STATE, action: Parcel
 
       case REMOVE_PARCEL_OPTIMISTIC: {
         draft.parcels = state.parcels.filter((pkg) => pkg.id !== action.parcelId);
-        break;
-      }
-
-      case UPDATE_PARCEL_CITIES_SUCCESS: {
-        draft.cities = action.cities;
         break;
       }
 

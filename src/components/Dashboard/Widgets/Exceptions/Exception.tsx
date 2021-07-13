@@ -21,7 +21,7 @@ const Exceptions = ({onLoad}: ExceptionsProps) => {
   }, []);
 
   async function init() {
-    const data = await httpService.getParcels("exception", "", "");
+    const data = await httpService.getParcels("exception", [], "");
     setExceptionParcels(data);
     setFirstParcels(data.slice(0, 5));
     onLoad();
