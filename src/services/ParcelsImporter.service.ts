@@ -36,7 +36,7 @@ export default class ParcelsImporterService {
             let city = null;
             const cityName = data[AppConstants.cityUIName];
             if(cityName) {
-              const foundCity = cities.find(c => c.name === cityName);
+              const foundCity = cities.find(c => this.normaolizeCity(c.name) === this.normaolizeCity(cityName));
               if(foundCity) {
                 city = foundCity;
               }
@@ -72,6 +72,11 @@ export default class ParcelsImporterService {
         });
         return parcels;
     }
+
+  private static normaolizeCity(city: string): string {
+    return city.replace(/ /g, '').replace(/קרית/g, 'קריית')
+
+  }
 
     public static async ImportFromExcel(file: File, cities: City[]): Promise<Parcel[]> {
         return new Promise((resolve, reject) => {
