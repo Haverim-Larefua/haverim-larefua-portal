@@ -33,7 +33,7 @@ export default class ParcelsImporterService {
       const startTime = data[AppConstants.startTime] ? data[AppConstants.startTime].toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : null;
       const customerId = data[AppConstants.cardId] ? data[AppConstants.cardId] : StringUtil.EMPTY;
       const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : StringUtil.EMPTY;
-      const address = data[AppConstants.addressUIName] ? data[AppConstants.addressUIName].replace(/\d{5,}/gm, '') : StringUtil.EMPTY;
+      const address = data[AppConstants.addressUIName] ? getAddress(data) : StringUtil.EMPTY;
       let city = null;
       const cityName = data[AppConstants.cityUIName];
       if (cityName) {
@@ -126,3 +126,17 @@ export default class ParcelsImporterService {
   }
 
 }
+
+
+function getAddress(data: any) {
+  // הורדת מיקוד
+  let address = data[AppConstants.addressUIName].replace(/\d{5,}/gm, '');
+  // הורדת ת.ד  
+  const index = address.indexOf('ת.ד.');
+  if(index > -1) {
+    address =  address.substring(0, index);
+  }
+
+  return address
+}
+
