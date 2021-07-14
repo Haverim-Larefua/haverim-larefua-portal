@@ -7,6 +7,7 @@ import { DateUtil } from "../../../Utils/Common/DateUtil";
 import { ParcelUtil } from "../../../Utils/Parcel/ParcelUtil";
 import Note from "../../shared/Note/Note";
 import formatDate from "../../../Utils/dateFormatter";
+import rootReducer from "../../../redux/rootReducer";
 
 
 const tableColumns = memoize(clickHandler => [{
@@ -91,14 +92,11 @@ const tableColumns = memoize(clickHandler => [{
                 sortable: true,
                 minWidth: '350px',
                 cell: row => {
-                  const comment = row.parcelTracking[row.parcelTracking.length - 1]?.comments
-                    ? '[' + formatDate(row.parcelTracking[row.parcelTracking.length - 1]?.statusDate).date + '] ' + row.parcelTracking[row.parcelTracking.length - 1]?.comments
-                    : undefined ;
                   return (< ParcelUserComponent userId={row.currentUserId}
                                          itemId={row.id}
                                          status={row.parcelTrackingStatus}
                                          action={clickHandler}
-                                         comments={comment}
+                                         comments={row.comments}
                   />)
                 },
                     ignoreRowClick: row => (row.currentUserId ? false : true),
