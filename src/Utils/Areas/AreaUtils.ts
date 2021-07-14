@@ -19,6 +19,8 @@ export class AreaUtil {
                     cities = cities ? [...cities, ...sub.cities] : [];
                 });
             }
+        } else if (areaLevel === AreaLevel.CITY) {
+            cities = districts.flatMap(d=>d.subdistricts).flatMap(s=>s.cities);
         }
         return cities ? cities : [];
     }

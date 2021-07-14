@@ -97,7 +97,14 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         const cities = AreaUtil.getCities(districts, areaLevel, areaName);
         switch (areaLevel) {
             case AreaLevel.CITY:
-                setCitiesSelected(AreaUtil.addOrRemoveIfExists(citiesSelected, areaName));
+                if (citiesSelected?.map(c=>c.name).includes(areaName)) {
+                    setCitiesSelected(citiesSelected.filter(city => city.name === areaName));
+                } else {
+                    const city = cities.find(c=>c.name === areaName);
+                    if (city) {
+                        setCitiesSelected([...citiesSelected, city]);
+                    }
+                }
                 break;
             case AreaLevel.SUBDISTRICT:
                 const newSubSelected = AreaUtil.addOrRemoveIfExists(subdistrictsSelected, areaName);
@@ -121,7 +128,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                 setDistrictsSelected(newDistricts);
             }
         }
-    }, [citiesSelected, subdistrictsSelected, districtsSelected]);
+    }, [districts, citiesSelected, subdistrictsSelected, districtsSelected]);
 
     const save = () => {
         setDropDownVisible(false);
