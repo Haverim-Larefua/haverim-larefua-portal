@@ -33,10 +33,11 @@ export interface IToolbarProps {
   searchPlaceholder?: string;
   uploadButton?: boolean;
   loading: boolean;
+  searchComponent?: React.ReactNode;
 }
 
 
-const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchPlaceholder = "חיפוש", withOptions, options, subTitle, title}:IToolbarProps) => {
+const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchPlaceholder = "חיפוש", withOptions, options, subTitle, title, searchComponent}:IToolbarProps) => {
   const handleSearch = debounce(value => {
       search(value);
     }, AppConstants.searchDebounceTime);
@@ -67,8 +68,8 @@ const Toolbar = ({search, uploadButton, actionTitle, action, withSearch, searchP
                     return(
                         <span className={`ffh-toolbar__filter-container ${opt.name}-filter`} key={opt.name}>
                           <label className="ffh-toolbar__label">{opt.title}</label>
-                          {opt.searchable ?
-                          <SelectFilter showOptionAll={opt.showOptionAll}  onSelect={opt.filter} items={[...opt.values]} height='260px'/> :
+                          {opt.searchable ? (searchComponent ? searchComponent :
+                          <SelectFilter showOptionAll={opt.showOptionAll}  onSelect={opt.filter} items={[...opt.values]} height='260px'/>) :
                           <Dropdown showOptionAll={opt.showOptionAll} options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled}/>}
                         </span>)
                     })

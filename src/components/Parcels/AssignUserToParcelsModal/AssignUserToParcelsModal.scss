@@ -3,48 +3,56 @@
 
 
 .ffh-users-modal {
-    height: 100%;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width:100%;
-    z-index: 1;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width:100%;
+  z-index: 1;
+
+  .cities-filter {
+    width: 56%;
   }
 
-  .ffh-users-modal-main {
-    background: white;
-    box-shadow: 0 2px 4px 0 rgba(23, 23, 23, 0.5);
-    font-size: 14px;
-    position:fixed;
-    right: 50%;
-    top: 94px;
-    transform: translateX(320px);
-    width: 640px;
- }
-
-  .ffh-users-modal-close{
-    @extend %button-reset;
-    cursor: pointer;
-    height: 32px;
-    left: 14px;
-    position: absolute;
-    top: 14px;
-    width: 32px;
+  .days-filter {
+    width: 40%;
   }
+}
 
-  .ffh-users-modal-button{
-    @extend %button-reset;
-    background-color: $blue;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    float: left;
-    font-size: 16px;
-    font-weight: bold;
-    height: 40px;
-    margin: 12px;
-    width: 100px;
-    &:hover {
-      background-color: $dark-blue;
-    }
+.ffh-users-modal-main {
+  background: white;
+  box-shadow: 0 2px 4px 0 rgba(23, 23, 23, 0.5);
+  font-size: 14px;
+  position:fixed;
+  right: 40%;
+  top: 94px;
+  transform: translateX(320px);
+  width: 900px;
+}
+
+.ffh-users-modal-close{
+  @extend %button-reset;
+  cursor: pointer;
+  height: 32px;
+  left: 14px;
+  position: absolute;
+  top: 14px;
+  width: 32px;
+}
+
+.ffh-users-modal-button{
+  @extend %button-reset;
+  background-color: $blue;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  float: left;
+  font-size: 16px;
+  font-weight: bold;
+  height: 40px;
+  margin: 12px;
+  width: 100px;
+  &:hover {
+    background-color: $dark-blue;
   }
+}

@@ -15,8 +15,6 @@ import {
   AddUsersOptimisticAction,
   ADD_USERS_OPTIMISTIC,
   EditUserOptimisticAction,
-  UpdateUsersAreaSuccessAction,
-  UPDATE_USERS_AREAS_SUCCESS,
   RemoveUserOptimisticAction,
   EDIT_USER_OPTIMISTIC,
   REMOVE_USER_OPTIMISTIC,
@@ -46,10 +44,6 @@ export function removeUserOptimistic(userId: number): RemoveUserOptimisticAction
   return { type: REMOVE_USER_OPTIMISTIC, userId };
 }
 
-export function updateUsersAreasSuccess(areas: string[]): UpdateUsersAreaSuccessAction {
-  return { type: UPDATE_USERS_AREAS_SUCCESS, areas };
-}
-
 /////Redxu Thunk Actions/////
 
 export function searchUsers(searchParams: SearchUsersParams) {
@@ -69,13 +63,11 @@ export function reloadUsers() {
 
 async function loadUsers(searchParams: SearchUsersParams, dispatch: Dispatch) {
   try {
-    const [users, areaOptions] = await Promise.all([
+    const [users] = await Promise.all([
       httpService.getUsers(searchParams),
-      httpService.getUsersCityOptions(),
     ]);
 
     dispatch(loadUsersSuccess(users));
-    dispatch(updateUsersAreasSuccess(areaOptions));
   } catch (err) {
     logger.error(err);
     toastr.error("", "טעינת המשתמשים נכשלה - פנה למנהל המערכת");

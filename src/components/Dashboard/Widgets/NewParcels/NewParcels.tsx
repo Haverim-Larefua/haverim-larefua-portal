@@ -20,7 +20,7 @@ const NewParcels = ({onLoad}: NewParcelsProps) => {
   }, []);
 
   async function init() {
-    const data = await httpService.getParcels("ready", "", "");
+    const data = await httpService.getParcels("ready", [], "");
     setTotalNumber(data.length);
     const noUser = data.filter((parcel) => !parcel.currentUserId).length;
     setNoUserNumber(noUser);

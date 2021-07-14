@@ -5,7 +5,7 @@ import httpService from "../../../services/http";
 import logger from "../../../Utils/logger";
 import { ParcelUtil } from "../../../Utils/Parcel/ParcelUtil";
 import { AppState } from "../../rootReducer";
-import { BasicToastrOptions, toastr } from "react-redux-toastr";
+import { toastr } from "react-redux-toastr";
 
 import {
   LoadParcelsSuccessAction,
@@ -13,7 +13,6 @@ import {
   AddParcelsSuccessAction,
   EditParcelOptimisticAction,
   RemoveParcelOptimisticAction,
-  UpdateParcelCitiesSuccessAction,
   UPDATE_PARCELS_ERROR,
   UpdateParcelsErrorAction,
   SearchParcelsSuccessAction,
@@ -22,13 +21,11 @@ import {
   ADD_PARCELS_SUCCESS,
   EDIT_PARCEL_OPTIMISTIC,
   REMOVE_PARCEL_OPTIMISTIC,
-  UPDATE_PARCEL_CITIES_SUCCESS,
   SEARCH_PARCELS_SUCCESS,
   UPDATE_PARCELS_STATUS_OPTIMISTIC,
   UpdateParcelsStatusOptimisticAction,
 } from "./types";
 import AppConstants from "../../../constants/AppConstants";
-import _ from "lodash";
 import React from "react";
 
 export function updateParcelsStatusOptimistic(
@@ -59,10 +56,6 @@ export function removeParcelOptimistic(parcelId: number): RemoveParcelOptimistic
   return { type: REMOVE_PARCEL_OPTIMISTIC, parcelId };
 }
 
-export function updateParcelsCitiesSuccess(cities: string[]): UpdateParcelCitiesSuccessAction {
-  return { type: UPDATE_PARCEL_CITIES_SUCCESS, cities };
-}
-
 export function parcelsError(error: string): UpdateParcelsErrorAction {
   return { type: UPDATE_PARCELS_ERROR, error };
 }
@@ -89,13 +82,11 @@ export function reloadParcels() {
 
 async function loadParcels(searchParams: ISearchParcelsParams, dispatch: Dispatch) {
   try {
-    const [parcels, cityOptions] = await Promise.all([
+    const [parcels] = await Promise.all([
       httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.searchTerm, searchParams.freeCondition),
-      httpService.getParcelsCityOptions(),
     ]);
 
     dispatch(loadParcelsSuccess(parcels));
-    dispatch(updateParcelsCitiesSuccess(cityOptions));
   } catch (err) {
     logger.error(err);
     dispatch(parcelsError(err));

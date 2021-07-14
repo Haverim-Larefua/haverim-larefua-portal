@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 
 interface ClickOutsideHandlerProps {
   onClickOutside: () => void;
-  children: Element;
+  children: Element | React.ReactNode;
 }
 
 const ClickOutsideHandler: React.FC<ClickOutsideHandlerProps>  = (props) => {

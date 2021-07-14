@@ -34,7 +34,7 @@ const LastWeeks = ({onLoad}: LastWeeksProps ) => {
   }, []);
 
   async function init() {
-    let parcels = await httpService.getParcels("delivered", "", "", lastWeeksCondition);
+    let parcels = await httpService.getParcels("delivered", [], "", lastWeeksCondition);
     setTotalNumber(parcels.length);
 
     const data = getChartData(parcels);

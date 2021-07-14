@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 
 import './ParcelsToolbar.scss';
-// import logger from '../../../Utils/logger';
 import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
 import { debounce } from 'lodash';
 import UploadButton from '../../shared/UploadButton/UploadButton';
@@ -19,7 +18,8 @@ export interface ParcelsToolbarOption {
   filter: (val: string) => void;
   bullets?: boolean;
   isDisabled?: boolean;
-  showOptionAll?: boolean
+  showOptionAll?: boolean;
+  searchComponent?: ReactNode;
 }
 export interface IParcelsToolbarProps {
   options: ParcelsToolbarOption[];
@@ -54,7 +54,7 @@ const ParcelsToolbar = ({ search, importFromFileClick, options }: IParcelsToolba
           return (
             <span className={`ffh-toolbar__filter-container ${opt.name}-filter`} key={opt.name}>
               <label className="ffh-toolbar__label">{opt.title}</label>
-              {opt.searchable ?
+              {opt.searchable ? opt.searchComponent ? opt.searchComponent :
                 <SelectFilter showOptionAll={opt.showOptionAll} onSelect={opt.filter} items={[...opt.values]} height='260px' /> :
                 <Dropdown showOptionAll={opt.showOptionAll} options={[...opt.values]} name={opt.name} filter={opt.filter} bullets={opt.bullets} isDisabled={opt.isDisabled} />}
             </span>)

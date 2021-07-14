@@ -51,10 +51,6 @@ export class ParcelUtil {
     return [mergedParcels, addedParcels];
   }
 
-  static getParcelsCitiesDistinct(parcels: Parcel[]): string[] {
-    const cities = new Set(parcels.map((parcel) => parcel.city));
-    return [...cities].sort();
-  }
 
   static prepareOneParcelForDisplay(parcel: Parcel): Parcel {
     ParcelUtil.sortParcelTracking(parcel.parcelTracking);

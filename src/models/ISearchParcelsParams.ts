@@ -1,6 +1,6 @@
 export default interface ISearchParcelsParams {
   statusFilter: string;
-  cityFilter: string;
+  cityFilter: number[];
   searchTerm: string;
   freeCondition: string
 }

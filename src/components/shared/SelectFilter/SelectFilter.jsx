@@ -43,7 +43,7 @@ const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAl
                 {dropDownVisible &&
                     <div className="ffh-select-filter__dropdown" style={{ height }}>
                         {!hideFilter &&
-                            <div className="ffh-select-filter__input-ph">
+                            <div className="ffh-select-fi lter__input-ph">
                                 <SearchIcon className="ffh-select-filter__input-icon" />
                                 <input type="text" className="ffh-select-filter__input" onChange={(e) => setSearchInput(e.target.value)} autoFocus /> 
                             </div>
@@ -61,6 +61,6 @@ const SelectFilter = ({items, height = "160px", hideFilter = false, showOptionAl
             </div>
         </ClickOutsideHandler>
     )
-}
+};
 
 export default SelectFilter;

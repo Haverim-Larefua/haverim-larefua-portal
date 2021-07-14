@@ -155,7 +155,6 @@ function mapStateToProps(appState: AppState) {
   return {
     error: appState.parcel.error,
     parcels: appState.parcel.parcels,
-    cities: appState.parcel.cities,
     searching: appState.parcel.searching,
   };
 }

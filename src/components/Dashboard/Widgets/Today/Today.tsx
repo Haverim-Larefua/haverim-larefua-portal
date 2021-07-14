@@ -22,7 +22,7 @@ interface TodayProps {
   }, []);
 
   async function init() {
-    const todayParcels = await httpService.getParcels("delivered", "", "", todayCondition);
+    const todayParcels = await httpService.getParcels("delivered", [], "", todayCondition);
     setTotalNumber(todayParcels.length);
     onLoad();
   }

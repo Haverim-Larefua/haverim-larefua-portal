@@ -1,13 +1,14 @@
 import React, { createContext, useState, useEffect } from "react";
-import httpService from "../services/http";
-import logger from "../Utils/logger";
-import { citieAndSettlementRecord } from "./interfaces/cities.interface";
-import { cityList } from "./Cities";
+import httpService from '../services/http';
+import logger from '../Utils/logger';
+import District from '../models/District';
+import Subdistrict from '../models/Subdistrict';
 
-export const citiesContext = createContext<string[]>([]);
+
+export const citiesContext = createContext<District[]>([]);
 
 const CitiesContextProvider: React.FC = props => {
-  const [cities, setCities] = useState<string[]>([]);
+  const [districts, setDistricts] = useState<District[]>([]);
 
   function writeCities(citiNames: string[]) {
     if (citiNames && citiNames.length > 0) {
@@ -23,34 +24,50 @@ const CitiesContextProvider: React.FC = props => {
     }
   }
 
-  async function getAllCitiesFromGovData() {
-    logger.log("[CitiesContextProvider] getAllCities ");
-    const response = await httpService.getCities();
-    const citiNames = response.result.records.map(
-      (item: citieAndSettlementRecord) =>
-        '"' + item["שם_ישוב"].trim().replace('"', "") + '"'
-    );
-    setCities(citiNames);
-    writeCities(citiNames);
-    logger.debug(
-      "[CitiesContextProvider] getAllCities dispatching loadCities  ",
-      response
-    );
-  }
 
-  async function ReadCitiesFromFile() {
-    setCities(cityList);
+  async function getAllCitiesFromBE() {
+    logger.log("[CitiesContextProvider] getAllCities ");
+    const cities = await httpService.getCities();
+
+    let districtsFromBE:District[] = [];
+    cities.map(city => {
+      let district = districtsFromBE.find(dis => dis.name === city.district.name);
+      if (district) {
+        let subdistrict = district.subdistricts.find(sub => sub.name === city.subdistrict.name);
+        if (subdistrict) {
+          subdistrict.cities = [...subdistrict.cities, city];
+        } else {
+          subdistrict = new Subdistrict();
+          subdistrict.name = city.subdistrict.name;
+          subdistrict.cities = [city];
+          district.subdistricts = [...district.subdistricts, subdistrict];
+        }
+      } else {
+        district = new District();
+        district.name = city.district.name;
+        let subdistrict = new Subdistrict();
+        subdistrict.name = city.subdistrict.name;
+        subdistrict.cities = [city];
+        district.subdistricts = [subdistrict];
+        districtsFromBE = [...districtsFromBE, district];
+      }
+    });
+
+    setDistricts(districtsFromBE);
+    logger.debug(
+        "[CitiesContextProvider] getAllCities dispatching loadCities  ",
+        cities
+    );
   }
 
   useEffect(() => {
-    // getAllCitiesFromGovData();  // Use this for updating the list from gov data
-    ReadCitiesFromFile();
+    getAllCitiesFromBE();
   }, []);
 
   return (
-    <citiesContext.Provider value={cities}>
-      {props.children}
-    </citiesContext.Provider>
+      <citiesContext.Provider value={districts}>
+        {props.children}
+      </citiesContext.Provider>
   );
 };
 

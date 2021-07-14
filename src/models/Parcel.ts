@@ -1,10 +1,11 @@
 import { ICurrentParcel } from "../components/Parcels/ParcelDetails/DetailsParcelTable/DetailsParcelTable";
+import City from "./City";
 import ParcelTracking from "./ParcelTracking";
 import User from "./User";
 
 export default class Parcel implements ICurrentParcel {
     id: number;
-    city: string;
+    city: City | null;
     address: string;
     phone: string;
     phone2: string;
@@ -28,7 +29,7 @@ export default class Parcel implements ICurrentParcel {
         customerName: string,
         customerId: string,
         address: string,
-        city: string,
+        city: City | null,
         phone: string,
         phone2: string,
         comments: string,

@@ -3,12 +3,12 @@ import logger from "../Utils/logger";
 import Configuration from "../configuration/Configuration";
 import { AppConstants1 } from "../constants/AppConstants";
 import { ParcelUtil } from "../Utils/Parcel/ParcelUtil";
-import CitiesAndSettlements from "../contexts/interfaces/cities.interface";
 import { UserUtil } from "../Utils/User/UserUtil";
 import AuthService from "./authService";
 import Parcel from "../models/Parcel";
 import User from "../models/User";
 import SearchUsersParams from "../models/SearchUsersParams";
+import City from "../models/City";
 import { IParcelResult } from "../redux/states/parcel/actions";
 
 enum HttpMethod {
@@ -77,10 +77,8 @@ class HttpService {
   };
 
   ////////////////////////////////////  CITIES ////////////////////////////////////
-  public async getCities(): Promise<CitiesAndSettlements> {
-    // return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
-    const response = await axios.get(Configuration.URLS.CITIES_ENDPOINT);
-    return response.data;
+  public async getCities(): Promise<City[]> {
+    return this.sendHttpRequest(Configuration.URLS.CITIES_ENDPOINT, HttpMethod.GET);
   }
 
   // //////////////////////////////////// Push ////////////////////////////////////
@@ -104,10 +102,14 @@ class HttpService {
   // }
 
   //////////////////////////////////// Parcels ////////////////////////////////////
-  async getParcels(statusFilterTerm?: string, cityFilterTerm?: string, searchTerm?: string, freeCondition?: string): Promise<Parcel[]> {
+  async getParcels(statusFilterTerm?: string, cityFilterTerm?: number[], searchTerm?: string, freeCondition?: string): Promise<Parcel[]> {
     let url = `${Configuration.URLS.PARCELS}?`;
     url += statusFilterTerm ? `statusFilterTerm=${statusFilterTerm}&` : "";
-    url += cityFilterTerm ? `cityFilterTerm=${cityFilterTerm}&` : "";
+    if (cityFilterTerm) {
+      cityFilterTerm.forEach(city => {
+        url += `cityFilterTerm=${city}&`;
+      });
+    }
     url += searchTerm ? `searchTerm=${searchTerm}&` : "";
     url += freeCondition ? `freeCondition=${freeCondition}&` : "";
 
@@ -142,9 +144,6 @@ class HttpService {
   async unassignParcel(parcelsId: number) {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/${parcelsId}/unassign`, HttpMethod.PUT);
   }
-  async getParcelsCityOptions() {
-    return this.sendHttpRequest<string[]>(`${Configuration.URLS.PARCELS}/cityOptions`, HttpMethod.GET);
-  }
 
   async updateParcelsStatus(userId: number, status: string, parcels: number[]) {
     return this.sendHttpRequest(`${Configuration.URLS.PARCELS}/user/${userId}/${status}`, HttpMethod.PUT, {
@@ -156,9 +155,31 @@ class HttpService {
 
   //////////////////////////////////// Users ////////////////////////////////////
   async getUsers(searchParams: SearchUsersParams): Promise<User[]> {
+
+    /*const city1 = new City(1,"אבו גוש", {name: "ירושלים"}, {name: "ירושלים"});
+    const city2 = new City(1,"לוד", {name: "המרכז"}, {name: "רמלה"});
+    const users:User[] = [
+        {
+          id: 1,
+          firstName: "chaya",
+          lastName: "chaimson",
+          address: "כצנלסון לוד",
+          deliveryAreas: [city1, city2],
+          deliveryDays: "1,2,3,4,5,6",
+          phone: "0544659907",
+          notes: "",
+          username: "",
+          password: "",
+          parcels: [],
+          active: true
+        }
+        ];*/
+
     let url = `${Configuration.URLS.USERS}?`;
     if (searchParams.cityFilter) {
-      url += `&cityFilter=${searchParams.cityFilter}`;
+      searchParams.cityFilter.forEach(city => {
+        url += `&cityFilter=${city}`;
+      });
     }
 
     if (searchParams.nameFilter) {
@@ -202,10 +223,6 @@ class HttpService {
 
   async deleteUser(id: number) {
     return this.sendHttpRequest(`${Configuration.URLS.USERS}/${id}`, HttpMethod.DELETE);
-  }
-
-  async getUsersCityOptions() {
-    return this.sendHttpRequest<string[]>(`${Configuration.URLS.USERS}/cityOptions`, HttpMethod.GET);
   }
 
   //////////////////////////////////// Authentication ////////////////////////////////////

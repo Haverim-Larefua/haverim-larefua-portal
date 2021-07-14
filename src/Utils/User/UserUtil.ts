@@ -15,13 +15,12 @@ export class UserUtil {
 
   static getUsersAreasDistinct(users: User[]): string[] {
     let areas: string[] = [];
-    if (users && users.length > 0) {
-      users.forEach(item => {
-        if (!areas.includes(item.deliveryArea)) {
-          areas.push(item.deliveryArea);
-        }
-      });
-    }
+    const usersDeliveryAreas = users? [...new Set(users.flatMap(user => user.cities.map(da => da.name)))] : [];
+    usersDeliveryAreas.forEach(deliveryArea => {
+      if (!areas.includes(deliveryArea)) {
+        areas.push(deliveryArea);
+      }
+    });
     return areas;
   }
 
@@ -50,7 +49,7 @@ export class UserUtil {
   static prepareUsersForDisplay(users: User[]): User[] {
     if (users && users.length > 0) {
       users.forEach((user: User) => {
-        user = UserUtil.prepareOneUserForDisplay(user);
+        UserUtil.prepareOneUserForDisplay(user);
       })
     }
     return users;
@@ -74,7 +73,7 @@ export class UserUtil {
   static prepareUsersForDBUpdate(users: User[]): User[] {
     if (users && users.length > 0) {
       users.forEach((user: User) => {
-        user = UserUtil.prepareOneUserForDBUpdate(user);
+        UserUtil.prepareOneUserForDBUpdate(user);
       })
     }
     return users;

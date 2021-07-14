@@ -5,18 +5,17 @@ import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
 import { delivaryDaysToInitials } from '../../../constants/AppConstants';
 import DayPicker from './DayPicker';
-import SelectFilter from '../../shared/SelectFilter/SelectFilter';
 import './UserForm.scss';
 import { UserUtil } from "../../../Utils/User/UserUtil";
-import Option from "../../../models/Option";
 import * as userActions from "../../../redux/states/user/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import AreaSelect from "./AreaSelect/AreaSelect";
 
 const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
-    const cities = useContext(citiesContext);
+    const districts = useContext(citiesContext);
     const [userAvailableDays, setUserAvailableDays] = useState([]);
-    const [userDeliveryArea, setUserDeliveryArea] = useState('');
+    const [userDeliveryAreas, setUserDeliveryAreas] = useState([]);
     const [newUserForm, setNewUserFormField] = useState({});
 
     useEffect(() => {
@@ -44,26 +43,33 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
                 setUserAvailableDays(convertedDays);
             }
 
-            if (user && user.deliveryArea) {
-                setUserDeliveryArea(user.deliveryArea);
+            if (user && user.cities) {
+                setUserDeliveryAreas(user.cities);
             }
 
             // password is always phone - and cannot be changed
             if (user && user.password && user.phone) {
-                user.password = String(user.phone).replace(/\D/g,'');; // make sure the pass will be only numbers
+                user.password = String(user.phone).replace(/\D/g,''); // make sure the pass will be only numbers
             }
         }
         fetchUser();
     }, [editUserId, allUsersById]);
 
+    const getUserDeliveryAreas = React.useCallback(() => {
+        if (editUserId) {
+            const user = allUsersById[editUserId];
+            return user.cities;
+        }
+        return [];
+    },[editUserId, allUsersById]);
     
                 
 
     let formFields = [];
     if (editUserId) {
-      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'deliveryDays', 'notes'];
+      formFields = ['firstName', 'lastName', 'phone', 'deliveryAreas', 'deliveryDays', 'notes'];
     } else {
-      formFields = ['firstName', 'lastName', 'phone', 'deliveryArea', 'username', 'password', 'deliveryDays', 'notes'];
+      formFields = ['firstName', 'lastName', 'phone', 'deliveryAreas', 'username', 'password', 'deliveryDays', 'notes'];
     }
 
     const handleDaySelection = (e) => {
@@ -83,9 +89,9 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         setUserAvailableDays([AppConstants.allWeek]);
     }
 
-    const handleCitySelection = (value) => {
-        setUserDeliveryArea(value);
-    }
+    const handleCitiesSelection = (cities) => {
+        setUserDeliveryAreas(cities);
+    };
 
 
 
@@ -131,14 +137,14 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
 
     const cleanForm = () => {
         setUserAvailableDays("");
-        setUserDeliveryArea("");
+        setUserDeliveryAreas([]);
         setNewUserFormField({});
-    }
+    };
  
     const onSubmit = (e) => {
         e.preventDefault();
         const convertedDays = userAvailableDays ? userAvailableDays.map(val => delivaryDaysToInitials.get(val)) : '';
-        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), deliveryArea: userDeliveryArea };
+        const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), cities: userDeliveryAreas };
         if (editUserId) {
             logger.log('[[UserForm] onSubmit dispathing editUser');
             actions.editUser(newUserData);
@@ -167,7 +173,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
                         switch (item) {
                             case 'notes': return <textarea className="notes" rows={10} onChange={e => onFieldChange(e)} name="notes"  value={newUserForm ? newUserForm[item] : ''}/>;
                             case 'deliveryDays': return <DayPicker selectedDays={userAvailableDays} onChange={handleDaySelection} />;
-                            case 'deliveryArea': return <SelectFilter onSelect={(value) => handleCitySelection(value)} items={cities.map(city => new Option(city, city))} initialSelection = {userDeliveryArea} height='260px' showOptionAll={false}/>
+                            case 'deliveryAreas': return <AreaSelect districts={districts} onSave={handleCitiesSelection} userDeliveryAreas={getUserDeliveryAreas()}/>
                             default: return <input className={inputClass} type={inputType} readOnly={readonly} value={newUserForm ? newUserForm[item] : ''} id={item} name={item} onChange={e => onFieldChange(e)} />;
                         }
                     }

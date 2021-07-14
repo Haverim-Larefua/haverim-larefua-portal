@@ -6,7 +6,6 @@ export const ADD_PARCEL_OPTIMISTIC = "ADD_PARCEL_OPTIMISTIC";
 export const ADD_PARCELS_SUCCESS = "ADD_PARCELS_SUCCESS";
 export const EDIT_PARCEL_OPTIMISTIC = "EDIT_PARCEL_OPTIMISTIC";
 export const REMOVE_PARCEL_OPTIMISTIC = "REMOVE_PARCEL_OPTIMISTIC";
-export const UPDATE_PARCEL_CITIES_SUCCESS = "UPDATE_PARCEL_CITIES_SUCCESS";
 export const UPDATE_PARCELS_ERROR = "UPDATE_PARCELS_ERROR";
 export const SEARCH_PARCELS_SUCCESS = "SEARCH_PARCELS_SUCCESS";
 export const UPDATE_PARCELS_STATUS_OPTIMISTIC = "UPDATE_PARCELS_STATUS_OPTIMISTIC";
@@ -38,10 +37,6 @@ export interface RemoveParcelOptimisticAction {
   type: typeof REMOVE_PARCEL_OPTIMISTIC;
   parcelId: number;
 }
-export interface UpdateParcelCitiesSuccessAction {
-  type: typeof UPDATE_PARCEL_CITIES_SUCCESS;
-  cities: string[];
-}
 export interface UpdateParcelsErrorAction {
   type: typeof UPDATE_PARCELS_ERROR;
   error: any;
@@ -58,7 +53,6 @@ export type ParcelActions =
   | AddParcelsSuccessAction
   | EditParcelOptimisticAction
   | RemoveParcelOptimisticAction
-  | UpdateParcelCitiesSuccessAction
   | UpdateParcelsErrorAction
   | SearchParcelsSuccessAction
   | UpdateParcelsStatusOptimisticAction;

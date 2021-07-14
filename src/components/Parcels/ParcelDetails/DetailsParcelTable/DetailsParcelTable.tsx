@@ -1,4 +1,5 @@
 import React from 'react';
+import City from '../../../../models/City';
 import { DateUtil } from '../../../../Utils/Common/DateUtil';
 import StringUtil from '../../../../Utils/Common/StringUtil';
 import formatDate from '../../../../Utils/dateFormatter';
@@ -9,7 +10,7 @@ export interface DetailsParcelTableProps {
 
   export interface ICurrentParcel {
     address: string;
-    city: string;
+    city: City | null;
     comments: string;
     phone: string;
     phone2: string;
@@ -68,7 +69,7 @@ const DetailsParcelTable: React.FC<DetailsParcelTableProps>  = (props) => {
         <div className="ffh-details-cell city">
             <div className="ffh-details-cell__label">עיר</div>
             <div className="ffh-details-cell__value">
-                {props.currentParcel.city}
+                {props.currentParcel.city?.name}
             </div>
         </div>
         <div className="ffh-details-cell address">

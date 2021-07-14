@@ -20,14 +20,13 @@ const InDelivery = ({onLoad}: InDeliveryProps) => {
   }, []);
 
   async function init() {
-    const data = await httpService.getParcels("distribution", "", "");
+    const data = await httpService.getParcels("distribution", [], "");
     const inDeliveryParcels = data.filter((parcel: Parcel) => parcel.currentUserId);
     setTotalNumber(inDeliveryParcels.length);
 
-    const groupedByCity = _.mapValues(_.groupBy(inDeliveryParcels, "user.deliveryArea"), (clist) =>
-      clist.map((parcel) => _.omit(parcel, "user.deliveryArea")).length
-    );
-
+   const groupedByCity = _.mapValues(_.groupBy(inDeliveryParcels, "city.name"), (clist) =>
+     clist.map((parcel) => _.omit(parcel, "city.name")).length
+   );
     setParcelsByCity(groupedByCity);
     onLoad();
   }
