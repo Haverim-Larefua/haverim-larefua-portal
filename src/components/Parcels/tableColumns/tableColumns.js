@@ -92,11 +92,14 @@ const tableColumns = memoize(clickHandler => [{
                 sortable: true,
                 minWidth: '350px',
                 cell: row => {
+                  const comment = row.parcelTracking[row.parcelTracking.length - 1]?.comments
+                    ? '[' + formatDate(row.parcelTracking[row.parcelTracking.length - 1]?.statusDate).date + '] ' + row.parcelTracking[row.parcelTracking.length - 1]?.comments
+                    : undefined ;
                   return (< ParcelUserComponent userId={row.currentUserId}
                                          itemId={row.id}
                                          status={row.parcelTrackingStatus}
                                          action={clickHandler}
-                                         comments={row.comments}
+                                         comments={comment}
                   />)
                 },
                     ignoreRowClick: row => (row.currentUserId ? false : true),
