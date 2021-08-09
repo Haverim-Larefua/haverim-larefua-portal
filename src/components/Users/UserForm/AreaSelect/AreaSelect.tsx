@@ -167,16 +167,20 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
             setSubdistrictsExpanded([]);
             setDistrictsExpanded([]);
         } else {
+            const districtsToExpand:string[] = [];
+            const subDistrictsToExpand:string[] = [];
             districts.forEach(district => {
                 if (AreaUtil.isExpanded(AreaLevel.DISTRICT, district.name, searchInput, districts)) {
-                    onExpand(district.name, AreaLevel.DISTRICT, true);
+                    districtsToExpand.push(district.name);
                 }
             });
             districts.flatMap(dis => dis.subdistricts).forEach(sub => {
                 if (AreaUtil.isExpanded(AreaLevel.SUBDISTRICT, sub.name, searchInput, districts)) {
-                    onExpand(sub.name, AreaLevel.SUBDISTRICT, true);
+                    subDistrictsToExpand.push(sub.name);
                 }
             });
+            setDistrictsExpanded(districtsToExpand);
+            setSubdistrictsExpanded(subDistrictsToExpand);
         }
     }, [searchInput, districts]);
 
