@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './SelectRow.scss';
 import { ReactComponent as CheckboxOn } from "../../../../assets/icons/checkbox-on.svg";
 import { ReactComponent as CheckboxOff } from "../../../../assets/icons/checkbox-off.svg";
@@ -22,6 +22,10 @@ interface ISelectRowProps {
 const SelectRow = ({name, isChecked, isExpanded = false, onSelected, onExpand = () => {}, expendable = true, isSelectable = true, className}:ISelectRowProps) => {
 
     const [isExpand, setIsExpand] = useState(isExpanded);
+
+    useEffect(() => {
+        setIsExpand(isExpanded);
+    }, [isExpanded]);
 
     return (
         <div className={className + " row-select-top"} key={name}>

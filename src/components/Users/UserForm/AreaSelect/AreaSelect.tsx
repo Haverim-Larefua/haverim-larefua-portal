@@ -123,17 +123,12 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                     setCitiesSelected([...citiesSelected, ...cities]);
                 } else {
                     setSubdistrictsSelected(AreaUtil.removeListFromList(subdistrictsSelected, subdistricts));
-                    setCitiesSelected(citiesSelected.filter(c => !cities.map(c=>c.name).includes(c.name)));
+                    setCitiesSelected(citiesSelected.filter(c => !cities.map(ct=>ct.name).includes(c.name)));
                 }
                 setDistrictsSelected(newDistricts);
             }
         }
     }, [districts, citiesSelected, subdistrictsSelected, districtsSelected]);
-
-    const save = () => {
-        setDropDownVisible(false);
-        onSave(citiesSelected);
-    };
 
     const clearSelection = () => {
         setDistrictsSelected([]);
@@ -147,6 +142,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         if (citiesSelected.length === 0) {
             clearSelection();
         }
+        onSave(citiesSelected);
         setDropDownVisible(false);
     };
     const toggleDropDown = () => {
@@ -182,7 +178,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                 }
             });
         }
-    }, [searchInput, districts/*, subdistrictsExpanded, districtsExpanded*/]);
+    }, [searchInput, districts]);
 
     return (
         <ClickOutsideHandler onClickOutside={hideDropDown}>
@@ -229,7 +225,6 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
                     </div>
                     <div className={"area-select-footer"}>
                         <label className={"area-select-clear-btn"} onClick={clearSelection}>{AppConstants.clear}</label>
-                        <label className={"area-select-save-btn"} onClick={save}>{AppConstants.choose}</label>
                     </div>
                 </div>
                 }
