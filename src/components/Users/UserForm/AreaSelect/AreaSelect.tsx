@@ -98,7 +98,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         switch (areaLevel) {
             case AreaLevel.CITY:
                 if (citiesSelected?.map(c=>c.name).includes(areaName)) {
-                    setCitiesSelected(citiesSelected.filter(city => city.name === areaName));
+                    setCitiesSelected(citiesSelected.filter(city => city.name !== areaName));
                 } else {
                     const city = cities.find(c=>c.name === areaName);
                     if (city) {
@@ -133,16 +133,15 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
     const clearSelection = () => {
         setDistrictsSelected([]);
         setSubdistrictsSelected([]);
-        setCitiesSelected([]);
         setDistrictsExpanded([]);
         setSubdistrictsExpanded([]);
         setSearchInput(undefined);
     };
     const hideDropDown = () => {
-        if (citiesSelected.length === 0) {
-            clearSelection();
+        if(JSON.stringify(userDeliveryAreas?.map(c=>c.name)) !== JSON.stringify(citiesSelected?.map(c=>c.name))) {
+            onSave(citiesSelected);
         }
-        onSave(citiesSelected);
+        clearSelection();
         setDropDownVisible(false);
     };
     const toggleDropDown = () => {
