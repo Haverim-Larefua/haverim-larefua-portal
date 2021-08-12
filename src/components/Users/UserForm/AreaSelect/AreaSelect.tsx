@@ -98,7 +98,7 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
         switch (areaLevel) {
             case AreaLevel.CITY:
                 if (citiesSelected?.map(c=>c.name).includes(areaName)) {
-                    setCitiesSelected(citiesSelected.filter(city => city.name === areaName));
+                    setCitiesSelected(citiesSelected.filter(city => city.name !== areaName));
                 } else {
                     const city = cities.find(c=>c.name === areaName);
                     if (city) {
@@ -133,16 +133,15 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
     const clearSelection = () => {
         setDistrictsSelected([]);
         setSubdistrictsSelected([]);
-        setCitiesSelected([]);
         setDistrictsExpanded([]);
         setSubdistrictsExpanded([]);
         setSearchInput(undefined);
     };
     const hideDropDown = () => {
-        if (citiesSelected.length === 0) {
-            clearSelection();
+        if(JSON.stringify(userDeliveryAreas?.map(c=>c.name)) !== JSON.stringify(citiesSelected?.map(c=>c.name))) {
+            onSave(citiesSelected);
         }
-        onSave(citiesSelected);
+        clearSelection();
         setDropDownVisible(false);
     };
     const toggleDropDown = () => {
@@ -167,16 +166,20 @@ const AreaSelect = ({districts, userDeliveryAreas = [], onSave}:IAreaSelectProps
             setSubdistrictsExpanded([]);
             setDistrictsExpanded([]);
         } else {
+            const districtsToExpand:string[] = [];
+            const subDistrictsToExpand:string[] = [];
             districts.forEach(district => {
                 if (AreaUtil.isExpanded(AreaLevel.DISTRICT, district.name, searchInput, districts)) {
-                    onExpand(district.name, AreaLevel.DISTRICT, true);
+                    districtsToExpand.push(district.name);
                 }
             });
             districts.flatMap(dis => dis.subdistricts).forEach(sub => {
                 if (AreaUtil.isExpanded(AreaLevel.SUBDISTRICT, sub.name, searchInput, districts)) {
-                    onExpand(sub.name, AreaLevel.SUBDISTRICT, true);
+                    subDistrictsToExpand.push(sub.name);
                 }
             });
+            setDistrictsExpanded(districtsToExpand);
+            setSubdistrictsExpanded(subDistrictsToExpand);
         }
     }, [searchInput, districts]);
 
