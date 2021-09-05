@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import logger from "../../../Utils/logger";
 import Modal from "../../shared/Modal/Modal";
 import { citiesContext } from "../../../contexts/citiesContext";
-import { delivaryDaysToInitials } from '../../../constants/AppConstants';
+import { delivaryDaysToInitials as deliveryDaysToInitials } from '../../../constants/AppConstants';
 import DayPicker from './DayPicker';
 import './UserForm.scss';
 import { UserUtil } from "../../../Utils/User/UserUtil";
@@ -11,6 +11,7 @@ import * as userActions from "../../../redux/states/user/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import AreaSelect from "./AreaSelect/AreaSelect";
+import { produce } from 'immer';
 
 const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
     const districts = useContext(citiesContext);
@@ -21,7 +22,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
     useEffect(() => {
         function fetchUser() {
             let user;
-            if (editUserId && editUserId !== "") {
+            if (editUserId !== '') {
                 user = allUsersById[editUserId];
                 if (!user) {
                     logger.error('[UserForm] useEffect user with id ', editUserId, '  not found');
@@ -29,28 +30,34 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
             } else {
                 setUserAvailableDays([AppConstants.allWeek]);
             }
+
+
+            if (user) {
+                if (user.deliveryDays) {
+                    const daysNames = Array.from(deliveryDaysToInitials.keys());
+                    const userDeliveryDays = user.deliveryDays.split(',');
+                    let convertedDays = [];
+                    userDeliveryDays.forEach(day => {
+                        const aDay = daysNames.find(key => deliveryDaysToInitials.get(key) === day);
+                        convertedDays.push(aDay);
+                    })
+                    console.log(convertedDays);
+                    setUserAvailableDays(convertedDays);
+                }
+
+                if (user.cities) {
+                    setUserDeliveryAreas(user.cities);
+                }
+
+                // password is always phone - and cannot be changed
+                if (user.password && user.phone) {
+                    user = produce(user, draftUser => {
+                        draftUser.password = String(draftUser.phone).replace(/\D/g, ""); // make sure the pass will be only numbers
+                    });
+                }
+            }
+
             setNewUserFormField(user);
-
-            if (user && user.deliveryDays) {
-                const daysNames = Array.from(delivaryDaysToInitials.keys());
-                const userDeliveryDays = user.deliveryDays.split(',');
-                let convertedDays = [];
-                userDeliveryDays.forEach(day => {
-                    const aDay = daysNames.find(key =>  delivaryDaysToInitials.get(key) === day);
-                    convertedDays.push(aDay);
-                })
-                console.log(convertedDays);
-                setUserAvailableDays(convertedDays);
-            }
-
-            if (user && user.cities) {
-                setUserDeliveryAreas(user.cities);
-            }
-
-            // password is always phone - and cannot be changed
-            if (user && user.password && user.phone) {
-                user.password = String(user.phone).replace(/\D/g,''); // make sure the pass will be only numbers
-            }
         }
         fetchUser();
     }, [editUserId, allUsersById]);
@@ -62,8 +69,6 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         }
         return [];
     },[editUserId, allUsersById]);
-    
-                
 
     let formFields = [];
     if (editUserId) {
@@ -105,34 +110,34 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         const name = e.target.name;
         const value = e.target.value;
 
-        let phoneVal = newUserForm ? newUserForm.phone : '';
-        let fnameVal = newUserForm ? newUserForm.firstName : '';
-        let lnameVal = newUserForm ? newUserForm.lastName : '';
-        let passwordVal = newUserForm ? newUserForm.password : '';
-        let userName = newUserForm  ? newUserForm.username  : '';
+        let phoneVal = newUserForm?.phone ?? '';
+        let fnameVal = newUserForm?.firstName ?? '';
+        let lnameVal = newUserForm?.lastName ?? '';
+        let passwordVal = newUserForm?.password ?? '';
+        let userName = newUserForm?.username ?? '';
 
         if (name === 'phone') {
             phoneVal = value;
             passwordVal = String(phoneVal).replace(/\D/g,''); // make sure the pass will be only numbers
             userName = userName === '' ? createUsername() : userName;
         }
-        
+
         if (name === 'firstName' ) {
             fnameVal = value;
         }
-        
+
         if (name === 'lastName') {
             lnameVal = value;
         }
-        
-        setNewUserFormField({ ...newUserForm, 
-            'phone' : phoneVal, 
-            'firstName': fnameVal, 
-            'lastName': lnameVal, 
-            'password': passwordVal, 
-            'username': userName, 
+
+        setNewUserFormField({ ...newUserForm,
+            'phone' : phoneVal,
+            'firstName': fnameVal,
+            'lastName': lnameVal,
+            'password': passwordVal,
+            'username': userName,
             [name]: value });
-        
+
     };
 
     const cleanForm = () => {
@@ -140,10 +145,10 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
         setUserDeliveryAreas([]);
         setNewUserFormField({});
     };
- 
+
     const onSubmit = (e) => {
         e.preventDefault();
-        const convertedDays = userAvailableDays ? userAvailableDays.map(val => delivaryDaysToInitials.get(val)) : '';
+        const convertedDays = userAvailableDays ? userAvailableDays.map(val => deliveryDaysToInitials.get(val)) : '';
         const newUserData = { ...newUserForm, deliveryDays: convertedDays.join(','), cities: userDeliveryAreas };
         if (editUserId) {
             logger.log('[[UserForm] onSubmit dispathing editUser');
@@ -167,7 +172,7 @@ const UserForm = ({ handleClose, editUserId, allUsersById, actions,  }) => {
             <form className='ffh-user-form' onSubmit={onSubmit}>
                 {formFields.map((item, i) => {
                     const inputClass = (item === '') ? 'ffh-user-form-field__input empty' : 'ffh-user-form-field__input';
-                    const readonly = (item === 'password' || item === 'username') ? true : false;
+                    const readonly = item === 'password' || item === 'username';
                     const inputType = 'text';
                     const getInput = (item) => {
                         switch (item) {
@@ -196,11 +201,10 @@ const mapStateToProps =(appState) => {
         allUsersById: appState.user.allUsersById,
     }
   }
-  
+
   const mapDispatchToProps = (dispatch) => {
     return { actions: bindActionCreators(userActions, dispatch) };
   }
-  
+
   export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
-  
-  
+
