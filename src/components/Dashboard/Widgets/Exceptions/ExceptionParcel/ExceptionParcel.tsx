@@ -20,14 +20,14 @@ const ExceptionParcel = ({ parcel }: ExceptionParcelProps) => {
       </div>
       <div className="data-container">
         <div className="lables">
-          <p>שם:</p>
+          <p>עיר:</p>
           <p>מועד התחלה:</p>
           <p>שם שליח:</p>
           <p>טלפון שליח:</p>
         </div>
 
         <div className="values">
-          <p>{parcel.customerName}</p>
+          <p>{parcel.city?.name}</p>
           <p>
             {parcel.startDate ? DateUtil.getDate2DigitsFormat(new Date(parcel.startDate).toDateString()) : "-"}
           </p>
