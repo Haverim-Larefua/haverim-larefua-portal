@@ -85,7 +85,7 @@ async function loadParcels(searchParams: ISearchParcelsParams, dispatch: Dispatc
     const [parcels] = await Promise.all([
       httpService.getParcels(searchParams.statusFilter, searchParams.cityFilter, searchParams.searchTerm, searchParams.freeCondition),
     ]);
-
+    ParcelUtil.prepareParcelsForDisplay(parcels);
     dispatch(loadParcelsSuccess(parcels));
   } catch (err) {
     logger.error(err);

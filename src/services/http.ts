@@ -113,8 +113,7 @@ class HttpService {
     url += searchTerm ? `searchTerm=${searchTerm}&` : "";
     url += freeCondition ? `freeCondition=${freeCondition}&` : "";
 
-    const prcls: Parcel[] = await this.sendHttpRequest(url, HttpMethod.GET);
-    return ParcelUtil.prepareParcelsForDisplay(prcls);
+    return await this.sendHttpRequest(url, HttpMethod.GET);
   }
 
   async getParcel(id: number): Promise<Parcel> {
