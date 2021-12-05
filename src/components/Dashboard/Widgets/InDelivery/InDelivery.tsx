@@ -5,14 +5,14 @@ import httpService from "../../../../services/http";
 import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev.svg";
 import "./InDelivery.scss";
 import _ from "lodash";
+import { Spinner } from "../../../shared/Spinner/Spinner";
 
-interface InDeliveryProps {
-  onLoad: () => void;
-}
 
-const InDelivery = ({onLoad}: InDeliveryProps) => {
+
+const InDelivery = () => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [parcelsByCity, setParcelsByCity] = useState<any>();
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const InDelivery = ({onLoad}: InDeliveryProps) => {
      clist.map((parcel) => _.omit(parcel, "city.name")).length
    );
     setParcelsByCity(groupedByCity);
-    onLoad();
+    setLoading(false);
   }
 
   const navigateToParcelsPage = () => {
@@ -36,7 +36,9 @@ const InDelivery = ({onLoad}: InDeliveryProps) => {
   };
 
   return (
-    <div className="in-delivery-container">
+    <div className={loading ? `in-delivery-container widget-spiner-container`: `in-delivery-container`}>
+        {loading? (<Spinner/>) : (
+        <>
       <div className="in-delivery-header">
         <div className="in-delivery-title">{totalNumber}</div>
         <div className="in-delivery-sub-title" onClick={navigateToParcelsPage}>
@@ -55,6 +57,7 @@ const InDelivery = ({onLoad}: InDeliveryProps) => {
           </div>
         ) : null}
       </div>
+      </>)}
     </div>
   );
 };

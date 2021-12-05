@@ -9,14 +9,13 @@ import ParcelTracking from "../../../../models/ParcelTracking";
 import Parcel from "../../../../models/Parcel";
 import { DateUtil } from "../../../../Utils/Common/DateUtil";
 import widgetsService from "../Widgets.service";
+import { Spinner } from "../../../shared/Spinner/Spinner";
 
-interface LastWeekProps {
-  onLoad: () => void;
-}
 
-const LastWeek = ({onLoad}: LastWeekProps) => {
+const LastWeek = () => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const LastWeek = ({onLoad}: LastWeekProps) => {
       { name: getDay(6), amount: getAmount(parcels, 6) },
     ];
     setChartData(data);
-    onLoad();
+    setLoading(false);
   }
 
   const navigateToParcelsPage = () => {
@@ -48,7 +47,9 @@ const LastWeek = ({onLoad}: LastWeekProps) => {
   };
 
   return (
-    <div className="last-week-container">
+    <div className={loading ? `last-week-container widget-spiner-container`: `last-week-container`}>
+            {loading? (<Spinner/>) : (
+        <>
       <div className="last-week-header">
         <div className="widget-number-title">{totalNumber}</div>
         <div className="last-week-sub-title" onClick={navigateToParcelsPage}>
@@ -68,6 +69,7 @@ const LastWeek = ({onLoad}: LastWeekProps) => {
           ))}
         </div>
       </div>
+      </>)}
     </div>
   );
 };

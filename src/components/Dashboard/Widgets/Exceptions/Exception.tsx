@@ -6,14 +6,12 @@ import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev
 import httpService from "../../../../services/http";
 import "./Exception.scss";
 import Parcel from "../../../../models/Parcel";
+import { Spinner } from "../../../shared/Spinner/Spinner";
 
-interface ExceptionsProps {
-  onLoad: () => void;
-}
-
-const Exceptions = ({onLoad}: ExceptionsProps) => {
+const Exceptions = () => {
   const [exceptionParcels, setExceptionParcels] = useState<Parcel[]>([]);
   const [firstParcels, setFirstParcels] = useState<Parcel[]>([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
@@ -24,7 +22,7 @@ const Exceptions = ({onLoad}: ExceptionsProps) => {
     const data = await httpService.getParcels("exception", [], "");
     setExceptionParcels(data);
     setFirstParcels(data.slice(0, 5));
-    onLoad();
+    setLoading(false);
   }
 
   const navigateToParcelsPage = () => {
@@ -32,7 +30,8 @@ const Exceptions = ({onLoad}: ExceptionsProps) => {
   };
 
   return (
-    <div className="exceptions-container">
+    <div className={loading ? `exceptions-container widget-spiner-container`: `exceptions-container`}>
+      {loading? (<Spinner />) : (<>
       <div className="exceptions-header-container">
         <div>
           <span>
@@ -51,6 +50,7 @@ const Exceptions = ({onLoad}: ExceptionsProps) => {
           <ExceptionParcel key={parcel.id} parcel={parcel} />
         ))}
       </div>
+      </>)}
     </div>
   );
 };

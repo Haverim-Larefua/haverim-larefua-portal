@@ -5,13 +5,12 @@ import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev
 import { ReactComponent as Success } from "../../../../assets/icons/success.svg";
 import './Today.scss';
 import httpService from "../../../../services/http";
+import { Spinner } from "../../../shared/Spinner/Spinner";
 
-interface TodayProps {
-  onLoad: () => void;
-}
 
-  const Today = ({onLoad}: TodayProps) => {
+  const Today = () => {
     const [totalNumber, setTotalNumber] = useState(0);
+    const [loading, setLoading] = useState(true);
     const history = useHistory();
 
     const toady = new Date().toISOString().split('T')[0] + " 00:00:00";
@@ -24,7 +23,7 @@ interface TodayProps {
   async function init() {
     const todayParcels = await httpService.getParcels("delivered", [], "", todayCondition);
     setTotalNumber(todayParcels.length);
-    onLoad();
+    setLoading(false)
   }
 
 
@@ -33,7 +32,9 @@ interface TodayProps {
     }
 
     return (
-      <div className="today-container">
+      <div className={loading ? `today-container widget-spiner-container`: `today-container`}>
+                    {loading? (<Spinner/>) : (
+        <>
           <div className="fireworks-container">
               <Fireworks className="today-icon"/>
               <div className="today-total">{totalNumber}</div>
@@ -43,6 +44,7 @@ interface TodayProps {
                <div className="widget-sub-number-title">נמסרו בהצלחה היום</div>
             <ArrowPrev className="arrow"/>
           </div>
+          </> )}
       </div>
     );
   };

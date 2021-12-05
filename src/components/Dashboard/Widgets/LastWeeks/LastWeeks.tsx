@@ -9,19 +9,18 @@ import Parcel from "../../../../models/Parcel";
 import widgetsService from "../Widgets.service";
 import { DateUtil } from "../../../../Utils/Common/DateUtil";
 import { CollectionUtil } from "../../../../Utils/Common/CollectionsUtil";
+import { Spinner } from "../../../shared/Spinner/Spinner";
 
 interface ChartData {
   date: number;
   amount: number;
 }
 
-interface LastWeeksProps {
-  onLoad: () => void;
-}
 
-const LastWeeks = ({onLoad}: LastWeeksProps ) => {
+const LastWeeks = () => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   const numOfDay = 28 + new Date().getDay() + 1;
@@ -39,7 +38,7 @@ const LastWeeks = ({onLoad}: LastWeeksProps ) => {
 
     const data = getChartData(parcels);
     setChartData(data);
-    onLoad();
+    setLoading(false);
   }
 
   const navigateToParcelsPage = () => {
@@ -48,7 +47,9 @@ const LastWeeks = ({onLoad}: LastWeeksProps ) => {
 
 
   return (
-    <div className="last-weeks-container">
+    <div className={loading ? `last-weeks-container widget-spiner-container`: `last-weeks-container`}>
+                  {loading? (<Spinner/>) : (
+        <>
       <div className="last-weeks-header">
         <div className="widget-number-title">{totalNumber}</div>
         <div className="last-weeks-sub-title" onClick={navigateToParcelsPage}>
@@ -64,6 +65,7 @@ const LastWeeks = ({onLoad}: LastWeeksProps ) => {
           <XAxis dataKey="date" axisLine={false} tickLine={false} interval={0} tick={(tickProps) => renderQuarterTick(tickProps, chartData)} />
         </ComposedChart>
       </div>
+      </>)}
     </div>
   );
 };

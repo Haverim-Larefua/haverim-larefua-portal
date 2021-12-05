@@ -4,15 +4,14 @@ import { ReactComponent as ArrowPrev } from "../../../../assets/icons/arrow-prev
 import "./NewParcels.scss";
 import { useHistory } from "react-router-dom";
 import httpService from "../../../../services/http";
+import { Spinner } from "../../../shared/Spinner/Spinner";
 
-interface NewParcelsProps {
-  onLoad: () => void;
-}
 
-const NewParcels = ({onLoad}: NewParcelsProps) => {
+const NewParcels = () => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [noUserNumber, setNoUserNumber] = useState(0);
   const [readyDeliveryNumber, setReadyDeliveryNumber] = useState(0);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
 
   useEffect(() => {
@@ -26,7 +25,7 @@ const NewParcels = ({onLoad}: NewParcelsProps) => {
     setNoUserNumber(noUser);
     const noDelivery = data.length - noUser;
     setReadyDeliveryNumber(noDelivery);
-    onLoad();
+    setLoading(false);
   }
 
 
@@ -35,7 +34,9 @@ const NewParcels = ({onLoad}: NewParcelsProps) => {
   }
 
   return (
-    <div className="new-parcels-container">
+    <div className={loading ? `new-parcels-container widget-spiner-container`: `new-parcels-container`}>
+      {loading? (<Spinner/>) : (
+      <>
       <div className="total">
         <div className="total-number">{totalNumber}</div>
         <div>טרום חלוקה</div>
@@ -64,6 +65,7 @@ const NewParcels = ({onLoad}: NewParcelsProps) => {
            </div>
         </div>
       </div>
+    </>)}
     </div>
   );
 };

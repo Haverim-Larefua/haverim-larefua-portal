@@ -10,21 +10,6 @@ import NewParcels from "./Widgets/NewParcels/NewParcels";
 import Today from "./Widgets/Today/Today";
 
 const Dashboard = () => {
-  const  NUM_OF_WIDGETS = 6;
-  const [loading, setLoading] = useState(true);
-  const [childComponnentsLoaded, setChildComponnentsLoaded] = useState(0);
-
-  const onChildLoad = () => {
-    setChildComponnentsLoaded(prev => prev + 1);
-
-  }
-
-  useEffect(() => {
-     if(childComponnentsLoaded === NUM_OF_WIDGETS) {
-      setLoading(false);
-    }
-  }, [childComponnentsLoaded])
-
 
   return (
     <div className="dashboard-container">
@@ -35,21 +20,18 @@ const Dashboard = () => {
           <div className="date-str">{DateUtil.getDateHEDate(new Date())}</div>
         </div>
       </div>
-      {loading ? (
-        <div className="spiner-container">
-          <Spinner />
-        </div>) : null}
-        <div className={loading? "hidden-dashboard-body" : "dashboard-body-container"}>
+
+        <div className="dashboard-body-container">
           <div className="left-side">
-            <NewParcels onLoad={onChildLoad}/>
-            <InDelivery onLoad={onChildLoad}/>
+            <NewParcels />
+            <InDelivery/>
           </div>
           <div className="right-side">
-            <Exceptions onLoad={onChildLoad}/>
+            <Exceptions/>
             <div className="second-line">
-              <Today onLoad={onChildLoad}/>
-              <LastWeek onLoad={onChildLoad}/>
-              <LastWeeks onLoad={onChildLoad}/>
+              <Today />
+              <LastWeek />
+              <LastWeeks />
             </div>
           </div>
         </div>
