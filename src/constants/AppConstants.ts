@@ -101,6 +101,7 @@ class AppConstants {
   static readonly sendPushNotificationToUsersError = "קריאה לאיסוף וחלוקת חבילות נכשלה";
 
   static readonly parcelStatusOptions: Option<string>[] = [
+    { label: AppConstants.all, value: '' },
     { label: AppConstants.readyStatusName, value: ParcelStatus.Ready },
     { label: AppConstants.deliveringStatusName, value: ParcelStatus.Distribution },
     { label: AppConstants.exceptionStatusName, value: ParcelStatus.Exception },
