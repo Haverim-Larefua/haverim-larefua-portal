@@ -87,6 +87,15 @@ const tableColumns = memoize(clickHandler => [{
               },
             },
             {
+                name: AppConstants.treeUIName,
+                selector: 'tree',
+                sortable: true,
+                maxWidth: '150px',
+                style: {
+                  'justify-content': 'flex-start'
+                },
+              },
+            {
                 name: AppConstants.userUIName,
                 selector: 'currentUserId',
                 sortable: true,
@@ -105,6 +114,8 @@ const tableColumns = memoize(clickHandler => [{
                     ignoreRowClick: row => (row.currentUserId ? false : true),
                     allowOverflow: row => (row.currentUserId ? false : true),
                 },
+
+    
             ]);
 
         export default tableColumns;

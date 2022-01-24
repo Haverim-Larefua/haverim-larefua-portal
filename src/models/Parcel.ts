@@ -23,6 +23,7 @@ export default class Parcel implements ICurrentParcel {
     identity: number;
     startDate: Date;
     startTime: Date;
+    tree: string;
 
     constructor(
         identity: number,
@@ -38,6 +39,7 @@ export default class Parcel implements ICurrentParcel {
         signature: string,
         startDate: Date,
         startTime: Date,
+        tree: string,
     ) {
         this.identity = identity;
         this.customerName = customerName;
@@ -52,5 +54,6 @@ export default class Parcel implements ICurrentParcel {
         this.phone2 = phone2;
         this.startTime = startTime;
         this.startDate = startDate;
+        this.tree = tree;
     }
 }

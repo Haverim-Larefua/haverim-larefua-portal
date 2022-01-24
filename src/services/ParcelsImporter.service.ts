@@ -33,7 +33,7 @@ export default class ParcelsImporterService {
       const startTime = data[AppConstants.startTime] ? data[AppConstants.startTime].toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : null;
       const customerId = data[AppConstants.cardId] ? data[AppConstants.cardId] : StringUtil.EMPTY;
       const customerName = data[AppConstants.cardName] ? data[AppConstants.cardName] : StringUtil.EMPTY;
-      const address = data[AppConstants.addressUIName] ? getAddress(data) : StringUtil.EMPTY;
+      const address = data[AppConstants.addressUIName] ? getAddress(data) : null;
       let city = null;
       const cityName = data[AppConstants.cityUIName];
       if (cityName) {
@@ -46,6 +46,7 @@ export default class ParcelsImporterService {
       const phone = phones[0] ? phones[0] : StringUtil.EMPTY;
       const phone2 = phones[1] ? phones[1] : StringUtil.EMPTY;
       const comments = data[AppConstants.commentsUIName] ? data[AppConstants.commentsUIName] : StringUtil.EMPTY;
+      const tree = data[AppConstants.treeUIName] ? data[AppConstants.treeUIName] : StringUtil.EMPTY;
       const signature = data[AppConstants.signatureUIName] ? data[AppConstants.signatureUIName] : StringUtil.EMPTY;
 
       const parcel = new Parcel(
@@ -61,7 +62,8 @@ export default class ParcelsImporterService {
         dt,
         signature,
         startDate,
-        startTime
+        startTime, 
+        tree
       );
 
       logger.log(
