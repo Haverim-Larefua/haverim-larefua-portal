@@ -41,7 +41,7 @@ const ParcelsToolbar = ({ search, importFromFileClick, options }: IParcelsToolba
   }
   const searchFragment = (
     <div className="ffh-toolbar__search">
-      <input className="ffh-toolbar__search-input" type="text" placeholder={"חיפוש לפי שם, תעודת זהות, טלפון ועץ פרויקט"}
+      <input className="ffh-toolbar__search-input" type="text" placeholder={"חיפוש לפי שם, תעודת זהות, טלפון ותת פרויקט אחרון"}
         onChange={(event) => handleSearch(event.target.value)} />
       <SearchIcon className="ffh-select-filter__input-icon" />
     </div>)

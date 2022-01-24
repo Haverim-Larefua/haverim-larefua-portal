@@ -75,7 +75,7 @@ class AppConstants {
   static readonly deleteParcelWarningConfirmation: string = "החבילה לא בסטטוס מוכנה לחלוקה. לא ניתן לבצע מחיקה";
 
   static readonly commentsUIName: string = "הערות";
-  static readonly treeUIName: string = "עץ פרויקט";
+  static readonly treeUIName: string = "תת פרוייקט אחרון";
   static readonly signatureUIName: string = "חתימה";
 
   static readonly cardId: string = "תעודת זהות";
