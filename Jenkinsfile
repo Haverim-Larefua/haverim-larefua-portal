@@ -1,10 +1,9 @@
 /*
     Jenkins file for building the 'Friends For Help' project
     Author    : Yaron Golan <yaron.golan@intl.att.com>
-	Created   : 24-Mar-2020
+    Created   : 24-Mar-2020
     Component : Portal
 */
-
 
 
 //      +-----------------------------
@@ -13,8 +12,7 @@
 String dockerName        = "ffh_portal"
 String gitRepoUrl        = "git@github.com:Haverim-Larefua/haverim-larefua-portal.git"
 def    buildServers      = ['Dev': 'Dev', 'Prod': 'Prod']
-def    backendAddresses  = ['Dev': 'http://40.123.217.231:3001', 'Prod': 'http://40.123.209.114:3001']
-
+def    backendAddresses  = ['Dev': 'http://20.242.32.133:3001', 'Prod': 'http://20.122.155.192:3001']
 
 
 
@@ -42,74 +40,67 @@ String dockerVersion
 
 
 node (nodeName) {
-	
-	try {
+
+    try {
 
         stage ("Init") {
 
             banner(env.STAGE_NAME)
 
-
             currentBuild.result = 'SUCCESS'
-
 
             // Set the build server's name.
             currentBuild.description = "Environment = ${nodeName}"
 
-			// Set the backend URL according to the env.
-			backendUrl = backendAddresses[prmTargetEnv]
-		}
+            // Set the backend URL according to the env.
+            backendUrl = backendAddresses[prmTargetEnv]
+        }
 
 
-		
-		stage ("Source control") {
-			
-			banner (env.STAGE_NAME)
-			
-			git credentialsId: 'ffh_user', url: gitRepoUrl
-		}
-		
-		
-		
-		stage ("Compilation") {
-			
-			banner (env.STAGE_NAME)
-			
-			// Get the application version
-			dockerVersion = sh returnStdout: true, script: """
-				jq -r ".version" package.json
-			"""
-			
-			// Build the docker image.
-			sh """
-				docker build . --build-arg BACKEND_URL=${backendUrl} -t ${dockerName}:${dockerVersion}
-			"""
-		}
-		
-		
-		
-		stage ("Deploy") {
-			
-			banner (env.STAGE_NAME)
-			
-			sh """
-				
-				### Remove the old container, if exists.
-				containers=\$(docker ps -a | grep ${dockerName} | wc -l)
-				if [ \${containers} -eq 1 ]; then
-					docker rm -f ${dockerName}
-				fi
-				
-				
-				### Create a container from the image
-				docker run -d --name ${dockerName} -p 80:80 --restart=unless-stopped ${dockerName}:${dockerVersion}
-			"""
-		}
-	}
-	catch (Exception ex) {
-		errorMessage = ex.getMessage()
-		error (String.format("Exception was caught - [%s]", errorMessage))
-	}
+        stage ("Source control") {
+
+            banner (env.STAGE_NAME)
+
+            git credentialsId: 'FFH_User_SSH', url: gitRepoUrl
+        }
+
+
+        stage ("Compilation") {
+
+            banner (env.STAGE_NAME)
+
+            // Get the application version
+            dockerVersion = sh returnStdout: true, script: """
+                jq -r ".version" package.json
+            """
+
+            // Build the docker image.
+            sh """
+                docker build . --build-arg BACKEND_URL=${backendUrl} -t ${dockerName}:${dockerVersion}
+            """
+        }
+
+
+        stage ("Deploy") {
+
+            banner (env.STAGE_NAME)
+
+            sh """
+                ### Remove the old container, if exists.
+                containers=\$(docker ps -a | grep ${dockerName} | wc -l)
+                if [ \${containers} -eq 1 ]; then
+                    docker rm -f ${dockerName}
+                fi
+
+                ### Create a container from the image
+                docker run -d --name ${dockerName} -p 80:80 --restart=unless-stopped ${dockerName}:${dockerVersion}
+            """
+        }
+    }
+    catch (Exception ex) {
+        errorMessage = ex.getMessage()
+        error (String.format("Exception was caught - [%s]", errorMessage))
+    }
 } // node
 
 
@@ -146,7 +137,3 @@ def banner(message) {
     message = String.format (messageFormat, dashesLine, message, dashesLine)
     println (message)
 }
-
-
-
-
