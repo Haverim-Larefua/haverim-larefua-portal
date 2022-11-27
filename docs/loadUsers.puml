@@ -1,0 +1,102 @@
+@startuml
+
+title Load Users
+
+autonumber
+
+participant UsersPage as UI
+participant ContextState as context
+participant InitialEffect as inital_effect
+participant StateChangeEffect as effect
+participant Reducer as reducer
+participant Server as server
+
+group initalize User Context
+note over context
+  <b><u>context state: UserExtendedData</u></b>:
+  {
+      users: User[], <b>// User Data</b>
+      action: IActionBase { <b>// the Action that generated the data</b>
+                  type: string;  
+                        (ADD_USER, 
+                         ADD_USERS, 
+                         EDIT_USER, 
+                         REMOVE_USER, 
+                         LOAD_USERS, 
+                         SEARCH_USERS, 
+                         UPDATE_USERS_AREAS)
+                  [prop: string]: any;
+      searchParams : ISearchUsersParams { <b> // how data retreived </b>
+                         "dayFilter": string,
+                         "cityFilter": string,
+                         "nameFilter": string
+          },
+      deliveryAreas: string[] <b>// distinct areas from users </b>
+  }
+end note
+UI -> context: Page Load with Context Provider
+context -> context: Create initial context (default)
+context-> inital_effect: Launch initial effect (useEffect [])
+== Users Part==
+inital_effect -> server: Get Users (context state.SearchParams)
+server --> inital_effect: users list
+inital_effect -> reducer: Dispatch LOAD_USERS
+reducer -> context: Update Context state with users list (UserExtendedData.users)
+context -> effect: Launch useEffect on context state change. Action = LOAD_USERS.
+effect -> effect: Do nothing for action LOAD_USERS
+== Areas Part==
+inital_effect -> server: Get users areas distinct
+server --> inital_effect: areas
+inital_effect -> reducer : Dispatch UPDATE_USERS_AREAS(areas)
+reducer -> context: Update context state with areas (UserExtendedData.deliveryAreas)
+context -> effect: Launch useEffect on context state change. Action = UPDATE_USERS_AREAS.
+effect -> effect: Do nothing for action UPDATE_USERS_AREAS
+end
+
+group Add User Flow
+UI -> reducer: Dispatch ADD_USER(user)
+== Users Part==
+reducer -> context: Update Context state with new user 
+note over context
+add the new user to context state (stateExtendedData.users)
+end note
+context -> effect: Launch useEffect on context state change. Action = ADD_USER.
+effect -> server: Create new users
+effect -> server: Get Users (context state.SearchParams)
+server --> effect: users list
+effect -> reducer: Dispatch LOAD_USERS(users list)
+reducer -> context: Update Context state with users list (UserExtendedData.users)
+context -> effect: Launch useEffect on context state change. Action = LOAD_USERS.
+effect -> effect: Do nothing for action LOAD_USERS
+== Areas Part==
+inital_effect -> server: Get users areas distinct
+server --> inital_effect: areas
+inital_effect -> reducer : Dispatch UPDATE_USERS_AREAS(areas)
+reducer -> context: Update context state with areas (UserExtendedData.deliveryAreas)
+context -> effect: Launch useEffect on context state change. Action = UPDATE_USERS_AREAS.
+effect -> effect: Do nothing for action UPDATE_USERS_AREAS
+
+end
+
+group Change Search Params Flow
+UI -> UI: change search params
+UI -> reducer: Dispatch SEARCH_USERS(search params)
+reducer -> context: Update Context state with search params (UserExtendedData.searchParams)
+== Users Part==
+context -> effect: Launch useEffect on context state change. Action = SEARCH_USERS.
+effect -> server: Get Users (context state.SearchParams)
+server --> effect: users list
+effect -> reducer: Dispatch LOAD_USERS(users list)
+reducer -> context: Update Context state with users list (UserExtendedData.users)
+context -> effect: Launch useEffect on context state change. Action = LOAD_USERS.
+effect -> effect: Do nothing for action LOAD_USERS
+== Areas Part==
+inital_effect -> server: Get users areas distinct
+server --> inital_effect: areas
+inital_effect -> reducer : Dispatch UPDATE_USERS_AREAS(areas)
+reducer -> context: Update context state with areas (UserExtendedData.deliveryAreas)
+context -> effect: Launch useEffect on context state change. Action = UPDATE_USERS_AREAS.
+effect -> effect: Do nothing for action UPDATE_USERS_AREAS
+end
+
+@enduml

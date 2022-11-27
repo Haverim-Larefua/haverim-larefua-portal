@@ -62,12 +62,15 @@ const ParcelsToolbar = ({ search, importFromFileClick, options }: IParcelsToolba
       }
     </div>)
 
+  
+
   return (
     <div className="ffh-toolbar">
       <div className="ffh-toolbar__title">   {AppConstants.parcelsUIName}   </div>
       {optionsFragment}
       {searchFragment}
       {button}
+      
     </div>);
 }
 

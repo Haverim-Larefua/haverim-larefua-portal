@@ -51,14 +51,8 @@ const App: React.FC<any> = (): React.ReactElement => {
                       <PrivateRoute path="/users" component={Users} />
                       <PrivateRoute path="/parcels" component={Parcels} />
                     </CitiesContextProvider>
-                      <PrivateRoute
-                        path="/parcel/:id"
-                        component={ParcelDetails}
-                      />
-                  <Route
-                    path="/downloadApp"
-                    component={ApplicationDownloadPage}
-                  />
+                      <PrivateRoute path="/parcel/:id" component={ParcelDetails}/>
+                  <Route path="/downloadApp" component={ApplicationDownloadPage} />
                   <ErrorDialog />
 
                 </ErrorContextProvider>

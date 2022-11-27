@@ -5,7 +5,8 @@ import DataTable from 'react-data-table-component';
 import './Table.scss';
 import { ReactComponent as SortIcon} from '../../../assets/icons/sort-descending.svg';
 import { Spinner } from '../Spinner/Spinner';
-
+import data from './datatemp';
+import XLSX from "xlsx"
 
 
 const Table = (props) => {
@@ -32,8 +33,20 @@ const Table = (props) => {
    setPageNum(page);
   };
 
+
+  const exportData=()=>{
+    console.log(props.data);
+     var wb=XLSX.utils.book_new(),
+     ws=XLSX.utils.json_to_sheet(props.data);
+     XLSX.utils.book_append_sheet(wb,ws,"");
+     XLSX.writeFile(wb,"myexcel.xlsx")
+  }
+
+  
   return (
     <>
+    <button onClick={exportData} className="ffh-upload-button">יצוא לקובץ</button>
+
     <DataTable
     data={props.data}
     keyField={props.keyField}
